@@ -1,0 +1,24 @@
+/* Custom Styles  */
+.myButton
+{
+    background-color: red;
+}
+
+.middleImg {
+    text-align: center;
+}
+
+/*.diffStandard {
+    color : red;
+}*/
+
+.diffRed {
+    color : red;
+    font-weight: bold;
+}
+
+.diffLink {
+    color : blue;
+    text-decoration: underline;
+    font-weight: bold;
+}
