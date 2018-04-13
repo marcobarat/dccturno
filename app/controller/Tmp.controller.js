@@ -93,6 +93,11 @@ sap.ui.define([
                 jQuery.sap.log.info("SplitApp object can't be found");
             }
             return result;
+        },
+        onToPianiPage: function(event) {
+
+            this.getOwnerComponent().getRouter().navTo("piani");
+
         }
 
         //        onAfterRendering: function () {

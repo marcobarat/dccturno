@@ -1,0 +1,119 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
+          xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
+          controllerName="myapp.controller.ManagePiano">
+    <Page title="{locale>myapp.view.main.title}">
+        <headerContent>
+            <Button icon="sap-icon://log" press="onAddPress" text="Uscita"
+                    ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
+        </headerContent>
+        <content>
+            <VBox width="100%" height="100%">
+                <HBox width="100%" height="35%" class="rosso" alignItems="Start">
+                    <VBox width="20%" height="100%" class="verde">
+                        <Button text="Linea 1"
+                                press="onPress"
+                                ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                width="100%">
+                            <layoutData>
+                                <FlexItemData growFactor="1" />
+                            </layoutData>
+                        </Button>
+                        <List
+                            headerText="Operatori" height="100%">
+                            <InputListItem label="O1">
+                                <Select>
+                                    <core:Item key="GR" text="Greece" />
+                                    <core:Item key="MX" text="Mexico" />
+                                    <core:Item key="NO" text="Norway" />
+                                    <core:Item key="NZ" text="New Zealand" />
+                                    <core:Item key="NL" text="Netherlands" />
+                                </Select>
+                            </InputListItem>
+                            <InputListItem label="O2">
+                                <Select>
+                                    <core:Item key="GR" text="Greece" />
+                                    <core:Item key="MX" text="Mexico" />
+                                    <core:Item key="NO" text="Norway" />
+                                    <core:Item key="NZ" text="New Zealand" />
+                                    <core:Item key="NL" text="Netherlands" />
+                                </Select>
+                            </InputListItem>
+                        </List>
+                    </VBox>
+                    
+                    <VBox width="80%" height="100%">
+                        <VBox height="20%" width="100%">
+                            <HBox>
+                                <VBox width="97%">
+                                    <ProgressIndicator
+                                        class="sapUiSmallMarginBottom largo"
+                                        percentValue="30"
+                                        displayValue="30%"
+                                        showValue="true"
+                                        state="None" />
+                                </VBox>
+                                <VBox width="3%">
+                                    <Button text=" "
+                                            press="onPress"
+                                            ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                            width="100%">
+                                        <layoutData>
+                                            <FlexItemData growFactor="1" />
+                                        </layoutData>
+                                    </Button>
+                                </VBox>
+                            </HBox>
+                        </VBox>
+                        <VBox height="80%" width="100%">
+                            <Table id="idProductsTable"
+                                   inset="false"
+                                   items="{path: '/ProductCollection',sorter: {path: 'Name'}}">
+                                <columns>
+                                    <Column
+                                        width="12em">
+                                        <Text text="Product" />
+                                    </Column>
+                                    <Column
+                                        minScreenWidth="Tablet"
+                                        demandPopin="true">
+                                        <Text text="Supplier" />
+                                    </Column>
+                                    <Column
+                                        minScreenWidth="Desktop"
+                                        demandPopin="true"
+                                        hAlign="End">
+                                        <Text text="Dimensions" />
+                                    </Column>
+                                    <Column
+                                        hAlign="End">
+                                        <Text text="Price" />
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <ObjectIdentifier
+                                                title="{Name}"
+                                                text="{ProductId}"/>
+                                            <Text
+                                                text="{SupplierName}" />
+                                            <Text
+                                                text="{Width} x {Depth} x {Height} {DimUnit}" />
+                                            <ObjectNumber
+                                                number="{
+								parts:[{path:'Price'},{path:'CurrencyCode'}],
+								type: 'sap.ui.model.type.Currency',
+								formatOptions: {showMeasure: false}
+							}"
+                                                unit="{CurrencyCode}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>    
+                        </VBox>
+                    </VBox>       
+                </HBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
