@@ -4,22 +4,19 @@
     <Page title="{locale>myapp.view.main.title}">
         <headerContent>
             <Button icon="sap-icon://log" press="onAddPress" text="Uscita"
-                    ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
+                    ariaLabelledBy="exitButtonLabel"    />
         </headerContent>
         <content>
             <Button text="Conferma"
-                                press="nada"
-                                ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                width="100%">
+                    press="nada"
+                    ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                    width="100%">
                 <layoutData>
                     <FlexItemData growFactor="1" />
                 </layoutData>
             </Button>
             <Table 
-                inset="false"
-                items="{
-			path: '/linee'
-		}">
+                inset="false" items="{path: 'linea>/linee'}" class="sapUiSmallMarginEnd">
                 <headerToolbar>
                 </headerToolbar>
                 <columns>
@@ -34,14 +31,14 @@
                             <VBox width="100%" height="100%">
                                 <HBox width="100%" height="35%" class="" alignItems="Start">
                                     <VBox width="20%" height="100%" class="">
-                                        <Button text="{linea}"
+                                        <Button text="{linea>linea}"
                                                 press="onPress"
                                                 ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                                 width="100%">
                                             <layoutData>
                                                 <FlexItemData growFactor="1" />
                                             </layoutData>
-                                        </Button>
+                                        </Button><!--
                                         <List
                                             headerText="Operatori" height="100%">
                                             <InputListItem label="O1">
@@ -62,7 +59,33 @@
                                                     <core:Item key="NL" text="Netherlands" />
                                                 </Select>
                                             </InputListItem>
-                                        </List>
+                                        </List>-->
+                                        <Table 
+                                            inset="false"
+                                            growing="true"
+                                            fixedLayout="false"
+                                            growingThreshold="2"
+                                            class="sapUiSmallMarginEnd">
+                                            <columns>
+                                                <Column>
+                                                    <Text text="Operatori" />
+                                                </Column>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem>
+                                                    <cells>
+                                                        <List>
+                                                            <InputListItem>
+                                                                <Select>
+                                                                    <core:Item key="nome" text="{operatore>/Operator/nome} {operatore>/Operator/cognome}" />
+                                                                </Select>
+                                                            </InputListItem>
+                                                        </List>
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>    
+
                                     </VBox>
                     
                                     <VBox width="80%" height="100%">
@@ -90,11 +113,12 @@
                                         </VBox>
                                         <VBox height="80%" width="100%">
                                             <Table 
+                                                items="{linea>ProductCollection}"
                                                 inset="false"
-                                                items="{path: '/linee',sorter: {path: 'Name'}}"
                                                 growing="true"
                                                 fixedLayout="false"
-                                                growingThreshold="2">
+                                                growingThreshold="2"
+                                                class="sapUiSmallMarginEnd">
                                                 <columns>
                                                     <Column>
                                                         <Text text="" />
@@ -130,7 +154,8 @@
                                                                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                                                             </Button>
                                                             <Text
-                                                                text="{/ProductCollection/seq}" />
+
+                                                                text="{linea>seq}" />
                                                             <List>
                                                                 <InputListItem>
                                                                     <Select>
@@ -150,11 +175,11 @@
                                                                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                                                             </Button>
                                                             <Text
-                                                                text="{qli}" />
+                                                                text="{linea>qli}" />
                                                             <Text
-                                                                text="{cart}" />
+                                                                text="{linea>cart}" />
                                                             <Text
-                                                                text="{ore}" />
+                                                                text="{linea>ore}" />
                                                         </cells>
                                                     </ColumnListItem>
                                                 </items>
