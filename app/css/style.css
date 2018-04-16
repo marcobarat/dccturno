@@ -16,7 +16,10 @@
     color : red;
     font-weight: bold;
 }
+.fix_b {
+    margin-bottom: 4.6%;
 
+}
 .styleButton * {
     /*margin: 5px;*/
     /*width: 110%;*/
@@ -33,22 +36,22 @@
     /*display: inline-flex;*/
 }
 .size1 {
-	font-size : 1.5rem;
+    font-size : 1.5rem;
 }
 .largo {
     width:100% !important;
 }
 .size2 {
-	font-size : 2.5rem;
+    font-size : 2.5rem;
 }
 .size3 {
-	font-size : 5rem;
+    font-size : 5rem;
 }
 .size4:before {
-	font-size : 30px !important;
+    font-size : 30px !important;
 }
 .size5 {
-	font-size : 10rem;
+    font-size : 10rem;
 }
 .rosso {
     background-color: red;

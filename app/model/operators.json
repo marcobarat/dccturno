@@ -1,18 +1,37 @@
 {
-    "Operator": [
-        {
-            "nome": "Nicolò",
-            "cognome": "Sartori"
-        },{
-            "nome": "Marco",
-            "cognome": "Baratella"
-        },{
-            "nome": "Matteo",
-            "cognome": "Battilana"
-        },{
-            "nome": "Mattia",
-            "cognome": "Capano"
-        },
+    "Operator": [{
+            "Operator": [
+                {
+                    "nome": "Nicolò",
+                    "cognome": "Sartori"
+                }, {
+                    "nome": "Marco",
+                    "cognome": "Baratella"
+                }, {
+                    "nome": "Matteo",
+                    "cognome": "Battilana"
+                }, {
+                    "nome": "Mattia",
+                    "cognome": "Capano"
+                }
+            ]
+        }, {
+            "Operator": [
+                {
+                    "nome": "Nicolò2",
+                    "cognome": "Sartori2"
+                }, {
+                    "nome": "Marco2",
+                    "cognome": "Baratella2"
+                }, {
+                    "nome": "Matteo2",
+                    "cognome": "Battilana2"
+                }, {
+                    "nome": "Mattia2",
+                    "cognome": "Capano2"
+                }
+            ]
+        }
     ]
 }
 

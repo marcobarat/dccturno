@@ -34,33 +34,14 @@
                                         <Button text="{linea>linea}"
                                                 press="onPress"
                                                 ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                                width="100%">
+                                                width="100%"
+                                                class="fix_b">
                                             <layoutData>
                                                 <FlexItemData growFactor="1" />
                                             </layoutData>
-                                        </Button><!--
-                                        <List
-                                            headerText="Operatori" height="100%">
-                                            <InputListItem label="O1">
-                                                <Select>
-                                                    <core:Item key="GR" text="Greece" />
-                                                    <core:Item key="MX" text="Mexico" />
-                                                    <core:Item key="NO" text="Norway" />
-                                                    <core:Item key="NZ" text="New Zealand" />
-                                                    <core:Item key="NL" text="Netherlands" />
-                                                </Select>
-                                            </InputListItem>
-                                            <InputListItem label="O2">
-                                                <Select>
-                                                    <core:Item key="GR" text="Greece" />
-                                                    <core:Item key="MX" text="Mexico" />
-                                                    <core:Item key="NO" text="Norway" />
-                                                    <core:Item key="NZ" text="New Zealand" />
-                                                    <core:Item key="NL" text="Netherlands" />
-                                                </Select>
-                                            </InputListItem>
-                                        </List>-->
+                                        </Button>
                                         <Table 
+                                            items="{path: 'operatore>/Operator'}"
                                             inset="false"
                                             growing="true"
                                             fixedLayout="false"
@@ -72,15 +53,11 @@
                                                 </Column>
                                             </columns>
                                             <items>
-                                                <ColumnListItem>
+                                                <ColumnListItem >
                                                     <cells>
-                                                        <List>
-                                                            <InputListItem>
-                                                                <Select>
-                                                                    <core:Item key="nome" text="{operatore>/Operator/nome} {operatore>/Operator/cognome}" />
-                                                                </Select>
-                                                            </InputListItem>
-                                                        </List>
+                                                        <Select items="{operatore>Operator}" >
+                                                            <core:Item key="{operatore>nome}" text="{operatore>nome} {operatore>cognome}" />
+                                                        </Select>
                                                     </cells>
                                                 </ColumnListItem>
                                             </items>
@@ -149,27 +126,16 @@
                                                 <items>
                                                     <ColumnListItem>
                                                         <cells>
-                                                            <Button text=""
-                                                                    press="onPress"
-                                                                    ariaDescribedBy="defaultButtonDescription genericButtonDescription">
-                                                            </Button>
+                                                                <Button id="openMenu" text="" press="handlePressOpenMenu" />
                                                             <Text
 
                                                                 text="{linea>seq}" />
-                                                            <List>
-                                                                <InputListItem>
-                                                                    <Select>
-                                                                        <core:Item key="semola" text="Semola 093" />
-                                                                    </Select>
-                                                                </InputListItem>
-                                                            </List>
-                                                            <List>
-                                                                <InputListItem>
-                                                                    <Select>
-                                                                        <core:Item key="500gr" text="500gr" />
-                                                                    </Select>
-                                                                </InputListItem>
-                                                            </List>
+                                                            <Select>
+                                                                <core:Item key="semola" text="Semola 093" />
+                                                            </Select>
+                                                            <Select>
+                                                                <core:Item key="500gr" text="500gr" />
+                                                            </Select>
                                                             <Button text=""
                                                                     press="onPress2"
                                                                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
