@@ -91,7 +91,7 @@
                                         <VBox height="80%" width="100%">
                                             <Table 
                                                 inset="false"
-                                                items="{path: 'linee/ProductCollection',sorter: {path: 'Name'}}"
+                                                items="{path: '/linee',sorter: {path: 'Name'}}"
                                                 growing="true"
                                                 fixedLayout="false"
                                                 growingThreshold="2">
@@ -130,7 +130,7 @@
                                                                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                                                             </Button>
                                                             <Text
-                                                                text="{/seq}" />
+                                                                text="{/ProductCollection/seq}" />
                                                             <List>
                                                                 <InputListItem>
                                                                     <Select>
@@ -150,11 +150,11 @@
                                                                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                                                             </Button>
                                                             <Text
-                                                                text="{/qli}" />
+                                                                text="{qli}" />
                                                             <Text
-                                                                text="{/cart}" />
+                                                                text="{cart}" />
                                                             <Text
-                                                                text="{/ore}" />
+                                                                text="{ore}" />
                                                         </cells>
                                                     </ColumnListItem>
                                                 </items>
