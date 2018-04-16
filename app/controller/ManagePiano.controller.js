@@ -14,8 +14,10 @@ sap.ui.define([
             // set explored app's demo model on this sample
             var oModel = new JSONModel("./model/linee.json");
             var oModel2 = new JSONModel("./model/products.json");
+            var oModel3 = new JSONModel("./model/operators.json");
 
-            this.getView().setModel(oModel);
+            this.getView().setModel(oModel,'linea');
+            this.getView().setModel(oModel,'operatore');
             //this.getView().setModel(oModel2,"prodotto");
 
         },

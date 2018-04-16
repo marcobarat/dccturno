@@ -4,7 +4,16 @@
             "linea": "Linea 1",
             "ProductCollection": [
                 {
-                    "seq": ">>>",
+                    "seq": ">>>1a",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35"
+                },
+                {
+                    "seq": ">>>1b",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
@@ -17,7 +26,7 @@
             "linea": "Linea 2",
             "ProductCollection": [
                 {
-                    "seq": ">>>",
+                    "seq": ">>>2",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
@@ -30,7 +39,7 @@
             "linea": "Linea 3",
             "ProductCollection": [
                 {
-                    "seq": ">>>",
+                    "seq": ">>>3",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
@@ -43,8 +52,8 @@
             "linea": "Linea 4",
             "ProductCollection": [
                 {
-                    "seq": ">>>",
-                    "formato": "093 semola",
+                    "seq": ">>>4",
+                    "formato": "093 semolino",
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
@@ -56,7 +65,7 @@
             "linea": "Linea 5",
             "ProductCollection": [
                 {
-                    "seq": ">>>",
+                    "seq": ">>>5",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
