@@ -1,0 +1,70 @@
+{
+    "linee": [
+        {
+            "linea": "Linea 1",
+            "ProductCollection": [
+                {
+                    "seq": ">>>",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35"
+                }
+            ]
+        }, {
+            "linea": "Linea 2",
+            "ProductCollection": [
+                {
+                    "seq": ">>>",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35"
+                }
+            ]
+        }, {
+            "linea": "Linea 3",
+            "ProductCollection": [
+                {
+                    "seq": ">>>",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35"
+                }
+            ]
+        }, {
+            "linea": "Linea 4",
+            "ProductCollection": [
+                {
+                    "seq": ">>>",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35"
+                }
+            ]
+        }, {
+            "linea": "Linea 5",
+            "ProductCollection": [
+                {
+                    "seq": ">>>",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35"
+                }
+            ]
+        }
+    ]
+}

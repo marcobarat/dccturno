@@ -7,113 +7,166 @@
                     ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
         </headerContent>
         <content>
-            <VBox width="100%" height="100%">
-                <HBox width="100%" height="35%" class="rosso" alignItems="Start">
-                    <VBox width="20%" height="100%" class="verde">
-                        <Button text="Linea 1"
-                                press="onPress"
+            <Button text="Conferma"
+                                press="nada"
                                 ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                 width="100%">
-                            <layoutData>
-                                <FlexItemData growFactor="1" />
-                            </layoutData>
-                        </Button>
-                        <List
-                            headerText="Operatori" height="100%">
-                            <InputListItem label="O1">
-                                <Select>
-                                    <core:Item key="GR" text="Greece" />
-                                    <core:Item key="MX" text="Mexico" />
-                                    <core:Item key="NO" text="Norway" />
-                                    <core:Item key="NZ" text="New Zealand" />
-                                    <core:Item key="NL" text="Netherlands" />
-                                </Select>
-                            </InputListItem>
-                            <InputListItem label="O2">
-                                <Select>
-                                    <core:Item key="GR" text="Greece" />
-                                    <core:Item key="MX" text="Mexico" />
-                                    <core:Item key="NO" text="Norway" />
-                                    <core:Item key="NZ" text="New Zealand" />
-                                    <core:Item key="NL" text="Netherlands" />
-                                </Select>
-                            </InputListItem>
-                        </List>
-                    </VBox>
+                <layoutData>
+                    <FlexItemData growFactor="1" />
+                </layoutData>
+            </Button>
+            <Table 
+                inset="false"
+                items="{
+			path: '/linee'
+		}">
+                <headerToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column
+                        width="12em">
+                        <Text text="Linea" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem>
+                        <cells>
+                            <VBox width="100%" height="100%">
+                                <HBox width="100%" height="35%" class="" alignItems="Start">
+                                    <VBox width="20%" height="100%" class="">
+                                        <Button text="{linea}"
+                                                press="onPress"
+                                                ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                                width="100%">
+                                            <layoutData>
+                                                <FlexItemData growFactor="1" />
+                                            </layoutData>
+                                        </Button>
+                                        <List
+                                            headerText="Operatori" height="100%">
+                                            <InputListItem label="O1">
+                                                <Select>
+                                                    <core:Item key="GR" text="Greece" />
+                                                    <core:Item key="MX" text="Mexico" />
+                                                    <core:Item key="NO" text="Norway" />
+                                                    <core:Item key="NZ" text="New Zealand" />
+                                                    <core:Item key="NL" text="Netherlands" />
+                                                </Select>
+                                            </InputListItem>
+                                            <InputListItem label="O2">
+                                                <Select>
+                                                    <core:Item key="GR" text="Greece" />
+                                                    <core:Item key="MX" text="Mexico" />
+                                                    <core:Item key="NO" text="Norway" />
+                                                    <core:Item key="NZ" text="New Zealand" />
+                                                    <core:Item key="NL" text="Netherlands" />
+                                                </Select>
+                                            </InputListItem>
+                                        </List>
+                                    </VBox>
                     
-                    <VBox width="80%" height="100%">
-                        <VBox height="20%" width="100%">
-                            <HBox>
-                                <VBox width="97%">
-                                    <ProgressIndicator
-                                        class="sapUiSmallMarginBottom largo"
-                                        percentValue="30"
-                                        displayValue="30%"
-                                        showValue="true"
-                                        state="None" />
-                                </VBox>
-                                <VBox width="3%">
-                                    <Button text=" "
-                                            press="onPress"
-                                            ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                            width="100%">
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
-                                    </Button>
-                                </VBox>
-                            </HBox>
-                        </VBox>
-                        <VBox height="80%" width="100%">
-                            <Table id="idProductsTable"
-                                   inset="false"
-                                   items="{path: '/ProductCollection',sorter: {path: 'Name'}}">
-                                <columns>
-                                    <Column
-                                        width="12em">
-                                        <Text text="Product" />
-                                    </Column>
-                                    <Column
-                                        minScreenWidth="Tablet"
-                                        demandPopin="true">
-                                        <Text text="Supplier" />
-                                    </Column>
-                                    <Column
-                                        minScreenWidth="Desktop"
-                                        demandPopin="true"
-                                        hAlign="End">
-                                        <Text text="Dimensions" />
-                                    </Column>
-                                    <Column
-                                        hAlign="End">
-                                        <Text text="Price" />
-                                    </Column>
-                                </columns>
-                                <items>
-                                    <ColumnListItem>
-                                        <cells>
-                                            <ObjectIdentifier
-                                                title="{Name}"
-                                                text="{ProductId}"/>
-                                            <Text
-                                                text="{SupplierName}" />
-                                            <Text
-                                                text="{Width} x {Depth} x {Height} {DimUnit}" />
-                                            <ObjectNumber
-                                                number="{
-								parts:[{path:'Price'},{path:'CurrencyCode'}],
-								type: 'sap.ui.model.type.Currency',
-								formatOptions: {showMeasure: false}
-							}"
-                                                unit="{CurrencyCode}" />
-                                        </cells>
-                                    </ColumnListItem>
-                                </items>
-                            </Table>    
-                        </VBox>
-                    </VBox>       
-                </HBox>
-            </VBox>
+                                    <VBox width="80%" height="100%">
+                                        <VBox height="20%" width="100%">
+                                            <HBox>
+                                                <VBox width="97%">
+                                                    <ProgressIndicator
+                                                        class="sapUiSmallMarginBottom largo"
+                                                        percentValue="30"
+                                                        displayValue="30%"
+                                                        showValue="true"
+                                                        state="None" />
+                                                </VBox>
+                                                <VBox width="3%">
+                                                    <Button text=" "
+                                                            press="onPress"
+                                                            ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                                            width="100%">
+                                                        <layoutData>
+                                                            <FlexItemData growFactor="1" />
+                                                        </layoutData>
+                                                    </Button>
+                                                </VBox>
+                                            </HBox>
+                                        </VBox>
+                                        <VBox height="80%" width="100%">
+                                            <Table 
+                                                inset="false"
+                                                items="{path: 'linee/ProductCollection',sorter: {path: 'Name'}}"
+                                                growing="true"
+                                                fixedLayout="false"
+                                                growingThreshold="2">
+                                                <columns>
+                                                    <Column>
+                                                        <Text text="" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Text text="Sequenza" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Text text="Formato" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Text text="Confezionamento" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Text text="" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Text text="Qli" />
+                                                    </Column>
+                                                    <Column>
+                                                        <Text text="Cartoni" />
+                                                    </Column>
+                                                    <Column
+                                                        hAlign="End">
+                                                        <Text text="Ore" />
+                                                    </Column>
+                                                </columns>
+                                                <items>
+                                                    <ColumnListItem>
+                                                        <cells>
+                                                            <Button text=""
+                                                                    press="onPress"
+                                                                    ariaDescribedBy="defaultButtonDescription genericButtonDescription">
+                                                            </Button>
+                                                            <Text
+                                                                text="{/seq}" />
+                                                            <List>
+                                                                <InputListItem>
+                                                                    <Select>
+                                                                        <core:Item key="semola" text="Semola 093" />
+                                                                    </Select>
+                                                                </InputListItem>
+                                                            </List>
+                                                            <List>
+                                                                <InputListItem>
+                                                                    <Select>
+                                                                        <core:Item key="500gr" text="500gr" />
+                                                                    </Select>
+                                                                </InputListItem>
+                                                            </List>
+                                                            <Button text=""
+                                                                    press="onPress2"
+                                                                    ariaDescribedBy="defaultButtonDescription genericButtonDescription">
+                                                            </Button>
+                                                            <Text
+                                                                text="{/qli}" />
+                                                            <Text
+                                                                text="{/cart}" />
+                                                            <Text
+                                                                text="{/ore}" />
+                                                        </cells>
+                                                    </ColumnListItem>
+                                                </items>
+                                            </Table>    
+                                        </VBox>
+                                    </VBox>       
+                                </HBox>
+                            </VBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
         </content>
     </Page>
 </mvc:View>

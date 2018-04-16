@@ -12,8 +12,12 @@ sap.ui.define([
 
             var params = jQuery.sap.getUriParameters(window.location.href);
             // set explored app's demo model on this sample
-            var oModel = new JSONModel("./model/products.json");
+            var oModel = new JSONModel("./model/linee.json");
+            var oModel2 = new JSONModel("./model/products.json");
+
             this.getView().setModel(oModel);
+            //this.getView().setModel(oModel2,"prodotto");
+
         },
 
         onAfterRendering: function () {
