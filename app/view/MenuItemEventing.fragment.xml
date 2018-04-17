@@ -5,38 +5,11 @@
     <u:Menu items="{path: '/menu'}">
         <u:MenuItem
             text="{nome}"
-            select="handleMenuItemPress"
-            enabled="false"
+            startsSection="{nuovasezione}"
+            select="{metodo}"
+            enabled="{attivo}"
         />
-       <!-- <u:MenuItem
-            text="Visualizza Atributi Batch"
-            select="handleMenuItemPress" 
-        />
-        <u:MenuItem
-            text="Trasferimento Batch a Linea"
-            select="handleMenuItemPress" 
-            startsSection="true"
-        />
-        <u:MenuItem
-            text="Trasferimento Batch a Linea (solo attrezzaggio)"
-            select="handleMenuItemPress" />
-        <u:MenuItem
-            text="Trasferimento schedulato"
-            select="handleMenuItemPress" 
-        />
-        <u:MenuItem
-            text="Richiamo Batch"
-            select="handleMenuItemPress" 
-            startsSection="true"
-        />
-        <u:MenuItem
-            text="Cancellazione Batch"
-            select="handleMenuItemPress" />
-        <u:MenuItem
-            text="Exit"
-            select="handleMenuItemPress"
-            startsSection="true"
-        />-->
+       
     </u:Menu>
 
 </core:FragmentDefinition>

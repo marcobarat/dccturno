@@ -3,7 +3,11 @@
 {
     background-color: red;
 }
-
+.sfondobianco
+{
+    border: 1px solid black;
+    background-color: white;
+}
 .middleImg {
     text-align: center;
 }
@@ -12,6 +16,22 @@
     color : red;
 }
 
+.verderde *
+{
+    background-image: none !important;
+    background-color: green !important;
+}
+.bianconco *
+{
+    background-image: none !important;
+    background-color: white !important;
+}
+.rossorso *
+{
+    background-image: none !important;
+    background-color: red !important;
+    color: white;
+}
 .diffRed {
     color : red;
     font-weight: bold;

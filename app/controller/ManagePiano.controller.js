@@ -68,6 +68,9 @@ sap.ui.define([
         handleTextFieldItemPress: function (oEvent) {
             var msg = "'" + oEvent.getParameter("item").getValue() + "' entered";
             MessageToast.show(msg);
+        },
+        onPress: function (evt) {
+            alert("ho cliccato");
         }
 
     });
