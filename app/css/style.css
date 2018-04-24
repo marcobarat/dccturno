@@ -15,7 +15,9 @@
 .diffStandard input {
     color : red;
 }
-
+.borderb {
+    border-right: black solid 1px;
+}
 .verderde *
 {
     background-image: none !important;
@@ -39,6 +41,12 @@
 .fix_b {
     margin-bottom: 4.6%;
 
+}
+.centrati * {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: green !important;
+    margin: 0 auto !important;  
 }
 .styleButton * {
     /*margin: 5px;*/
@@ -106,6 +114,20 @@
     text-decoration: underline;
     font-weight: bold;
 }
-sfondoRed{
+.sfondoRed{
     background-color: red;
+}
+.testo-grande *{
+    font-size: 150% !important;
+    text-align: center;
+    font-weight: bold;
+
+}
+.sapMStdTileTitle {
+    font-size: 200% !important;
+    text-align: center;
+    font-weight: bold;
+}
+.sapMStdTileTopRow{
+    height: 5rem !important;
 }

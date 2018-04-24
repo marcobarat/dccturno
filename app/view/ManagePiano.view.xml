@@ -47,7 +47,7 @@
                                             growing="true"
                                             fixedLayout="false"
                                             growingThreshold="2"
-                                            class="sapUiSmallMarginEnd">
+                                            class="sapUiSmallMarginEnd borderb">
                                             <columns>
                                                 <Column >
                                                     <Text text="Operatori" />
