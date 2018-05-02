@@ -1,0 +1,112 @@
+{
+    "linee": [
+        {
+            "linea": "Linea 1",
+            "disp": "74%",
+            "prod": "84%",
+            "fermo": "6:30",
+            "ProductCollection": [
+                {
+                    "seq": ">>>1a",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35",
+                    "disp": "65%",
+                    "prod": "83%",
+                    "fermo": "3:36"
+                },
+                {
+                    "seq": ">>>1b",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35",
+                    "disp": "79%",
+                    "prod": "85%",
+                    "fermo": "2:54"                    
+                }
+            ]
+        }, {
+            "linea": "Linea 2",
+            "disp": "74%",
+            "prod": "84%",  
+            "fermo": "6:30",            
+            "ProductCollection": [
+                {
+                    "seq": ">>>2",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35",
+                    "disp": "65%",
+                    "prod": "83%",
+                    "fermo": "3:36"                    
+                }
+            ]
+        }, {
+            "linea": "Linea 3",
+            "disp": "74%",
+            "prod": "84%",  
+            "fermo": "6:30",            
+            "ProductCollection": [
+                {
+                    "seq": ">>>3",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35",
+                    "disp": "65%",
+                    "prod": "83%",
+                    "fermo": "3:36"                    
+                }
+            ]
+        }, {
+            "linea": "Linea 4",
+            "disp": "74%",
+            "prod": "84%",
+            "fermo": "6:30",           
+            "ProductCollection": [
+                {
+                    "seq": ">>>4",
+                    "formato": "093 semolino",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35",
+                    "disp": "65%",
+                    "prod": "83%",
+                    "fermo": "3:36"                    
+                }
+            ]
+        }, {
+            "linea": "Linea 5",
+            "disp": "74%",
+            "prod": "84%", 
+            "fermo": "6:30",            
+            "ProductCollection": [
+                {
+                    "seq": ">>>5",
+                    "formato": "093 semola",
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35",
+                    "disp": "65%",
+                    "prod": "83%",
+                    "fermo": "3:36"                    
+                }
+            ]
+        }
+    ]
+}

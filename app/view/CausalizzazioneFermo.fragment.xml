@@ -1,0 +1,48 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:t="sap.ui.table">
+    <Dialog
+        contentWidth="1200px"
+        id="CausalizzazioneFermo"
+        title="Causalizzazione Fermi Automatici">
+        <HBox width="100%">
+            <VBox width="5%"/>
+            <VBox width="35%" justifyContent="Center">
+                <Button width="100%" text="Esci" press="onCloseDialog" type="Reject"/>
+            </VBox>
+            <VBox width="20%"/>
+            <VBox width="35%">
+                <Button width="100%" enabled="false" text="Causalizza" press="onCausalizza" type="Accept"/>
+            </VBox>
+            <VBox width="5%"/>
+        </HBox>
+        <VBox>
+            <t:Table
+                    inset="false"
+                    growing="true"
+                    fixedLayout="false"
+                    growingThreshold="2"
+                    class="sapUiSmallMarginEnd"                
+                >
+                <t:columns>
+                    <t:Column>
+                        <Text text="Inizio"/>
+                    </t:Column>
+                    <t:Column>
+                        <Text text="Fine"/>
+                    </t:Column>  
+                    <t:Column>
+                        <Text text="Minuti"/>
+                    </t:Column>  
+                    <t:Column>
+                        <Text text="Causale"/>
+                    </t:Column>
+                    <t:Column>
+                        <Text/>
+                    </t:Column>                                                                            
+                </t:columns>
+            </t:Table>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>
