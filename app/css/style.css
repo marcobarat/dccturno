@@ -155,3 +155,17 @@
     height: 3.3rem;
 }
 
+.customTextFermo {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+.mysapMTable {
+    border-top : 1px solid #dddddd;
+    border-right : 1px solid #dddddd;
+}
+
+.CBTotaleCausaCustom {
+    padding: 0 0 0 3.7rem;
+}
