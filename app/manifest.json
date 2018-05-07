@@ -95,6 +95,10 @@
                     "name": "managePianoGrey",
                     "pattern": "managePianoGrey",
                     "target": "managePianoGrey"
+                }, {
+                    "name": "Report",
+                    "pattern": "Report",
+                    "target": "Report"                    
                 }],
             "targets": {
                 "main": {
@@ -116,6 +120,10 @@
                 "managePianoGrey": {
                     "viewName": "view.ManagePianoGrey",
                     "viewLevel": 1
+                },
+                "Report": {
+                    "viewName": "view.Report",
+                    "viewLevel": 1                
                 }
             }
         },

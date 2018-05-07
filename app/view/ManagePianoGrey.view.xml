@@ -25,7 +25,7 @@
                         id="reportButton" 
                         text="Report"
                         visible="false"
-                        press="onMenu"
+                        press="onReportView"
                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                         width="100%">
                         <layoutData>

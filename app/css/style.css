@@ -169,3 +169,11 @@
 .CBTotaleCausaCustom {
     padding: 0 0 0 3.7rem;
 }
+
+.Background0 * {
+    background-color: #a6a6a6 !important;
+}
+
+.Background1 * {
+    background-color: #e6e6e6 !important;
+}

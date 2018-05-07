@@ -15,8 +15,7 @@ sap.ui.define([
         oDialog: null,
         CheckFermo: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         id_split: null,
-//        oCheckBoxSelectionData : {selection: "false"},
-//        oCheckBoxEnablementData: {enabled: "false"},
+        oButton: null,
         
         onInit: function () {
             this.oModel = new JSONModel("./model/linee.json");
@@ -30,56 +29,18 @@ sap.ui.define([
             this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
             this.AjaxCaller("model/JSON_FermoTesti.json", this.ModelDetailPages, "/Fermo/Testi/");
             this.getOwnerComponent().setModel(this.ModelDetailPages, "GeneralModel");
+            
+            var oItems = this.getView().byId("ManagePianoTable").getAggregation("items");
+            for (var i=0; i<oItems.length; i++) {
+                var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
+                if (!this.ControlloCausalizzazioneGuasti()){
+                    oLinea.getAggregation("items")[3].setEnabled(false);
+                } else {
+                    oLinea.getAggregation("items")[3].setEnabled(true);
+                }
+                
+                }
         },
-
-// APRO IL DIALOG E INIZIALIZZO TUTTE LE CHECKBOX E LE PROPRIETA' DEL CONTROLLER CHE MI SERVONO PER MONITORARE LE CHECKBOX
-        onCausalizzazioneFermi : function () {
-            var oView = this.getView();
-            this.oDialog = oView.byId("CausalizzazioneFermo");
-            // create dialog lazily
-            if (!this.oDialog) {
-               // create dialog via fragment factory
-               this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermo", this);
-               oView.addDependent(this.oDialog);
-            }
-            
-//            var oCheckBoxSelectionData = {selection:"false"};
-//            var oModel = new JSONModel(oCheckBoxSelectionData);
-//            oModel.setDefaultBindingMode(sap.ui.model.BindingMode.OneTime);
-//            this.getView().setModel(oModel, "selectionCheck");
-//            this.oDialog.open();
-            
-//            for (var i=0; i<this.CheckSingoloCausa.length; i++){
-//                var temp_id = this.oDialog.getAggregation("content")[1].getAggregation("items")[0].getAggregation("rows")[i].getAggregation("cells")[4].getId();
-//                this.getView().byId(temp_id).setSelected(false);
-//            }
-            this.oDialog.open();
-            
-//            this.oCheckBoxSelectionData.selection = "false";
-//            var oModelSelection = new JSONModel(this.oCheckBoxSelectionData);
-//            oModelSelection.setDefaultBindingMode(sap.ui.model.BindingMode.OneTime);
-////                                oModelSelection.selection = "true";
-//            this.getView().setModel(oModelSelection, "selectionCheck");
-          
-            
-            this.CheckSingoloCausa = [];
-            for (var j in this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti) {
-                this.CheckSingoloCausa.push(0);
-//                this.oCheckBoxSelectionData.selection[j] = {selected: "false"};
-            }
-//            var oModel = new JSONModel(this.oCheckBoxSelectionData);
-//            this.getView().setModel(oModel, "selectionCheck");
-           
-        },
-        
- 
-//CHIUDO IL DIALOG (SIA CAUSALIZZAZIONE FERMO CHE CAUSALIZZAZIONE FERMO PANEL)	
-        onCloseDialog : function () {
-                        var id_dialog = this.oDialog.getId();
-			this.getView().byId(id_dialog).close();
-                        this.getView().byId(id_dialog).destroy();
-                        this.oDialog = null;
-		},
 
 
 
@@ -230,35 +191,97 @@ sap.ui.define([
                             return  String(val);
                         }
                     },
-//GESTIONE DELLE CHECKBOX        
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// APRO IL DIALOG E INIZIALIZZO TUTTE LE CHECKBOX E LE PROPRIETA' DEL CONTROLLER CHE MI SERVONO PER MONITORARE LE CHECKBOX
+        onCausalizzazioneFermi : function (oEvent) {
+            this.CheckSingoloCausa = [];
+            for (var j in this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti) {
+                this.CheckSingoloCausa.push(0);
+                this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti[j].selected = false;
+            }
+            this.getOwnerComponent().setModel(this.ModelDetailPages, "GeneralModel");            
+            
+            var oView = this.getView();
+            this.oDialog = oView.byId("CausalizzazioneFermo");
+            // create dialog lazily
+            if (!this.oDialog) {
+               // create dialog via fragment factory
+               this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermo", this);
+               oView.addDependent(this.oDialog);
+            }
+            
+//            var vbox = this.getView().byId("TotaleTable").getParent();
+//            var oText = new sap.m.TextArea({width: "100%", value:"Non esistono fermi automatici da causalizzare", textAlign:"Center", editable:false});
+//            vbox.addItem(oText);
+            
+            if (!this.ControlloCausalizzazioneGuasti()){
+                this.getView().byId("TotaleTable").setVisible(false);
+                this.getView().byId("NoFermiDaCausalizzare").setVisible(true);
+            } else {
+                this.getView().byId("TotaleTable").setVisible(true);
+                this.getView().byId("NoFermiDaCausalizzare").setVisible(false); 
+            }
+            
+
+            
+            this.oDialog.open();
+        },
+        
+ 
+//CHIUDO IL DIALOG (SIA CAUSALIZZAZIONE FERMO CHE CAUSALIZZAZIONE FERMO PANEL)	
+        onCloseDialog : function () {
+                        var id_dialog = this.oDialog.getId();
+                        if (id_dialog === "__xmlview1--CausalizzazioneFermo"){
+                                var oItems = this.getView().byId("ManagePianoTable").getAggregation("items");
+                                    for (var i=0; i<oItems.length; i++) {
+                                            var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
+                                            if (!this.ControlloCausalizzazioneGuasti()){
+                                                oLinea.getAggregation("items")[3].setEnabled(false);
+                                            } else {
+                                                oLinea.getAggregation("items")[3].setEnabled(true);
+                                            }
+                
+                                    }
+                        }
+			this.getView().byId(id_dialog).close();
+                        this.getView().byId(id_dialog).destroy();
+                        this.oDialog = null;
+                        
+		},                    
+//GESTIONE DELLE CHECKBOX DEL DIALOG CAUSALIZZAZIONE FERMO    
         ChangeCheckedCausa: function (event) {
                             var id = event.getSource().getId();
                             var CB = this.getView().byId(id);
                             var root_name_totale = "CBTotaleCausa";
                             var i, temp_id;
                             if (id.indexOf(root_name_totale) > -1) {
-//                                for (i=0; i<this.CheckSingoloCausa.length; i++) {
-//                                    var temp_row = this.getView().byId("GuastiTable").getBinding("rows");
-//                                    temp_id = temp_row.getAggregation("cells")[4].getId();
-//                                    this.getView().byId(temp_id).setSelected(CB.getSelected());
-//                                    this.getView().byId(temp_id).setEnabled(!CB.getSelected());
-//                                }
-//                                this.oCheckBoxSelectionData.selection = "true";
-//                                var oModelSelection = new JSONModel(this.oCheckBoxSelectionData);
-//                                oModelSelection.setDefaultBindingMode(sap.ui.model.BindingMode.OneTime);
-//                                oModelSelection.selection = "true";
-//                                this.getView().setModel(oModelSelection, "selectionCheck");
+
+
+                                    
+                                
                                 if (CB.getSelected()) {
                                     this.CheckTotaleCausa = 1;
                                     for (i=0; i<this.CheckSingoloCausa.length; i++) {
+                                        this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti[i].selected = true;
                                         this.CheckSingoloCausa[i] = 1;
                                     }
+                                    this.ModelDetailPages.refresh();
+//                                    this.getView().setModel(this.ModelDetailPages, "GeneralModel");
                                 } else {
                                     this.CheckTotaleCausa = 0;
                                     for (i=0; i<this.CheckSingoloCausa.length; i++) {
+                                        this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti[i].selected = false;
                                         this.CheckSingoloCausa[i] = 0;
                                     }
+                                    this.ModelDetailPages.refresh();
+
                                 }
+                                
+                               
                             } else {
                                 var discr_id = event.getSource().getParent().getId();
                                 for (i=0; i<this.CheckSingoloCausa.length; i++) {
@@ -288,7 +311,7 @@ sap.ui.define([
             var oView = this.getView();
             this.onCloseDialog();
             this.AjaxCaller("model/JSON_FermoSelezioni.json", this.ModelDetailPages, "/Fermo/Selezioni/");
-            this.getView().setModel(this.ModelDetailPages, "GeneralModel");
+            this.getOwnerComponent().setModel(this.ModelDetailPages, "GeneralModel");
             this.oDialog = oView.byId("CausalizzazioneFermoPanel");
             // create dialog lazily
             if (!this.oDialog) {
@@ -302,6 +325,30 @@ sap.ui.define([
             
 //            var button = this.getView().byId("ConfermaFermo");
             
+        },
+        onConfermaFermoCausalizzato: function(){
+            var CB = this.getView().byId(this.id_split[1]); //in questo modo prendo l'array id_split che contiene i 3 pezzi dell'id della checkbox selezionata 
+            var i;                                            // (es: id_split[0] = "__xmlview1--", id_split[1] = "CBFERMO8", id_split[2]= "8")
+            var data = this.ModelDetailPages.getData().Causalizzazione.NoCause;
+            var data_All = this.ModelDetailPages.getData().Causalizzazione.All;
+                for (i=0; i<this.CheckSingoloCausa.length; i++) {
+                    if (this.CheckSingoloCausa[i] > 0){
+                         data.guasti[i].causa = CB.getProperty("text");
+                         for (var j in data_All.guasti) {
+                            if (data.guasti[i].inizio === data_All.guasti[j].inizio) {
+                                data_All.guasti[j].causa = CB.getProperty("text");
+                                break;
+                            }
+                        }
+                    }
+                }
+            
+            this.ModelDetailPages.setProperty("/Causalizzazione/NoCause/", data); //faccio l'update dei dati (su cui ho lavorato)
+            this.ModelDetailPages.setProperty("/Causalizzazione/All/", data_All);
+            this.getOwnerComponent().setModel(this.ModelDetailPages, "GeneralModel");
+            
+            this.onCloseDialog();
+            this.onCausalizzazioneFermi();
         },
 // GESTISCO LA SELEZIONE DELLE CAUSE NEL CAUSALIZZAZIONEFERMOPANEL
         ChangeCheckedFermo: function (event) {
@@ -318,7 +365,7 @@ sap.ui.define([
                 this.CheckFermo[this.id_split[2] - 1] = 1;
             }
             var selected_index = this.CheckFermo.indexOf(1);
-            var button = this.getView().byId("ConfermaFermoAutomatico");
+            var button = this.getView().byId("ConfermaFermoCausalizzato");
             if (selected_index > -1) {
                 button.setEnabled(true);
             } else {
@@ -332,7 +379,25 @@ sap.ui.define([
             var real_id = id.substring(splitter, id.length);
             var index = id.substring(splitter + string.length, id.length);
             return [root, real_id, index];
+        },
+        ControlloCausalizzazioneGuasti: function(){
+            var check = false;
+            var data = this.ModelDetailPages.getData().Causalizzazione.NoCause.guasti;
+            var i; 
+            for (i in data) {
+                if (data[i].causa===""){
+                    check = true;
+                    break;
+                }
+            }
+            return check;
+        },
+        onReportView: function(){
+            this.getOwnerComponent().getRouter().navTo("Report");
         }
+    
+//ANDARE AL REPORT
+    
               
 //                    onInit: function(){
 //                        this.ModelDetailPages.setProperty("/Causalizzazione/", {});

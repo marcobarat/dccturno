@@ -20,6 +20,7 @@
             <VBox width="5%"/>
         </HBox>
         <VBox id="vbox_table" height="40%">
+                                    <TextArea id="NoFermiDaCausalizzare" width="100%" value="Non esistono fermi automatici da causalizzare" textAlign="Center" editable="false" visible="false"></TextArea>
                                     <Table
                                         class="mysapMTable"
                                         id="TotaleTable"
@@ -84,7 +85,7 @@
                                             </t:Column>
                                             <t:Column hAlign="Center" width="10%">
                                                 <t:template>
-                                                    <CheckBox id="CBSingoloCausa" selected="false" select="ChangeCheckedCausa"/>
+                                                    <CheckBox id="CBSingoloCausa" selected="{GeneralModel>selected}" select="ChangeCheckedCausa"/>
                                                 </t:template>
                                             </t:Column>
                                         </t:columns>

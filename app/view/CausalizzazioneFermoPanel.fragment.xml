@@ -82,7 +82,7 @@
                             </VBox>
                             <VBox height="10%">
                                 <!--</Panel>-->
-                                <Button id="ConfermaFermoAutomatico" type="Accept" text="Conferma" width="100%" enabled="false" press="ConfermaFermoAutomatico"/>
+                                <Button id="ConfermaFermoCausalizzato" type="Accept" text="Conferma" width="100%" enabled="false" press="onConfermaFermoCausalizzato"/>
                             </VBox>
                         </VBox>
                     </VBox>
