@@ -15,12 +15,37 @@ sap.ui.define([
                         var num = that.getBinding("rows").getLength();
                     for (var i=0; i<num; i++){
                             var row = that.getBinding("rows").getContextByIndex(i).getObject();
-                            if (row.hierarchy === 0) {
-                                
-                                for (var j=0; j<that.getColumns().length; j++) {
-                                    that.getRows()[i].getCells()[j].addStyleClass("Background0");
+                            var rowhtml = jQuery.sap.byId(that.getRows()[i].getId());
+                            switch (row.hierarchy) {
+                                case 0:
+                                    rowhtml.addClass("Background0");
+                                    break;
+                                case 1:
+                                    rowhtml.addClass("Background1");
+                                    break;
+                                case 2:
+                                    rowhtml.addClass("Background2");
+                                    break;                                    
+                                default:
+                                    break;
                             }
-                        }
+                            for (var j=1; j<that.getColumns().length; j++){
+                                var cellhtml = rowhtml.children()[j].children[0];
+                                switch (row.hierarchy) {
+                                    case 1:
+                                        cellhtml.classList.add("Lv1");
+                                        break;
+                                    case 2:
+                                        cellhtml.classList.add("Lv2");
+                                        break;
+                                    case 3:
+                                        cellhtml.classList.add("Lv3");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        
                         }
                     }, 0);
 //                        for (var i=0; i<num; i++){

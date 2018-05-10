@@ -99,6 +99,10 @@
                     "name": "Report",
                     "pattern": "Report",
                     "target": "Report"                    
+                }, {
+                    "name": "guastidilinea",
+                    "pattern": "guasti/{guastiPath}",
+                    "target": "guastiLinea"
                 }],
             "targets": {
                 "main": {
@@ -124,6 +128,10 @@
                 "Report": {
                     "viewName": "view.Report",
                     "viewLevel": 1                
+                },
+                "guastiLinea": {
+                    "viewName": "view.guastiLinea",
+                    "viewLevel": 1
                 }
             }
         },

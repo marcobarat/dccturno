@@ -171,9 +171,62 @@
 }
 
 .Background0 * {
-    background-color: #a6a6a6 !important;
+    background-color: #d9d9d9 !important;
 }
 
 .Background1 * {
     background-color: #e6e6e6 !important;
+}
+
+.Background2 * {
+    background-color: #f2f2f2 !important;
+}
+
+.Lv1 * {
+    padding-left: 5% !important;
+}
+
+.Lv2 * {
+    padding-left: 10% !important;
+}
+
+.Lv3 * {
+    padding-left: 30% !important;
+}
+
+.mysapMTB.sapMTB {
+    border-bottom: 0px;
+    background-color: #f7f7f7;
+    padding-bottom: 0px;
+}
+
+.mysapUiTableExt .sapUiTableExt {
+    border-bottom: 0px;
+}
+
+/*.headerReportBox {
+    border-right: 1px solid black; 
+}*/
+
+.reportSapLabel.sapMLabel {
+    font-size: 0.67rem !important;
+}
+
+.reportSapLabel.sapMLabel:hover{
+    cursor: pointer;
+}
+
+.mysapMTBar.sapMTB .sapMBarChild {
+    margin: 0px;
+/*    border-right: 1px solid black;*/
+/*    padding-bottom: 7px;
+    padding-top: 2px;*/
+}
+
+.mysapUiTableColCell .sapUiTableColCell {
+    text-align: center !important; 
+}
+
+.myCursor:hover{
+    cursor: pointer; 
 }
