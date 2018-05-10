@@ -1,0 +1,32 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:wt="myapp.control"
+          controllerName="myapp.controller.Report">
+    <Page title="Report">
+        <VBox height="100%" width="100%">
+        <wt:HierarchyTable
+            rows="{path:'ReportOEE>/ReportOEE', parameters: {arrayNames:['Confezionamenti']}}"
+            id="TreeTableReport"
+            >
+            <wt:columns>
+                <t:Column visible="true">
+                    <t:template>
+                        <Text text="{ReportOEE>hierarchy}"/>
+                    </t:template>
+                </t:Column>
+                <t:Column>
+                        <t:template>
+                            <Text text="{ReportOEE>nome}" wrapping="false" />
+                        </t:template>                    
+                </t:Column>
+                <t:Column>
+                    <Text text="OEE"/>
+                    <t:template>
+                        <Text text="{ReportOEE>OEE}"/>
+                    </t:template>
+                </t:Column>
+            </wt:columns>
+        </wt:HierarchyTable>
+        </VBox>
+        <Button press="onDebug"/>
+    </Page>
+</mvc:View>
+

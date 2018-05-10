@@ -9,7 +9,7 @@
         </headerContent>
         <content>
             <Button text="Conferma"
-                    press="nada"
+                    press="onMenu"
                     ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                     width="100%">
                 <layoutData>
@@ -46,7 +46,7 @@
                                             inset="false"
                                             growing="true"
                                             fixedLayout="false"
-                                            growingThreshold="2"
+                                            growingThreshold="{operatore>numeroOperatori}"
                                             class="sapUiSmallMarginEnd borderb">
                                             <columns>
                                                 <Column >

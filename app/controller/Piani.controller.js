@@ -27,7 +27,13 @@ sap.ui.define([
 
         },
         managePiano: function (evt) {
-            this.getOwnerComponent().getRouter().navTo("managePiano");
+           var area = evt.getSource().getParent().getAggregation("cells")[1].getProperty("area");
+           var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+           if (area==="0") {
+               oRouter.navTo("managePianoGrey");
+            } else {
+               oRouter.navTo("managePiano");
+            }
         }
 
     });

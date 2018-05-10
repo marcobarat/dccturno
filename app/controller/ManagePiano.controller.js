@@ -1,10 +1,9 @@
 sap.ui.define([
     'sap/m/MessageToast',
     'jquery.sap.global',
-    './Formatter',
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel'
-], function (MessageToast, jQuery, Formatter, Controller, JSONModel) {
+], function (MessageToast, jQuery, Controller, JSONModel) {
     "use strict";
 
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
@@ -71,6 +70,10 @@ sap.ui.define([
         },
         onPress: function (evt) {
             alert("ho cliccato");
+        },
+        onMenu: function(){
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("tmp");
         }
 
     });

@@ -1,4 +1,5 @@
 {
+    "numeroOperatori": 5,
     "Operator": [{
             "Operator": [
                 {
@@ -30,8 +31,16 @@
                     "nome": "Mattia2",
                     "cognome": "Capano2"
                 }
-            ]
-        }
-    ]
+            ]},
+            {
+            "Operator": [
+                {
+                    "nome": "Nicolò3",
+                    "cognome": "Sartori3"
+                }, {
+                    "nome": "Marco3",
+                    "cognome": "Baratella3"
+                }
+            ]}]
 }
 

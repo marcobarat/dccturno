@@ -239,21 +239,24 @@
                 <masterPages>
                     <Page id="processi" title="Processi" icon="sap-icon://action" class="sapUiStdPage">
                         <content>
-                            <VBox height="100%" width="100%">
-                                <Panel>
+                            <VBox height="10%"/>
+                            <VBox height="90%" width="100%">
                                     <VBox height="60%" width="100%" justifyContent="center" alignItems="start">
                                         <Button text="Home" enabled="true" pressed="true" press="onInit" width="100%" class="styleButton">
                                         </Button>
+                                        <Text/>
                                         <Button text="Gestione piani di confezionamento" enabled="true" pressed="true" press="onToPianiPage" width="100%" class="styleButton">
                                         </Button>
+                                        <Text/>
                                         <Button text="Sinottico reparto" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleButton">
                                         </Button>
+                                        <Text/>
                                         <Button text="Sinottico linea" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleButton">
                                         </Button>
+                                        <Text/>
                                         <Button text="Sinottico macchina" enabled="true" pressed="true" press="FinePredisposizione" width="100%" class="styleLongButton">
                                         </Button>
                                     </VBox>
-                                </Panel>
                                 <!--     <Panel>
                                <VBox height="10%" width="100%">
                                         <MessageStrip text="Attrezzaggio" class="sapUiTinyMargin" />

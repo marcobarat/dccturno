@@ -131,3 +131,49 @@
 .sapMStdTileTopRow{
     height: 5rem !important;
 }
+
+.fix_linea.sapMText {
+    margin-bottom: 2.5%;
+    margin-top: 2.5%;
+    margin-left: 3%;
+    font-size: large;
+    font-weight: bold; 
+}
+
+.mysapMListTbl *{
+    background-color: white;
+}
+
+.mysapMInputBaseWidthPadding .sapMInputBaseWidthPadding {
+    padding-top: 0.3rem;
+    padding-left: 0.25rem;
+    padding-right: 0.9rem;
+}
+
+.FermoButton .sapMBtn {
+    padding-left: 0.65rem;
+    height: 3.3rem;
+}
+
+.customTextFermo {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+}
+
+.mysapMTable {
+    border-top : 1px solid #dddddd;
+    border-right : 1px solid #dddddd;
+}
+
+.CBTotaleCausaCustom {
+    padding: 0 0 0 3.7rem;
+}
+
+.Background0 * {
+    background-color: #a6a6a6 !important;
+}
+
+.Background1 * {
+    background-color: #e6e6e6 !important;
+}
