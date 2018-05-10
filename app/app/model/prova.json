@@ -1,0 +1,41 @@
+{
+    "stato": 0,
+    "menu": [
+        {
+            "nome": "Visualizza Batch",
+            "attivo": false,
+            "metodo": "visuBatch",
+            "nuovasezione": false
+        }, {
+            "nome": "Trasferimento Batch a Linea",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": false
+        }, {
+            "nome": "Trasferimento Batch a Linea (solo attrezzaggio)",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": true
+        }, {
+            "nome": "Trasferimento schedulato",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": false
+        }, {
+            "nome": "Richiamo Batch",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": true
+        }, {
+            "nome": "Cancellazione Batch",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": false
+        }, {
+            "nome": "Exit",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": true
+        }
+    ]
+}

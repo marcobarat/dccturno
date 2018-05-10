@@ -1,0 +1,79 @@
+{
+  "ReportOEE": {
+      "Confezionamenti": [
+        {"nome": "Confezionamento Fara San Martino",
+         "OEE": "59%",
+         "disponibilitàOEE": "75%",
+         "produttivitàOEE": "83%",
+         "qualitàOEE": "95%",
+         "dispTotale":"2486",
+         "dispFermate":"1329",
+         "dispSetup":"1157",
+         "prodTotale":"1501",
+         "prodCadRidotta":"656",
+         "prodMFermate":"846",
+         "qualitàTotale":"447",
+         "qualitàScarti":"227",
+         "qualitàRilavor":"220",
+         "Confezionamenti": [
+          {"nome":"Pasta Corta", 
+           "OEE": "60%",
+           "disponibilitàOEE": "76%",
+           "produttivitàOEE": "84%",
+           "qualitàOEE": "95%",
+           "dispTotale":"1968",
+           "dispFermate":"1086",
+           "dispSetup":"882",
+           "prodTotale":"1164",
+           "prodCadRidotta":"546",
+           "prodMFermate":"618",
+           "qualitàTotale":"359",
+           "qualitàScarti":"180",
+           "qualitàRilavor":"179",                        
+           "Confezionamenti": [
+            {"nome": "Gruppo 2",
+             "OEE": "62%",
+             "disponibilitàOEE": "78%",
+             "produttivitàOEE": "84%",
+             "qualitàOEE": "94%",
+             "dispTotale":"322",
+             "dispFermate":"218",
+             "dispSetup":"104",
+             "prodTotale":"198",
+             "prodCadRidotta":"93",
+             "prodMFermate":"104",
+             "qualitàTotale":"72",
+             "qualitàScarti":"45",
+             "qualitàRilavor":"27",                                
+             "Confezionamenti": [
+              {"nome": "093-Farfalle 1kg", "OEE": "57%", "disponibilitàOEE": "81%", "produttivitàOEE": "75%", "qualitàOEE": "94%", "dispTotale":"91", "dispFermate":"56", "dispSetup":"36", "prodTotale":"104", "prodCadRidotta":"51", "prodMFermate":"53", "qualitàTotale":"25", "qualitàScarti":"14", "qualitàRilavor":"11"},
+              {"nome": "093-Farfalle 1kg", "OEE": "62%", "disponibilitàOEE": "75%", "produttivitàOEE": "93%", "qualitàOEE": "94%", "dispTotale":"139", "dispFermate":"106", "dispSetup":"33", "prodTotale":"30", "prodCadRidotta":"22", "prodMFermate":"7", "qualitàTotale":"25", "qualitàScarti":"18", "qualitàRilavor":"7"},
+              {"nome": "093-Farfalle 1kg", "OEE": "65%", "disponibilitàOEE": "94%", "produttivitàOEE": "85%", "qualitàOEE": "95%", "dispTotale":"91", "dispFermate":"57", "dispSetup":"35", "prodTotale":"63", "prodCadRidotta":"20", "prodMFermate":"44", "qualitàTotale":"22", "qualitàScarti":"13", "qualitàRilavor":"9"}
+            ]},
+            {"nome": "Gruppo 3", 
+             "OEE": "58%",
+             "disponibilitàOEE": "74%",
+             "produttivitàOEE": "83%",
+             "qualitàOEE": "94%",  
+             "dispTotale":"494",
+             "dispFermate":"290",
+             "dispSetup":"205",
+             "prodTotale":"312",
+             "prodCadRidotta":"123",
+             "prodMFermate":"189",
+             "qualitàTotale":"100",
+             "qualitàScarti":"41",
+             "qualitàRilavor":"59",                                   
+             "Confezionamenti": [
+              {"nome": "023-Tortiglioni 500gr", "OEE": "60%", "disponibilitàOEE": "74%", "produttivitàOEE": "85%", "qualitàOEE": "96%", "dispTotale":"125", "dispFermate":"35", "dispSetup":"90", "prodTotale":"68", "prodCadRidotta":"31", "prodMFermate":"38", "qualitàTotale":"17", "qualitàScarti":"9", "qualitàRilavor":"8"},
+              {"nome": "024-Rigatoni 1kg", "OEE": "56%", "disponibilitàOEE": "76%", "produttivitàOEE": "78%", "qualitàOEE": "94%", "dispTotale":"115", "dispFermate":"67", "dispSetup":"48", "prodTotale":"100", "prodCadRidotta":"21", "prodMFermate":"79", "qualitàTotale":"25", "qualitàScarti":"11", "qualitàRilavor":"14"}
+            ]}
+          ]}
+        ]}
+        ]
+    
+    }
+
+}
+
+
