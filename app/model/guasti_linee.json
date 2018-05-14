@@ -11,17 +11,17 @@
         {
             "inizio": "2018-04-18T11:13:25",
             "fine": "2018-04-18T12:53:06",
-            "causa": "svuotamento"
+            "causa": "Svuotamento"
         },
         {
             "inizio": "2018-04-18T12:43:25",
             "fine": "2018-04-18T12:54:47",
-            "causa": "collaudo"
+            "causa": "Collaudo"
         },
         {
             "inizio": "2018-04-18T13:13:25",
             "fine": "2018-04-18T14:21:25",
-            "causa": "pausa pranzo"
+            "causa": "Pausa pranzo"
         },
         {
             "inizio": "2018-04-18T14:13:25",
@@ -56,7 +56,7 @@
         {
             "inizio": "2018-04-18T18:13:25",
             "fine": "2018-04-18T18:52:00",
-            "causa": "motivi sindacali"
+            "causa": "Motivi sindacali"
         }
     ]
     },

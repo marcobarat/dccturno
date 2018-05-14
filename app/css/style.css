@@ -170,6 +170,12 @@
     padding: 0 0 0 3.7rem;
 }
 
+
+
+
+
+/*CSS PER LA TREETABLE*/
+
 .Background0 * {
     background-color: #d9d9d9 !important;
 }
@@ -229,4 +235,19 @@
 
 .myCursor:hover{
     cursor: pointer; 
+}
+
+/*CSS NEL DIALOG MODIFICA GUASTI*/
+
+.blackBorder {
+    border-bottom: 1px solid black;
+}
+
+.red {
+    color: red;
+}
+
+.myListItemRed .sapMSltLabel {
+    color: red !important;
+    font-size : 1.5rem !important;
 }

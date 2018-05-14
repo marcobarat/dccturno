@@ -43,7 +43,7 @@ sap.ui.define([
         },
 
 
-
+//SI ATTIVA QUANDO PREMO CREA REPORT OEE
         onReport: function() {
              this.getView().byId("reportButton").setVisible(true);
              this.getView().byId("confermaButton").setVisible(true);

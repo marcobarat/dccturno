@@ -2,6 +2,45 @@
     controllerName="myapp.controller.guastiLinea"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
-    xmlns:t="sap.ui.table">
-
+    xmlns:t="sap.ui.table"
+    xmlns:mvc="sap.ui.core.mvc">
+    <Page title="{guasti>/nome}">   
+                                    <t:Table
+                                        visibleRowCount="20"
+                                        class="alternate-color"
+                                        selectionMode="None"
+                                        rows="{guasti>/guasti}">
+                                        <t:columns>
+                                            <t:Column hAlign="Center" width="15%">
+                                                <Label text="Inizio"/>
+                                                <t:template>
+                                                    <Text text="{guasti>inizio}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="15%">
+                                                <Label text="Fine"/>
+                                                <t:template>
+                                                    <Text text="{guasti>fine}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="15%">
+                                                <Label text="Tempo"/>
+                                                <t:template>
+                                                    <Text text="{guasti>intervallo}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="45%">
+                                                <Label text="Causale"/>
+                                                <t:template>
+                                                    <Text text="{guasti>causa}"/>
+                                                </t:template>
+                                            </t:Column>
+                                            <t:Column hAlign="Center" width="10%">
+                                                <t:template>
+                                                    <Button press="handlePressOpenMenuCausalizzazione" icon="sap-icon://technical-object"/>
+                                                </t:template>
+                                            </t:Column>
+                                        </t:columns>
+                                    </t:Table>        
+    </Page> 
 </mvc:View>
