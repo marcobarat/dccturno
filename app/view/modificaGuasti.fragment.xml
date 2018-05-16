@@ -21,7 +21,7 @@
                 </VBox>                
             </VBox>
         </VBox>
-        <Button width="100%" text="Conferma" press="onConfermaCambio"/>
+        <Button width="100%" text="Conferma" press="onConfermaCambio" id="confermaModificheButton"/>
     </Dialog>
 
 </core:FragmentDefinition>
