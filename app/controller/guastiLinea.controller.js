@@ -22,6 +22,7 @@ sap.ui.define([
                    dataType: "json",
                    success: function(oData){
                        that.takeAllCause(oData);
+//                       that.menuJSON.cause.splice(0, 0, {id:"-1", fermo:""});
                        model.setData(that.menuJSON);
                      }
                    });
@@ -63,6 +64,10 @@ sap.ui.define([
                 }
                 return bck;
             }, 
+            onReturnToReport: function(){
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("Report");
+            },            
             
 //FORMATTAZIONE DEI DATI TEMPORALI
             addTimeGaps: function (data) {
@@ -126,7 +131,8 @@ sap.ui.define([
             handlePressOpenMenuCausalizzazione: function (oEvent) {
                 var oButton = oEvent.getSource();
                 var row_id = oEvent.getSource().getParent().getId();
-                this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(row_id.slice(row_id.length-1),10)];
+                var split_id = row_id.split("-");
+                this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[2],10)];
                 // create menu only once
                 if (!this._menu) {
                     this._menu = sap.ui.xmlfragment(
@@ -155,18 +161,25 @@ sap.ui.define([
                 case "Modifica Inizio/Fine del Fermo":
                     this.creaFinestraModificaTempi(oText);
                     break;
-                case "Frazione Causale di Fermo":
+                case "Fraziona Causale di Fermo":
                     this.creaFinestraFrazionamento(oText);
-                }
+                    break;
+                case "Elimina Fermo":
+                    this.creaFinestraEliminazione(oText);
+                    break;
+                case "Inserisci Fermo":
+                    this.creaFinestraInserimento(oText);
+                } 
 
             },
             onConfermaCambio: function(oEvent){
-                var oText = oEvent.getSource().getParent().getTitle();
+                var oText = this.getView().byId("title").getText();
                 var i;
                 var oModel = new JSONModel();
+                var stringa_inizio, stringa_fine, selected_key, causale;
                 switch (oText) {
                     case "Modifica Causale Fermo":
-                            var selected_key = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
+                            selected_key = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
                             for (i in this.guasti.guasti) {
                                 if (this.isObjectEquivalent(this.guasti.guasti[i], this.row_binded)) {
                                     var causa = this.takeCausaById(selected_key);
@@ -178,8 +191,8 @@ sap.ui.define([
                             }
                             break;
                     case "Modifica Inizio/Fine del Fermo":
-                            var stringa_inizio = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getValue();
-                            var stringa_fine = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getItems()[1].getItems()[1].getValue();                       
+                            stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
+                            stringa_fine = sap.ui.getCore().byId("Fine").getValue();                       
                             if (stringa_inizio !== "" || stringa_fine!==""){
                                 if (stringa_inizio === ""){
                                     stringa_inizio = this.row_binded.inizio;
@@ -187,10 +200,8 @@ sap.ui.define([
                                 if (stringa_fine === ""){
                                     stringa_fine = this.row_binded.fine;
                                 }
-                                var array_inizio = stringa_inizio.split(":");
-                                var array_fine = stringa_fine.split(":");
-                                var secondi_inizio = parseInt(array_inizio[0], 10)*60*60 + parseInt(array_inizio[1], 10)*60 + parseInt(array_inizio[2], 10);
-                                var secondi_fine = parseInt(array_fine[0], 10)*60*60 + parseInt(array_fine[1], 10)*60 + parseInt(array_fine[2], 10);                                 
+                                var secondi_inizio = this.fromStringToSeconds(stringa_inizio);
+                                var secondi_fine = this.fromStringToSeconds(stringa_fine);                                 
                                 if (secondi_fine-secondi_inizio>0){
                                     var stringa_intervallo = this.MillisecsToStandard(1000*(secondi_fine-secondi_inizio));
                                     for (i in this.guasti.guasti) {
@@ -207,8 +218,38 @@ sap.ui.define([
                                 }
                             }
                             break;
+                    case "Fraziona Causale di Fermo":
+                        var binded_inizio = this.row_binded.inizio;
+                        stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
+                        stringa_fine = sap.ui.getCore().byId("Fine").getValue();
+                        var binded_fine = this.row_binded.fine;
+                        var binded_causale = this.row_binded.causa;
+                        selected_key = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
+                        causale = this.takeCausaById(selected_key);
+                        i = this.findIndex(this.guasti.guasti, this.row_binded);
+                        //il terzo parametro mi serve per decidere sesettare o no il modello (così da poterlo settare solo alla fine e poter riusare le funzioni anche per azioni successive
+                        this.removeGuasto(this.guasti, i, false);
+                        this.addGuasto(this.guasti, binded_inizio, stringa_inizio, binded_causale, false);
+                        this.addGuasto(this.guasti, stringa_inizio, stringa_fine, causale, false);
+                        this.addGuasto(this.guasti, stringa_fine, binded_fine, binded_causale, true);
+                        break;
+                    case "Elimina Fermo":
+                        i = this.findIndex(this.guasti.guasti, this.row_binded);
+                        this.removeGuasto(this.guasti, i, true);
+                        break;
+                    case "Inserisci Fermo":
+                        stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
+                        stringa_fine = sap.ui.getCore().byId("Fine").getValue();
+                        selected_key = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
+                        causale = this.takeCausaById(selected_key);
+                        this.addGuasto(this.guasti, stringa_inizio, stringa_fine, causale, true);
+                        break;
                 }
                 this.oDialog.destroy();
+            },
+            onClose: function(){
+                var id_dialog = this.oDialog.getId();
+                sap.ui.getCore().byId(id_dialog).destroy();
             },
     
 //MODIFICA CAUSALE DIALOG
@@ -219,7 +260,9 @@ sap.ui.define([
                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
                    oView.addDependent(this.oDialog);
                 }
-                this.oDialog.setTitle(text);
+                var oTitle = oView.byId("title");
+                oTitle.setText(text);
+//                this.oDialog.setTitle(text);
                 var topBox = oView.byId("topBox");
                 var oVBox1 = topBox.getItems()[0];
                 var oVBox2 = topBox.getItems()[1];
@@ -255,36 +298,17 @@ sap.ui.define([
                 bBox2.addItem(selectMenu);
                 this.oDialog.open();
             },
-            takeCausaById: function(selected_key){
-                var causa = "";
-                for (var i in this.menuJSON.cause) {
-                    if (this.menuJSON.cause[i].id === selected_key){
-                        causa = this.menuJSON.cause[i].fermo;
-                        break;
-                    }
-                }
-                return causa;
-            },  
-            isObjectEquivalent: function(obj1, obj2){
-                var aProps = Object.getOwnPropertyNames(obj1);
-                var bProps = Object.getOwnPropertyNames(obj1);
-                if (aProps.length !== bProps.length){
-                    return false;
-                }
-                for (var key in obj1){
-                    if (obj1[key] !== obj2[key]){
-                        return false;
-                    }
-                }
-                return true;
-            },
 //MODIFICA TEMPI DIALOG
             creaFinestraModificaTempi: function(text){
                 var oView = this.getView();
                 this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
                 oView.addDependent(this.oDialog);
                 
-                this.oDialog.setTitle(text);
+//                var oButton = oView.byId("confermaModificheButton");
+//                oButton.setEnabled(false);
+                var oTitle = oView.byId("title");
+                oTitle.setText(text);                
+//                this.oDialog.setTitle(text);
                 var topBox = oView.byId("topBox");
                 var oVBox1 = topBox.getItems()[0];
                 var oVBox2 = topBox.getItems()[1];
@@ -313,16 +337,10 @@ sap.ui.define([
                 var oTextInizio = new sap.m.Text({
                     text:this.row_binded.inizio
                 });
-                oText2.addStyleClass("size1");
-                oText2.addStyleClass("sapUiSmallMarginEnd");
-                oText2.addStyleClass("sapUiTinyMarginTop");
-                oText3.addStyleClass("size1");
-                oText3.addStyleClass("sapUiSmallMarginEnd");
-                oText3.addStyleClass("sapUiTinyMarginTop");
-                oTextInizio.addStyleClass("size1");
-                oTextInizio.addStyleClass("tempoBox");
-                oTextFine.addStyleClass("size1");
-                oTextFine.addStyleClass("tempoBox");
+                oText2.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
+                oText3.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
+                oTextInizio.addStyleClass("size1 tempoBox");
+                oTextFine.addStyleClass("size1 tempoBox");
                 oHBox1.addItem(oText2);
                 oHBox1.addItem(oTextInizio);
                 oHBox2.addItem(oText3);
@@ -356,10 +374,14 @@ sap.ui.define([
                     text: "fine"
                 });
                 oTextFine = new sap.m.TimePicker({
-                    
+                    value: this.row_binded.fine,
+                    id: "Fine"
+//                    change: this.onCheckValidity.bind(this)
                 });    
                 oTextInizio = new sap.m.TimePicker({
-                    
+                    value: this.row_binded.inizio,
+                    id: "Inizio"
+//                    change: this.onCheckValidity.bind(this)
                 });
                 oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
                 oText2.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
@@ -382,7 +404,9 @@ sap.ui.define([
                 this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
                 oView.addDependent(this.oDialog);
                 //title e top box
-                this.oDialog.setTitle(text);
+                var oTitle = oView.byId("title");
+                oTitle.setText(text);                
+//              this.oDialog.setTitle(text);
                 var oButton = oView.byId("confermaModificheButton");
                 oButton.setEnabled(false);
                 var topBox = oView.byId("topBox");
@@ -485,6 +509,145 @@ sap.ui.define([
                 
                 
             },
+//ELIMINAZIONE DIALOG 
+            creaFinestraEliminazione: function(text){
+                var oView = this.getView();
+                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
+                oView.addDependent(this.oDialog);  
+                
+                var oTitle = oView.byId("title");
+                oTitle.setText(text); 
+                var centralBox = oView.byId("centralBox");
+                var oHBoxTop = new sap.m.HBox({
+                    width: "100%"
+                });
+                var oHBoxBottom = new sap.m.HBox({
+                   width: "100%" 
+                });
+                var oHBoxCentral = new sap.m.HBox({
+                   width: "100%" 
+                });
+                var oText = new sap.m.Text({
+                    text: "inizio"
+                });
+                var oTextInizio = new sap.m.TimePicker({
+                    value: this.row_binded.inizio,
+                    id: "Inizio",
+                    enabled: false
+                });
+                oText.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
+                oTextInizio.addStyleClass("myRedTempoBox noOpacity");
+                oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+                oHBoxTop.addItem(oText);
+                oHBoxTop.addItem(oTextInizio);
+                centralBox.addItem(oHBoxTop);
+                
+                oText = new sap.m.Text({
+                    text: "causale"
+                });
+                var Causale = new sap.m.Text({
+                        id: "Causale",
+                        text: this.row_binded.causa
+                    });  
+                if (this.row_binded.causa === ""){
+                    Causale.setVisible(false);
+                } else {
+                    Causale.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop red tempoBox");
+                }
+                oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+                oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+                oHBoxCentral.addItem(oText);
+                oHBoxCentral.addItem(Causale);
+                centralBox.addItem(oHBoxCentral); 
+                
+                oText = new sap.m.Text({
+                    text: "fine"
+                });
+                var oTextFine = new sap.m.TimePicker({
+                    value: this.row_binded.fine,
+                    id: "Fine",
+                    enabled: false
+                });
+                oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+                oTextFine.addStyleClass("myRedTempoBox noOpacity");
+                oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+                oHBoxBottom.addItem(oText);
+                oHBoxBottom.addItem(oTextFine);
+                centralBox.addItem(oHBoxBottom);  
+                this.oDialog.open();
+            },
+// INSERIMENTO DIALOG
+            creaFinestraInserimento: function(text){
+                var oView = this.getView();
+                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
+                oView.addDependent(this.oDialog);  
+                
+                var oTitle = oView.byId("title");
+                oTitle.setText(text); 
+                var centralBox = oView.byId("centralBox");
+                var oHBoxTop = new sap.m.HBox({
+                    width: "100%"
+                });
+                var oHBoxBottom = new sap.m.HBox({
+                   width: "100%" 
+                });
+                var oHBoxCentral = new sap.m.HBox({
+                   width: "100%" 
+                });                
+                var oText = new sap.m.Text({
+                    text: "inizio"
+                });
+                var oTextInizio = new sap.m.TimePicker({
+                    value: "00:00:00",
+                    change:this.onCheckValiditySimple.bind(this),
+                    id: "Inizio"
+                });
+                oText.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
+                oTextInizio.addStyleClass("myRedTempoBox");
+                oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+                oHBoxTop.addItem(oText);
+                oHBoxTop.addItem(oTextInizio);
+                centralBox.addItem(oHBoxTop); 
+                
+                oText = new sap.m.Text({
+                   text: "causale" 
+                });
+                var selectMenu = new sap.m.Select({
+                    autoAdjustWidth:true,
+                    id: "selectionMenu"
+                });
+                var oItemSelectTemplate = new sap.ui.core.Item({
+                          key:"{cause>id}",
+                          text: "{cause>fermo}"
+                      });
+                selectMenu.setModel(this.getView().getModel("cause"));
+                selectMenu.bindAggregation("items", "cause>/cause", oItemSelectTemplate);
+                selectMenu.addStyleClass("myListItemRed");                
+                oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+                oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+                oHBoxCentral.addItem(oText);
+                oHBoxCentral.addItem(selectMenu);
+                centralBox.addItem(oHBoxCentral);
+                
+                oText = new sap.m.Text({
+                    text: "fine"
+                });
+                var oTextFine = new sap.m.TimePicker({
+                    value: "00:00:00",
+                    change:this.onCheckValiditySimple.bind(this),
+                    id: "Fine"
+                });
+                oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+                oTextFine.addStyleClass("myRedTempoBox");
+                oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+                oHBoxBottom.addItem(oText);
+                oHBoxBottom.addItem(oTextFine);
+                centralBox.addStyleClass("sapUiSmallMargin");
+                centralBox.addItem(oHBoxBottom);                  
+                
+                this.oDialog.open();
+            },
+// FUNZIONI USATE            
             onCheckValidity: function(){
                 var oView = this.getView();
                 var oButton = oView.byId("confermaModificheButton");                
@@ -503,11 +666,95 @@ sap.ui.define([
                 } else {
                     oButton.setEnabled(false);
                 }
-            },            
+            },
+            onCheckValiditySimple: function(){
+                var oView = this.getView();
+                var oButton = oView.byId("confermaModificheButton");                
+                if (sap.ui.getCore().byId("Inizio").getValue()!=="" && sap.ui.getCore().byId("Fine").getValue()!==""){
+                    var secondi_inizio = this.fromStringToSeconds(sap.ui.getCore().byId("Inizio").getValue());
+                    var secondi_fine = this.fromStringToSeconds(sap.ui.getCore().byId("Fine").getValue());
+                    var intervallo = secondi_fine-secondi_inizio;
+                    if (intervallo>0){
+                        oButton.setEnabled(true);
+                    } else {
+                        oButton.setEnabled(false);
+                    }
+                } else {
+                    oButton.setEnabled(false);
+                }                
+            },
             fromStringToSeconds: function(stringa){
                 var array_stringa = stringa.split(":");
                 return  parseInt(array_stringa[0], 10)*60*60 + parseInt(array_stringa[1], 10)*60 + parseInt(array_stringa[2], 10);
+            },
+            isObjectEquivalent: function(obj1, obj2){
+                var aProps = Object.getOwnPropertyNames(obj1);
+                var bProps = Object.getOwnPropertyNames(obj1);
+                if (aProps.length !== bProps.length){
+                    return false;
+                }
+                for (var key in obj1){
+                    if (obj1[key] !== obj2[key]){
+                        return false;
+                    }
+                }
+                return true;
+            },            
+            findIndex: function(array, obj){
+                for (var i in array){
+                    if (this.isObjectEquivalent(array[i], obj)){
+                        return i; 
+                    }
+                }
+                return -1;
+            },
+            removeGuasto: function(JSONObject, index, flag){
+                var aProps = Object.getOwnPropertyNames(JSONObject);
+                var array = JSONObject[aProps[1]];
+                array.splice(index, 1);
+                if  (flag){
+                    var oModel = new JSONModel();
+                    oModel.setData(JSONObject);
+                    this.getView().setModel(oModel, "guasti");                    
+                }
+            },
+            addGuasto: function(JSONObject, inizio, fine, causale, flag){
+                var aProps = Object.getOwnPropertyNames(JSONObject);
+                var array = JSONObject[aProps[1]];
+                var secondi_intervallo = 1000*(this.fromStringToSeconds(fine)-this.fromStringToSeconds(inizio));
+                if (secondi_intervallo !==0){
+                var obj = {};
+                obj.inizio = inizio;
+                obj.fine = fine;
+                obj.causa = causale;
+                obj.intervallo = this.MillisecsToStandard(secondi_intervallo);
+                array.push(obj);
+                }
+                if (flag){
+                    var oModel = new JSONModel();
+                    oModel.setData(JSONObject);
+                    this.getView().setModel(oModel, "guasti");                      
+                }
+            },
+            takeCausaById: function(selected_key){
+                var causa = "";
+                for (var i in this.menuJSON.cause) {
+                    if (this.menuJSON.cause[i].id === selected_key){
+                        causa = this.menuJSON.cause[i].fermo;
+                        break;
+                    }
+                }
+                return causa;
+            },              
+            takeIdByBindedCausa: function(causa){
+                for (var i in this.menuJSON.cause) {
+                    if (this.menuJSON.cause[i].fermo === causa){
+                        return this.menuJSON.cause[i].id;
+                    }
+                }
+                return -1;
             }
+
             
             
             

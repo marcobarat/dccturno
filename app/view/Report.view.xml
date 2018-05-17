@@ -1,6 +1,16 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:wt="myapp.control"
           controllerName="myapp.controller.Report">
-    <Page title="Report">
+    <Page>
+        <customHeader>
+            <Bar>
+                <contentMiddle>
+                    <Title text="Report"/>
+                </contentMiddle>
+                <contentRight>
+                    <Button text="Close" width="300px" press="onBackNav"></Button>
+                </contentRight>
+           </Bar>
+        </customHeader>
         <VBox height="100%" width="100%">
         <wt:HierarchyTable
             rows="{path:'ReportOEE>/ReportOEE', parameters: {arrayNames:['Confezionamenti']}}"

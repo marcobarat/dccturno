@@ -21,7 +21,7 @@
             enabled= "true"
             />                    
         <u:MenuItem
-            text="Frazione Causale di Fermo"
+            text="Fraziona Causale di Fermo"
             startsSection= "true"
             enabled= "true"
             />        

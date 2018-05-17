@@ -172,6 +172,11 @@ sap.ui.define([
                                     guastiPath: row_html.getCells()[0].getText() 
                                   });
                 }                
+            },
+            
+            onBackNav: function(){
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("managePianoGrey");
             }
         
             

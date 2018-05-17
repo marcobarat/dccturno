@@ -265,3 +265,11 @@
     font-size: 1.5rem;
     border: 1px solid black;
 }
+
+.noOpacity.sapMInputBaseDisabled {
+    opacity: 1;
+}
+
+.borderButton .sapMBtnInner{
+    border: 1px solid #737373;
+}

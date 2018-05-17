@@ -5,6 +5,20 @@
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
     <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="false">
+        <customHeader>
+            <Bar>
+                <contentLeft>
+
+                </contentLeft>
+                <contentMiddle>
+                    <Title id="title"/>
+                </contentMiddle>
+                <contentRight>
+                    <Button icon="sap-icon://decline" press="onClose">
+                    </Button>
+                </contentRight>
+            </Bar>
+        </customHeader>        
         <VBox width="100%" height="100%">
             <VBox id="topBox" height="25%" class="sapUiSmallMargin">
                 <VBox height="50%">                      
