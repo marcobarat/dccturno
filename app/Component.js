@@ -1,7 +1,8 @@
 sap.ui.define([
     'sap/ui/core/UIComponent', 
     './utils/ResConfigManager',
-], function(UIComponent, ResConfigManager) {
+    'sap/ui/model/json/JSONModel'
+], function(UIComponent, ResConfigManager, JSONModel) {
     "use strict";
     return UIComponent.extend("myapp.Component", {
 
@@ -12,7 +13,7 @@ sap.ui.define([
         localeManager: new ResConfigManager(),
 
         init: function() {
-
+            
             UIComponent.prototype.init.apply(this, arguments);
 
             //var logLevel = jQuery.sap.log.Level.INFO;
@@ -21,6 +22,9 @@ sap.ui.define([
 
             // Parse the current url and display the targets of the route that matches the hash
             this.getRouter().initialize();
+            
+            
+
         }
         
     });

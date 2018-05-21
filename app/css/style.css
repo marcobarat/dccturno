@@ -34,6 +34,16 @@
     background-color: red !important;
     color: white;
 }
+.neroreno *
+{
+    background-image: none !important;
+    background-color: black !important;    
+}
+.giallogallo *
+{
+    background-image: none !important;
+    background-color: yellow !important;
+}
 .diffRed {
     color : red;
     font-weight: bold;
@@ -272,4 +282,21 @@
 
 .borderButton .sapMBtnInner{
     border: 1px solid #737373;
+}
+
+/*CSS NELLA CREAZIONE DEL TURNO*/
+
+.startLineaButtonOutside *{
+    background-image: none !important;
+    background-color: #d9d9d9 !important;
+    color: black;
+}
+
+
+.startLineaButtonVerde *
+{
+    background-image: none !important;
+    background-color: green !important;
+    color: white !important;
+/*    border: 1px solid green !important;*/
 }

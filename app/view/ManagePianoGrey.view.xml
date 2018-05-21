@@ -1,8 +1,9 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
           xmlns:cus="myapp.control"
-          controllerName="myapp.controller.ManagePianoGrey">
-    <Page title="Reportistica Da Effettuare">
+          controllerName="myapp.controller.ManagePianoGrey"
+          id="ManagePianoGrey">
+    <Page title="Reportistica Da Effettuare" id="managePianoGrey">
         <headerContent>
             <Button icon="sap-icon://log" press="onAddPress" text="Uscita"
                     ariaLabelledBy="exitButtonLabel"    />
@@ -38,7 +39,7 @@
                         id="confermaButton" 
                         text="Conferma chiusura piano"
                         visible="false"
-                        press="onMenu"
+                        press="onConfermaChiusuraPiano"
                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                         width="100%">
                         <layoutData>

@@ -1,0 +1,68 @@
+{
+    "linee": [
+        {
+            "linea": "Linea 1",
+            "disp": "74%",
+            "prod": "84%",
+            "fermo": "6:30",
+            "ProductCollection": [
+                {
+                    "seq": ">>>",
+                    "Formati": [
+                        {
+                            "formato": "093",
+                            "tipo": "Farfalle",
+                            "materiale": "semola"
+                        },
+                        {
+                            "formato": "093",
+                            "tipo": "Farfalle",
+                            "materiale": "semola integrale"
+                        },
+                        {
+                            "formato": "093",
+                            "tipo": "Farfalle",
+                            "materiale": "semola biologica"
+                        }                        
+                    ],
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "123",
+                    "cart": "4567",
+                    "ore": "03:45",
+                    "disp": "65%",
+                    "prod": "83%",
+                    "fermo": "3:36"
+                },
+                {
+                    "seq": "10",
+                    "Formati": [
+                        {
+                            "formato": "093",
+                            "tipo": "Farfalle",
+                            "materiale": "semola"
+                        },
+                        {
+                            "formato": "093",
+                            "tipo": "Farfalle",
+                            "materiale": "semola integrale"
+                        },
+                        {
+                            "formato": "093",
+                            "tipo": "Farfalle",
+                            "materiale": "semola biologica"
+                        }                        
+                    ],                    
+                    "confezionamento": "500 gr",
+                    "button": "0",
+                    "qli": "31",
+                    "cart": "125",
+                    "ore": "0:35",
+                    "disp": "79%",
+                    "prod": "85%",
+                    "fermo": "2:54"                    
+                }
+            ]
+        }
+    ]
+}

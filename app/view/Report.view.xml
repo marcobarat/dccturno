@@ -4,7 +4,7 @@
         <customHeader>
             <Bar>
                 <contentMiddle>
-                    <Title text="Report"/>
+                    <Title id="ReportTitle"></Title>
                 </contentMiddle>
                 <contentRight>
                     <Button text="Close" width="300px" press="onBackNav"></Button>

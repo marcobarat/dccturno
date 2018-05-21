@@ -89,15 +89,15 @@
                     "target": "piani"
                 }, {
                     "name": "managePiano",
-                    "pattern": "managePiano",
+                    "pattern": "managePiano/pianidiconfezionamento/{pianoPath}",
                     "target": "managePiano"
                 }, {
                     "name": "managePianoGrey",
-                    "pattern": "managePianoGrey",
+                    "pattern": "managePianoGrey/pianidiconfezionamento/{pianoPath}",
                     "target": "managePianoGrey"
                 }, {
                     "name": "Report",
-                    "pattern": "Report",
+                    "pattern": "managePianoGrey/pianidiconfezionamento/{pianoPath}/Report",
                     "target": "Report"                    
                 }, {
                     "name": "guastidilinea",
@@ -110,28 +110,22 @@
                     "viewLevel": 0
                 },
                 "tmp": {
-                    "viewName": "view.Tmp",
-                    "viewLevel": 1
+                    "viewName": "view.Tmp"
                 },
                 "piani": {
-                    "viewName": "view.Piani",
-                    "viewLevel": 1
+                    "viewName": "view.Piani"
                 },
                 "managePiano": {
-                    "viewName": "view.managePiano",
-                    "viewLevel": 1
+                    "viewName": "view.managePiano"
                 },
                 "managePianoGrey": {
-                    "viewName": "view.ManagePianoGrey",
-                    "viewLevel": 1
+                    "viewName": "view.ManagePianoGrey"
                 },
                 "Report": {
-                    "viewName": "view.Report",
-                    "viewLevel": 1                
+                    "viewName": "view.Report"
                 },
                 "guastiLinea": {
-                    "viewName": "view.guastiLinea",
-                    "viewLevel": 1
+                    "viewName": "view.guastiLinea"
                 }
             }
         },

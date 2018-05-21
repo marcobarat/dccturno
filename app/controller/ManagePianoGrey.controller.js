@@ -1,7 +1,8 @@
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
-    'sap/ui/model/json/JSONModel'
-], function (Controller, JSONModel) {
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/core/routing/History'
+], function (Controller, JSONModel, History) {
     "use strict";
 
     return Controller.extend("myapp.controller.ManagePianoGrey", {
@@ -16,6 +17,8 @@ sap.ui.define([
         CheckFermo: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         id_split: null,
         oButton: null,
+        piano: null,
+        pianoPath: null,
         
         onInit: function () {
             this.oModel = new JSONModel("./model/linee.json");
@@ -38,10 +41,34 @@ sap.ui.define([
                 } else {
                     oLinea.getAggregation("items")[3].setEnabled(true);
                 }
-                
                 }
+                
+            
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.getRoute("managePianoGrey").attachPatternMatched(this._onObjectMatched, this);
+            
         },
-
+        _onObjectMatched: function(oEvent){
+            var oPage = this.getView().byId("managePianoGrey");
+            this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+            var num_confez = parseInt(oEvent.getParameter("arguments").pianoPath, 10);
+            var oModelTurni = this.getOwnerComponent().getModel("turni");
+            var that = this;
+            if (!oModelTurni){
+                    $.ajax({
+                        type: "GET",
+                        url: "model/pianidiconf.json",
+                        dataType: "json",
+                        success: function(oData){
+                            that.piano = oData.pianidiconfezionamento[num_confez];
+                            oPage.setTitle("Reportistica Da Effettuare: " + that.piano.data + "    ---    " + that.piano.turno);    
+                        }
+                    });
+                } else {
+                    this.piano = oModelTurni.getData().pianidiconfezionamento[num_confez];
+                    oPage.setTitle("Reportistica Da Effettuare: " + this.piano.data + "    ---    " + this.piano.turno);
+            }            
+        },
 
 //SI ATTIVA QUANDO PREMO CREA REPORT OEE
         onReport: function() {
@@ -234,8 +261,8 @@ sap.ui.define([
  
 //CHIUDO IL DIALOG (SIA CAUSALIZZAZIONE FERMO CHE CAUSALIZZAZIONE FERMO PANEL)	
         onCloseDialog : function () {
-                        var id_dialog = this.oDialog.getId();
-                        if (id_dialog === "__xmlview1--CausalizzazioneFermo"){
+                        var id_dialog = this.oDialog.getId().split("--")[1];
+                        if (id_dialog === "CausalizzazioneFermo"){
                                 var oItems = this.getView().byId("ManagePianoTable").getAggregation("items");
                                     for (var i=0; i<oItems.length; i++) {
                                             var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
@@ -393,7 +420,13 @@ sap.ui.define([
             return check;
         },
         onReportView: function(){
-            this.getOwnerComponent().getRouter().navTo("Report");
+            var that = this;
+            this.getOwnerComponent().getRouter().navTo("Report", {pianoPath: that.pianoPath});
+        },
+// quando chiudo il piano ritorno alla pagina iniziale e: 1) creo PDF tree table 2) salvo dati (quindi il file json) 3) archivio dati (backend??)        
+        onConfermaChiusuraPiano: function(){
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("piani");
         }
     
 //ANDARE AL REPORT

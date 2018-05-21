@@ -6,6 +6,8 @@ sap.ui.define([
 
     return Controller.extend("myapp.controller.Report", {
             minValues: [],
+            piano: null,
+            pianoPath: null,
             onInit: function(){
                 var oModel = new JSONModel();
                 var that = this;
@@ -34,10 +36,31 @@ sap.ui.define([
                 this.getView().byId("ComponentiPerdita").setHeaderSpan([9,3,1]);
                 this.getView().byId("ComponentiProduttivita").setHeaderSpan([9,3,1]);
                 this.getView().byId("ComponentiQualita").setHeaderSpan([9,3,1]); 
-//                this.getView().byId("Scarti").setHeaderSpan([9,3,1]); 
-//                this.getView().byId("Rilavor").setHeaderSpan([9,3,1]);                 
-//                this.RecursivePropertyAdder(oModel.getData(), "hierarchy", 0);
-
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.getRoute("Report").attachPatternMatched(this._onObjectMatched, this);
+            },
+            _onObjectMatched: function(oEvent){
+                this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+                var num_confez = parseInt(oEvent.getParameter("arguments").pianoPath, 10);
+                var oModelTurni = this.getOwnerComponent().getModel("turni");
+                var oTitle = this.getView().byId("ReportTitle");
+                var that = this;
+                if (!oModelTurni){
+                    $.ajax({
+                        type: "GET",
+                        url: "model/pianidiconf.json",
+                        dataType: "json",
+                        success: function(oData){
+                            that.piano = oData.pianidiconfezionamento[num_confez];
+                            oTitle.setText("Report: " + that.piano.data + "    ---    " + that.piano.turno);    
+                        }
+                    });
+                } else {
+                    this.piano = oModelTurni.getData().pianidiconfezionamento[num_confez];
+                    oTitle.setText("Report: " + this.piano.data + "    ---    " + this.piano.turno);
+                }
+                
+            
             },
             RecursivePropertyAdder: function(bck, prop_name, i){
             for (var key in bck) {
@@ -175,8 +198,9 @@ sap.ui.define([
             },
             
             onBackNav: function(){
+                var that = this;
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("managePianoGrey");
+                oRouter.navTo("managePianoGrey", {pianoPath: that.pianoPath});
             }
         
             
