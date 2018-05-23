@@ -4,21 +4,29 @@
         <customHeader>
             <Bar>
                 <contentMiddle>
-                    <Title id="ReportTitle"></Title>
+                    <Text id="ReportTitle"></Text>
                 </contentMiddle>
-                <contentRight>
-                    <Button text="Close" width="300px" press="onBackNav"></Button>
-                </contentRight>
            </Bar>
         </customHeader>
-        <VBox height="100%" width="100%">
+        <subHeader>
+            <Bar>
+                <contentMiddle>
+                    <Text text="Report" class="customText"></Text>
+                </contentMiddle>                
+                <contentRight>
+                    <Button text="Close" width="300px" press="onBackNav" class="annullaButton"></Button>
+                </contentRight>                
+            </Bar>
+        </subHeader>
+
         <wt:HierarchyTable
             rows="{path:'ReportOEE>/ReportOEE', parameters: {arrayNames:['Confezionamenti']}}"
             id="TreeTableReport"
             selectionMode="None"
             toggleOpenState="onToggleOpenState"
-            class="mysapUiTableExt mysapUiTableColCell"
+            class="mysapUiTableExt mysapUiTableColCell mysapUiTableTr"
             cellClick="LinkClick"
+            visibleRowCount="24"
             > 
             <wt:columns>
                 <t:Column width="20%" resizable="false">
@@ -154,7 +162,6 @@
                 </t:Column>                                                                                                                                                                         
             </wt:columns>
         </wt:HierarchyTable>
-        </VBox>
 
     </Page>
 </mvc:View>

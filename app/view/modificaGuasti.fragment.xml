@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
-    <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="false">
+    <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="true">
         <customHeader>
             <Bar>
                 <contentLeft>
@@ -35,7 +35,7 @@
                 </VBox>                
             </VBox>
         </VBox>
-        <Button width="100%" text="Conferma" press="onConfermaCambio" id="confermaModificheButton"/>
+        <Button width="100%" text="Conferma" press="onConfermaCambio" id="confermaModificheButton" class="confermaButton confermaButtonhover"/>
     </Dialog>
 
 </core:FragmentDefinition>

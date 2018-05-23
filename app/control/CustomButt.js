@@ -76,10 +76,10 @@ sap.ui.define([
             if (oType === "graficoSPC"){
                 switch (oState) {
                     case "0":
-                        jQuery.sap.byId(this.getId()).addClass("giallogallo");
+                        jQuery.sap.byId(this.getId()).addClass("progressBarButtonYellow");
                         break;
                     case "1":
-                        jQuery.sap.byId(this.getId()).addClass("verderde"); 
+                        jQuery.sap.byId(this.getId()).addClass("progressBarButtonGreen"); 
                         break;
                 }
             }

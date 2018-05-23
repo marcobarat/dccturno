@@ -1,4 +1,20 @@
 /* Custom Styles  */
+/* TITOLO E TESTI */
+.customTextTitle {
+    font-size: 22pt;
+    font-weight: bold;
+    color : #003A6B;
+}
+
+
+/* BOTTONI */ 
+.sapMBtnDisabled {
+    opacity: 0.3 !important;
+}
+
+
+
+
 .myButton
 {
     background-color: red;
@@ -58,21 +74,21 @@
     background-color: green !important;
     margin: 0 auto !important;  
 }
-.styleButton * {
-    /*margin: 5px;*/
-    /*width: 110%;*/
-    /*padding: 1px;*/
-    display: block; /* Make the buttons appear below each other */
+/*.styleButton * {
+    margin: 5px;
+    width: 110%;
+    padding: 1px;
+    display: block;  Make the buttons appear below each other 
     font-size: 12pt;
     line-height: 15pt;
     white-space: normal;
     text-align: center;
     padding-top:5px;
     height: 3em;
-    /*height: 50px;*/
-    /*margin: 1em;*/
-    /*display: inline-flex;*/
-}
+    height: 50px;
+    margin: 1em;
+    display: inline-flex;
+}*/
 .size1 {
     font-size : 1.5rem;
 }
@@ -103,21 +119,21 @@
     opacity:0.5;
 
 }
-.styleLongButton * {
-    /*margin: 5px;*/
-    /*width: 110%;*/
-    /*padding: 1px;*/
-    display: block; /* Make the buttons appear below each other */
+/*.styleLongButton * {
+    margin: 5px;
+    width: 110%;
+    padding: 1px;
+    display: block;  Make the buttons appear below each other 
     font-size: 12pt;
     line-height: 15pt;
     white-space: normal;
     text-align: center;
     height: 3.5em;
-    /*padding-top:5px;*/
-    /*height: 50px;*/
-    /*margin: 1em;*/
-    /*display: inline-flex;*/
-}
+    padding-top:5px;
+    height: 50px;
+    margin: 1em;
+    display: inline-flex;
+}*/
 
 .diffLink * {
     color : blue;
@@ -185,6 +201,9 @@
 
 
 /*CSS PER LA TREETABLE*/
+.righeOverOut * {
+    background-color: white !important;
+}
 
 .Background0 * {
     background-color: #d9d9d9 !important;
@@ -229,7 +248,11 @@
 }
 
 .reportSapLabel.sapMLabel:hover{
-    cursor: pointer;
+    cursor: default;
+}
+
+.sapLabelNoHover.sapMLabel{
+    background-color: #f7f7f7;
 }
 
 .mysapMTBar.sapMTB .sapMBarChild {
@@ -243,8 +266,20 @@
     text-align: center !important; 
 }
 
-.myCursor:hover{
+.mysapUiTableTr .sapUiTableTr *{
+    border-bottom: 0px;
+}
+
+/*.mysapUiTableColCell:hover .sapUiTableColCell {
+    text-align: center !important; 
+}*/
+
+/*.myCursor:hover{
     cursor: pointer; 
+}*/
+
+.handPointer *{
+    cursor: pointer;
 }
 
 /*CSS NEL DIALOG MODIFICA GUASTI*/
@@ -296,7 +331,19 @@
 .startLineaButtonVerde *
 {
     background-image: none !important;
-    background-color: green !important;
+    background-color: #7CA295 !important;
     color: white !important;
 /*    border: 1px solid green !important;*/
+}
+
+
+/* TABELLA GUASTI PER LINEA/GRUPPO */
+
+.alternateRowColors tbody tr:nth-child(even) {
+	background: #f5f5f5;
+}
+
+.guastiFixedHeader .sapMListTblHeader{
+  position: -webkit-sticky;
+  top: 0;
 }

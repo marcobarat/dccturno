@@ -9,6 +9,8 @@ sap.ui.define([
             menuJSON: {},
             row_binded: {},
             guasti: {},
+            piano: null,
+            pianoPath: null,
             oDialog: null,
             onInit: function(){
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -31,9 +33,11 @@ sap.ui.define([
             },
             
             _onObjectMatched: function (oEvent){
+                this.pianoPath = oEvent.getParameter("arguments").pianoPath;
                 this.linea = oEvent.getParameter("arguments").guastiPath;
                 var oModel = new JSONModel();
                 var that = this;
+                var oTitle = this.getView().byId("turno");
                 $.ajax({
                    type: "GET",
                    url: "model/guasti_linee.json",
@@ -50,7 +54,24 @@ sap.ui.define([
                         oModel.setData(that.guasti);
                      }
                    });
-                this.getView().setModel(oModel, "guasti");                
+                this.getView().setModel(oModel, "guasti");
+                var oModelTurni = this.getOwnerComponent().getModel("turni");
+                if (!oModelTurni){
+                    $.ajax({
+                        type: "GET",
+                        url: "model/pianidiconf.json",
+                        dataType: "json",
+                        success: function(oData){
+                            that.piano = oData.pianidiconfezionamento[that.pianoPath];
+                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno); 
+                            oTitle.addStyleClass("customTextTitle");
+                        }
+                    });
+                } else {
+                    this.piano = oModelTurni.getData().pianidiconfezionamento[this.pianoPath];
+                    oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
+                    oTitle.addStyleClass("customTextTitle");
+            }                        
             },
             
             takeAllCause: function(bck){
@@ -65,8 +86,9 @@ sap.ui.define([
                 return bck;
             }, 
             onReturnToReport: function(){
+                var that = this;
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("Report");
+                oRouter.navTo("Report", {pianoPath: that.pianoPath});
             },            
             
 //FORMATTAZIONE DEI DATI TEMPORALI
@@ -132,7 +154,7 @@ sap.ui.define([
                 var oButton = oEvent.getSource();
                 var row_id = oEvent.getSource().getParent().getId();
                 var split_id = row_id.split("-");
-                this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[2],10)];
+                this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[split_id.length -1],10)];
                 // create menu only once
                 if (!this._menu) {
                     this._menu = sap.ui.xmlfragment(
@@ -375,13 +397,13 @@ sap.ui.define([
                 });
                 oTextFine = new sap.m.TimePicker({
                     value: this.row_binded.fine,
-                    id: "Fine"
-//                    change: this.onCheckValidity.bind(this)
+                    id: "Fine",
+                    change: this.onCheckValiditySimple.bind(this)
                 });    
                 oTextInizio = new sap.m.TimePicker({
                     value: this.row_binded.inizio,
-                    id: "Inizio"
-//                    change: this.onCheckValidity.bind(this)
+                    id: "Inizio",
+                    change: this.onCheckValiditySimple.bind(this)
                 });
                 oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
                 oText2.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
@@ -409,6 +431,7 @@ sap.ui.define([
 //              this.oDialog.setTitle(text);
                 var oButton = oView.byId("confermaModificheButton");
                 oButton.setEnabled(false);
+                oButton.removeStyleClass("confermaButtonhover");
                 var topBox = oView.byId("topBox");
                 var oVBox = topBox.getItems()[1];
                 var oHBoxTop = new sap.m.HBox({
@@ -660,11 +683,14 @@ sap.ui.define([
                     var intervallo_fine = secondi_fine_row-secondi_fine;
                     if ( (intervallo_inizio>0 && intervallo_fine>=0 && secondi_inizio<secondi_fine) || (intervallo_inizio>=0 && intervallo_fine>0 && secondi_inizio<secondi_fine)){
                         oButton.setEnabled(true);
+                        oButton.addStyleClass("confermaButtonhover");
                     } else {
                         oButton.setEnabled(false);
+                        oButton.removeStyleClass("confermaButtonhover");
                     }
                 } else {
                     oButton.setEnabled(false);
+                    oButton.removeStyleClass("confermaButtonhover");
                 }
             },
             onCheckValiditySimple: function(){
@@ -676,11 +702,14 @@ sap.ui.define([
                     var intervallo = secondi_fine-secondi_inizio;
                     if (intervallo>0){
                         oButton.setEnabled(true);
+                        oButton.addStyleClass("confermaButtonhover");
                     } else {
                         oButton.setEnabled(false);
+                        oButton.removeStyleClass("confermaButtonhover");
                     }
                 } else {
                     oButton.setEnabled(false);
+                    oButton.removeStyleClass("confermaButtonhover");
                 }                
             },
             fromStringToSeconds: function(stringa){

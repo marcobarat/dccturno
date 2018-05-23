@@ -49,24 +49,29 @@ sap.ui.define([
             
         },
         _onObjectMatched: function(oEvent){
-            var oPage = this.getView().byId("managePianoGrey");
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             var num_confez = parseInt(oEvent.getParameter("arguments").pianoPath, 10);
             var oModelTurni = this.getOwnerComponent().getModel("turni");
+            var oTitle = this.getView().byId("ReportTitle");
             var that = this;
             if (!oModelTurni){
+                    oModelTurni = new JSONModel();
                     $.ajax({
                         type: "GET",
                         url: "model/pianidiconf.json",
                         dataType: "json",
                         success: function(oData){
                             that.piano = oData.pianidiconfezionamento[num_confez];
-                            oPage.setTitle("Reportistica Da Effettuare: " + that.piano.data + "    ---    " + that.piano.turno);    
+                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno); 
+                            oTitle.addStyleClass("customTextTitle");
+                            oModelTurni.setData(oData);
                         }
                     });
+                    this.getOwnerComponent().setModel(oModelTurni, "turni");
                 } else {
                     this.piano = oModelTurni.getData().pianidiconfezionamento[num_confez];
-                    oPage.setTitle("Reportistica Da Effettuare: " + this.piano.data + "    ---    " + this.piano.turno);
+                    oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
+                    oTitle.addStyleClass("customTextTitle");
             }            
         },
 
@@ -101,9 +106,15 @@ sap.ui.define([
                     oTable.addColumn(this.oColumn);
                     var oColumnListItems = oTable.getAggregation("items");
                     for (var j=0; j<oColumnListItems.length; j++) {
-                        oColumnListItems[j].addCell(new sap.m.Text({text:"{linea>disp}"}));
-                        oColumnListItems[j].addCell(new sap.m.Text({text:"{linea>prod}"}));
-                        oColumnListItems[j].addCell(new sap.m.Text({text:"{linea>fermo}"}));
+                        var oText = new sap.m.Text({text:"{linea>disp}"});
+                        oText.addStyleClass("sapUiSmallMarginTop");
+                        oColumnListItems[j].addCell(oText);
+                        oText = new sap.m.Text({text:"{linea>prod}"});
+                        oText.addStyleClass("sapUiSmallMarginTop");
+                        oColumnListItems[j].addCell(oText);
+                        oText = new sap.m.Text({text:"{linea>fermo}"});
+                        oText.addStyleClass("sapUiSmallMarginTop");
+                        oColumnListItems[j].addCell(oText);
                         
                     }
                     
@@ -426,8 +437,25 @@ sap.ui.define([
 // quando chiudo il piano ritorno alla pagina iniziale e: 1) creo PDF tree table 2) salvo dati (quindi il file json) 3) archivio dati (backend??)        
         onConfermaChiusuraPiano: function(){
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                var oModelTurni = this.getOwnerComponent().getModel("turni");
+                var dataTurni = oModelTurni.getData();
+                dataTurni.pianidiconfezionamento.splice(this.pianoPath, 1);
+                oModelTurni.setData(dataTurni);
+                this.getOwnerComponent().setModel("turni");
                 oRouter.navTo("piani");
-        }
+        },
+//BUTTON NAVBACK        
+	onNavBack: function () {
+		var oHistory = History.getInstance();
+		var sPreviousHash = oHistory.getPreviousHash();
+
+		if (sPreviousHash !== undefined) {
+			window.history.go(-1);
+		} else {
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.navTo("overview", true);
+		}
+	}        
     
 //ANDARE AL REPORT
     

@@ -2,7 +2,7 @@
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
           xmlns:comp="myapp.control"
           controllerName="myapp.controller.Piani">
-    <Page title="{locale>myapp.view.piani.title}">
+    <Page title="{locale>myapp.view.piani.title}" class="colorPage">
         <headerContent>
             <Button icon="sap-icon://log" press="onAddPress" text="Uscita"
                     ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
@@ -14,7 +14,7 @@
                    items="{
 			path: '/pianidiconfezionamento',
 			sorter: {
-				path: 'Data'
+				path: 'data'
 			}
 		}">
                 <headerToolbar>
@@ -89,7 +89,13 @@
                         </cells>
                     </ColumnListItem>
                 </items>
-            </Table>
+            </Table>    
+     
+            
+            
+            
+            
+            
         </content>
     </Page>
 </mvc:View>

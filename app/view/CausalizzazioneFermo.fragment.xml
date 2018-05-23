@@ -11,11 +11,11 @@
         <HBox width="100%">
             <VBox width="5%"/>
             <VBox width="35%" justifyContent="Center">
-                <Button width="100%" text="Esci" press="onCloseDialog" type="Reject"/>
+                <Button width="100%" text="Esci" class="annullaButton" press="onCloseDialog"/>
             </VBox>
             <VBox width="20%"/>
             <VBox width="35%">
-                <Button width="100%" enabled="false" text="Causalizza" press="onCausalizzaButton" type="Accept"/>
+                <Button width="100%" enabled="false" text="Causalizza" press="onCausalizzaButton" class="confermaButton"/>
             </VBox>
             <VBox width="5%"/>
         </HBox>
@@ -85,7 +85,7 @@
                                             </t:Column>
                                             <t:Column hAlign="Center" width="10%">
                                                 <t:template>
-                                                    <CheckBox id="CBSingoloCausa" selected="{GeneralModel>selected}" select="ChangeCheckedCausa"/>
+                                                    <CheckBox id="CBSingoloCausa" class="sapUiSmallMarginBegin" selected="{GeneralModel>selected}" select="ChangeCheckedCausa"/>
                                                 </t:template>
                                             </t:Column>
                                         </t:columns>

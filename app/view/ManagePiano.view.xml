@@ -3,15 +3,31 @@
           xmlns:cus="myapp.control"
           controllerName="myapp.controller.ManagePiano">
     <Page id="managePiano">
-        <headerContent>
-            <Button icon="sap-icon://log" press="onAddPress" text="Uscita"
-                    ariaLabelledBy="exitButtonLabel"    />
-        </headerContent>
+            <customHeader>
+            <Bar>
+                <contentMiddle>
+                    <Text id="Title"></Text>
+                </contentMiddle>
+           </Bar>
+        </customHeader>
+        <subHeader>
+            <Bar>
+                <contentLeft>
+                    <Button icon="sap-icon://nav-back" press="onNavBack"/>
+                </contentLeft>                
+                <contentMiddle>
+                    <Text id="Subtitle" class="customText"></Text>
+                </contentMiddle>                
+                <contentRight>
+                </contentRight>                
+            </Bar>
+        </subHeader>
         <content>
             <Button text="Conferma"
                     press="onMenu"
                     ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                    width="100%">
+                    width="100%"
+                    class="confermaButton">
                 <layoutData>
                     <FlexItemData growFactor="1" />
                 </layoutData>
@@ -84,16 +100,17 @@
                                                                     showValue="true"
                                                                     state="None" />
                                                             </VBox>
-                                                            <VBox width="" class="sapUiSmallMarginBegin">
+                                                            <VBox width="">
                                                                 <cus:CustomButt text=" "
                                                                         press="onPress"
                                                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                                                         customType="graficoSPC"
                                                                         state="1"
-                                                                        width="10%">
-                                                                    <cus:layoutData>
+                                                                        width="10%"
+                                                                        class="sapUiSmallMarginBegin">
+<!--                                                                    <cus:layoutData>
                                                                         <FlexItemData growFactor="1" />
-                                                                    </cus:layoutData>
+                                                                    </cus:layoutData>-->
                                                                 </cus:CustomButt>
                                                             </VBox>
                                                         </HBox>
@@ -107,25 +124,25 @@
                                                             growingThreshold="2"
                                                             class="sapUiSmallMarginEnd">
                                                             <columns>
-                                                                <Column>
+                                                                <Column hAlign="Center">
                                                                     <Text text="" />
                                                                 </Column>
-                                                                <Column>
+                                                                <Column hAlign="Center">
                                                                     <Text text="Sequenza" />
                                                                 </Column>
-                                                                <Column>
+                                                                <Column hAlign="Center">
                                                                     <Text text="Formato" />
                                                                 </Column>
-                                                                <Column>
+                                                                <Column hAlign="Center">
                                                                     <Text text="Confezionamento" />
                                                                 </Column>
                                                                 <Column>
                                                                     <Text text="" />
                                                                 </Column>
-                                                                <Column>
+                                                                <Column hAlign="Center">
                                                                     <Text text="Qli" />
                                                                 </Column>
-                                                                <Column>
+                                                                <Column hAlign="Center">
                                                                     <Text text="Cartoni" />
                                                                 </Column>
                                                                 <Column
@@ -141,7 +158,7 @@
                                                                                 state="1"
                                                                                 press="handlePressOpenMenu" />
                                                                         <Text
-
+                                                                            class="sapUiSmallMarginTop"
                                                                             text="{linea>seq}" />
                                                                         <Select 
                                                                                showSecondaryValues= "true"
@@ -164,10 +181,13 @@
                                                                                         customType="confezionamento">
                                                                         </cus:CustomButt>
                                                                         <Text
+                                                                            class="sapUiSmallMarginTop"
                                                                             text="{linea>qli}" />
                                                                         <Text
+                                                                            class="sapUiSmallMarginTop"
                                                                             text="{linea>cart}" />
                                                                         <Text
+                                                                            class="sapUiSmallMarginTop"
                                                                             text="{linea>ore}" />
                                                                     </cells>
                                                                 </ColumnListItem>

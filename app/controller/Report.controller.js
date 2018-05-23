@@ -52,12 +52,14 @@ sap.ui.define([
                         dataType: "json",
                         success: function(oData){
                             that.piano = oData.pianidiconfezionamento[num_confez];
-                            oTitle.setText("Report: " + that.piano.data + "    ---    " + that.piano.turno);    
+                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno);
+                            oTitle.addStyleClass("customTextTitle");
                         }
                     });
                 } else {
                     this.piano = oModelTurni.getData().pianidiconfezionamento[num_confez];
-                    oTitle.setText("Report: " + this.piano.data + "    ---    " + this.piano.turno);
+                    oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
+                    oTitle.addStyleClass("customTextTitle");
                 }
                 
             
@@ -192,6 +194,7 @@ sap.ui.define([
                     var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                     oRouter.navTo("guastidilinea",
                                   {
+                                    pianoPath: this.pianoPath,
                                     guastiPath: row_html.getCells()[0].getText() 
                                   });
                 }                

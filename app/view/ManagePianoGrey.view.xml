@@ -3,11 +3,30 @@
           xmlns:cus="myapp.control"
           controllerName="myapp.controller.ManagePianoGrey"
           id="ManagePianoGrey">
-    <Page title="Reportistica Da Effettuare" id="managePianoGrey">
-        <headerContent>
+    <Page id="managePianoGrey">
+        <customHeader>
+            <Bar>
+                <contentMiddle>
+                    <Text id="ReportTitle"></Text>
+                </contentMiddle>
+           </Bar>
+        </customHeader>
+        <subHeader>
+            <Bar>
+                <contentLeft>
+                    <Button icon="sap-icon://nav-back" press="onNavBack"/>
+                </contentLeft>
+                <contentMiddle>
+                    <Text text="Turno concluso" class="customText"></Text>
+                </contentMiddle>                
+                <contentRight>
+                </contentRight>                
+            </Bar>
+        </subHeader>
+<!--        <headerContent>
             <Button icon="sap-icon://log" press="onAddPress" text="Uscita"
                     ariaLabelledBy="exitButtonLabel"    />
-        </headerContent>
+        </headerContent>-->
         <content id="contentTab">
             <HBox>
                 <VBox width="30%" class="sapUiSmallMargin">
@@ -15,7 +34,7 @@
                             press="onReport"
                             ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                             width="100%"
-                            type="Accept">
+                            class="confermaButton">
                             <layoutData>
                                 <FlexItemData growFactor="1" />
                             </layoutData>
@@ -23,7 +42,8 @@
                 </VBox>
                 <VBox width="30%" class="sapUiSmallMargin">
                     <Button 
-                        id="reportButton" 
+                        id="reportButton"
+                        class="styleButton" 
                         text="Report"
                         visible="false"
                         press="onReportView"
@@ -37,6 +57,7 @@
                 <VBox width="30%" class="sapUiSmallMargin">
                     <Button 
                         id="confermaButton" 
+                        class="styleButton"
                         text="Conferma chiusura piano"
                         visible="false"
                         press="onConfermaChiusuraPiano"
@@ -92,15 +113,15 @@
                                                 >
                                                 <columns class="mysapMListTbl">
                                                     <Column
-                                                        >
+                                                        hAlign="Center">
                                                         <Text text="Sequenza" />
                                                     </Column>
                                                     <Column
-                                                        >
+                                                        hAlign="Center">
                                                         <Text text="Formato" />
                                                     </Column>
                                                     <Column
-                                                        >
+                                                        hAlign="Center">
                                                         <Text text="Confezionamento" />
                                                     </Column>
                                                     <Column
@@ -108,11 +129,11 @@
                                                         <Text text="" />
                                                     </Column>
                                                     <Column
-                                                        >
+                                                        hAlign="Center">
                                                         <Text text="Qli" />
                                                     </Column>
                                                     <Column
-                                                        >
+                                                        hAlign="Center">
                                                         <Text text="Cartoni" />
                                                     </Column>
                                                     <Column
@@ -124,7 +145,7 @@
                                                     <ColumnListItem>
                                                         <cells>
                                                             <Text
-
+                                                                class="sapUiSmallMarginTop"
                                                                 text="{linea>seq}" />
                                                             <Select>
                                                                 <core:Item key="semola" text="Semola 093" />
@@ -134,14 +155,17 @@
                                                             </Select>
                                                             <cus:CustomButt text=""
                                                                             press="onPress"
-                                                                            
+                                                                            type="batch"
                                                                             value="2">
                                                             </cus:CustomButt>
                                                             <Text
+                                                                class="sapUiSmallMarginTop"
                                                                 text="{linea>qli}" />
                                                             <Text
+                                                                class="sapUiSmallMarginTop"
                                                                 text="{linea>cart}" />
                                                             <Text
+                                                                class="sapUiSmallMarginTop"
                                                                 text="{linea>ore}" />
                                                         </cells>
                                                     </ColumnListItem>
@@ -154,6 +178,9 @@
                     </ColumnListItem>
                 </items>
             </Table>
+            
+            
+          
         </content>
     </Page>
 </mvc:View>

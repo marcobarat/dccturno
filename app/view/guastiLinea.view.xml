@@ -3,17 +3,34 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:t="sap.ui.table"
-    xmlns:mvc="sap.ui.core.mvc">
-    <Page title="{guasti>/nome}"> 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:cus="myapp.control">
+    <Page> 
+                    <customHeader>
+                        <Bar>
+                        <contentMiddle>
+                                <Text id="turno"/>
+                        </contentMiddle>
+                        </Bar>
+                    </customHeader>
                     <subHeader>
 
-                    <Bar>
-                    <contentLeft>
-                    <Button text="Close" width="300px" class="borderButton" type="Reject" press="onReturnToReport"></Button>
-                    </contentLeft>
-                    </Bar>
+                        <Bar>
+                        <contentLeft>
+                            <Button text="Close" width="300px" class="annullaButton" press="onReturnToReport"></Button>
+                        </contentLeft>                         
+                        <contentMiddle>
+                                <Text text="{guasti>/nome}" class="customText" />
+                        </contentMiddle>
+                        </Bar>
 
                     </subHeader>  
+<!--                    <subHeader>
+
+                    <Bar>
+
+
+                    </subHeader>  -->
 <!--                                    <t:Table
                                         visibleRowCount="20"
                                         class="alternate-color"
@@ -53,12 +70,10 @@
                                     </t:Table>        -->
                 <content>                               
                     <Table
-                        visibleRowCount="20"
-                        class="alternate-color"
-                        electionMode="None"
                         items="{guasti>/guasti}"
-                           
-                    >
+                        id="GuastiDiLineaTable"
+                        class="alternateRowColors guastiFixedHeader"
+                        >
                     <columns>
                     <Column hAlign="Center" width="15%">
                         <Label text="Inizio"/>
@@ -77,10 +92,10 @@
                     <items>
                             <ColumnListItem>
                                 <cells>
-                                    <Text text="{guasti>inizio}"/>
-                                    <Text text="{guasti>fine}"/>
-                                    <Text text="{guasti>intervallo}"/>
-                                    <Text text="{guasti>causa}"/>
+                                    <Text class="sapUiSmallMarginTop" text="{guasti>inizio}"/>
+                                    <Text class="sapUiSmallMarginTop" text="{guasti>fine}"/>
+                                    <Text class="sapUiSmallMarginTop" text="{guasti>intervallo}"/>
+                                    <Text class="sapUiSmallMarginTop" text="{guasti>causa}"/>
                                     <Button press="handlePressOpenMenuCausalizzazione" icon="sap-icon://technical-object"/>
                                 </cells>
                             </ColumnListItem> 

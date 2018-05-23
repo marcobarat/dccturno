@@ -27,6 +27,7 @@ sap.ui.define([
                                     rowhtml.addClass("Background2");
                                     break;                                    
                                 default:
+                                    rowhtml.addClass("righeOverOut");
                                     break;
                             }
                             for (var j=1; j<that.getColumns().length; j++){
@@ -40,6 +41,10 @@ sap.ui.define([
                                         break;
                                     case 3:
                                         cellhtml.classList.add("Lv3");
+                                        if ( j===5 || j===6 || j===7){
+//                                            cellhtml.classList.add("handPointer");
+                                            cellhtml.parentElement.classList.add("handPointer");
+                                        }
                                         break;
                                     default:
                                         break;

@@ -2,8 +2,9 @@ sap.ui.define([
     'sap/m/MessageToast',
     'jquery.sap.global',
     'sap/ui/core/mvc/Controller',
-    'sap/ui/model/json/JSONModel'
-], function (MessageToast, jQuery, Controller, JSONModel) {
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/core/routing/History'
+], function (MessageToast, jQuery, Controller, JSONModel, History) {
     "use strict";
 
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
@@ -30,37 +31,72 @@ sap.ui.define([
         },
         
         _onObjectMatched: function(oEvent){
-            var oPage = this.getView().byId("managePiano");
+            var oTitle = this.getView().byId("Title");
+            var oSubtitle = this.getView().byId("Subtitle");
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             var num_confez = parseInt(oEvent.getParameter("arguments").pianoPath, 10);
             var oModelTurni = this.getOwnerComponent().getModel("turni");
             var that = this;
             if (!oModelTurni){
+                    oModelTurni = new JSONModel();
                     $.ajax({
                         type: "GET",
                         url: "model/pianidiconf.json",
                         dataType: "json",
                         success: function(oData){
                             that.piano = oData.pianidiconfezionamento[num_confez];
-                            oPage.setTitle(that.piano.data + "    ---    " + that.piano.turno);  
+                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno);  
+                            oTitle.addStyleClass("customTextTitle");
                             if (parseInt(that.piano.area, 10) === -1 || parseInt(that.piano.area, 10)=== 2){
                                 that.removeBar();
+                                if (parseInt(that.piano.area, 10) === -1){
+                                    oSubtitle.setText("Turno in creazione");                             
+                                } else {
+                                    oSubtitle.setText("Turno programmato");
+                                }
+                                oSubtitle.addStyleClass("customText");  
                             } else {
                                 that.showBar();
-                            }                            
+                                oSubtitle.setText("Turno in corso");
+                                oSubtitle.addStyleClass("customText");
+                            }
+                            oModelTurni.setData(oData);
                         }
                     });
+                    this.getOwnerComponent().setModel(oModelTurni, "turni");
                 } else {
                     this.piano = oModelTurni.getData().pianidiconfezionamento[num_confez];
-                    oPage.setTitle(this.piano.data + "    ---    " + this.piano.turno);
+                    oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
+                    oTitle.addStyleClass("customTextTitle");
                     if (parseInt(this.piano.area, 10) === -1 || parseInt(this.piano.area, 10)=== 2){
                         this.removeBar();
+                        if (parseInt(that.piano.area, 10) === -1){
+                                oSubtitle.setText("Turno in creazione");                             
+                            } else {
+                                oSubtitle.setText("Turno programmato");
+                            }
+                            oSubtitle.addStyleClass("customText");                          
                         } else {
                         this.showBar();
+                        oSubtitle.setText("Turno in corso");
+                        oSubtitle.addStyleClass("customText");                        
                         }
                 }
 
-        }, 
+        },
+//BUTTON NAVBACK        
+	onNavBack: function () {
+		var oHistory = History.getInstance();
+		var sPreviousHash = oHistory.getPreviousHash();
+
+		if (sPreviousHash !== undefined) {
+			window.history.go(-1);
+		} else {
+			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+			oRouter.navTo("overview", true);
+		}
+	},
+        
         removeBar: function(){
             var oItems = this.getView().byId("managePianoTable").getItems();
             for (var i in oItems){
@@ -136,6 +172,7 @@ sap.ui.define([
             alert("ho cliccato");
         },
         onMenu: function(){
+            
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("tmp");
         }

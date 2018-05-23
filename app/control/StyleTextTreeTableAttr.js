@@ -31,10 +31,10 @@ sap.ui.define([
 
             }
             if (this.getArea() === "1") {
-                jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#b6d7a8");
+                jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#7CA295");
             }
             if (this.getArea() === "2") {
-                jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#ffe599");
+                jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#FFD300");
             }
 ////            if (this.getDiff() === "1") {
 //                this.addStyleClass('diffRed');

@@ -38,6 +38,10 @@
             "css": [{
                     "uri": "css/style.css",
                     "id": "customstyle"
+                },
+                {
+                    "uri": "css/styleDeCecco.css",
+                    "id": "styleDeCecco"
                 }]
         },
         "contentDensities": {
@@ -101,7 +105,7 @@
                     "target": "Report"                    
                 }, {
                     "name": "guastidilinea",
-                    "pattern": "guasti/{guastiPath}",
+                    "pattern": "managePianoGrey/pianidiconfezionamento/{pianoPath}/Report/{guastiPath}",
                     "target": "guastiLinea"
                 }],
             "targets": {
