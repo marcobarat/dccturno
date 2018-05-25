@@ -347,3 +347,26 @@
   position: -webkit-sticky;
   top: 0;
 }
+
+/*CSS PER LE MIE TABELLE  */
+.totalWhiteTable .sapMListTbl th {
+    background-color: white !important;
+    border: 0px !important;
+}
+
+.noBorder *{
+    border: 0px !important;
+}
+
+.tableTextSize .sapMListTbl .sapMText{
+    font-size: 1.3rem !important;
+}
+
+.blackBoxTable {
+    border: 2px solid black;
+}
+
+.paddingTitle {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

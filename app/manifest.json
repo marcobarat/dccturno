@@ -93,19 +93,19 @@
                     "target": "piani"
                 }, {
                     "name": "managePiano",
-                    "pattern": "managePiano/pianidiconfezionamento/{pianoPath}",
+                    "pattern": "managePiano/{turnoPath}/{pianoPath}",
                     "target": "managePiano"
                 }, {
                     "name": "managePianoGrey",
-                    "pattern": "managePianoGrey/pianidiconfezionamento/{pianoPath}",
+                    "pattern": "managePianoGrey/{turnoPath}/{pianoPath}",
                     "target": "managePianoGrey"
                 }, {
                     "name": "Report",
-                    "pattern": "managePianoGrey/pianidiconfezionamento/{pianoPath}/Report",
+                    "pattern": "managePianoGrey/{turnoPath}/{pianoPath}/Report",
                     "target": "Report"                    
                 }, {
                     "name": "guastidilinea",
-                    "pattern": "managePianoGrey/pianidiconfezionamento/{pianoPath}/Report/{guastiPath}",
+                    "pattern": "managePianoGrey/{turnoPath}/{pianoPath}/Report/{guastiPath}",
                     "target": "guastiLinea"
                 }],
             "targets": {

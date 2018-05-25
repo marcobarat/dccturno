@@ -7,14 +7,13 @@ sap.ui.define([
     "use strict";
 
     var PianiController = Controller.extend("myapp.controller.Piani", {
-
+        data_json: {},
         onInit: function () {
 
             var params = jQuery.sap.getUriParameters(window.location.href);
-            // set explored app's demo model on this sample
-            var oModel = new JSONModel("./model/pianidiconf.json");
-            this.getOwnerComponent().setModel(oModel, "turni");
-            this.getView().setModel(oModel);
+            this.buildNewModel();
+
+            
         },
 
         onAfterRendering: function () {
@@ -27,14 +26,75 @@ sap.ui.define([
 
         },
         managePiano: function (oEvent) {
-           var oPiano = oEvent.getSource();
-           var area = oEvent.getSource().getParent().getAggregation("cells")[1].getProperty("area");
+//           var oPiano = oEvent.getSource();
+           var oTable = oEvent.getSource().getParent().getBindingContext("turni");
+           var  Row = oTable.getModel().getProperty(oTable.sPath);
+//           var index = this.getIndexByRow(Row);
+           var area = Row.area;
+           var paths = oEvent.getSource().getBindingContext("turni").getPath().substr(1).split("/");
            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
            if (area==="0") {
-               oRouter.navTo("managePianoGrey", {pianoPath: oPiano.getBindingContext().getPath().substr(1).split("/")[1]});
+               oRouter.navTo("managePianoGrey", {turnoPath: paths[0], pianoPath: paths[1]});
             } else {
-               oRouter.navTo("managePiano", {pianoPath: oPiano.getBindingContext().getPath().substr(1).split("/")[1]});
+               oRouter.navTo("managePiano", {turnoPath: paths[0], pianoPath: paths[1]});
             }
+        },
+        
+        groupTurni: function(data, group0, group1, group2, group3) {
+            for (var key in data){
+                if (typeof data[key] === "object"){
+                    this.groupTurni(data[key], group0, group1, group2, group3);
+                } 
+            }
+            if (data.area){
+                switch (data.area) {
+                    case "0":
+                        this.data_json[group0].push(data);
+                        break;
+                    case "1":
+                        this.data_json[group1].push(data);
+                        break;
+                    case "2":
+                        this.data_json[group2].push(data);
+                        break;
+                    case "-1":
+                        this.data_json[group3].push(data);
+                }
+            }
+            return;
+        },
+//        
+//        getIndexByRow: function(row){
+//            var array = this.getOwnerComponent().getModel("turni").getData().pianidiconfezionamento;
+//            for (var i=0 ; i<array.length; i++){
+//                if (array[i].data === row.data && array[i].turno === row.turno){
+//                    return i;
+//                }
+//            }
+//            return -1; 
+//        },
+        buildNewModel: function(){
+            var oModel = new JSONModel();
+            var that = this;
+            $.ajax({
+                        type: "GET",
+                        url: "model/pianidiconf.json",
+                        dataType: "json",
+                        success: function(oData){
+                            that.data_json.turniconclusi = [];
+                            that.data_json.turnoincorso = [];
+                            that.data_json.turniprogrammati = [];
+                            that.data_json.turnodacreare = [];
+                            that.groupTurni(oData, "turniconclusi", "turnoincorso", "turniprogrammati", "turnodacreare");
+                            oModel.setData(that.data_json);
+                            
+                        }
+            });            
+            this.getOwnerComponent().setModel(oModel, "turni");
+//            this.getView().setModel(oModel, "");            
+        },
+        onCloseApp: function(){
+            window.close();
         }
 
     });

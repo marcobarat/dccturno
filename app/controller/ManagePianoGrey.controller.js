@@ -19,7 +19,8 @@ sap.ui.define([
         oButton: null,
         piano: null,
         pianoPath: null,
-        
+        turnoPath: null,
+        data_json: {},
         onInit: function () {
             this.oModel = new JSONModel("./model/linee.json");
             this.getView().setModel(this.oModel, "linea");
@@ -49,27 +50,15 @@ sap.ui.define([
             
         },
         _onObjectMatched: function(oEvent){
+            this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            var num_confez = parseInt(oEvent.getParameter("arguments").pianoPath, 10);
             var oModelTurni = this.getOwnerComponent().getModel("turni");
-            var oTitle = this.getView().byId("ReportTitle");
-            var that = this;
             if (!oModelTurni){
-                    oModelTurni = new JSONModel();
-                    $.ajax({
-                        type: "GET",
-                        url: "model/pianidiconf.json",
-                        dataType: "json",
-                        success: function(oData){
-                            that.piano = oData.pianidiconfezionamento[num_confez];
-                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno); 
-                            oTitle.addStyleClass("customTextTitle");
-                            oModelTurni.setData(oData);
-                        }
-                    });
-                    this.getOwnerComponent().setModel(oModelTurni, "turni");
+                this.buildNewModel();
+                        
                 } else {
-                    this.piano = oModelTurni.getData().pianidiconfezionamento[num_confez];
+                    var oTitle = this.getView().byId("ReportTitle");
+                    this.piano = oModelTurni.getData()[this.turnoPath][this.pianoPath];
                     oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
                     oTitle.addStyleClass("customTextTitle");
             }            
@@ -432,7 +421,7 @@ sap.ui.define([
         },
         onReportView: function(){
             var that = this;
-            this.getOwnerComponent().getRouter().navTo("Report", {pianoPath: that.pianoPath});
+            this.getOwnerComponent().getRouter().navTo("Report", {turnoPath: that.turnoPath, pianoPath: that.pianoPath});
         },
 // quando chiudo il piano ritorno alla pagina iniziale e: 1) creo PDF tree table 2) salvo dati (quindi il file json) 3) archivio dati (backend??)        
         onConfermaChiusuraPiano: function(){
@@ -442,20 +431,74 @@ sap.ui.define([
                 dataTurni.pianidiconfezionamento.splice(this.pianoPath, 1);
                 oModelTurni.setData(dataTurni);
                 this.getOwnerComponent().setModel("turni");
+                
+                var oModel = new JSONModel();
+                var view = this.getOwnerComponent()._oViews._oViews["myapp.view.Piani"];
+                var data = view.getModel().getData().turniconclusi.splice(this.pianoPath, 1);
+                oModel.setData(data);
+                view.setModel(oModel);
+                
                 oRouter.navTo("piani");
+                
         },
 //BUTTON NAVBACK        
 	onNavBack: function () {
 		var oHistory = History.getInstance();
 		var sPreviousHash = oHistory.getPreviousHash();
-
-		if (sPreviousHash !== undefined) {
+                var splitted_hash = sPreviousHash.split("/");
+		if (sPreviousHash !== undefined && splitted_hash[splitted_hash.length -1] === "piani") {
 			window.history.go(-1);
 		} else {
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("overview", true);
+			oRouter.navTo("piani", true);
 		}
-	}        
+	},
+// RICHIAMO IL MODEL SE NON CI STA
+        buildNewModel: function(){
+            var oTitle = this.getView().byId("ReportTitle");
+            var oModel = new JSONModel();
+            var that = this;
+            $.ajax({
+                        type: "GET",
+                        url: "model/pianidiconf.json",
+                        dataType: "json",
+                        success: function(oData){
+                            that.data_json.turniconclusi = [];
+                            that.data_json.turnoincorso = [];
+                            that.data_json.turniprogrammati = [];
+                            that.data_json.turnodacreare = [];
+                            that.groupTurni(oData, "turniconclusi", "turnoincorso", "turniprogrammati", "turnodacreare");
+                            oModel.setData(that.data_json);
+                            that.piano = that.data_json[that.turnoPath][that.pianoPath];
+                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno); 
+                            oTitle.addStyleClass("customTextTitle");                                                        
+                        }
+            });            
+            this.getOwnerComponent().setModel(oModel, "turni");
+        },
+        groupTurni: function(data, group0, group1, group2, group3) {
+            for (var key in data){
+                if (typeof data[key] === "object"){
+                    this.groupTurni(data[key], group0, group1, group2, group3);
+                } 
+            }
+            if (data.area){
+                switch (data.area) {
+                    case "0":
+                        this.data_json[group0].push(data);
+                        break;
+                    case "1":
+                        this.data_json[group1].push(data);
+                        break;
+                    case "2":
+                        this.data_json[group2].push(data);
+                        break;
+                    case "-1":
+                        this.data_json[group3].push(data);
+                }
+            }
+            return;
+        }   
     
 //ANDARE AL REPORT
     

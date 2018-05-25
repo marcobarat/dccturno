@@ -8,12 +8,13 @@ sap.ui.define([
     "use strict";
 
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
-
+        data_json: {},
         oModel: null,
         oModel3: null,
         prova: null,
         piano: null,
         pianoPath: null,
+        turnoPath: null,
         onInit: function () {
 
             var params = jQuery.sap.getUriParameters(window.location.href);
@@ -31,46 +32,20 @@ sap.ui.define([
         },
         
         _onObjectMatched: function(oEvent){
-            var oTitle = this.getView().byId("Title");
-            var oSubtitle = this.getView().byId("Subtitle");
+            this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            var num_confez = parseInt(oEvent.getParameter("arguments").pianoPath, 10);
             var oModelTurni = this.getOwnerComponent().getModel("turni");
-            var that = this;
             if (!oModelTurni){
-                    oModelTurni = new JSONModel();
-                    $.ajax({
-                        type: "GET",
-                        url: "model/pianidiconf.json",
-                        dataType: "json",
-                        success: function(oData){
-                            that.piano = oData.pianidiconfezionamento[num_confez];
-                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno);  
-                            oTitle.addStyleClass("customTextTitle");
-                            if (parseInt(that.piano.area, 10) === -1 || parseInt(that.piano.area, 10)=== 2){
-                                that.removeBar();
-                                if (parseInt(that.piano.area, 10) === -1){
-                                    oSubtitle.setText("Turno in creazione");                             
-                                } else {
-                                    oSubtitle.setText("Turno programmato");
-                                }
-                                oSubtitle.addStyleClass("customText");  
-                            } else {
-                                that.showBar();
-                                oSubtitle.setText("Turno in corso");
-                                oSubtitle.addStyleClass("customText");
-                            }
-                            oModelTurni.setData(oData);
-                        }
-                    });
-                    this.getOwnerComponent().setModel(oModelTurni, "turni");
+                    this.buildNewModel();
                 } else {
-                    this.piano = oModelTurni.getData().pianidiconfezionamento[num_confez];
+                    var oTitle = this.getView().byId("Title");
+                    var oSubtitle = this.getView().byId("Subtitle");
+                    this.piano = oModelTurni.getData()[this.turnoPath][this.pianoPath];
                     oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
                     oTitle.addStyleClass("customTextTitle");
                     if (parseInt(this.piano.area, 10) === -1 || parseInt(this.piano.area, 10)=== 2){
                         this.removeBar();
-                        if (parseInt(that.piano.area, 10) === -1){
+                        if (parseInt(this.piano.area, 10) === -1){
                                 oSubtitle.setText("Turno in creazione");                             
                             } else {
                                 oSubtitle.setText("Turno programmato");
@@ -175,7 +150,68 @@ sap.ui.define([
             
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("tmp");
-        }
+        },
+        buildNewModel: function(){
+            var oModel = new JSONModel();
+            var that = this;
+            var oTitle = this.getView().byId("Title");
+            var oSubtitle = this.getView().byId("Subtitle");
+            $.ajax({
+                        type: "GET",
+                        url: "model/pianidiconf.json",
+                        dataType: "json",
+                        success: function(oData){
+                            that.data_json.turniconclusi = [];
+                            that.data_json.turnoincorso = [];
+                            that.data_json.turniprogrammati = [];
+                            that.data_json.turnodacreare = [];
+                            that.groupTurni(oData, "turniconclusi", "turnoincorso", "turniprogrammati", "turnodacreare");
+                            oModel.setData(that.data_json);
+                            that.piano = that.data_json[that.turnoPath][that.pianoPath];
+                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno);  
+                            oTitle.addStyleClass("customTextTitle");
+
+
+                            if (parseInt(that.piano.area, 10) === -1 || parseInt(that.piano.area, 10)=== 2){
+                                that.removeBar();
+                                if (parseInt(that.piano.area, 10) === -1){
+                                    oSubtitle.setText("Turno in creazione");                             
+                                } else {
+                                    oSubtitle.setText("Turno programmato");
+                                }
+                                oSubtitle.addStyleClass("customText");  
+                            } else {
+                                that.showBar();
+                                oSubtitle.setText("Turno in corso");
+                                oSubtitle.addStyleClass("customText");
+                            }                            
+                        }
+            });            
+            this.getOwnerComponent().setModel(oModel, "turni");
+        },
+        groupTurni: function(data, group0, group1, group2, group3) {
+            for (var key in data){
+                if (typeof data[key] === "object"){
+                    this.groupTurni(data[key], group0, group1, group2, group3);
+                } 
+            }
+            if (data.area){
+                switch (data.area) {
+                    case "0":
+                        this.data_json[group0].push(data);
+                        break;
+                    case "1":
+                        this.data_json[group1].push(data);
+                        break;
+                    case "2":
+                        this.data_json[group2].push(data);
+                        break;
+                    case "-1":
+                        this.data_json[group3].push(data);
+                }
+            }
+            return;
+        }        
 
     });
 

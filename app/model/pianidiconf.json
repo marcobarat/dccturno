@@ -3,6 +3,16 @@
     "pianidiconfezionamento": [
         {
             "icon": "sap-icon://circle-task-2",
+            "data": "20/03/2018",
+            "turno": "06:00 - 14:00",
+            "qliconf": "956",
+            "qliresidui": "",
+            "lineep": "8",
+            "turni": "8",
+            "area": "0"
+        },         
+        {
+            "icon": "sap-icon://circle-task-2",
             "data": "21/03/2018",
             "turno": "06:00 - 14:00",
             "qliconf": "956",
@@ -46,16 +56,7 @@
             "lineep": "9",
             "turni": "9",
             "area": "2"
-        }, {
-            "icon": "sap-icon://bo-strategy-management",
-            "data": "22/03/2018",
-            "turno": "22:00 - 06:00",
-            "qliconf": "",
-            "qliresidui": "",
-            "lineep": "",
-            "turni": "",
-            "area": "2"
-        }, {
+        },{
             "icon": "sap-icon://bo-strategy-management",
             "data": "22/03/2018",
             "turno": "22:00 - 06:00",

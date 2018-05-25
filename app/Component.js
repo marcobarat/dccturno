@@ -22,8 +22,6 @@ sap.ui.define([
 
             // Parse the current url and display the targets of the route that matches the hash
             this.getRouter().initialize();
-            
-            
 
         }
         

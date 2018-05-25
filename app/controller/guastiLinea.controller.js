@@ -11,7 +11,9 @@ sap.ui.define([
             guasti: {},
             piano: null,
             pianoPath: null,
+            turnoPath: null,
             oDialog: null,
+            data_json: {},
             onInit: function(){
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.getRoute("guastidilinea").attachPatternMatched(this._onObjectMatched, this); 
@@ -34,10 +36,10 @@ sap.ui.define([
             
             _onObjectMatched: function (oEvent){
                 this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+                this.turnoPath = oEvent.getParameter("arguments").turnoPath;
                 this.linea = oEvent.getParameter("arguments").guastiPath;
                 var oModel = new JSONModel();
                 var that = this;
-                var oTitle = this.getView().byId("turno");
                 $.ajax({
                    type: "GET",
                    url: "model/guasti_linee.json",
@@ -57,18 +59,10 @@ sap.ui.define([
                 this.getView().setModel(oModel, "guasti");
                 var oModelTurni = this.getOwnerComponent().getModel("turni");
                 if (!oModelTurni){
-                    $.ajax({
-                        type: "GET",
-                        url: "model/pianidiconf.json",
-                        dataType: "json",
-                        success: function(oData){
-                            that.piano = oData.pianidiconfezionamento[that.pianoPath];
-                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno); 
-                            oTitle.addStyleClass("customTextTitle");
-                        }
-                    });
+                    this.buildNewModel();
                 } else {
-                    this.piano = oModelTurni.getData().pianidiconfezionamento[this.pianoPath];
+                    var oTitle = this.getView().byId("turno");
+                    this.piano = oModelTurni.getData()[this.turnoPath][this.pianoPath];
                     oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
                     oTitle.addStyleClass("customTextTitle");
             }                        
@@ -86,9 +80,8 @@ sap.ui.define([
                 return bck;
             }, 
             onReturnToReport: function(){
-                var that = this;
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("Report", {pianoPath: that.pianoPath});
+                oRouter.navTo("Report", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
             },            
             
 //FORMATTAZIONE DEI DATI TEMPORALI
@@ -782,7 +775,53 @@ sap.ui.define([
                     }
                 }
                 return -1;
+            },
+// NEL CASO IL MODEL NON CI SIA
+        buildNewModel: function(){
+            var oModel = new JSONModel();
+            var that = this;
+            var oTitle = this.getView().byId("turno");
+            $.ajax({
+                        type: "GET",
+                        url: "model/pianidiconf.json",
+                        dataType: "json",
+                        success: function(oData){
+                            that.data_json.turniconclusi = [];
+                            that.data_json.turnoincorso = [];
+                            that.data_json.turniprogrammati = [];
+                            that.data_json.turnodacreare = [];
+                            that.groupTurni(oData, "turniconclusi", "turnoincorso", "turniprogrammati", "turnodacreare");
+                            oModel.setData(that.data_json);
+                            that.piano = that.data_json[that.turnoPath][that.pianoPath];
+                            oTitle.setText(that.piano.data + "    ---    " + that.piano.turno);  
+                            oTitle.addStyleClass("customTextTitle");                          
+                        }
+            });            
+            this.getOwnerComponent().setModel(oModel, "turni");
+        },
+        groupTurni: function(data, group0, group1, group2, group3) {
+            for (var key in data){
+                if (typeof data[key] === "object"){
+                    this.groupTurni(data[key], group0, group1, group2, group3);
+                } 
             }
+            if (data.area){
+                switch (data.area) {
+                    case "0":
+                        this.data_json[group0].push(data);
+                        break;
+                    case "1":
+                        this.data_json[group1].push(data);
+                        break;
+                    case "2":
+                        this.data_json[group2].push(data);
+                        break;
+                    case "-1":
+                        this.data_json[group3].push(data);
+                }
+            }
+            return;
+        } 
 
             
             
