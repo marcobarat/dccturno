@@ -70,7 +70,8 @@
                                                         growing="true"
                                                         fixedLayout="false"
                                                         growingThreshold="{operatore>numeroOperatori}"
-                                                        class="sapUiSmallMarginEnd borderb">
+                                                        class="sapUiSmallMarginEnd borderb"
+                                                        >
                                                         <columns>
                                                             <Column >
                                                                 <Text text="Operatori" />
@@ -116,40 +117,55 @@
                                                         </HBox>
                                                     </VBox>
                                                     <VBox height="80%" width="100%">
-                                                        <Table 
-                                                            items="{linea>ProductCollection}"
+                                                        
+                                                        <Table
+                                                            showNoData="false"
                                                             inset="false"
                                                             growing="true"
                                                             fixedLayout="false"
                                                             growingThreshold="2"
-                                                            class="sapUiSmallMarginEnd">
+                                                            class="sapUiSmallMarginEnd"
+                                                            >
                                                             <columns>
-                                                                <Column hAlign="Center">
+                                                                <Column width="8%" hAlign="Center">
                                                                     <Text text="" />
                                                                 </Column>
-                                                                <Column hAlign="Center">
+                                                                <Column width="10%"  hAlign="Center">
                                                                     <Text text="Sequenza" />
                                                                 </Column>
-                                                                <Column hAlign="Center">
+                                                                <Column width="18%" hAlign="Center">
                                                                     <Text text="Formato" />
                                                                 </Column>
-                                                                <Column hAlign="Center">
+                                                                <Column width="22%" hAlign="Center">
                                                                     <Text text="Confezionamento" />
                                                                 </Column>
-                                                                <Column>
+                                                                <Column width="5%">
                                                                     <Text text="" />
                                                                 </Column>
                                                                 <Column hAlign="Center">
-                                                                    <Text text="Qli" />
+                                                                    <Text class="sapUiTinyMarginBegin" text="Qli" />
                                                                 </Column>
-                                                                <Column hAlign="Center">
+                                                                <Column width="10%" hAlign="Center">
                                                                     <Text text="Cartoni" />
                                                                 </Column>
-                                                                <Column
-                                                                    hAlign="End">
+                                                                <Column class="sapUiSmallMarginBegin" hAlign="Center">
                                                                     <Text text="Ore" />
                                                                 </Column>
                                                             </columns>
+                                                        </Table>
+                                                        <ScrollContainer height='231px' vertical='true'>
+                                                            <content>
+                                                            <Table width="950px" items="{linea>ProductCollection}">
+                                                                <columns>
+                                                                    <Column hAlign="Center"/>
+                                                                    <Column width="5%"  hAlign="Center"/>
+                                                                    <Column width="25%" hAlign="Center"/>
+                                                                    <Column width="15%" hAlign="Center"/>
+                                                                    <Column hAlign="Center"/>
+                                                                    <Column hAlign="Center"/>
+                                                                    <Column hAlign="Center"/>
+                                                                    <Column hAlign="Center"/>
+                                                                </columns>
                                                             <items>
                                                                 <ColumnListItem>
                                                                     <cells>
@@ -160,7 +176,8 @@
                                                                         <Text
                                                                             class="sapUiSmallMarginTop"
                                                                             text="{linea>seq}" />
-                                                                        <Select 
+                                                                        <Select
+                                                                               selectedKey="{linea>formato} {linea>materiale}"
                                                                                showSecondaryValues= "true"
                                                                                items="{
                                                                             path: 'linea>Formati',
@@ -180,19 +197,12 @@
                                                                                         state="2"
                                                                                         customType="confezionamento">
                                                                         </cus:CustomButt>
-                                                                        <Text
-                                                                            class="sapUiSmallMarginTop"
-                                                                            text="{linea>qli}" />
-                                                                        <Text
-                                                                            class="sapUiSmallMarginTop"
-                                                                            text="{linea>cart}" />
-                                                                        <Text
-                                                                            class="sapUiSmallMarginTop"
-                                                                            text="{linea>ore}" />
                                                                     </cells>
                                                                 </ColumnListItem>
-                                                            </items>
-                                                        </Table>    
+                                                            </items>                                                                                                                                
+                                                            </Table>
+                                                            </content>
+                                                        </ScrollContainer>  
                                                     </VBox>
                                                 </VBox>       
                                             </HBox>
@@ -209,3 +219,14 @@
         </content>
     </Page>
 </mvc:View>
+
+
+<!--                                                                       <Text
+                                                                            class="sapUiSmallMarginTop"
+                                                                            text="{linea>qli}" />
+                                                                        <Text
+                                                                            class="sapUiSmallMarginTop"
+                                                                            text="{linea>cart}" />
+                                                                        <Text
+                                                                            class="sapUiSmallMarginTop"
+                                                                            text="{linea>ore}" />-->

@@ -106,7 +106,6 @@ sap.ui.define([
                         oColumnListItems[j].addCell(oText);
                         
                     }
-                    
                 }
                 
              }
@@ -443,15 +442,8 @@ sap.ui.define([
         },
 //BUTTON NAVBACK        
 	onNavBack: function () {
-		var oHistory = History.getInstance();
-		var sPreviousHash = oHistory.getPreviousHash();
-                var splitted_hash = sPreviousHash.split("/");
-		if (sPreviousHash !== undefined && splitted_hash[splitted_hash.length -1] === "piani") {
-			window.history.go(-1);
-		} else {
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.navTo("piani", true);
-		}
+	        var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+	        oRouter.navTo("piani", true);
 	},
 // RICHIAMO IL MODEL SE NON CI STA
         buildNewModel: function(){

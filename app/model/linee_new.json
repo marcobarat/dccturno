@@ -4,27 +4,13 @@
             "linea": "Linea 1",
             "disp": "74%",
             "prod": "84%",
-            "fermo": "6:30",
+            "fermo": "6:30",    
             "ProductCollection": [
                 {
                     "seq": ">>>",
-                    "Formati": [
-                        {
-                            "formato": "093",
-                            "tipo": "Farfalle",
-                            "materiale": "semola"
-                        },
-                        {
-                            "formato": "093",
-                            "tipo": "Farfalle",
-                            "materiale": "semola integrale"
-                        },
-                        {
-                            "formato": "093",
-                            "tipo": "Farfalle",
-                            "materiale": "semola biologica"
-                        }                        
-                    ],
+                    "formato": "093",
+                    "tipo": "Farfalle",
+                    "materiale": "semola integrale",                        
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "123",
@@ -32,37 +18,57 @@
                     "ore": "03:45",
                     "disp": "65%",
                     "prod": "83%",
-                    "fermo": "3:36"
+                    "fermo": "03:36",
+                    "Formati": [
+                                {
+                                    "formato": "093",
+                                    "tipo": "Farfalle",
+                                    "materiale": "semola"
+                                },
+                                {
+                                    "formato": "093",
+                                    "tipo": "Farfalle",
+                                    "materiale": "semola integrale"
+                                },
+                                {
+                                    "formato": "093",
+                                    "tipo": "Farfalle",
+                                    "materiale": "semola biologica"
+                                }                        
+                            ]                    
                 },
                 {
-                    "seq": "10",
-                    "Formati": [
-                        {
-                            "formato": "093",
-                            "tipo": "Farfalle",
-                            "materiale": "semola"
-                        },
-                        {
-                            "formato": "093",
-                            "tipo": "Farfalle",
-                            "materiale": "semola integrale"
-                        },
-                        {
-                            "formato": "093",
-                            "tipo": "Farfalle",
-                            "materiale": "semola biologica"
-                        }                        
-                    ],                    
+                    "seq": "10",    
+                    "formato": "093",
+                    "tipo": "Farfalle",
+                    "materiale": "semola",                          
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
                     "cart": "125",
-                    "ore": "0:35",
+                    "ore": "00:35",
                     "disp": "79%",
                     "prod": "85%",
-                    "fermo": "2:54"                    
+                    "fermo": "02:54",
+                    "Formati": [
+                                {
+                                    "formato": "093",
+                                    "tipo": "Farfalle",
+                                    "materiale": "semola"
+                                },
+                                {
+                                    "formato": "093",
+                                    "tipo": "Farfalle",
+                                    "materiale": "semola integrale"
+                                },
+                                {
+                                    "formato": "093",
+                                    "tipo": "Farfalle",
+                                    "materiale": "semola biologica"
+                                }                        
+                            ]                    
                 }
-            ]
+            ]         
         }
     ]
 }
