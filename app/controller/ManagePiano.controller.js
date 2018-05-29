@@ -9,6 +9,8 @@ sap.ui.define([
 ], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library) {
     "use strict";
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
+
+        ISLOCAL: 0,
         data_json: {},
         ModelLinea: new JSONModel({}),
         ModelOperatori: new JSONModel({}),
@@ -16,13 +18,18 @@ sap.ui.define([
         piano: null,
         pianoPath: null,
         turnoPath: null,
+        
+        
         onInit: function () {
+
+            this.ISLOCAL = sap.ui.getCore().getModel().getData().ISLOCAL;
             Library.RemoveClosingButtons.bind(this)();
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.getRoute("managePiano").attachPatternMatched(this._onObjectMatched, this);
+            oRouter.getRoute("managePiano").attachPatternMatched(this.URLChangeCheck, this);
         },
         SUCCESSDatiLinee: function (Jdata) {
             this.ModelLinea.setData(Jdata);
+            this.getView().setModel(this.ModelLinea, 'linea');
             this.addFieldsCreazione();
             if (Number(this.piano.area) === 1) {
                 this.changeFields();
@@ -30,27 +37,27 @@ sap.ui.define([
         },
         SUCCESSDatiOperatore: function (Jdata) {
             this.ModelOperatori.setData(Jdata);
+            this.getView().setModel(this.ModelOperatori, 'operatore');
         },
-        _onObjectMatched: function (oEvent) {
+        URLChangeCheck: function (oEvent) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            var oModelTurni = this.getOwnerComponent().getModel("turni");
-            if (!oModelTurni) {
+            var ModelTurni = this.getOwnerComponent().getModel("turni");
+            if (!ModelTurni) {
                 this.buildNewModel();
             } else {
-                Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));
-                this.getView().setModel(this.ModelLinea, 'linea');
+                this.piano = ModelTurni.getData()[this.turnoPath][this.pianoPath];
+                if (this.ISLOCAL === 1) {
+                    Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));
+                    Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
+                } else {
+                }
                 
-                Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
-                this.getView().setModel(this.ModelOperatori, 'operatore');
-
                 var oTitle = this.getView().byId("Title");
                 var oSubtitle = this.getView().byId("Subtitle");
-                this.piano = oModelTurni.getData()[this.turnoPath][this.pianoPath];
                 oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
                 oTitle.addStyleClass("customTextTitle");
                 if (parseInt(this.piano.area, 10) === -1 || parseInt(this.piano.area, 10) === 2) {
-                    this.removeBar();
                     if (parseInt(this.piano.area, 10) === -1) {
                         oSubtitle.setText("Turno in creazione");
                     } else {
@@ -58,7 +65,6 @@ sap.ui.define([
                     }
                     oSubtitle.addStyleClass("customText");
                 } else {
-                    this.showBar();
                     oSubtitle.setText("Turno in corso");
                     oSubtitle.addStyleClass("customText");
                 }
@@ -73,28 +79,6 @@ sap.ui.define([
             } else {
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("overview", true);
-            }
-        },
-        removeBar: function () {
-            var oItems = this.getView().byId("managePianoTable").getItems();
-            for (var i in oItems) {
-                var oHBox = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0];
-                var ProgressIndicator = oHBox.getItems()[0].getItems()[0];
-                ProgressIndicator.setShowValue(false);
-                var oButton = oHBox.getItems()[1].getItems()[0];
-                oButton.setVisible(false);
-                ProgressIndicator.getParent().setWidth("100%");
-            }
-        },
-        showBar: function () {
-            var oItems = this.getView().byId("managePianoTable").getItems();
-            for (var i in oItems) {
-                var oHBox = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0];
-                var ProgressIndicator = oHBox.getItems()[0].getItems()[0];
-                var oButton = oHBox.getItems()[1].getItems()[0];
-                oButton.setVisible(true);
-                ProgressIndicator.setShowValue(true);
-                ProgressIndicator.getParent().setWidth("97%");
             }
         },
         handlePressOpenMenu: function (oEvent) {
@@ -120,10 +104,6 @@ sap.ui.define([
             var msg = "'" + oEvent.getParameter("item").getValue() + "' entered";
             MessageToast.show(msg);
         },
-        onMenu: function () {
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("tmp");
-        },
         buildNewModel: function () {
             var ModelLinea = new JSONModel();
             var that = this;
@@ -144,7 +124,6 @@ sap.ui.define([
                     oTitle.setText(that.piano.data + "    ---    " + that.piano.turno);
                     oTitle.addStyleClass("customTextTitle");
                     if (parseInt(that.piano.area, 10) === -1 || parseInt(that.piano.area, 10) === 2) {
-                        that.removeBar();
                         if (parseInt(that.piano.area, 10) === -1) {
                             oSubtitle.setText("Turno in creazione");
                         } else {
@@ -152,7 +131,6 @@ sap.ui.define([
                         }
                         oSubtitle.addStyleClass("customText");
                     } else {
-                        that.showBar();
                         oSubtitle.setText("Turno in corso");
                         oSubtitle.addStyleClass("customText");
                     }
@@ -225,7 +203,7 @@ sap.ui.define([
             });
             oRow.addCell(oInput);
             oInput = new sap.m.Input({
-                value: "{linea>cart}",
+                value: "{linea>cartoni}",
                 width: "4rem",
                 type: "Number",
                 liveChange: this.ChangeValues.bind(this)
@@ -273,7 +251,7 @@ sap.ui.define([
                         oRows[j].removeCell(5);
                     }
                     oRows[j].addCell(new sap.m.Text({text: "{linea>qli}"}));
-                    oRows[j].addCell(new sap.m.Text({text: "{linea>cart}"}));
+                    oRows[j].addCell(new sap.m.Text({text: "{linea>cartoni}"}));
                     oRows[j].addCell(new sap.m.Text({text: "{linea>ore}"}));
                 }
             }
@@ -284,8 +262,8 @@ sap.ui.define([
             var ModelLinea = this.getView().getModel("linea");
             var oData = ModelLinea.getData();
             var oLinea_path = oEvent.getSource().getBindingContext("linea").getPath().split("/");
-            var Prodotti = oData[oLinea_path[1]][oLinea_path[2]].ProductCollection;
-            var Prodotto = {seq: "", formato: "", tipo: "", materiale: "", confezionamento: "", button: "0", qli: "", cart: "", ore: "", disp: "", prod: "", fermo: "", Formati: oData[oLinea_path[1]][oLinea_path[2]].ProductCollection[0].Formati};
+            var Prodotti = oData[oLinea_path[1]][oLinea_path[2]].batchlist;
+            var Prodotto = {seq: "", formato: "", tipo: "", materiale: "", confezionamento: "", button: "0", qli: "", cart: "", ore: "", disp: "", prod: "", fermo: "", Formati: oData[oLinea_path[1]][oLinea_path[2]].batchlist[0].Formati};
             Prodotti.push(Prodotto);
             ModelLinea.setData(oData);
             this.getView().byId("managePianoTable").setModel(ModelLinea, "linea");

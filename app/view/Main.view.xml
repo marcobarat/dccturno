@@ -1,30 +1,71 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
-          xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" xmlns:cust="myapp.control"
+          xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
+          xmlns:u="sap.ui.unified" xmlns:comp="myapp.component" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+          xmlns:wt="myapp.control"
           controllerName="myapp.controller.Main">
-    <Page title="{locale>myapp.view.main.title}">
-        <headerContent>
-            <Button icon="sap-icon://log" press="onAddPress" text="Uscita"
-                    ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
-        </headerContent>
+    <Page id="myPage" showHeader="false">
         <content>
-            <Button text="{locale>myapp.goto.tmp}" press="onToTmpPage" class="sapUiSmallMarginEnd"/>
-            <VBox class="sapUiSmallMargin testo-grande" width="100%">
-                <Text text="{/descrizione}" />
-            </VBox>
-            <TileContainer
-                id="container"
-                tileDelete="handleTileDelete"
-                tiles="{/linee}">
-                <StandardTile
-                    idz="{idlinea}"
-                    icon="{icon}"
-                    type="{type}"
-                    title="{linea}"
-                    number="{linea_desc}"
-                    info="{info}"
-                    infoState="{infoState}"
-                    press="onMiao"                />
-            </TileContainer>
+            
+            
+            <GenericTile header="Cumulative Totals" subheader="Expenses" press="press" backgroundImage="sap-icon://legend">
+		<!--<tileContent unit="Unit" footer="Footer Text" backgroundImage="sap-icon://line-charts"/>-->
+		<!--</tileContent>-->
+	</GenericTile>
+
+	<GenericTile header="Cumulative Totals" subheader="Expenses" press="press">
+<!--		<tileContent unit="Unit" footer="Footer Text">
+			<NumericContent value="12" />
+		</tileContent>-->
+	</GenericTile>
+            
+            
+<!--            <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi"> 
+                <detailPages>
+                    <Page id="Home" showHeader="false">
+                        <content>
+                            <Panel>
+                                <FlexBox width="100%" alignItems="Center"
+                                         justifyContent="Center" class="middleImg">
+                                    <items>
+                                        <Image
+                                            src="img/dececco.jpg"                               
+                                            width="60%" class="sapUiSmallMarginEnd" >
+                                        </Image>
+                                    </items>
+                                </FlexBox>
+                            </Panel>
+                        </content>
+                    </Page>
+                </detailPages>
+                
+                
+                
+                <masterPages>
+                    <Page id="processi" class="colorPage" showHeader="false">
+                        <content>
+                            <VBox height="10%"/>
+                            <VBox height="90%" width="100%">
+                                    <VBox height="60%" width="100%" justifyContent="center" alignItems="start">
+                                        <Button text="Home" enabled="true" pressed="true" press="onInit" width="100%" class="styleButton">
+                                        </Button>
+                                        <Text/>
+                                        <Button text="Gestione piani di confezionamento" enabled="true" press="onToPianiPage" width="100%" class="styleButton">
+                                        </Button>
+                                        <Text/>
+                                        <Button text="Sinottico reparto" enabled="true" press="FinePredisposizione" width="100%" class="styleButton">
+                                        </Button>
+                                        <Text/>
+                                        <Button text="Sinottico linea" enabled="true" press="FinePredisposizione" width="100%" class="styleButton">
+                                        </Button>
+                                        <Text/>
+                                        <Button text="Sinottico macchina" enabled="true" press="FinePredisposizione" width="100%" class="styleButton">
+                                        </Button>
+                                    </VBox>
+                            </VBox>
+                        </content>
+                    </Page>
+                </masterPages>
+            </SplitApp>-->
         </content>
     </Page>
 </mvc:View>

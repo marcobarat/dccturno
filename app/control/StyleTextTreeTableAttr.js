@@ -25,10 +25,9 @@ sap.ui.define([
             sap.m.TextRenderer.render(oRm, oControl);
         },
         onAfterRendering: function () {
-            
+
             if (this.getArea() === "0") {
                 jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#eeeeee");
-
             }
             if (this.getArea() === "1") {
                 jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#7CA295");
