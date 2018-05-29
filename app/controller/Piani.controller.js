@@ -2,8 +2,9 @@ sap.ui.define([
     'jquery.sap.global',
     './Formatter',
     'sap/ui/core/mvc/Controller',
-    'sap/ui/model/json/JSONModel'
-], function (jQuery, Formatter, Controller, JSONModel) {
+    'sap/ui/model/json/JSONModel',
+    'myapp/controller/Library'
+], function (jQuery, Formatter, Controller, JSONModel, Library) {
     "use strict";
 
     var PianiController = Controller.extend("myapp.controller.Piani", {
@@ -13,7 +14,7 @@ sap.ui.define([
             var params = jQuery.sap.getUriParameters(window.location.href);
             this.buildNewModel();
 
-            
+            Library.myFn();
         },
 
         onAfterRendering: function () {
@@ -26,10 +27,8 @@ sap.ui.define([
 
         },
         managePiano: function (oEvent) {
-//           var oPiano = oEvent.getSource();
            var oTable = oEvent.getSource().getParent().getBindingContext("turni");
            var  Row = oTable.getModel().getProperty(oTable.sPath);
-//           var index = this.getIndexByRow(Row);
            var area = Row.area;
            var paths = oEvent.getSource().getBindingContext("turni").getPath().substr(1).split("/");
            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -39,7 +38,7 @@ sap.ui.define([
                oRouter.navTo("managePiano", {turnoPath: paths[0], pianoPath: paths[1]});
             }
         },
-        
+//         
         groupTurni: function(data, group0, group1, group2, group3) {
             for (var key in data){
                 if (typeof data[key] === "object"){
@@ -63,16 +62,7 @@ sap.ui.define([
             }
             return;
         },
-//        
-//        getIndexByRow: function(row){
-//            var array = this.getOwnerComponent().getModel("turni").getData().pianidiconfezionamento;
-//            for (var i=0 ; i<array.length; i++){
-//                if (array[i].data === row.data && array[i].turno === row.turno){
-//                    return i;
-//                }
-//            }
-//            return -1; 
-//        },
+// SE REFRESHO COSTRUISCO NUOVAMENTE IL MODELLO        
         buildNewModel: function(){
             var oModel = new JSONModel();
             var that = this;
@@ -91,7 +81,6 @@ sap.ui.define([
                         }
             });            
             this.getOwnerComponent().setModel(oModel, "turni");
-//            this.getView().setModel(oModel, "");            
         },
         onCloseApp: function(){
             window.close();
