@@ -3,8 +3,8 @@
           xmlns:comp="myapp.control"
           controllerName="myapp.controller.Piani"
           id="Piani">
-    <Page class="colorPage">
-        <customHeader>
+    <Page class="colorPage" showHeader="false">
+        <!--        <customHeader>
             <Bar class="paddingTitle">
             <contentMiddle>
                 <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
@@ -13,326 +13,259 @@
                 <Button icon="sap-icon://log" press="onCloseApp" text="Uscita" ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
             </contentRight>
             </Bar>
-        </customHeader>
+        </customHeader>-->
 
         <content>
-
-<!--            <Table id="idProductsTable"
-                   inset="false"
-                   items="{
-			path: '/pianidiconfezionamento',
-			sorter: {
-				path: 'data'
-			}
-		}">
-                <headerToolbar>
-                    <Toolbar>
-                        <content>
-                            <Title text="Fara San Martino - Reparto Confezionamento " level="H1"/>
-                            <ToolbarSpacer />
-                        </content>
-                    </Toolbar>
-                </headerToolbar>
-                <columns>
-
-                    <Column
-                        width="12em">
-                        <comp:StyleTextTreeTableAttr text="" />
-                    </Column>
-                    <Column
-                        width="12em">
-                        <comp:StyleTextTreeTableAttr text="Data" />
-                    </Column>
-                    <Column
-                        minScreenWidth="Tablet"
-                        demandPopin="true">
-                        <comp:StyleTextTreeTableAttr text="Turno" />
-                    </Column>
-                    <Column
-                        minScreenWidth="Desktop"
-                        demandPopin="true"
-                        hAlign="End">
-                        <comp:StyleTextTreeTableAttr text="Q.li confezionati" />
-                    </Column>
-                    <Column
-                        minScreenWidth="Desktop"
-                        demandPopin="true"
-                        hAlign="Center">
-                        <comp:StyleTextTreeTableAttr text="Q.li residui" />
-                    </Column>
-                    <Column
-                        minScreenWidth="Desktop"
-                        demandPopin="true"
-                        hAlign="Center">
-                        <comp:StyleTextTreeTableAttr text="LineeP" />
-                    </Column>
-                    <Column
-                        hAlign="End">
-                        <comp:StyleTextTreeTableAttr text="Turni" />
-                    </Column>
-                </columns>
-                <items >
-                    <ColumnListItem>
-                        <cells>
-                            <core:Icon
-                                src="{icon}"
-                                class="size4"
-                                press="managePiano"
-                                color="black" >
-                            </core:Icon>
-             
-                    
-                            <comp:StyleTextTreeTableAttr
-                                text="{data}" area="{area}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turno}" />
-                            <comp:StyleTextTreeTableAttr
-                                text="{qliconf}" />
-                            <comp:StyleTextTreeTableAttr
-                                text="{qliresidui}" />
-                            <comp:StyleTextTreeTableAttr
-                                text="{lineep}" />
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni}" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>    -->
-        <Table showNoData='false' class="sapUiLargeMarginTop totalWhiteTable tableTextSize">
-            <columns>
-                <Column>
-                    <header>
-                        <comp:StyleTextTreeTableAttr text="" />
-                    </header>
-                </Column>
-                <Column hAlign="Center">
-                    <header>
-                        <comp:StyleTextTreeTableAttr text="Data"/>
-                    </header>
-                </Column>
-                <Column hAlign="Center">
-                    <header>
-                        <comp:StyleTextTreeTableAttr text="Turno"/>
-                    </header>
-                </Column>
-                <Column hAlign="Center">
-                    <header>
-                        <comp:StyleTextTreeTableAttr text="Q.li confezionati"/>
-                    </header>
-                </Column>
-                <Column hAlign="Center">
-                    <header>
-                        <comp:StyleTextTreeTableAttr text="Q.li residui"/>
-                    </header>
-                </Column>  
-                <Column hAlign="Center">
-                    <header>
-                        <comp:StyleTextTreeTableAttr text="LineeP"/>
-                    </header>
-                </Column> 
-                <Column hAlign="Center">
-                    <header>
-                        <comp:StyleTextTreeTableAttr text="Turno"/>
-                    </header>
-                </Column>                                             
-            </columns>
-        </Table>            
+            
+            <VBox height="100%" width="100%">
+                <VBox height="15%" width="100%">
+                    <HBox>
+                        <VBox height="100%" width="20%"/>
+                        <VBox height="100%" width="60%">
+                            <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
+                        </VBox>
+                        <VBox height="100%" width="20%">
+                            <Button icon="sap-icon://log" text="Esci"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox height="85%" width="100%">
+                    <Table showNoData='false' class="sapUiLargeMarginTop totalWhiteTable tableTextSize">
+                        <columns>
+                            <Column>
+                                <header>
+                                    <comp:StyleTextTreeTableAttr text="" />
+                                </header>
+                            </Column>
+                            <Column hAlign="Center">
+                                <header>
+                                    <comp:StyleTextTreeTableAttr text="Data"/>
+                                </header>
+                            </Column>
+                            <Column hAlign="Center">
+                                <header>
+                                    <comp:StyleTextTreeTableAttr text="Turno"/>
+                                </header>
+                            </Column>
+                            <Column hAlign="Center">
+                                <header>
+                                    <comp:StyleTextTreeTableAttr text="Q.li confezionati"/>
+                                </header>
+                            </Column>
+                            <Column hAlign="Center">
+                                <header>
+                                    <comp:StyleTextTreeTableAttr text="Q.li residui"/>
+                                </header>
+                            </Column>  
+                            <Column hAlign="Center">
+                                <header>
+                                    <comp:StyleTextTreeTableAttr text="LineeP"/>
+                                </header>
+                            </Column> 
+                            <Column hAlign="Center">
+                                <header>
+                                    <comp:StyleTextTreeTableAttr text="Turno"/>
+                                </header>
+                            </Column>                                             
+                        </columns>
+                    </Table>            
     
-        <ScrollContainer height='188.4px' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
-        <!-- Table to hold data, data ,data -->
-            <Table items='{turni>/turniconclusi}' class="noBorder tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
-                <columns>
-                <!-- Dont need columns header, as upper table has already defined them. -->
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column> 
-                    <Column hAlign="Center">
-                    </Column>                                         
-                </columns>
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <core:Icon
-                                src="{turni>icon}"
-                                class="size4"
-                                press="managePiano"
-                                color="black" >
-                            </core:Icon>
+                    <ScrollContainer height='188.4px' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
+                        <!-- Table to hold data, data ,data -->
+                        <Table items='{turni>/turniconclusi}' class="noBorder tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                            <columns>
+                                <!-- Dont need columns header, as upper table has already defined them. -->
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column> 
+                                <Column hAlign="Center">
+                                </Column>                                         
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <core:Icon
+                                            src="{turni>icon}"
+                                            class="size4"
+                                            press="managePiano"
+                                            color="black" >
+                                        </core:Icon>
              
                     
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>data}" area="{turni>area}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turno}" />
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliconf}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliresidui}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>lineep}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turni}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>data}" area="{turni>area}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>turno}" />
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>qliconf}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>qliresidui}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>lineep}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>turni}"/>
 
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
-        </ScrollContainer>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </ScrollContainer>
         
-        <Table items='{turni>/turnoincorso}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
-                <columns>
-                <!-- Dont need columns header, as upper table has already defined them. -->
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column> 
-                    <Column hAlign="Center">
-                    </Column>                                         
-                </columns>
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <core:Icon
-                                src="{turni>icon}"
-                                class="size4"
-                                press="managePiano"
-                                color="black" >
-                            </core:Icon>
+                    <Table items='{turni>/turnoincorso}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                        <columns>
+                            <!-- Dont need columns header, as upper table has already defined them. -->
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column> 
+                            <Column hAlign="Center">
+                            </Column>                                         
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <core:Icon
+                                        src="{turni>icon}"
+                                        class="size4"
+                                        press="managePiano"
+                                        color="black" >
+                                    </core:Icon>
              
                     
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>data}" area="{turni>area}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turno}" />
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliconf}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliresidui}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>lineep}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turni}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>data}" area="{turni>area}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>turno}" />
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>qliconf}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>qliresidui}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>lineep}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>turni}"/>
 
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table> 
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table> 
             
-        <ScrollContainer height='188.4px' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
-        <!-- Table to hold data, data ,data -->
-            <Table items='{turni>/turniprogrammati}' class="noBorder tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
-                <columns>
-                <!-- Dont need columns header, as upper table has already defined them. -->
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column> 
-                    <Column hAlign="Center">
-                    </Column>                                         
-                </columns>
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <core:Icon
+                    <ScrollContainer height='188.4px' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
+                        <!-- Table to hold data, data ,data -->
+                        <Table items='{turni>/turniprogrammati}' class="noBorder tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                            <columns>
+                                <!-- Dont need columns header, as upper table has already defined them. -->
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column>
+                                <Column hAlign="Center">
+                                </Column> 
+                                <Column hAlign="Center">
+                                </Column>                                         
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <core:Icon
                                 
-                                src="{turni>icon}"
-                                class="size4"
-                                press="managePiano"
-                                color="black" >
-                            </core:Icon>
+                                            src="{turni>icon}"
+                                            class="size4"
+                                            press="managePiano"
+                                            color="black" >
+                                        </core:Icon>
              
                     
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>data}" area="{turni>area}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turno}" />
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliconf}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliresidui}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>lineep}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turni}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>data}" area="{turni>area}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>turno}" />
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>qliconf}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>qliresidui}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>lineep}"/>
+                                        <comp:StyleTextTreeTableAttr
+                                            text="{turni>turni}"/>
 
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
-        </ScrollContainer>            
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </ScrollContainer>            
             
-        <Table items='{turni>/turnodacreare}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
-                <columns>
-                <!-- Dont need columns header, as upper table has already defined them. -->
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column>
-                    <Column hAlign="Center">
-                    </Column> 
-                    <Column hAlign="Center">
-                    </Column>                                         
-                </columns>
-                <items>
-                    <ColumnListItem>
-                        <cells>
-                            <core:Icon
-                                src="{turni>icon}"
-                                class="size4"
-                                press="managePiano"
-                                color="black" >
-                            </core:Icon>
+                    <Table items='{turni>/turnodacreare}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                        <columns>
+                            <!-- Dont need columns header, as upper table has already defined them. -->
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column>
+                            <Column hAlign="Center">
+                            </Column> 
+                            <Column hAlign="Center">
+                            </Column>                                         
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <core:Icon
+                                        src="{turni>icon}"
+                                        class="size4"
+                                        press="managePiano"
+                                        color="black" >
+                                    </core:Icon>
              
                     
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>data}" area="{turni>area}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turno}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliconf}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>qliresidui}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>lineep}"/>
-                            <comp:StyleTextTreeTableAttr
-                                text="{turni>turni}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>data}" area="{turni>area}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>turno}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>qliconf}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>qliresidui}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>lineep}"/>
+                                    <comp:StyleTextTreeTableAttr
+                                        text="{turni>turni}"/>
 
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>             
-            
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </VBox>          
+            </VBox>
         </content>
     </Page>
 </mvc:View>
