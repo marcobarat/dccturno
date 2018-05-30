@@ -10,20 +10,10 @@ sap.ui.define([
     var PianiController = Controller.extend("myapp.controller.Piani", {
         data_json: {},
         onInit: function () {
-
             var params = jQuery.sap.getUriParameters(window.location.href);
             this.buildNewModel();
         },
 
-        onAfterRendering: function () {
-            
-
-        },
-
-        onToTmpPage: function (oEvent) {
-            this.getOwnerComponent().getRouter().navTo("tmp");
-
-        },
         managePiano: function (oEvent) {
            var oTable = oEvent.getSource().getParent().getBindingContext("turni");
            var  Row = oTable.getModel().getProperty(oTable.sPath);
@@ -36,7 +26,9 @@ sap.ui.define([
                oRouter.navTo("managePiano", {turnoPath: paths[0], pianoPath: paths[1]});
             }
         },
-//         
+        GoToHome: function() {
+            this.getOwnerComponent().getRouter().navTo("Main");
+        },
         groupTurni: function(data, group0, group1, group2, group3) {
             for (var key in data){
                 if (typeof data[key] === "object"){
@@ -60,7 +52,6 @@ sap.ui.define([
             }
             return;
         },
-// SE REFRESHO COSTRUISCO NUOVAMENTE IL MODELLO        
         buildNewModel: function(){
             var oModel = new JSONModel();
             var that = this;

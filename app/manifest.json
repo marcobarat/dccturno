@@ -84,10 +84,6 @@
                     "pattern": "",
                     "target": "main"
                 }, {
-                    "name": "tmp",
-                    "pattern": "tmp",
-                    "target": "tmp"
-                }, {
                     "name": "piani",
                     "pattern": "piani",
                     "target": "piani"
@@ -112,9 +108,6 @@
                 "main": {
                     "viewName": "view.Main",
                     "viewLevel": 0
-                },
-                "tmp": {
-                    "viewName": "view.Tmp"
                 },
                 "piani": {
                     "viewName": "view.Piani"

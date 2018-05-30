@@ -13,7 +13,9 @@
 
 
 
-
+.tileLayout {
+	float: left;
+}
 .myButton
 {
     background-color: red;
