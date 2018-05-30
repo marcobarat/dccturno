@@ -55,7 +55,7 @@
                                                                                         press="onPress"
                                                                                         width="100%"
                                                                                         class="fix_b"
-                                                                                        state=""
+                                                                                        state="{linea>statolinea}"
                                                                                         customType="linea">
                                                             
                                                                             <cus:layoutData>
@@ -93,10 +93,11 @@
                                                                                 <VBox width="98%" >
                                                                                     <cus:NewProgressIndicator
                                                                                         class="sapUiSmallMarginBottom largo"
-                                                                                        NewPercentValue="{linea>disponibilita}"
-                                                                                        displayValue="{linea>disponibilita}"
+                                                                                        percentValue="{= Number(${linea>avanzamento})}"
+                                                                                        displayValue="{linea>perc_avanzamento}"
                                                                                         showValue="true"
-                                                                                        state="None" />
+                                                                                        barColor="{linea>barColor}"
+                                                                                        />
                                                                                 </VBox>
                                                                                 <VBox width="">
                                                                                     <cus:CustomButt text=" "
@@ -149,7 +150,7 @@
                                                                             </Table>
                                                                             <ScrollContainer height='231px' vertical='true'>
                                                                                 <content>
-                                                                                    <Table width="950px" items="{linea>batchlist}">
+                                                                                    <Table selectionMode="None" class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" width="930px" items="{linea>batchlist}">
                                                                                         <columns>
                                                                                             <Column hAlign="Center"/>
                                                                                             <Column width="5%"  hAlign="Center"/>
@@ -165,7 +166,7 @@
                                                                                                 <cells>
                                                                                                     <cus:CustomButt text="" 
                                                                                                                     customType="batch"
-                                                                                                                    state="1"
+                                                                                                                    state="{linea>statoBatch}"
                                                                                                                     press="handlePressOpenMenu" />
                                                                                                     <Text
                                                                                                         class="sapUiSmallMarginTop"

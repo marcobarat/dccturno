@@ -3,7 +3,7 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.MenuItemEventing">
-    <u:Menu items="{path: '/menu'}" itemSelect="visuBatch">
+    <u:Menu items="{path: '/menu'}" itemSelect="azioneBatch">
         <u:MenuItem
             text="{nome}"
             startsSection="{nuovasezione}"

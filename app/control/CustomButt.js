@@ -25,22 +25,56 @@ sap.ui.define([
             sap.m.ButtonRenderer.render(oRm, oControl);
         },
         onAfterRendering: function () {
+            var oStateArray;
             var oType = this.getCustomType();
             var oState = this.getState();
-            if (oType === "linea"){
-                switch (oState) {
-                    case "0":
-                        jQuery.sap.byId(this.getId()).addClass("startLineaButtonVerde");
-                        break;
-                    case "1":
-                        jQuery.sap.byId(this.getId()).addClass("startLineaButtonOutside");
-                        break;
-                    default:
-                        jQuery.sap.byId(this.getId()).addClass("startLineaButtonOutside");
+            if (oType === "linea") {
+                if (oState !== "") {
+                    oStateArray = oState.split(".");
+                    switch (oStateArray[0]) {
+                        case "Disponibile":
+                        {
+                            jQuery.sap.byId(this.getId()).parent().removeClass("bordoLineaGrey");
+                            jQuery.sap.byId(this.getId()).parent().addClass("bordoLineaGreen");
+                            break;
+                        }
+                        case "Nondisponibile":
+                            jQuery.sap.byId(this.getId()).parent().removeClass("bordoLineaGreen");
+                            jQuery.sap.byId(this.getId()).parent().addClass("bordoLineaGrey");
+                            break;
+                    }
+                    if (oStateArray[1]) {
+                        switch (oStateArray[1]) {
+                            case "Vuota":
+                                jQuery.sap.byId(this.getId()).addClass("internoLineaWhite");
+                                break;
+                            case "Attrezzaggio":
+                                jQuery.sap.byId(this.getId()).addClass("internoLineaYellow");
+                                break;
+                            case "Lavorazione":
+                                jQuery.sap.byId(this.getId()).addClass("internoLineaGreen");
+                                break;
+                            case "Fermo":
+                                jQuery.sap.byId(this.getId()).addClass("internoLineaRed");
+                                break;
+                            case "Svuotamento":
+                                jQuery.sap.byId(this.getId()).addClass("internoLineaBordeaux");
+                                break;
+                        }
+                        } else {
+                            jQuery.sap.byId(this.getId()).removeClass("internoLineaBordeaux internoLineaRed internoLineaGreen internoLineaYellow internoLineaWhite");
+                        }
 
-                }
-            }
-            if (oType === "confezionamento"){
+                        }
+                    }
+
+
+
+
+
+
+
+            if (oType === "confezionamento") {
                 switch (oState) {
                     case "0":
 //                        jQuery.sap.byId(this.getId()).addClass("bianconco");
@@ -51,35 +85,35 @@ sap.ui.define([
                         break;
                     case "2":
                         jQuery.sap.byId(this.getId()).addClass("rossorso");
-                        this.setText("***");  
+                        this.setText("***");
                         break;
-                        
+
                 }
             }
-            if (oType === "batch"){
+            if (oType === "batch") {
                 switch (oState) {
-                    case "0":
+                    case "Non confezionato":
 //                        jQuery.sap.byId(this.getId()).addClass("bianconco");
                         break;
                     case "1":
                         jQuery.sap.byId(this.getId()).addClass("neroreno");
                         break;
                     case "2":
-                        jQuery.sap.byId(this.getId()).addClass("rossorso"); 
+                        jQuery.sap.byId(this.getId()).addClass("rossorso");
                         break;
                     case "3":
-                        jQuery.sap.byId(this.getId()).addClass("giallogallo"); 
+                        jQuery.sap.byId(this.getId()).addClass("giallogallo");
                         break;
-                        
+
                 }
             }
-            if (oType === "graficoSPC"){
+            if (oType === "graficoSPC") {
                 switch (oState) {
                     case "0":
                         jQuery.sap.byId(this.getId()).addClass("progressBarButtonYellow");
                         break;
                     case "1":
-                        jQuery.sap.byId(this.getId()).addClass("progressBarButtonGreen"); 
+                        jQuery.sap.byId(this.getId()).addClass("progressBarButtonGreen");
                         break;
                 }
             }

@@ -2,7 +2,7 @@
     "linee": [{
             "lineaID": "1",
             "linea": "Coppia 04",
-            "statolinea": "Disponibile.Vuota",
+            "statolinea": "Disponibile.Lavorazione",
             "disponibilita": "",
             "efficienza": "",
             "qualita": "",
@@ -56,7 +56,7 @@
         }, {
             "lineaID": "12",
             "linea": "Coppia 02",
-            "statolinea": "",
+            "statolinea": "Nondisponibile",
             "disponibilita": "",
             "efficienza": "",
             "qualita": "",
@@ -82,7 +82,7 @@
         }, {
             "lineaID": "41",
             "linea": "Linea 12",
-            "statolinea": "",
+            "statolinea": "Disponibile.Attrezzaggio",
             "disponibilita": "",
             "efficienza": "",
             "qualita": "",

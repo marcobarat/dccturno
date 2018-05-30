@@ -1,5 +1,9 @@
-sap.ui.define([], function () {
+sap.ui.define([
+    'sap/ui/model/json/JSONModel'
+], function (JSONModel) {
     return {
+        exp: null,
+// FUNZIONI TEMPORALI         
         minutesToStandard: function (val) {
             var hours = Math.floor(val / 60);
             val -= hours * 60;
@@ -63,6 +67,57 @@ sap.ui.define([], function () {
                 success: successFunc,
                 error: errorFunc
             });
-        }
+        },
+//FUNZIONI RICORSIVE PER LA TREETABLE        
+        RecursiveJSONComparison: function (std, bck, arrayName) {
+            for (var key in std) {
+                if (typeof std[key] === "object") {
+                    bck[key] = this.RecursiveJSONComparison(std[key], bck[key], arrayName);
+                } else {
+                    if (key === "value") {
+                        if (bck[key] !== std[key] && bck.expand !== 3) {
+                            bck.expand = 2;
+                        }
+                    }
+                }
+            }
+            return bck;
+        },
+        RecursiveParentExpansion: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    this.exp = 0;
+                    json[key] = this.RecursiveJSONExpansionFinder(json[key]);
+                    if (typeof json[key].expand !== "undefined" && json[key].expand === 0) {
+                        json[key].expand = this.exp;
+                    }
+                    json[key] = this.RecursiveParentExpansion(json[key]);
+                }
+            }
+            return json;
+        },
+        RecursiveJSONExpansionFinder: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveJSONExpansionFinder(json[key]);
+                } else {
+                    if (key === "expand") {
+                        if (json[key] > 0) {
+                            this.exp = 1;
+                        }
+                    }
+                }
+            }
+            return json;
+        },
+        SUCCESSDatiTurni: function (Jdata) {
+            this.ModelTurni = new JSONModel({});
+            this.data_json.turniconclusi = [];
+            this.data_json.turnoincorso = [];
+            this.data_json.turniprogrammati = [];
+            this.data_json.turnodacreare = [];
+            this.groupTurni(Jdata, "turniconclusi", "turnoincorso", "turniprogrammati", "turnodacreare");
+            this.ModelTurni.setData(this.data_json);
+        }     
     };
 });

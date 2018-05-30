@@ -6,27 +6,27 @@
     xmlns:wt="myapp.control" 
     controllerName="myapp.controller.MenuItemEventing"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="true" showHeader="false">
+    <Dialog contentWidth="700px" horizontalScrolling="false" verticalScrolling="true" showHeader="false">
         <TabContainer
-            id="attributiContainer">
+            id="attributiContainer" class="sapUiMediumMarginBottom">
             <items>    
                 <TabContainerItem name="attributi">
                     <content>             
                         <HBox>
                             <VBox width="20%" class="sapUiMediumMargin">
-                                <Select class="sapUiMediumMarginBottom">
-                                    <core:Item key="500gr" text="500gr" />
+                                <Select class="sapUiMediumMarginBottom" change="changeSKU">
+                                    <core:Item key="formato" text="formato" />
                                 </Select>
-                                <Select class="sapUiMediumMarginBottom">
-                                    <core:Item key="500gr" text="500gr" />
+                                <Select class="sapUiMediumMarginBottom" change="changeSKU">
+                                    <core:Item key="confezione" text="confezione" />
                                 </Select>
                         
-                                <Select class="sapUiMediumMarginBottom">
-                                    <core:Item key="500gr" text="500gr" />
+                                <Select class="sapUiMediumMarginBottom" change="changeSKU">
+                                    <core:Item key="cliente" text="cliente" />
                                 </Select>
                                 
-                                <Select class="sapUiMediumMarginTop">
-                                    <core:Item key="500gr" text="500gr" />
+                                <Select class="sapUiMediumMarginTop" change="changeSKU">
+                                    <core:Item key="SKU" text="SKU" />
                                 </Select>
                             </VBox>
                             <VBox width="80%">
@@ -34,9 +34,9 @@
                                     id="modificaAttributi_Table"
                                     rows="{path:'SKU>/attributi', parameters: {arrayNames:['attributi']}}"
                                     selectionMode="None"
-                                    collapseRecursive="true"
                                     enableSelectAll="false"
-                                    visibleRowCount="10">
+                                    visibleRowCount="15"
+                                    collapseRecursive="true">
                                     <wt:columns>
                                         <t:Column resizable="false">
                                             <Label text="ATTRIBUTI"/>
@@ -62,7 +62,16 @@
                     
                 </TabContainerItem>                
             </items>
-        </TabContainer>    
+        </TabContainer> 
+        <HBox>
+            <VBox width="40%">
+            <Button text="Annulla" width="100%" class="annullaButton" press="closeDialog"></Button>
+            </VBox>
+            <VBox width="20%"/>
+            <VBox width="40%">
+            <Button text="Conferma" width="100%" class="confermaButton"></Button>
+            </VBox>
+        </HBox>   
     </Dialog>
 
 </core:FragmentDefinition>

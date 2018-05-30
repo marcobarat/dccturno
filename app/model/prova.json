@@ -37,6 +37,16 @@
             "metodo": "visuBatch",
             "nuovasezione": false
         }, {
+            "nome": "Gestione Intervalli di Fermo",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": true
+        },{
+            "nome": "Causalizzazione Fermi Automatici",
+            "attivo": true,
+            "metodo": "visuBatch",
+            "nuovasezione": false
+        },{
             "nome": "Exit",
             "attivo": true,
             "metodo": "visuBatch",

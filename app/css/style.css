@@ -371,3 +371,71 @@
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+/*GESTIONE DEL BUTTON LINEA*/
+
+.bordoLineaGreen .sapMBtnText{
+    border: 3px solid #7CA295 !important;
+}
+
+.bordoLineaGrey .sapMBtnText{
+    border: 3px solid #bfbfbf !important;
+}
+
+.internoLineaWhite>.sapMBtnInner{
+    background-image: none;
+    text-shadow: none;
+    background-color: white !important;
+    color: #003A6B !important; 
+}
+
+.internoLineaYellow>.sapMBtnInner{
+    background-image: none;
+    text-shadow: none;
+    background-color: #FFD300 !important;
+    color: #003A6B !important; 
+}
+
+.internoLineaGreen>.sapMBtnInner{
+    background-image: none;
+    text-shadow: none;
+    background-color: #7CA295 !important;
+    color: white !important; 
+}
+
+.internoLineaRed>.sapMBtnInner{
+    background-image: none;
+    text-shadow: none;
+    background-color: #A71930 !important;
+    color: #003A6B !important; 
+}
+
+.internoLineaBordeaux>.sapMBtnInner{
+    background-image: none;
+    text-shadow: none;
+    background-color: #5E3032 !important;
+    color: #003A6B !important; 
+}
+
+
+
+.progressBarButtonEmpty * {
+    background-color: white !important;
+    background-image: none !important;
+    /*border: solid;*/
+}
+
+/* MODIFICHE CSS MANAGEPIANO*/
+
+.mysapMLIBShowSeparator .sapMLIBShowSeparator > td {
+    border: 0px;
+}
+
+.mysapMListNoBorders1 .sapMListShowSeparatorsAll .sapMLIBShowSeparator:last-child > td, .sapMListShowSeparatorsAll .sapMListTblSubRow:last-child > td{
+    border: 0px;
+}
+
+.mysapMListNoBorders2 .sapMListShowSeparatorsAll .sapMListTblSubRow:last-child > td, .sapMListShowSeparatorsAll .sapMLIBShowSeparator:last-child > td{
+    border: 0px;
+}
+
