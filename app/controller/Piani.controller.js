@@ -12,6 +12,7 @@ sap.ui.define([
         onInit: function () {
             var params = jQuery.sap.getUriParameters(window.location.href);
             this.buildNewModel();
+        },
 
         managePiano: function (oEvent) {
            var oTable = oEvent.getSource().getParent().getBindingContext("turni");
