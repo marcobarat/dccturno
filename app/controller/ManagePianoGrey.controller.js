@@ -491,38 +491,6 @@ sap.ui.define([
             }
             return;
         }   
-    
-//ANDARE AL REPORT
-    
-              
-//                    onInit: function(){
-//                        this.ModelDetailPages.setProperty("/Causalizzazione/", {});
-//
-//                        this.AjaxCaller("model/guasti.json", this.ModelDetailPages, "/Causalizzazione/", true);
-//
-//                        this.getView().setModel(this.ModelDetailPages, "GeneralModel");
-//                    }
-             
-//             var aColumnData = [{
-//                 columnId: "prova1"
-//             },{
-//                 columnId: "prova2"
-//             },{
-//                 columnId: "prova3"
-//             }];
-//             var aData = [{
-//                 prova1: "ciao",
-//                 prova2: "ciao",
-//                 prova3: "ciaone"
-//                 
-//             }];
-//             var oTable = new sap.m.Table({});
-//             var oModel = new JSONModel();
-//             oModel.setData({columns: aColumnData,
-//                             rows: aData});
-
-
-//        }
 
     });
 

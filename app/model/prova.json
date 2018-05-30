@@ -2,8 +2,13 @@
     "stato": 0,
     "menu": [
         {
-            "nome": "Visualizza Batch",
+            "nome": "Verifica Batch",
             "attivo": false,
+            "metodo": "visuBatch",
+            "nuovasezione": false
+        }, {
+            "nome": "Visualizza Attributi Batch",
+            "attivo": true,
             "metodo": "visuBatch",
             "nuovasezione": false
         }, {

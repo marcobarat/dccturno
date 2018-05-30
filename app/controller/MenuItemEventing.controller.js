@@ -38,7 +38,6 @@ sap.ui.define([
 			var msg = "'" + oEvent.getParameter("item").getValue() + "' entered";
 			MessageToast.show(msg);
 		}
-
 	});
 
 	return MenuItemEventingController;

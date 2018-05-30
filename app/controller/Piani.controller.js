@@ -13,8 +13,6 @@ sap.ui.define([
 
             var params = jQuery.sap.getUriParameters(window.location.href);
             this.buildNewModel();
-
-            Library.myFn();
         },
 
         onAfterRendering: function () {

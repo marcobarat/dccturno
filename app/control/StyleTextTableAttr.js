@@ -5,7 +5,7 @@ sap.ui.define([
     'jquery.sap.global'
 ], function (Control, Label, Text, jQuery) {
     "use strict";
-    var StyleTextTreeTableAttr = Text.extend("myapp.control.StyleTextTreeTableAttr", {
+    var StyleTextTableAttr = Text.extend("myapp.control.StyleTextTableAttr", {
 
         metadata: {
             //eventi 
@@ -36,13 +36,7 @@ sap.ui.define([
             if (this.getArea() === "2") {
                 jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#FFD300");
             }
-////            if (this.getDiff() === "1") {
-//                this.addStyleClass('diffRed');
-//            } else {
-//                this.removeStyleClass('diffRed');
-//                this.removeStyleClass('diffLink');
-//            }
         }
     });
-    return StyleTextTreeTableAttr;
+    return StyleTextTableAttr;
 });

@@ -4,16 +4,6 @@
           controllerName="myapp.controller.Piani"
           id="Piani">
     <Page class="colorPage" showHeader="false">
-        <!--        <customHeader>
-            <Bar class="paddingTitle">
-            <contentMiddle>
-                <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
-            </contentMiddle>
-            <contentRight>
-                <Button icon="sap-icon://log" press="onCloseApp" text="Uscita" ariaLabelledBy="exitButtonLabel" class="sapUiSmallMarginEnd"/>
-            </contentRight>
-            </Bar>
-        </customHeader>-->
 
         <content>
             
@@ -34,37 +24,37 @@
                         <columns>
                             <Column>
                                 <header>
-                                    <comp:StyleTextTreeTableAttr text="" />
+                                    <comp:StyleTextTableAttr text="" />
                                 </header>
                             </Column>
                             <Column hAlign="Center">
                                 <header>
-                                    <comp:StyleTextTreeTableAttr text="Data"/>
+                                    <comp:StyleTextTableAttr text="Data"/>
                                 </header>
                             </Column>
                             <Column hAlign="Center">
                                 <header>
-                                    <comp:StyleTextTreeTableAttr text="Turno"/>
+                                    <comp:StyleTextTableAttr text="Turno"/>
                                 </header>
                             </Column>
                             <Column hAlign="Center">
                                 <header>
-                                    <comp:StyleTextTreeTableAttr text="Q.li confezionati"/>
+                                    <comp:StyleTextTableAttr text="Q.li confezionati"/>
                                 </header>
                             </Column>
                             <Column hAlign="Center">
                                 <header>
-                                    <comp:StyleTextTreeTableAttr text="Q.li residui"/>
+                                    <comp:StyleTextTableAttr text="Q.li residui"/>
                                 </header>
                             </Column>  
                             <Column hAlign="Center">
                                 <header>
-                                    <comp:StyleTextTreeTableAttr text="LineeP"/>
+                                    <comp:StyleTextTableAttr text="LineeP"/>
                                 </header>
                             </Column> 
                             <Column hAlign="Center">
                                 <header>
-                                    <comp:StyleTextTreeTableAttr text="Turno"/>
+                                    <comp:StyleTextTableAttr text="Turno"/>
                                 </header>
                             </Column>                                             
                         </columns>
@@ -101,17 +91,17 @@
                                         </core:Icon>
              
                     
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>data}" area="{turni>area}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>turno}" />
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>qliconf}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>qliresidui}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>lineep}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>turni}"/>
 
                                     </cells>
@@ -149,17 +139,17 @@
                                     </core:Icon>
              
                     
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>data}" area="{turni>area}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>turno}" />
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>qliconf}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>qliresidui}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>lineep}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>turni}"/>
 
                                 </cells>
@@ -199,17 +189,17 @@
                                         </core:Icon>
              
                     
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>data}" area="{turni>area}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>turno}" />
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>qliconf}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>qliresidui}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>lineep}"/>
-                                        <comp:StyleTextTreeTableAttr
+                                        <comp:StyleTextTableAttr
                                             text="{turni>turni}"/>
 
                                     </cells>
@@ -247,17 +237,17 @@
                                     </core:Icon>
              
                     
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>data}" area="{turni>area}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>turno}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>qliconf}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>qliresidui}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>lineep}"/>
-                                    <comp:StyleTextTreeTableAttr
+                                    <comp:StyleTextTableAttr
                                         text="{turni>turni}"/>
 
                                 </cells>

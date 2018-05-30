@@ -19,8 +19,8 @@ sap.ui.define([], function () {
         standardToMinutes: function (string) {
             return parseInt(string.split(":")[1], 10) + parseInt(string.split(":")[0], 10) * 60;
         },
-        RemoveClosingButtons: function () {
-            var tabContainer = this.getView().byId("TabContainer");
+        RemoveClosingButtons: function (tab_id) {
+            var tabContainer = this.getView().byId(tab_id);
             var n_tabs = tabContainer.getAggregation("_tabStrip").getItems().length;
             var oTabStrip = tabContainer.getAggregation("_tabStrip");
             var oItems = oTabStrip.getItems();

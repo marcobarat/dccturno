@@ -1,0 +1,68 @@
+<core:FragmentDefinition
+    id="modificaAttributi"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:wt="myapp.control" 
+    controllerName="myapp.controller.MenuItemEventing"
+    xmlns:t="sap.ui.table">
+    <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="true" showHeader="false">
+        <TabContainer
+            id="attributiContainer">
+            <items>    
+                <TabContainerItem name="attributi">
+                    <content>             
+                        <HBox>
+                            <VBox width="20%" class="sapUiMediumMargin">
+                                <Select class="sapUiMediumMarginBottom">
+                                    <core:Item key="500gr" text="500gr" />
+                                </Select>
+                                <Select class="sapUiMediumMarginBottom">
+                                    <core:Item key="500gr" text="500gr" />
+                                </Select>
+                        
+                                <Select class="sapUiMediumMarginBottom">
+                                    <core:Item key="500gr" text="500gr" />
+                                </Select>
+                                
+                                <Select class="sapUiMediumMarginTop">
+                                    <core:Item key="500gr" text="500gr" />
+                                </Select>
+                            </VBox>
+                            <VBox width="80%">
+                                <wt:CustomTreeTable
+                                    id="modificaAttributi_Table"
+                                    rows="{path:'SKU>/attributi', parameters: {arrayNames:['attributi']}}"
+                                    selectionMode="None"
+                                    collapseRecursive="true"
+                                    enableSelectAll="false"
+                                    visibleRowCount="10">
+                                    <wt:columns>
+                                        <t:Column resizable="false">
+                                            <Label text="ATTRIBUTI"/>
+                                            <t:template>
+                                                <wt:StyleTextTreeTableAttr text="{SKU>name}" diff="{SKU>expand}" discr="{SKU>value}" />
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column resizable="false">
+                                            <Label text="VALORE"/>
+                                            <t:template>
+                                                <HBox>
+                                                    <wt:StyleTextTreeTableValue text="{SKU>value}" diff="{SKU>expand}" />
+                                                </HBox>
+                                            </t:template>
+                                        </t:Column>
+                                    </wt:columns>
+                                </wt:CustomTreeTable>
+                            </VBox>
+                        </HBox>
+                    </content>
+                </TabContainerItem>
+                <TabContainerItem name="parametri">                    
+                    
+                </TabContainerItem>                
+            </items>
+        </TabContainer>    
+    </Dialog>
+
+</core:FragmentDefinition>

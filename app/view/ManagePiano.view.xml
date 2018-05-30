@@ -180,12 +180,12 @@
                                                                                         selectedKey="{linea>formato} {linea>materiale}"
                                                                                         showSecondaryValues= "true"
                                                                                         items="{
-                                                                            path: 'linea>Formati',
-                                                                            sorter: {
-                                                                                    path: 'formato',
-                                                                                    group: true
-                                                                                    }
-                                                                            }"
+                                                                                                path: 'linea>Formati',
+                                                                                                sorter: {
+                                                                                                        path: 'formato',
+                                                                                                        group: true
+                                                                                                        }
+                                                                                                }"
                                                                                     >
                                                                                         <core:ListItem key="{linea>formato} {linea>materiale}" text="{linea>formato} {linea>materiale}" />
                                                                                     </Select>

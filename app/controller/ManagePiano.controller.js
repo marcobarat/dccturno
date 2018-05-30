@@ -12,12 +12,13 @@ sap.ui.define([
         data_json: {},
         ModelLinea: new JSONModel({}),
         ModelOperatori: new JSONModel({}),
+        ModelSKU: new JSONModel({}),
         prova: null,
         piano: null,
         pianoPath: null,
         turnoPath: null,
         onInit: function () {
-            Library.RemoveClosingButtons.bind(this)();
+            Library.RemoveClosingButtons.bind(this)("TabContainer");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePiano").attachPatternMatched(this._onObjectMatched, this);
         },
@@ -31,6 +32,9 @@ sap.ui.define([
         SUCCESSDatiOperatore: function (Jdata) {
             this.ModelOperatori.setData(Jdata);
         },
+        SUCCESSSKU: function (Jdata) {
+            this.ModelSKU.setData(Jdata);
+        },
         _onObjectMatched: function (oEvent) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
@@ -40,18 +44,18 @@ sap.ui.define([
             } else {
                 Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));
                 this.getView().setModel(this.ModelLinea, 'linea');
-                
                 Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
                 this.getView().setModel(this.ModelOperatori, 'operatore');
-
+                Library.AjaxCallerData("model/SKU.json", this.SUCCESSSKU.bind(this));
+                this.getView().setModel(this.ModelSKU, 'SKU');
                 var oTitle = this.getView().byId("Title");
                 var oSubtitle = this.getView().byId("Subtitle");
                 this.piano = oModelTurni.getData()[this.turnoPath][this.pianoPath];
                 oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
                 oTitle.addStyleClass("customTextTitle");
-                if (parseInt(this.piano.area, 10) === -1 || parseInt(this.piano.area, 10) === 2) {
+                if (Number(this.piano.area) === -1 || Number(this.piano.area) === 2) {
                     this.removeBar();
-                    if (parseInt(this.piano.area, 10) === -1) {
+                    if (Number(this.piano.area) === -1) {
                         oSubtitle.setText("Turno in creazione");
                     } else {
                         oSubtitle.setText("Turno programmato");
@@ -155,13 +159,14 @@ sap.ui.define([
                         oSubtitle.setText("Turno in corso");
                         oSubtitle.addStyleClass("customText");
                     }
-                    
-                    that.initLinea();
+
+                    Library.AjaxCallerData("model/linee_new.json", that.SUCCESSDatiLinee.bind(that));
                 }
 
 
             });
             this.getOwnerComponent().setModel(ModelLinea, "turni");
+            this.getView().setModel(this.ModelLinea, 'linea');
         },
         groupTurni: function (data, group0, group1, group2, group3) {
             for (var key in data) {
@@ -292,6 +297,19 @@ sap.ui.define([
             ModelLinea.setData(oData);
             this.getView().byId("managePianoTable").setModel(ModelLinea, "linea");
             this.addFieldsCreazione();
+        },
+//GESTIONE VISUALIZZA ATTRIBUTI BATCH
+        visuBatch: function () {
+            var oView = this.getView();
+            var oDialog = oView.byId("modificaAttributi");
+            if (!oDialog) {
+                oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
+                oView.addDependent(oDialog);
+            }
+            Library.RemoveClosingButtons.bind(this)("attributiContainer");
+
+
+            oDialog.open();
         }
     });
     return ManagePiano;
