@@ -69,7 +69,6 @@ sap.ui.define([
                     oSubtitle.addStyleClass("customText");
                 }
             }
-
         },
         onNavBack: function () {
             var oHistory = History.getInstance();
@@ -134,7 +133,11 @@ sap.ui.define([
                         oSubtitle.setText("Turno in corso");
                         oSubtitle.addStyleClass("customText");
                     }
+                    
+                    that.initLinea();
                 }
+
+
             });
             this.getOwnerComponent().setModel(ModelLinea, "turni");
         },
@@ -161,7 +164,7 @@ sap.ui.define([
             }
             return;
         },
-// MODIFICA DELLA VIEW DELLA CREAZIONE TURNO
+// MODIFICA DELLA VIEW DELLA CREAZIONE TURNO (IN REALTA' DISTINGUO SOLO IL CASO IN CUI IL TURNO E' IN CORSO)
         addFieldsCreazione: function () {
             var j, oTable, oRows;
             var oTables = this.getView().byId("managePianoTable").getItems();
@@ -172,7 +175,6 @@ sap.ui.define([
                     var oButton = new sap.m.Button({
                         icon: "sap-icon://add",
                         press: this.onAddItem.bind(this)
-
                     });
                     oButton.addStyleClass("sapUiTinyMarginBegin");
                     oTable.addItem(new sap.m.ColumnListItem({

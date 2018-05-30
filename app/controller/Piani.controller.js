@@ -2,8 +2,9 @@ sap.ui.define([
     'jquery.sap.global',
     './Formatter',
     'sap/ui/core/mvc/Controller',
-    'sap/ui/model/json/JSONModel'
-], function (jQuery, Formatter, Controller, JSONModel) {
+    'sap/ui/model/json/JSONModel',
+    'myapp/controller/Library'
+], function (jQuery, Formatter, Controller, JSONModel, Library) {
     "use strict";
 
     var PianiController = Controller.extend("myapp.controller.Piani", {
@@ -11,7 +12,7 @@ sap.ui.define([
         onInit: function () {
             var params = jQuery.sap.getUriParameters(window.location.href);
             this.buildNewModel();
-        },
+
         managePiano: function (oEvent) {
            var oTable = oEvent.getSource().getParent().getBindingContext("turni");
            var  Row = oTable.getModel().getProperty(oTable.sPath);
