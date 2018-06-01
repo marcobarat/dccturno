@@ -12,11 +12,13 @@ sap.ui.define([
 
         ISLOCAL: 0,
         data_json: {},
+        ModelMenu: new JSONModel({}),
         ModelLinea: new JSONModel({}),
         ModelOperatori: new JSONModel({}),
         ModelSKU: new JSONModel({}),
         ModelTurni: new JSONModel({}),
         ModelSKUstd : new JSONModel({}),
+        ModelCause: new JSONModel({}),
         prova: null,
         piano: null,
         pianoPath: null,
@@ -28,6 +30,12 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePiano").attachPatternMatched(this.URLChangeCheck, this);
         },
+        SUCCESSCause: function(Jdata){
+            this.data_json = {};
+            this.data_json.cause = [];
+            this.takeAllCause(Jdata);
+            this.ModelCause.setData(this.data_json);
+        },  
         SUCCESSDatiLinee: function (Jdata) {
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, 'linea');
@@ -45,6 +53,21 @@ sap.ui.define([
         },
         SUCCESSSKUstd: function(Jdata) {
             this.ModelSKUstd.setData(Jdata);
+        },
+        SUCCESSMenu: function(Jdata, oButton){
+            var oState = oButton.getState();
+            if (oState === "Non trasferito"){
+                Jdata.menu[0].attivo = false;
+                Jdata.menu[1].attivo = true;
+                Jdata.menu[2].attivo = true;
+                Jdata.menu[3].attivo = true;
+                Jdata.menu[4].attivo = true;
+                Jdata.menu[5].attivo = false;
+                Jdata.menu[6].attivo = true;
+                Jdata.menu[7].attivo = false;
+                Jdata.menu[8].attivo = false;
+            }
+            this.ModelMenu.setData(Jdata);
         },
         URLChangeCheck: function (oEvent) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
@@ -82,6 +105,17 @@ sap.ui.define([
                     oSubtitle.addStyleClass("customText");
                 }
         },
+        takeAllCause: function(bck){
+                            for (var key in bck){
+                                if (typeof bck[key] === "object"){
+                                    bck[key] = this.takeAllCause(bck[key]);
+                                }
+                            }
+                            if (bck.fermo !== undefined){
+                                this.data_json.cause.push(bck);
+                            }
+                            return bck;
+                        },               
         onNavBack: function () {
             var oHistory = History.getInstance();
             var sPreviousHash = oHistory.getPreviousHash();
@@ -103,17 +137,14 @@ sap.ui.define([
             }
 
             var eDock = sap.ui.core.Popup.Dock;
-            this.prova = new JSONModel("./model/prova.json");
+            this.callMenu(oButton);
+            this.getView().setModel(this.ModelMenu);
             this._menu.setModel(this.prova);
             this._menu.open(this._bKeyboard, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
         },
-        handleMenuItemPress: function (oEvent) {
-            var msg = "'" + oEvent.getParameter("item").getText() + "' pressed";
-            MessageToast.show(msg);
-        },
-        handleTextFieldItemPress: function (oEvent) {
-            var msg = "'" + oEvent.getParameter("item").getValue() + "' entered";
-            MessageToast.show(msg);
+        callMenu: function(oButton){
+            var that = this;
+            Library.AjaxCallerData("./model/prova.json", function(Jdata){that.SUCCESSMenu.bind(that)(Jdata, oButton);});
         },
         groupTurni: function (data, group0, group1, group2, group3) {
             for (var key in data) {
@@ -288,7 +319,91 @@ sap.ui.define([
         },
         closeDialog: function(){
             this.oDialog.destroy();
-        }
+        },
+// GESTIONE POPUP STATO LINEA
+        onOpenStatoLinea: function(){
+            var oView = this.getView();
+            this.getView().setModel(this.ModelSKU, "SKU");
+            this.oDialog = oView.byId("statoLinea");
+            if (!this.oDialog) {
+                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.statoLinea", this);
+                oView.addDependent(this.oDialog);
+            }
+            this.oDialog.open();
+        },
+        onGestioneStato: function(oEvent){
+            var oText = oEvent.getSource().getText();
+            if (oText === "Disponibile per la produzione"){
+                this.getView().byId("disponibile").setSelected(true);
+                this.getView().byId("nondisponibile").setSelected(false);
+                this.removeMotivi();
+            } else {
+                this.getView().byId("nondisponibile").setSelected(true);
+                this.getView().byId("disponibile").setSelected(false);
+                this.addMotivi();
+            }
+        },
+        addMotivi: function () {
+            var OuterBox = this.getView().byId("statoLineaBox");
+            var VBox = sap.ui.getCore().byId("nondisponibileBox");
+            if (!VBox) {
+                VBox = new sap.m.VBox({id: "nondisponibileBox"});
+                VBox.addStyleClass("sapUiLargeMarginBegin");
+                var VBox_intervallo = new sap.m.VBox({});
+                VBox_intervallo.addStyleClass("sapUiSmallMargin");
+                var VBox_causale = new sap.m.VBox({});
+                VBox_causale.addStyleClass("sapUiSmallMargin");
+                var turno_split = this.piano.turno.split("-");
+                var inizio = turno_split[0].trim();
+                var fine = turno_split[1].trim();
+                var picker_inizio = new sap.m.TimePicker({
+                    width: "7rem",
+                    valueFormat: "HH:mm",
+                    value: inizio,
+                    id: "Inizio",
+                    displayFormat: "HH:mm"
+                });
+                picker_inizio.addStyleClass("sapUiSmallMarginBegin");
+                var picker_fine = new sap.m.TimePicker({
+                    width: "7rem",
+                    valueFormat: "HH:mm",
+                    value: fine,
+                    id: "Fine",
+                    displayFormat: "HH:mm"
+                });
+                picker_fine.addStyleClass("sapUiSmallMarginBegin");
+                var selector = new sap.m.Select({
+                    id: "Causale",
+                    autoAdjustWidth: true
+                });
+                selector.addStyleClass("sapUiSmallMarginBegin");
+                var oItemSelectTemplate = new sap.ui.core.Item({
+                    key: "{cause>id}",
+                    text: "{cause>fermo}"
+                });
+                if (Number(this.ISLOCAL) === 1) {
+                    Library.AjaxCallerData("./model/JSON_FermoTestiNew.json", this.SUCCESSCause.bind(this));
+                    this.getView().setModel(this.ModelCause, "cause");
+                }
+                selector.setModel(this.getView().getModel("cause"));
+                selector.bindAggregation("items", "cause>/cause", oItemSelectTemplate);
+                VBox_intervallo.addItem(new sap.m.Text({text: "Intervallo"}));
+                VBox_intervallo.addItem(picker_inizio);
+                VBox_intervallo.addItem(picker_fine);
+                VBox_causale.addItem(new sap.m.Text({text: "Causale"}));
+                VBox_causale.addItem(selector);
+                VBox.addItem(VBox_intervallo);
+                VBox.addItem(VBox_causale);
+                OuterBox.addItem(VBox);
+            }
+        },
+        removeMotivi: function(){
+            var VBox = sap.ui.getCore().byId("nondisponibileBox");
+            if (VBox){
+                VBox.destroyItems();
+                VBox.destroy();
+            }
+        }       
     });
     return ManagePiano;
 });

@@ -3,7 +3,30 @@ sap.ui.define([
 ], function (JSONModel) {
     return {
         exp: null,
-// FUNZIONI TEMPORALI         
+// FUNZIONI TEMPORALI 
+        MillisecsToStandard: function (val) {
+                        var hours = Math.floor(val / 1000 / 60 / 60);
+                        val -= hours * 1000 * 60 * 60;
+                        var mins = Math.floor(val / 1000 / 60);
+                        val -= mins * 1000 * 60;
+                        var secs = Math.floor(val / 1000);
+                        val -= secs * 1000;
+                        var string_hours, string_mins, string_secs;
+                        if (val !== 0) {
+                            console.log("C'è un problema");
+                        } else {
+                            string_hours = this.StringTime(hours);
+                            string_mins = this.StringTime(mins);
+                            string_secs = this.StringTime(secs);
+                        }
+                        return (string_hours + ":" + string_mins + ":" + string_secs);
+                    },
+        DateToStandard: function (date) {
+                        var hours = this.StringTime(date.getHours());
+                        var mins = this.StringTime(date.getMinutes());
+                        var secs = this.StringTime(date.getSeconds());
+                        return (hours + ":" + mins + ":" + secs);
+                    },
         minutesToStandard: function (val) {
             var hours = Math.floor(val / 60);
             val -= hours * 60;
@@ -13,7 +36,7 @@ sap.ui.define([
             string_mins = this.stringTime(mins);
             return (string_hours + ":" + string_mins);
         },
-        stringTime: function (val) {
+        StringTime: function (val) {
             if (val < 10) {
                 return  ('0' + String(val));
             } else {
@@ -111,6 +134,7 @@ sap.ui.define([
             return json;
         },
         SUCCESSDatiTurni: function (Jdata) {
+            this.data_json = {};
             this.ModelTurni = new JSONModel({});
             this.data_json.turniconclusi = [];
             this.data_json.turnoincorso = [];

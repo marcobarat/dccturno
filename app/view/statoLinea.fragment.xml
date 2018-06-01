@@ -1,0 +1,33 @@
+<core:FragmentDefinition
+    id="modificaGuasti"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    controllerName="myapp.controller.guastiLinea">
+    <Dialog horizontalScrolling="false" verticalScrolling="false" showHeader="false">
+        <VBox id="statoLineaBox">
+            <VBox class="sapUiMediumMargin">
+                <CheckBox
+                    id="disponibile"
+                    select="onGestioneStato"
+                    text="Disponibile per la produzione"
+                />
+                <CheckBox
+                    id="nondisponibile"
+                    select="onGestioneStato"
+                    text="Non disponibile per la produzione"
+                />
+            </VBox>
+        </VBox>
+        <HBox>
+            <VBox class="sapUiSmallMargin" width="45%">
+                <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="closeDialog"/>
+            </VBox>
+            <VBox width="10%"/>
+            <VBox class="sapUiSmallMargin" width="45%">
+                <Button class="confermaButton lessOmbra" text="Conferma" width="100%"/>
+            </VBox>
+        </HBox>
+    </Dialog>
+
+</core:FragmentDefinition>

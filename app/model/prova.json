@@ -15,12 +15,12 @@
             "nome": "Trasferimento Batch a Linea",
             "attivo": true,
             "metodo": "visuBatch",
-            "nuovasezione": false
+            "nuovasezione": true
         }, {
             "nome": "Trasferimento Batch a Linea (solo attrezzaggio)",
             "attivo": true,
             "metodo": "visuBatch",
-            "nuovasezione": true
+            "nuovasezione": false
         }, {
             "nome": "Trasferimento schedulato",
             "attivo": true,

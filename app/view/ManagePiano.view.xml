@@ -51,8 +51,8 @@
                                                             <VBox width="100%" height="100%" class="sfondobianco">
                                                                 <HBox width="100%" height="35%"  alignItems="Start">
                                                                     <VBox width="20%" height="100%" class="">
-                                                                        <cus:CustomButt text="{linea>lineaID}"
-                                                                                        press="onPress"
+                                                                        <cus:CustomButt text="Linea {linea>lineaID}"
+                                                                                        press="onOpenStatoLinea"
                                                                                         width="100%"
                                                                                         class="fix_b"
                                                                                         state="{linea>statolinea}"
@@ -68,10 +68,10 @@
                                                                             growing="true"
                                                                             fixedLayout="false"
                                                                             growingThreshold="{operatore>numeroOperatori}"
-                                                                            class="sapUiSmallMarginEnd borderb">
+                                                                            class="sapUiSmallMarginEnd borderb mysapMLIBShowSeparator mysapMListTblNoBorders">
                                                                             <columns>
-                                                                                <Column >
-                                                                                    <Text text="Operatori" />
+                                                                                <Column  hAlign="Center">
+                                                                                    <Text text="Operatori"/>
                                                                                 </Column>
                                                                             </columns>
                                                                             <items>
@@ -119,7 +119,7 @@
                                                                                 growing="true"
                                                                                 fixedLayout="false"
                                                                                 growingThreshold="2"
-                                                                                class="sapUiSmallMarginEnd"
+                                                                                class="sapUiSmallMarginEnd mysapMListTblNoBorders" 
                                                                             >
                                                                                 <columns>
                                                                                     <Column width="8%" hAlign="Center">

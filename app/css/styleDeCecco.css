@@ -126,13 +126,11 @@
 }
 
 .confermaButton * {
-    font-size: 12pt;
     background-image: none !important;
     background-color: #7CA295 !important;
     color: white;
 }
-.confermaButtonhover:hover * {
-    font-size: 12pt;
+.confermaButton:hover * {
     background-image: none !important;
     background-color: #55776b !important;
     color: white;

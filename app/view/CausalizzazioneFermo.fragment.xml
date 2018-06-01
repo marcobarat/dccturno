@@ -41,8 +41,8 @@
                                             <ColumnListItem class="mysapMListTblCell mysapMText mysapMCb">
                                                 <cells>
                                                     <Text textAlign="Center" text="Totale Complessivo"/>
-                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/tempoGuastoTotale}"/>
-                                                    <Text text="{GeneralModel>/Causalizzazione/NoCause/Totale/causaTotale}"/>
+                                                    <Text text="{guasti>/NoCause/Totale/tempoGuastoTotale}"/>
+                                                    <Text text="{guasti>/NoCause/Totale/causaleTotale}"/>
                                                     <CheckBox textAlign="Center" id="CBTotaleCausa" selected="false" select="ChangeCheckedCausa" class="CBTotaleCausaCustom"/>
                 
                                                                           
@@ -57,35 +57,35 @@
                                         visibleRowCount="5"
                                         class="alternate-color"
                                         selectionMode="None"
-                                        rows="{GeneralModel>/Causalizzazione/NoCause/guasti}">
+                                        rows="{guasti>/NoCause/guasti}">
                                         <t:columns>
                                             <t:Column hAlign="Center" width="15%">
                                                 <Label text="Inizio"/>
                                                 <t:template>
-                                                    <Text text="{GeneralModel>inizio}"/>
+                                                    <Text text="{guasti>inizio}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column hAlign="Center" width="15%">
                                                 <Label text="Fine"/>
                                                 <t:template>
-                                                    <Text text="{GeneralModel>fine}"/>
+                                                    <Text text="{guasti>fine}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column hAlign="Center" width="15%">
                                                 <Label text="Tempo"/>
                                                 <t:template>
-                                                    <Text text="{GeneralModel>intervallo}"/>
+                                                    <Text text="{guasti>intervallo}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column hAlign="Center" width="45%">
                                                 <Label text="Causale"/>
                                                 <t:template>
-                                                    <Text text="{GeneralModel>causa}"/>
+                                                    <Text text="{guasti>causa}"/>
                                                 </t:template>
                                             </t:Column>
                                             <t:Column hAlign="Center" width="10%">
                                                 <t:template>
-                                                    <CheckBox id="CBSingoloCausa" class="sapUiSmallMarginBegin" selected="{GeneralModel>selected}" select="ChangeCheckedCausa"/>
+                                                    <CheckBox id="CBSingoloCausa" class="sapUiSmallMarginBegin" selected="{guasti>selected}" select="ChangeCheckedCausa"/>
                                                 </t:template>
                                             </t:Column>
                                         </t:columns>
