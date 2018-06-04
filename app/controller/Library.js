@@ -5,28 +5,28 @@ sap.ui.define([
         exp: null,
 // FUNZIONI TEMPORALI 
         MillisecsToStandard: function (val) {
-                        var hours = Math.floor(val / 1000 / 60 / 60);
-                        val -= hours * 1000 * 60 * 60;
-                        var mins = Math.floor(val / 1000 / 60);
-                        val -= mins * 1000 * 60;
-                        var secs = Math.floor(val / 1000);
-                        val -= secs * 1000;
-                        var string_hours, string_mins, string_secs;
-                        if (val !== 0) {
-                            console.log("C'è un problema");
-                        } else {
-                            string_hours = this.StringTime(hours);
-                            string_mins = this.StringTime(mins);
-                            string_secs = this.StringTime(secs);
-                        }
-                        return (string_hours + ":" + string_mins + ":" + string_secs);
-                    },
+            var hours = Math.floor(val / 1000 / 60 / 60);
+            val -= hours * 1000 * 60 * 60;
+            var mins = Math.floor(val / 1000 / 60);
+            val -= mins * 1000 * 60;
+            var secs = Math.floor(val / 1000);
+            val -= secs * 1000;
+            var string_hours, string_mins, string_secs;
+            if (val !== 0) {
+                console.log("C'è un problema");
+            } else {
+                string_hours = this.StringTime(hours);
+                string_mins = this.StringTime(mins);
+                string_secs = this.StringTime(secs);
+            }
+            return (string_hours + ":" + string_mins + ":" + string_secs);
+        },
         DateToStandard: function (date) {
-                        var hours = this.StringTime(date.getHours());
-                        var mins = this.StringTime(date.getMinutes());
-                        var secs = this.StringTime(date.getSeconds());
-                        return (hours + ":" + mins + ":" + secs);
-                    },
+            var hours = this.StringTime(date.getHours());
+            var mins = this.StringTime(date.getMinutes());
+            var secs = this.StringTime(date.getSeconds());
+            return (hours + ":" + mins + ":" + secs);
+        },
         minutesToStandard: function (val) {
             var hours = Math.floor(val / 60);
             val -= hours * 60;
@@ -45,6 +45,43 @@ sap.ui.define([
         },
         standardToMinutes: function (string) {
             return parseInt(string.split(":")[1], 10) + parseInt(string.split(":")[0], 10) * 60;
+        },
+// FUNZIONI PER LA SUDDIVISIONE DEI GUASTI IN CAUSALIZZATI E NON
+
+
+        AddTimeGaps: function (data) {
+            var millisec_diff = [];
+            var start, end;
+            for (var iter in data.guasti) {
+                start = new Date(data.guasti[iter].inizio);
+                end = new Date(data.guasti[iter].fine);
+                millisec_diff.push(end - start);
+                data.guasti[iter].inizio = this.DateToStandard(start);
+                data.guasti[iter].fine = this.DateToStandard(end);
+            }
+            var temp;
+            var sum = 0;
+            var arrayGaps = [];
+            for (iter in millisec_diff) {
+                temp = millisec_diff[iter];
+                sum += temp;
+                arrayGaps.push(this.MillisecsToStandard(temp));
+            }
+            for (var i = 0; i < arrayGaps.length; i++) {
+                data.guasti[i].intervallo = arrayGaps[i];
+            }
+            data.Totale = {};
+            data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);
+            data.Totale.causaleTotale = "";
+            return data;
+        },
+        RemoveCaused: function (data) {
+            for (var i = data.guasti.length - 1; i >= 0; i--) {
+                if (data.guasti[i].causa !== "") {
+                    data.guasti.splice(i, 1);
+                }
+            }
+            return data;
         },
         RemoveClosingButtons: function (tab_id) {
             var tabContainer = this.getView().byId(tab_id);
@@ -142,6 +179,29 @@ sap.ui.define([
             this.data_json.turnodacreare = [];
             this.groupTurni(Jdata, "turniconclusi", "turnoincorso", "turniprogrammati", "turnodacreare");
             this.ModelTurni.setData(this.data_json);
-        }     
+        },
+        groupTurni: function (data, group0, group1, group2, group3) {
+            for (var key in data) {
+                if (typeof data[key] === "object") {
+                    this.groupTurni(data[key], group0, group1, group2, group3);
+                }
+            }
+            if (data.area) {
+                switch (data.area) {
+                    case "0":
+                        this.data_json[group0].push(data);
+                        break;
+                    case "1":
+                        this.data_json[group1].push(data);
+                        break;
+                    case "2":
+                        this.data_json[group2].push(data);
+                        break;
+                    case "-1":
+                        this.data_json[group3].push(data);
+                }
+            }
+            return;
+        }
     };
 });

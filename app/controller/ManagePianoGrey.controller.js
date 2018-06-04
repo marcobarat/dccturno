@@ -11,6 +11,8 @@ sap.ui.define([
         ModelTurni: new JSONModel({}),
         ModelLinea: new JSONModel({}),
         ModelGuasti: new JSONModel({}),
+        ModelGuastiLinea: new JSONModel({}),
+        oLinea_index: null,
         ISLOCAL: 0,
         oColumn: null,
         oContent: null,
@@ -53,7 +55,7 @@ sap.ui.define([
                 });
                 this.getView().setModel(this.ModelLinea, "linea");
 
-                Library.AjaxCallerData("./model/guasti.json", this.SUCCESSGuasti.bind(this));
+                Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
                 sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
             }
 
@@ -61,7 +63,7 @@ sap.ui.define([
             for (var i = 0; i < oItems.length; i++) {
                 var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
                 if (oLinea.getItems().length > 1) {
-                    if (!this.ControlloCausalizzazioneGuasti()) {
+                    if (!this.ControlloCausalizzazioneGuasti(this.ModelGuasti.getData().GuastiLinee[i])) {
                         oLinea.getItems()[3].setEnabled(false);
                     } else {
                         oLinea.getItems()[3].setEnabled(true);
@@ -71,15 +73,21 @@ sap.ui.define([
         },
         SUCCESSGuasti: function (Jdata) {
             var data = {};
-            data.All = {};
-            data.NoCause = {};
-            var dataAll = JSON.parse(JSON.stringify(Jdata));
-            var dataReduced = JSON.parse(JSON.stringify(Jdata));
-            dataAll = this.AddTimeGaps(dataAll);
-            data.All = dataAll;
-            dataReduced = this.RemoveCaused(dataReduced);
-            dataReduced = this.AddTimeGaps(dataReduced);
-            data.NoCause = dataReduced;
+            data.GuastiLinee = [];
+            for (var i=0;i < Jdata.GuastiLinee.length; i++){
+            var dataAll = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+            var dataReduced = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+            dataAll = Library.AddTimeGaps(dataAll);
+            data.GuastiLinee.push({});
+            data.GuastiLinee[i].nome = null;
+            data.GuastiLinee[i].All = {};
+            data.GuastiLinee[i].NoCause = {};            
+            data.GuastiLinee[i].nome = Jdata.GuastiLinee[i].nome;
+            data.GuastiLinee[i].All = dataAll;
+            dataReduced = Library.RemoveCaused(dataReduced);
+            dataReduced = Library.AddTimeGaps(dataReduced);
+            data.GuastiLinee[i].NoCause = dataReduced;
+            }
             this.ModelGuasti.setData(data);
         },
         SUCCESSFermo: function (Jdata) {
@@ -170,41 +178,6 @@ sap.ui.define([
 
             this.oDialog.open();
         },
-
-        AddTimeGaps: function (data) {
-            var millisec_diff = [];
-            var start, end;
-            for (var iter in data.guasti) {
-                start = new Date(data.guasti[iter].inizio);
-                end = new Date(data.guasti[iter].fine);
-                millisec_diff.push(end - start);
-                data.guasti[iter].inizio = Library.DateToStandard(start);
-                data.guasti[iter].fine = Library.DateToStandard(end);
-            }
-            var temp;
-            var sum = 0;
-            var arrayGaps = [];
-            for (iter in millisec_diff) {
-                temp = millisec_diff[iter];
-                sum += temp;
-                arrayGaps.push(Library.MillisecsToStandard(temp));
-            }
-            for (var i = 0; i < arrayGaps.length; i++) {
-                data.guasti[i].intervallo = arrayGaps[i];
-            }
-            data.Totale = {};
-            data.Totale.tempoGuastoTotale = Library.MillisecsToStandard(sum);
-            data.Totale.causaleTotale = "";
-            return data;
-        },
-        RemoveCaused: function (data) {
-            for (var i = data.guasti.length - 1; i >= 0; i--) {
-                if (data.guasti[i].causa !== "") {
-                    data.guasti.splice(i, 1);
-                }
-            }
-            return data;
-        },
 //SI ATTIVA QUANDO PREMO CREA REPORT OEE
         onReport: function () {
             if (!this.getView().byId("reportButton").getVisible()) {
@@ -282,13 +255,22 @@ sap.ui.define([
 
 // APRO IL DIALOG E INIZIALIZZO TUTTE LE CHECKBOX E LE PROPRIETA' DEL CONTROLLER CHE MI SERVONO PER MONITORARE LE CHECKBOX
         onCausalizzazioneFermi: function (oEvent) {
+            //NB sto supponendo che linee e guasti siano ordinati nello stesso modo
+            if (oEvent){
+            this.oLinea_index = oEvent.getSource().getBindingContext("linea").sPath.split("/")[2];
+            }
+            //var oLinea_index = this.ModelLinea.getData().linee[oEvent.getSource().getBindingContext("linea").sPath.split("/")[2]].linea; questa se non mi basta l'indice e voglio il nome della linea
             var oView = this.getView();
             this.CheckSingoloCausa = [];
-            for (var j in this.ModelGuasti.getData().NoCause.guasti) {
+            var dato_linea = this.ModelGuasti.getData().GuastiLinee[this.oLinea_index];
+            for (var j in dato_linea.NoCause.guasti) {
                 this.CheckSingoloCausa.push(0);
-                this.ModelGuasti.getData().NoCause.guasti[j].selected = false;
+                dato_linea.NoCause.guasti[j].selected = false;
             }
-            oView.setModel(this.ModelGuasti, "guasti");
+            this.ModelGuasti.getData().GuastiLinee[this.oLinea_index] = dato_linea;
+            this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setData(dato_linea);
+            oView.setModel(this.ModelGuastiLinea, "guastilinea");
 
             this.oDialog = oView.byId("CausalizzazioneFermo");
             if (!this.oDialog) {
@@ -297,7 +279,7 @@ sap.ui.define([
             }
 
 
-            if (!this.ControlloCausalizzazioneGuasti()) {
+            if (!this.ControlloCausalizzazioneGuasti(this.ModelGuastiLinea.getData())) {
                 this.getView().byId("TotaleTable").setVisible(false);
                 this.getView().byId("NoFermiDaCausalizzare").setVisible(true);
             } else {
@@ -317,7 +299,7 @@ sap.ui.define([
                 var oItems = this.getView().byId("ManagePianoTable").getAggregation("items");
                 for (var i = 0; i < oItems.length; i++) {
                     var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
-                    if (!this.ControlloCausalizzazioneGuasti()) {
+                    if (!this.ControlloCausalizzazioneGuasti(this.ModelGuasti.getData().GuastiLinee[i])) {
                         oLinea.getAggregation("items")[3].setEnabled(false);
                     } else {
                         oLinea.getAggregation("items")[3].setEnabled(true);
@@ -344,17 +326,17 @@ sap.ui.define([
                 if (CB.getSelected()) {
                     this.CheckTotaleCausa = 1;
                     for (i = 0; i < this.CheckSingoloCausa.length; i++) {
-                        this.ModelGuasti.getData().NoCause.guasti[i].selected = true;
+                        this.ModelGuastiLinea.getData().NoCause.guasti[i].selected = true;
                         this.CheckSingoloCausa[i] = 1;
                     }
-                    this.ModelGuasti.refresh();
+                    this.ModelGuastiLinea.refresh();
                 } else {
                     this.CheckTotaleCausa = 0;
                     for (i = 0; i < this.CheckSingoloCausa.length; i++) {
-                        this.ModelGuasti.getData().NoCause.guasti[i].selected = false;
+                        this.ModelGuastiLinea.getData().NoCause.guasti[i].selected = false;
                         this.CheckSingoloCausa[i] = 0;
                     }
-                    this.ModelGuasti.refresh();
+                    this.ModelGuastiLinea.refresh();
 
                 }
 
@@ -439,7 +421,7 @@ sap.ui.define([
         onConfermaFermoCausalizzato: function () {
             var CB = sap.ui.getCore().byId(this.id_split[1]);
             var i;
-            var data = this.ModelGuasti.getData();
+            var data = this.ModelGuasti.getData().GuastiLinee[this.oLinea_index];
             for (i = 0; i < this.CheckSingoloCausa.length; i++) {
                 if (this.CheckSingoloCausa[i] > 0) {
                     data.NoCause.guasti[i].causa = CB.getProperty("text");
@@ -451,7 +433,8 @@ sap.ui.define([
                     }
                 }
             }
-            this.ModelGuasti.setData(data);
+            this.ModelGuasti.getData().GuastiLinee[this.oLinea_index] = data;
+//            this.ModelGuasti.setData(data);
             this.getView().setModel(this.ModelGuasti, "guasti");
 
             this.onCloseDialog();
@@ -465,9 +448,10 @@ sap.ui.define([
             var index = id.substring(splitter + string.length, id.length);
             return [root, real_id, index];
         },
-        ControlloCausalizzazioneGuasti: function () {
+        ControlloCausalizzazioneGuasti: function (data) {
             var check = false;
-            var data = this.ModelGuasti.getData().NoCause.guasti;
+//            var data = this.ModelGuasti.getData().NoCause.guasti;
+            data = data.NoCause.guasti;
             var i;
             for (i in data) {
                 if (data[i].causa === "") {

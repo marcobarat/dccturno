@@ -459,7 +459,11 @@
     border: 0px;
 }
 
-
+/* CSS DELLA TAB CONTAINER */
+.customsapMTabStrip .sapMTabStrip {
+    width: 1210.18px;
+    margin-left: 15px; 
+}
 
 
 

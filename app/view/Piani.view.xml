@@ -65,7 +65,13 @@
     
                                 <ScrollContainer height='188.4px' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
                                     <!-- Table to hold data, data ,data -->
-                                    <Table items='{turni>/turniconclusi}' class="noBorder tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                                    <Table 
+                                        class="noBorder tableTextSize"
+                                        items="{path: 'turni>/turniconclusi',
+                                                sorter: {
+                                                        path: 'data',
+                                                        descending: true}}"
+                                    > <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
                                         <columns>
                                             <!-- Dont need columns header, as upper table has already defined them. -->
                                             <Column hAlign="Center">
@@ -95,18 +101,18 @@
              
                     
 
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>data}" area="{turni>area}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>turno}" />
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>qliconf}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>qliresidui}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>lineep}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>turni}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>data}" area="{turni>area}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>turno}" />
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>qliconf}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>qliresidui}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>lineep}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>turni}"/>
 
                                                 </cells>
                                             </ColumnListItem>
@@ -144,18 +150,18 @@
              
                     
 
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>data}" area="{turni>area}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>turno}" />
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>qliconf}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>qliresidui}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>lineep}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>turni}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>data}" area="{turni>area}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>turno}" />
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>qliconf}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>qliresidui}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>lineep}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>turni}"/>
 
                                             </cells>
                                         </ColumnListItem>
@@ -164,7 +170,12 @@
             
                                 <ScrollContainer height='188.4px' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
                                     <!-- Table to hold data, data ,data -->
-                                    <Table items='{turni>/turniprogrammati}' class="noBorder tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                                    <Table 
+                                        items="{path: 'turni>/turniprogrammati',
+                                                sorter: {
+                                                        path: 'data',
+                                                        descending: true}}"
+                                        class="noBorder tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
                                         <columns>
                                             <!-- Dont need columns header, as upper table has already defined them. -->
                                             <Column hAlign="Center">
@@ -195,18 +206,18 @@
              
                     
 
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>data}" area="{turni>area}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>turno}" />
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>qliconf}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>qliresidui}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>lineep}"/>
-                                        <comp:StyleTextTableAttr
-                                            text="{turni>turni}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>data}" area="{turni>area}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>turno}" />
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>qliconf}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>qliresidui}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>lineep}"/>
+                                                    <comp:StyleTextTableAttr
+                                                        text="{turni>turni}"/>
 
                                                 </cells>
                                             </ColumnListItem>
@@ -244,18 +255,18 @@
              
                     
 
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>data}" area="{turni>area}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>turno}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>qliconf}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>qliresidui}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>lineep}"/>
-                                    <comp:StyleTextTableAttr
-                                        text="{turni>turni}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>data}" area="{turni>area}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>turno}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>qliconf}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>qliresidui}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>lineep}"/>
+                                                <comp:StyleTextTableAttr
+                                                    text="{turni>turni}"/>
 
                                             </cells>
                                         </ColumnListItem>
