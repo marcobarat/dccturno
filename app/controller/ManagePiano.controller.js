@@ -1,14 +1,14 @@
 sap.ui.define([
-        'sap/m/MessageToast',
-        'jquery.sap.global',
-        'sap/ui/core/mvc/Controller',
-        'sap/ui/model/json/JSONModel',
-        'sap/ui/core/routing/History',
-        'myapp/control/CustomButt',
-        'myapp/controller/Library'
-        ], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library) {
-"       use strict";
-        var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
+    'sap/m/MessageToast',
+    'jquery.sap.global',
+    'sap/ui/core/mvc/Controller',
+    'sap/ui/model/json/JSONModel',
+    'sap/ui/core/routing/History',
+    'myapp/control/CustomButt',
+    'myapp/controller/Library'
+], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library) {
+    "       use strict";
+    var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
 
         ISLOCAL: 0,
         data_json: {},
@@ -17,7 +17,7 @@ sap.ui.define([
         ModelOperatori: new JSONModel({}),
         ModelSKU: new JSONModel({}),
         ModelTurni: new JSONModel({}),
-        ModelSKUstd : new JSONModel({}),
+        ModelSKUstd: new JSONModel({}),
         ModelCause: new JSONModel({}),
         prova: null,
         piano: null,
@@ -30,12 +30,12 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePiano").attachPatternMatched(this.URLChangeCheck, this);
         },
-        SUCCESSCause: function(Jdata){
+        SUCCESSCause: function (Jdata) {
             this.data_json = {};
             this.data_json.cause = [];
             this.takeAllCause(Jdata);
             this.ModelCause.setData(this.data_json);
-        },  
+        },
         SUCCESSDatiLinee: function (Jdata) {
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, 'linea');
@@ -51,12 +51,12 @@ sap.ui.define([
         SUCCESSSKU: function (Jdata) {
             this.ModelSKU.setData(Jdata);
         },
-        SUCCESSSKUstd: function(Jdata) {
+        SUCCESSSKUstd: function (Jdata) {
             this.ModelSKUstd.setData(Jdata);
         },
-        SUCCESSMenu: function(Jdata, oButton){
+        SUCCESSMenu: function (Jdata, oButton) {
             var oState = oButton.getState();
-            if (oState === "Non trasferito"){
+            if (oState === "Non trasferito") {
                 Jdata.menu[0].attivo = false;
                 Jdata.menu[1].attivo = true;
                 Jdata.menu[2].attivo = true;
@@ -79,43 +79,46 @@ sap.ui.define([
             }
             this.piano = this.ModelTurni.getData()[this.turnoPath][this.pianoPath];
             if (Number(this.ISLOCAL) === 1) {
-                    Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));
-                    this.getView().setModel(this.ModelLinea, 'linea');
-                    Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
-                    this.getView().setModel(this.ModelOperatori, 'operatore');
-                    Library.AjaxCallerData("model/SKU_standard.json", this.SUCCESSSKUstd.bind(this));
-                    this.getView().setModel(this.ModelSKUstd, 'SKUstd');
-                    Library.AjaxCallerData("model/SKU_backend.json", this.SUCCESSSKU.bind(this));
-                    this.getView().setModel(this.ModelSKU, 'SKU');                    
+                Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));
+                this.getView().setModel(this.ModelLinea, 'linea');
+                Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
+                this.getView().setModel(this.ModelOperatori, 'operatore');
+                Library.AjaxCallerData("model/SKU_standard.json", this.SUCCESSSKUstd.bind(this));
+                this.getView().setModel(this.ModelSKUstd, 'SKUstd');
+                Library.AjaxCallerData("model/SKU_backend.json", this.SUCCESSSKU.bind(this));
+                this.getView().setModel(this.ModelSKU, 'SKU');
+            } else {
+            }
+            var oTitle = this.getView().byId("Title");
+            var oSubtitle = this.getView().byId("Subtitle");
+            oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
+            oTitle.addStyleClass("customTextTitle");
+            if (Number(this.piano.area) === -1 || Number(this.piano.area) === 2) {
+                if (Number(this.piano.area) === -1) {
+                    oSubtitle.setText("Turno in creazione");
                 } else {
+                    oSubtitle.setText("Turno programmato");
                 }
-                var oTitle = this.getView().byId("Title");
-                var oSubtitle = this.getView().byId("Subtitle");
-                oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
-                oTitle.addStyleClass("customTextTitle");
-                if (Number(this.piano.area) === -1 || Number(this.piano.area) === 2) {
-                    if (Number(this.piano.area) === -1) {
-                        oSubtitle.setText("Turno in creazione");
-                    } else {
-                        oSubtitle.setText("Turno programmato");
-                    }
-                    oSubtitle.addStyleClass("customText");
-                } else {
-                    oSubtitle.setText("Turno in corso");
-                    oSubtitle.addStyleClass("customText");
-                }
+                oSubtitle.addStyleClass("customText");
+            } else {
+                oSubtitle.setText("Turno in corso");
+                oSubtitle.addStyleClass("customText");
+            }
+// MI SERVE PER LO STATO LINEA                
+            var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
+            this.getView().setModel(oModel, "orarioturno");
         },
-        takeAllCause: function(bck){
-                            for (var key in bck){
-                                if (typeof bck[key] === "object"){
-                                    bck[key] = this.takeAllCause(bck[key]);
-                                }
-                            }
-                            if (bck.fermo !== undefined){
-                                this.data_json.cause.push(bck);
-                            }
-                            return bck;
-                        },               
+        takeAllCause: function (bck) {
+            for (var key in bck) {
+                if (typeof bck[key] === "object") {
+                    bck[key] = this.takeAllCause(bck[key]);
+                }
+            }
+            if (bck.fermo !== undefined) {
+                this.data_json.cause.push(bck);
+            }
+            return bck;
+        },
         onNavBack: function () {
             var oHistory = History.getInstance();
             var sPreviousHash = oHistory.getPreviousHash();
@@ -142,9 +145,11 @@ sap.ui.define([
             this._menu.setModel(this.prova);
             this._menu.open(this._bKeyboard, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
         },
-        callMenu: function(oButton){
+        callMenu: function (oButton) {
             var that = this;
-            Library.AjaxCallerData("./model/prova.json", function(Jdata){that.SUCCESSMenu.bind(that)(Jdata, oButton);});
+            Library.AjaxCallerData("./model/prova.json", function (Jdata) {
+                that.SUCCESSMenu.bind(that)(Jdata, oButton);
+            });
         },
         groupTurni: function (data, group0, group1, group2, group3) {
             for (var key in data) {
@@ -292,14 +297,14 @@ sap.ui.define([
         //GESTIONE VISUALIZZA ATTRIBUTI BATCH
         azioneBatch: function (oEvent) {
             var oText = oEvent.getParameter("item").getText();
-                switch (oText){
-                    case "Visualizza Attributi Batch":
-                        this.visuBatch();
-                        break;
-                }
+            switch (oText) {
+                case "Visualizza Attributi Batch":
+                    this.visuBatch();
+                    break;
+            }
 
         },
-        visuBatch: function(){
+        visuBatch: function () {
             var oView = this.getView();
             var std = this.getView().getModel("SKUstd").getData();
             var bck = this.getView().getModel("SKU").getData();
@@ -315,13 +320,13 @@ sap.ui.define([
             Library.RemoveClosingButtons.bind(this)("attributiContainer");
 
 
-            this.oDialog.open();            
+            this.oDialog.open();
         },
-        closeDialog: function(){
+        closeDialog: function () {
             this.oDialog.destroy();
         },
 // GESTIONE POPUP STATO LINEA
-        onOpenStatoLinea: function(){
+        onOpenStatoLinea: function () {
             var oView = this.getView();
             this.getView().setModel(this.ModelSKU, "SKU");
             this.oDialog = oView.byId("statoLinea");
@@ -329,81 +334,40 @@ sap.ui.define([
                 this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.statoLinea", this);
                 oView.addDependent(this.oDialog);
             }
+            if (Number(this.ISLOCAL) === 1) {
+                Library.AjaxCallerData("./model/JSON_FermoTestiNew.json", this.SUCCESSCause.bind(this));
+                this.getView().setModel(this.ModelCause, "cause");
+            }
             this.oDialog.open();
         },
-        onGestioneStato: function(oEvent){
+        onGestioneStato: function (oEvent) {
+//            var VBox = jQuery.sap.byId(this.getView().byId("nondisponibileBox").getId());
             var oText = oEvent.getSource().getText();
-            if (oText === "Disponibile per la produzione"){
+            if (oText === "Disponibile per la produzione") {
                 this.getView().byId("disponibile").setSelected(true);
                 this.getView().byId("nondisponibile").setSelected(false);
-                this.removeMotivi();
+                this.collapse();
             } else {
                 this.getView().byId("nondisponibile").setSelected(true);
                 this.getView().byId("disponibile").setSelected(false);
-                this.addMotivi();
+                this.expand();
             }
         },
-        addMotivi: function () {
-            var OuterBox = this.getView().byId("statoLineaBox");
-            var VBox = sap.ui.getCore().byId("nondisponibileBox");
-            if (!VBox) {
-                VBox = new sap.m.VBox({id: "nondisponibileBox"});
-                VBox.addStyleClass("sapUiLargeMarginBegin");
-                var VBox_intervallo = new sap.m.VBox({});
-                VBox_intervallo.addStyleClass("sapUiSmallMargin");
-                var VBox_causale = new sap.m.VBox({});
-                VBox_causale.addStyleClass("sapUiSmallMargin");
-                var turno_split = this.piano.turno.split("-");
-                var inizio = turno_split[0].trim();
-                var fine = turno_split[1].trim();
-                var picker_inizio = new sap.m.TimePicker({
-                    width: "7rem",
-                    valueFormat: "HH:mm",
-                    value: inizio,
-                    id: "Inizio",
-                    displayFormat: "HH:mm"
-                });
-                picker_inizio.addStyleClass("sapUiSmallMarginBegin");
-                var picker_fine = new sap.m.TimePicker({
-                    width: "7rem",
-                    valueFormat: "HH:mm",
-                    value: fine,
-                    id: "Fine",
-                    displayFormat: "HH:mm"
-                });
-                picker_fine.addStyleClass("sapUiSmallMarginBegin");
-                var selector = new sap.m.Select({
-                    id: "Causale",
-                    autoAdjustWidth: true
-                });
-                selector.addStyleClass("sapUiSmallMarginBegin");
-                var oItemSelectTemplate = new sap.ui.core.Item({
-                    key: "{cause>id}",
-                    text: "{cause>fermo}"
-                });
-                if (Number(this.ISLOCAL) === 1) {
-                    Library.AjaxCallerData("./model/JSON_FermoTestiNew.json", this.SUCCESSCause.bind(this));
-                    this.getView().setModel(this.ModelCause, "cause");
-                }
-                selector.setModel(this.getView().getModel("cause"));
-                selector.bindAggregation("items", "cause>/cause", oItemSelectTemplate);
-                VBox_intervallo.addItem(new sap.m.Text({text: "Intervallo"}));
-                VBox_intervallo.addItem(picker_inizio);
-                VBox_intervallo.addItem(picker_fine);
-                VBox_causale.addItem(new sap.m.Text({text: "Causale"}));
-                VBox_causale.addItem(selector);
-                VBox.addItem(VBox_intervallo);
-                VBox.addItem(VBox_causale);
-                OuterBox.addItem(VBox);
+        expand: function () {
+            var VBox = this.getView().byId("nondisponibileBox");
+            for (var i = 0; i < VBox.getItems().length; i++) {
+                VBox.getItems()[i].getItems()[1].setEnabled(true);
+                VBox.getItems()[i].getItems()[0].removeStyleClass("textNotEnabled");
+
             }
         },
-        removeMotivi: function(){
-            var VBox = sap.ui.getCore().byId("nondisponibileBox");
-            if (VBox){
-                VBox.destroyItems();
-                VBox.destroy();
+        collapse: function () {
+            var VBox = this.getView().byId("nondisponibileBox");
+            for (var i = 0; i < VBox.getItems().length; i++) {
+                VBox.getItems()[i].getItems()[1].setEnabled(false);
+                VBox.getItems()[i].getItems()[0].addStyleClass("textNotEnabled");
             }
-        }       
+        }
     });
     return ManagePiano;
 });

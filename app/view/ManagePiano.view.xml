@@ -91,7 +91,7 @@
                                                                     <VBox width="80%" height="100%">
                                                                         <VBox height="20%" width="100%">
                                                                             <HBox>
-                                                                                <VBox width="98%" >
+                                                                                <VBox width="90%" >
                                                                                     <cus:NewProgressIndicator
                                                                                         class="sapUiSmallMarginBottom largo"
                                                                                         percentValue="{= Number(${linea>avanzamento})}"
@@ -100,14 +100,15 @@
                                                                                         barColor="{linea>barColor}"
                                                                                         />
                                                                                 </VBox>
-                                                                                <VBox width="">
-                                                                                    <cus:CustomButt text=" "
+                                                                                <VBox width="10%">
+                                                                                    <cus:CustomButt icon="img/triangoloprova.png"
+                                                                                                    text="4"
                                                                                                     press="onPress"
                                                                                                     ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                                                                                     customType="graficoSPC"
                                                                                                     state="1"
-                                                                                                    width="10%"
-                                                                                                    class="sapUiSmallMarginBegin">
+                                                                                                    width="80%"
+                                                                                                    class="sapUiSmallMarginBegin monobuttonSPC">
                                                                                     </cus:CustomButt>
                                                                                 </VBox>
                                                                             </HBox>

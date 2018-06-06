@@ -5,6 +5,10 @@
     color : #003A6B;
 }
 
+.textNotEnabled {
+    opacity: 0.5;
+}
+
 
 /* BOTTONI */ 
 .sapMBtnDisabled {
@@ -18,7 +22,7 @@
 
 
 .tileLayout {
-	float: left;
+    float: left;
 }
 .myButton
 {
@@ -206,15 +210,16 @@
 
 
 /*CSS PER LA TREETABLE*/
-.noBorderRight * {
+
+.noBorderRight .sapUiTableCol{
     border-right: 0px !important;
 }
 
-.borderRight * {
+/*.borderRight .sapUiTableCell * {
     border-right: 1px solid black !important;
-}
+}*/
 
-.noBorderCells .sapUiTableCol, .sapUiTableTr > td {
+.mysapUiTableCol.sapUiTableTd{
     border-right: 0px !important;
 }
 
@@ -274,9 +279,9 @@
 
 .mysapMTBar.sapMTB .sapMBarChild {
     margin: 0px;
-/*    border-right: 1px solid black;*/
-/*    padding-bottom: 7px;
-    padding-top: 2px;*/
+    /*    border-right: 1px solid black;*/
+    /*    padding-bottom: 7px;
+        padding-top: 2px;*/
 }
 
 .mysapUiTableColCell .sapUiTableColCell {
@@ -350,19 +355,19 @@
     background-image: none !important;
     background-color: #7CA295 !important;
     color: white !important;
-/*    border: 1px solid green !important;*/
+    /*    border: 1px solid green !important;*/
 }
 
 
 /* TABELLA GUASTI PER LINEA/GRUPPO */
 
 .alternateRowColors tbody tr:nth-child(even) {
-	background: #f5f5f5;
+    background: #f5f5f5;
 }
 
 .guastiFixedHeader .sapMListTblHeader{
-  position: -webkit-sticky;
-  top: 0;
+    position: -webkit-sticky;
+    top: 0;
 }
 
 /*CSS PER LE MIE TABELLE  */
@@ -461,13 +466,56 @@
 
 /* CSS DELLA TAB CONTAINER */
 .customsapMTabStrip .sapMTabStrip {
-    width: 1210.18px;
+    width: 97.5%;
     margin-left: 15px; 
 }
 
 
 
 
+/* CSS PER MONOBOTTONE e BIBOTTONE SPC  -COMMENTATI CI SONO I CASI IN CUI DECIDO DI CAMBIARE IL SETTAGGIO DELLE DIMENSIONI*/ 
+.monobuttonSPC .sapMBtnInner {
+    padding-left:25% !important;
+    padding-right:25% !important;
+    position: relative;
+    text-shadow: none;
+    /*height: 3.5rem;*/ 
+}
+
+.monobuttonSPC .sapMBtnIcon {
+    position: absolute;
+    left: 25%;
+/*    max-height: 3.5rem;
+    height: 3.5rem;
+    width: 2.6875rem; */
+    
+    /* new_width = (new_height*43)/56 */
+}
+
+.monobuttonSPC .sapMBtnContent {
+    position: absolute;
+    left: 35%;
+    top: 2.5%;
+    background-color: transparent !important;
+}
+
+.bibuttonSPC .sapMBtnInner {
+    padding-left:2% !important;
+    padding-right:2% !important;    
+    position: relative;
+    text-shadow: none;
+}
+
+.bibuttonSPC .sapMBtnIcon {
+    position: absolute;
+}
+
+.bibuttonSPC .sapMBtnContent {
+    position: absolute;
+    left: 22%;
+    top: 2.5%;
+    background-color: transparent !important;
+}
 
 
 

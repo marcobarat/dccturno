@@ -176,7 +176,7 @@ sap.ui.define([
 
 
 
-            this.oDialog.open();
+//            this.oDialog.open();
         },
 //SI ATTIVA QUANDO PREMO CREA REPORT OEE
         onReport: function () {
@@ -290,6 +290,23 @@ sap.ui.define([
 
 
             this.oDialog.open();
+            
+            
+            var that = this;
+            var dialog = oView.byId("CausalizzazioneFermoPanel");
+            if (!dialog) {
+                dialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);
+                oView.addDependent(dialog);
+            }
+            var link;
+            if (Number(this.ISLOCAL) === 1) {
+                link = "model/JSON_FermoTestiNew.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+            }
+            Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
+            this.getView().setModel(this.ModelCausali, "CausaliFermo");            
+            
         },
 
 //CHIUDO IL DIALOG (SIA CAUSALIZZAZIONE FERMO CHE CAUSALIZZAZIONE FERMO PANEL)	
@@ -376,15 +393,15 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
 
-            var link;
-            if (Number(this.ISLOCAL) === 1) {
-                link = "model/JSON_FermoTestiNew.json";
-            } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
-            }
-            Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
-            this.getView().setModel(this.ModelCausali, "CausaliFermo");
-
+//            var link;
+//            if (Number(this.ISLOCAL) === 1) {
+//                link = "model/JSON_FermoTestiNew.json";
+//            } else {
+//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+//            }
+//            Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
+//            this.getView().setModel(this.ModelCausali, "CausaliFermo");
+            this.oDialog.open();
         },
 // GESTISCO LA SELEZIONE E LA CONFERMA DELLE CAUSE NEL CAUSALIZZAZIONEFERMOPANEL
         ChangeCheckedFermo: function (event) {

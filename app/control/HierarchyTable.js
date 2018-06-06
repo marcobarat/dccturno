@@ -9,13 +9,25 @@ sap.ui.define([
                 renderer: {},
 
                 onAfterRendering: function () {
+                    // CSS DELL'HEADER DELLA TREETABLE
+//                    var col_html;
+//                    var col_array = this.getColumns();
+//                    col_html = jQuery.sap.byId(col_array[2].getId());
+//                    col_html.addClass("noBorderRight");
+                    
+                    
+                    
+                    
+                    
                     this.expandToLevel(3);
                     var that = this;
-                    setTimeout (function(){
+                    setTimeout(function () {
                         var num = that.getBinding("rows").getLength();
-                    for (var i=0; i<num; i++){
-                            var row = that.getBinding("rows").getContextByIndex(i).getObject();
-                            var rowhtml = jQuery.sap.byId(that.getRows()[i].getId());
+                        var row, rowhtml, cellhtml;
+                        var i, j;
+                        for (i = 0; i < num; i++) {
+                            row = that.getBinding("rows").getContextByIndex(i).getObject();
+                            rowhtml = jQuery.sap.byId(that.getRows()[i].getId());
                             switch (row.hierarchy) {
                                 case 0:
                                     rowhtml.addClass("Background0");
@@ -25,13 +37,13 @@ sap.ui.define([
                                     break;
                                 case 2:
                                     rowhtml.addClass("Background2");
-                                    break;                                    
+                                    break;
                                 default:
                                     rowhtml.addClass("righeOverOut");
                                     break;
                             }
-                            for (var j=1; j<that.getColumns().length; j++){
-                                var cellhtml = rowhtml.children()[j].children[0];
+                            for (j = 1; j < that.getColumns().length; j++) {
+                                cellhtml = rowhtml.children()[j].children[0];
                                 switch (row.hierarchy) {
                                     case 1:
                                         cellhtml.classList.add("Lv1");
@@ -41,17 +53,43 @@ sap.ui.define([
                                         break;
                                     case 3:
                                         cellhtml.classList.add("Lv3");
-                                        if ( j===5 || j===6 || j===7){
-//                                            cellhtml.classList.add("handPointer");
+                                        if (j === 5 || j === 6 || j === 7) {
                                             cellhtml.parentElement.classList.add("handPointer");
                                         }
                                         break;
                                     default:
                                         break;
                                 }
+                                if (j === 2 || j === 3 || j === 5 || j === 6 || j === 8 || j === 9 || j === 11 || j === 12 || j === 13) {
+                                    rowhtml.children()[j].classList.add("mysapUiTableCol");
+                                }
                             }
-                        
+
                         }
+
+                        for (i = num; i < that.getVisibleRowCount(); i++) {
+                            rowhtml = jQuery.sap.byId(that.getRows()[i].getId());
+                            rowhtml.addClass("righeOverOut");
+                            for (j = 0; j < that.getColumns().length; j++) {
+                                rowhtml.children()[j].classList.add("mysapUiTableCol");
+                            }
+                        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     }, 0);
 //                        for (var i=0; i<num; i++){
 //                            var row = that.getBinding("rows").getContextByIndex(i).getObject();
@@ -68,8 +106,8 @@ sap.ui.define([
                     if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
                         sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
                     }
-                    }
-                });
+                }
+            });
 //                    var that = this;
 //                    setTimeout(function () {
 //                        var num = that.getBinding("rows").getLength();
@@ -83,6 +121,6 @@ sap.ui.define([
 //                            }
 //                        }
 //                    }, 0);
-            });
+        });
 
 

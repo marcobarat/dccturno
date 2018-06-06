@@ -28,8 +28,8 @@
                 <VBox height="5%" width="100%"/>
                 <VBox height="80%" width="100%">
                     <HBox>
-                        <VBox height="100%" width="5%"/>
-                        <VBox height="100%" width="90%">
+                        <!--<VBox height="100%" width="5%"/>-->
+                        <VBox height="100%" width="100%">
                             <wt:HierarchyTable
                                 rows="{path:'ReportOEE>/ReportOEE', parameters: {arrayNames:['Confezionamenti']}}"
                                 id="TreeTableReport"
@@ -51,17 +51,17 @@
                                             <wt:TextHierarchyTable text="{ReportOEE>OEE}" red="{ReportOEE>red/OEE}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>
-                                    <t:Column id="ComponentiOEE" resizable="false">
+                                    <t:Column id="ComponentiOEE" resizable="false" class="mysapUiTableCol">
                                         <t:multiLabels>
                                             <Label text="Componenti OEE" textAlign="Center"/>
-                                            <Label text="A"/>
+                                            <Label text="A" class="noBorderRight"/>
                                             <Label text="Disponibilità" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>disponibilitàOEE}" red="{ReportOEE>red/disponibilitàOEE}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable  text="{ReportOEE>disponibilitàOEE}" red="{ReportOEE>red/disponibilitàOEE}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>
-                                    <t:Column resizable="false">
+                                    <t:Column resizable="false" class="noBorderRight">
                                         <t:multiLabels>
                                             <Label text="Componenti OEE"/>
                                             <Label text="P"/>
@@ -174,7 +174,7 @@
                                 </wt:columns>
                             </wt:HierarchyTable>
                         </VBox>
-                        <VBox height="100%" width="5%"/> 
+                        <!--<VBox height="100%" width="5%"/>--> 
                     </HBox>
                 </VBox>
             </VBox>

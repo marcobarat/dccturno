@@ -5,29 +5,52 @@
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
     <Dialog horizontalScrolling="false" verticalScrolling="false" showHeader="false">
-        <VBox id="statoLineaBox">
-            <VBox class="sapUiMediumMargin">
-                <CheckBox
-                    id="disponibile"
-                    select="onGestioneStato"
-                    text="Disponibile per la produzione"
-                />
-                <CheckBox
-                    id="nondisponibile"
-                    select="onGestioneStato"
-                    text="Non disponibile per la produzione"
-                />
+        <VBox>
+            <VBox id="statoLineaBox" height="85%">
+                <VBox class="sapUiMediumMarginBegin sapUiMediumMarginTop">
+                    <CheckBox
+                        id="disponibile"
+                        select="onGestioneStato"
+                        text="Disponibile per la produzione"
+                        class="sapUiSmallMarginBottom"
+                    />
+                    <CheckBox
+                        selected="true"
+                        id="nondisponibile"
+                        select="onGestioneStato"
+                        text="Non disponibile per la produzione"
+                    />
+                </VBox>
             </VBox>
+        
+            <VBox id="nondisponibileBox" height="10%" class="sapUiLargeMarginBegin sapUiSmallMarginBottom">
+                <VBox>
+                    <Text text="Inizio Turno"/>
+                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
+                </VBox>
+                <VBox>
+                    <Text text="Fine Turno"/>
+                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
+                </VBox>
+                <VBox>
+                    <Text text="Causale"/>
+                    <Select id="causale" items="{cause>/cause}" autoAdjustWidth="true">
+                        <core:Item key="{cause>id}" text="{cause>fermo}" />
+                    </Select>
+                </VBox>
+
+            </VBox>
+        
+            <HBox height="5%">
+                <VBox class="sapUiSmallMargin" width="45%">
+                    <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="closeDialog"/>
+                </VBox>
+                <VBox width="10%"/>
+                <VBox class="sapUiSmallMargin" width="45%">
+                    <Button class="confermaButton lessOmbra" text="Conferma" width="100%"/>
+                </VBox>
+            </HBox>
         </VBox>
-        <HBox>
-            <VBox class="sapUiSmallMargin" width="45%">
-                <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="closeDialog"/>
-            </VBox>
-            <VBox width="10%"/>
-            <VBox class="sapUiSmallMargin" width="45%">
-                <Button class="confermaButton lessOmbra" text="Conferma" width="100%"/>
-            </VBox>
-        </HBox>
     </Dialog>
 
 </core:FragmentDefinition>
