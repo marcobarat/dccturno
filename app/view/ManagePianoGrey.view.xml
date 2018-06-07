@@ -11,7 +11,7 @@
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Annulla" press="onNavBack" width="100%" class="annullaButton" />
+                            <Button text="Annulla" press="onNavBack" width="100%" class="annullaButton noFocus" />
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="40%">
@@ -24,7 +24,7 @@
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Conferma" press="onMenu" width="100%" class="confermaButton"/>
+                            <Button text="Conferma" press="onMenu" width="100%" class="confermaButton noFocus"/>
                         </VBox>
                         <VBox height="100%" width="6.2%"/>
                     </HBox>
@@ -40,7 +40,7 @@
                             press="onReport"
                             ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                             width="100%"
-                            class="confermaButton">
+                            class="confermaButton noFocus">
                             <layoutData>
                                 <FlexItemData growFactor="1" />
                             </layoutData>
@@ -49,7 +49,7 @@
                 <VBox width="33%" class="sapUiSmallMargin">
                     <Button 
                         id="reportButton"
-                        class="styleButton" 
+                        class="styleButton noFocus" 
                         text="Report"
                         visible="false"
                         press="onReportView"
@@ -63,7 +63,7 @@
                 <VBox width="33%" class="sapUiSmallMargin">
                     <Button 
                         id="confermaButton" 
-                        class="styleButton"
+                        class="styleButton noFocus"
                         text="Conferma chiusura piano"
                         visible="false"
                         press="onConfermaChiusuraPiano"
@@ -95,7 +95,7 @@
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem>
+                    <ColumnListItem class="noDelimitator">
                         <cells>
                              <VBox width="100%" height="100%" class="sfondobianco">
                                 <HBox height="35%">

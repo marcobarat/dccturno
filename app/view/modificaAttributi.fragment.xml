@@ -1,12 +1,11 @@
 <core:FragmentDefinition
-    id="modificaAttributi"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     xmlns:wt="myapp.control" 
     controllerName="myapp.controller.MenuItemEventing"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="700px" horizontalScrolling="false" verticalScrolling="true" showHeader="false">
+    <Dialog contentWidth="700px" horizontalScrolling="false" verticalScrolling="true" showHeader="false" class="colorPage"  id="modificaAttributi">
         <TabContainer
             id="attributiContainer" class="sapUiMediumMarginBottom">
             <items>    

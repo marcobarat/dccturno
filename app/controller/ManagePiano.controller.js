@@ -5,11 +5,12 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'sap/ui/core/routing/History',
     'myapp/control/CustomButt',
-    'myapp/controller/Library'
-], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library) {
+    'myapp/controller/Library',
+    'myapp/model/TimeFormatter'
+], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library, TimeFormatter) {
     "       use strict";
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
-
+        TimeFormatter: TimeFormatter,
         ISLOCAL: 0,
         data_json: {},
         ModelMenu: new JSONModel({}),
@@ -263,7 +264,7 @@ sap.ui.define([
 
         },
         changeFields: function () {
-            var j, oTable, oRows;
+            var j, oTable, oRows, oText;
             var oTables = this.getView().byId("managePianoTable").getItems();
             for (var i = 0; i < oTables.length; i++) {
                 oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
@@ -275,9 +276,15 @@ sap.ui.define([
                         oRows[j].removeCell(6);
                         oRows[j].removeCell(5);
                     }
-                    oRows[j].addCell(new sap.m.Text({text: "{linea>qli}"}));
-                    oRows[j].addCell(new sap.m.Text({text: "{linea>cartoni}"}));
-                    oRows[j].addCell(new sap.m.Text({text: "{linea>ore}"}));
+                    oText = new sap.m.Text({text: "{linea>qli}"});
+                    oText.addStyleClass("sapUiSmallMarginTop");
+                    oRows[j].addCell(oText);
+                    oText = new sap.m.Text({text: "{linea>cartoni}"});
+                    oText.addStyleClass("sapUiSmallMarginTop");
+                    oRows[j].addCell(oText);
+                    oText = new sap.m.Text().bindText({path: 'linea>ore', formatter: this.TimeFormatter.TimeText});
+                    oText.addStyleClass("sapUiSmallMarginTop sapUiMediumMarginBegin");
+                    oRows[j].addCell(oText);
                 }
             }
         },
@@ -318,12 +325,12 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
             Library.RemoveClosingButtons.bind(this)("attributiContainer");
-
-
+            
+            
             this.oDialog.open();
         },
         closeDialog: function () {
-            this.oDialog.destroy();
+            this.oDialog.close();
         },
 // GESTIONE POPUP STATO LINEA
         onOpenStatoLinea: function () {
@@ -338,6 +345,9 @@ sap.ui.define([
                 Library.AjaxCallerData("./model/JSON_FermoTestiNew.json", this.SUCCESSCause.bind(this));
                 this.getView().setModel(this.ModelCause, "cause");
             }
+            oView.byId("disponibile").setSelected(true);
+            oView.byId("nondisponibile").setSelected(false);
+            this.collapse();
             this.oDialog.open();
         },
         onGestioneStato: function (oEvent) {

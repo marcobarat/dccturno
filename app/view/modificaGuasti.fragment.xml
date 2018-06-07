@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
-    <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="true">
+    <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="true" class="colorPage">
         <customHeader>
             <Bar>
                 <contentLeft>

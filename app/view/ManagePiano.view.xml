@@ -10,7 +10,7 @@
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Annulla" press="onNavBack" width="100%" class="annullaButton" />
+                            <Button text="Annulla" press="onNavBack" width="100%" class="annullaButton noFocus" />
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="40%">
@@ -23,7 +23,7 @@
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Conferma" press="onMenu" width="100%" class="confermaButton"/>
+                            <Button text="Conferma" press="onMenu" width="100%" class="confermaButton noFocus"/>
                         </VBox>
                         <VBox height="100%" width="6.2%"/>
                     </HBox>
@@ -47,7 +47,7 @@
                                                     </Column>
                                                 </columns>
                                                 <items>
-                                                    <ColumnListItem>
+                                                    <ColumnListItem class="noDelimitator">
                                                         <cells>
                                                             <VBox width="100%" height="100%" class="sfondobianco">
                                                                 <HBox width="100%" height="35%"  alignItems="Start">
@@ -55,7 +55,7 @@
                                                                         <cus:CustomButt text="Linea {linea>lineaID}"
                                                                                         press="onOpenStatoLinea"
                                                                                         width="100%"
-                                                                                        class="fix_b"
+                                                                                        class="fix_b noFocus"
                                                                                         state="{linea>statolinea}"
                                                                                         customType="linea">
                                                             
@@ -64,28 +64,40 @@
                                                                             </cus:layoutData>
                                                                         </cus:CustomButt>
                                                                         <Table 
-                                                                            items="{path: 'operatore>/Operator'}"
-                                                                            inset="false"
-                                                                            growing="true"
-                                                                            fixedLayout="false"
-                                                                            growingThreshold="{operatore>numeroOperatori}"
-                                                                            class="sapUiSmallMarginEnd borderb mysapMLIBShowSeparator mysapMListTblNoBorders">
+                                                                            showNoData="false"
+                                                                            class="sapUiSmallMarginEnd borderb mysapMListTblNoBorders">
                                                                             <columns>
                                                                                 <Column  hAlign="Center">
                                                                                     <Text text="Operatori"/>
                                                                                 </Column>
                                                                             </columns>
-                                                                            <items>
-                                                                                <ColumnListItem >
-                                                                                    <cells>
-                                                                                        <Select items="{operatore>Operator}" width="100%">
-                                                                                            <core:Item key="{operatore>nome}" text="{operatore>nome} {operatore>cognome}" />
-                                                                                        </Select>
-                                                                                    </cells>
-                                                                                </ColumnListItem>
-                                                                            </items>
-                                                                        </Table>    
-
+                                                                        </Table>
+                                                                        <ScrollContainer height='231px' vertical='true'>  
+                                                                            <content>
+                                                                                <Table 
+                                                                                    showHeader="false"
+                                                                                    items="{path: 'operatore>/Operator'}"
+                                                                                    inset="false"
+                                                                                    growing="true"
+                                                                                    fixedLayout="false"
+                                                                                    growingThreshold="{operatore>numeroOperatori}"
+                                                                                    class="sapUiSmallMarginEnd borderb mysapMListTblNoBorders">
+                                                                                    <columns>
+                                                                                        <Column  hAlign="Center">
+                                                                                        </Column>
+                                                                                    </columns>
+                                                                                    <items>
+                                                                                        <ColumnListItem class="noDelimitator">
+                                                                                            <cells>
+                                                                                                <Select items="{operatore>Operator}" width="100%">
+                                                                                                    <core:Item key="{operatore>nome}" text="{operatore>nome} {operatore>cognome}" />
+                                                                                                </Select>
+                                                                                            </cells>
+                                                                                        </ColumnListItem>
+                                                                                    </items>
+                                                                                </Table>    
+                                                                            </content> 
+                                                                        </ScrollContainer> 
                                                                     </VBox>
               
                                                                     <VBox width="80%" height="100%">
@@ -98,7 +110,7 @@
                                                                                         displayValue="{linea>perc_avanzamento}"
                                                                                         showValue="true"
                                                                                         barColor="{linea>barColor}"
-                                                                                        />
+                                                                                    />
                                                                                 </VBox>
                                                                                 <VBox width="10%">
                                                                                     <cus:CustomButt icon="img/triangoloprova.png"
@@ -108,7 +120,7 @@
                                                                                                     customType="graficoSPC"
                                                                                                     state="1"
                                                                                                     width="80%"
-                                                                                                    class="sapUiSmallMarginBegin monobuttonSPC">
+                                                                                                    class="sapUiSmallMarginBegin monobuttonSPC noFocus">
                                                                                     </cus:CustomButt>
                                                                                 </VBox>
                                                                             </HBox>
@@ -164,7 +176,7 @@
                                                                                             <Column hAlign="Center"/>
                                                                                         </columns>
                                                                                         <items>
-                                                                                            <ColumnListItem>
+                                                                                            <ColumnListItem class="noDelimitator">
                                                                                                 <cells>
                                                                                                     <cus:CustomButt text="" 
                                                                                                                     customType="batch"

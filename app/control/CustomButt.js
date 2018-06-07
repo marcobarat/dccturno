@@ -113,7 +113,8 @@ sap.ui.define([
                         jQuery.sap.byId(this.getId()).addClass("progressBarButtonYellow");
                         break;
                     case "1":
-                        jQuery.sap.byId(this.getId()).addClass("progressBarButtonGreen");
+                          jQuery.sap.byId(this.getId()).addClass("internoLineaGreen");
+//                        jQuery.sap.byId(this.getId()).addClass("progressBarButtonGreen");
                         break;
                 }
             }

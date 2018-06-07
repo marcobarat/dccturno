@@ -1,10 +1,10 @@
 <core:FragmentDefinition
-    id="modificaGuasti"
+    
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
-    <Dialog horizontalScrolling="false" verticalScrolling="false" showHeader="false">
+    <Dialog horizontalScrolling="false" verticalScrolling="false" showHeader="false" class="colorPage" id="statoLinea">
         <VBox>
             <VBox id="statoLineaBox" height="85%">
                 <VBox class="sapUiMediumMarginBegin sapUiMediumMarginTop">
@@ -15,7 +15,6 @@
                         class="sapUiSmallMarginBottom"
                     />
                     <CheckBox
-                        selected="true"
                         id="nondisponibile"
                         select="onGestioneStato"
                         text="Non disponibile per la produzione"

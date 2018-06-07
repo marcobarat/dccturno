@@ -248,7 +248,7 @@
                                             <cells>
                                                 <core:Icon
                                                     src="{turni>icon}"
-                                                    class="size4"
+                                                    class="size4 noFocus"
                                                     press="managePiano"
                                                     color="black" >
                                                 </core:Icon>

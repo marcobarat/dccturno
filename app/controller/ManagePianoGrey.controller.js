@@ -20,7 +20,7 @@ sap.ui.define([
         CheckSingoloCausa: [],
         CheckTotaleCausa: 0,
         oDialog: null,
-        CheckFermo: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        CheckFermo: null,
         id_split: null,
         oButton: null,
         piano: null,
@@ -38,6 +38,7 @@ sap.ui.define([
             this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+            var link;
             this.ModelTurni = this.getOwnerComponent().getModel("turni");
             if (!this.ModelTurni) {
                 Library.SyncAjaxCallerData("model/pianidiconf.json", Library.SUCCESSDatiTurni.bind(this));
@@ -54,11 +55,12 @@ sap.ui.define([
                     that.ModelLinea.setData(Jdata);
                 });
                 this.getView().setModel(this.ModelLinea, "linea");
-
                 Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
                 sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+                link = "model/JSON_FermoTestiNew.json";
+                Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
+                this.getView().setModel(this.ModelCausali, "CausaliFermo");
             }
-
             var oItems = this.getView().byId("ManagePianoTable").getItems();
             for (var i = 0; i < oItems.length; i++) {
                 var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
@@ -74,23 +76,29 @@ sap.ui.define([
         SUCCESSGuasti: function (Jdata) {
             var data = {};
             data.GuastiLinee = [];
-            for (var i=0;i < Jdata.GuastiLinee.length; i++){
-            var dataAll = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
-            var dataReduced = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
-            dataAll = Library.AddTimeGaps(dataAll);
-            data.GuastiLinee.push({});
-            data.GuastiLinee[i].nome = null;
-            data.GuastiLinee[i].All = {};
-            data.GuastiLinee[i].NoCause = {};            
-            data.GuastiLinee[i].nome = Jdata.GuastiLinee[i].nome;
-            data.GuastiLinee[i].All = dataAll;
-            dataReduced = Library.RemoveCaused(dataReduced);
-            dataReduced = Library.AddTimeGaps(dataReduced);
-            data.GuastiLinee[i].NoCause = dataReduced;
+            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
+                var dataAll = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+                var dataReduced = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+                dataAll = Library.AddTimeGaps(dataAll);
+                data.GuastiLinee.push({});
+                data.GuastiLinee[i].nome = null;
+                data.GuastiLinee[i].All = {};
+                data.GuastiLinee[i].NoCause = {};
+                data.GuastiLinee[i].nome = Jdata.GuastiLinee[i].nome;
+                data.GuastiLinee[i].All = dataAll;
+                dataReduced = Library.RemoveCaused(dataReduced);
+                dataReduced = Library.AddTimeGaps(dataReduced);
+                data.GuastiLinee[i].NoCause = dataReduced;
             }
             this.ModelGuasti.setData(data);
         },
         SUCCESSFermo: function (Jdata) {
+            var oView = this.getView();
+            var dialog = oView.byId("CausalizzazioneFermoPanel");
+            if (!dialog) {
+                dialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);
+                oView.addDependent(dialog);
+            }
             this.ModelCausali.setData(Jdata);
             var data = Jdata.gerarchie;
             var num_gerarchie = data.length;
@@ -176,7 +184,6 @@ sap.ui.define([
 
 
 
-//            this.oDialog.open();
         },
 //SI ATTIVA QUANDO PREMO CREA REPORT OEE
         onReport: function () {
@@ -242,8 +249,8 @@ sap.ui.define([
                     var oColumnListItems = oTable.getItems();
                     for (var j = 0; j < oColumnListItems.length; j++) {
                         oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[9]);
-                        oColumnListItems[j].addCell(oColumnListItems[j].getCells()[8]);
-                        oColumnListItems[j].addCell(oColumnListItems[j].getCells()[7]);
+                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[8]);
+                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[7]);
 
                     }
                 }
@@ -256,8 +263,8 @@ sap.ui.define([
 // APRO IL DIALOG E INIZIALIZZO TUTTE LE CHECKBOX E LE PROPRIETA' DEL CONTROLLER CHE MI SERVONO PER MONITORARE LE CHECKBOX
         onCausalizzazioneFermi: function (oEvent) {
             //NB sto supponendo che linee e guasti siano ordinati nello stesso modo
-            if (oEvent){
-            this.oLinea_index = oEvent.getSource().getBindingContext("linea").sPath.split("/")[2];
+            if (oEvent) {
+                this.oLinea_index = oEvent.getSource().getBindingContext("linea").sPath.split("/")[2];
             }
             //var oLinea_index = this.ModelLinea.getData().linee[oEvent.getSource().getBindingContext("linea").sPath.split("/")[2]].linea; questa se non mi basta l'indice e voglio il nome della linea
             var oView = this.getView();
@@ -278,35 +285,26 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
 
+            //disabilito il bottone di accettazione
+            this.getView().byId("ConfermaFermi").setEnabled(false);
 
             if (!this.ControlloCausalizzazioneGuasti(this.ModelGuastiLinea.getData())) {
-                this.getView().byId("TotaleTable").setVisible(false);
-                this.getView().byId("NoFermiDaCausalizzare").setVisible(true);
+                oView.byId("TotaleTable").setVisible(false);
+                oView.byId("NoFermiDaCausalizzare").setVisible(true);
             } else {
-                this.getView().byId("TotaleTable").setVisible(true);
+                var oTable = this.getView().byId("TotaleTable");
+                oTable.setVisible(true);
+                oTable.getItems()[0].getCells()[3].setSelected(false);
+                this.CheckTotaleCausa = 0;
+
                 this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
             }
 
 
 
             this.oDialog.open();
-            
-            
-            var that = this;
-            var dialog = oView.byId("CausalizzazioneFermoPanel");
-            if (!dialog) {
-                dialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);
-                oView.addDependent(dialog);
-            }
-            var link;
-            if (Number(this.ISLOCAL) === 1) {
-                link = "model/JSON_FermoTestiNew.json";
-            } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
-            }
-            Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
-            this.getView().setModel(this.ModelCausali, "CausaliFermo");            
-            
+
+
         },
 
 //CHIUDO IL DIALOG (SIA CAUSALIZZAZIONE FERMO CHE CAUSALIZZAZIONE FERMO PANEL)	
@@ -325,7 +323,6 @@ sap.ui.define([
                 }
             }
             this.getView().byId(id_dialog).close();
-            this.getView().byId(id_dialog).destroy();
             this.oDialog = null;
 
         },
@@ -384,7 +381,6 @@ sap.ui.define([
         },
 //CHIUDO IL DIALOG CAUSALIZZAZIONE FERMO E APRO IL CAUSALIZZAZIONE FERMO PANEL                        
         onCausalizzaButton: function () {
-            var that = this;
             var oView = this.getView();
             this.onCloseDialog();
             this.oDialog = oView.byId("CausalizzazioneFermoPanel");
@@ -393,14 +389,14 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
 
-//            var link;
-//            if (Number(this.ISLOCAL) === 1) {
-//                link = "model/JSON_FermoTestiNew.json";
-//            } else {
-//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
-//            }
-//            Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
-//            this.getView().setModel(this.ModelCausali, "CausaliFermo");
+            //PULIZIA DELLA PAGINA -DESELEZIONO UN'EVENTUALE CASELLA SELEZIONATA 
+            var old_id = this.GetActiveCB();
+            if (old_id !== 0) {
+                var old_CB = sap.ui.getCore().byId(old_id);
+                old_CB.setSelected(false);
+                this.CheckFermo[old_id] = 0;
+            }
+
             this.oDialog.open();
         },
 // GESTISCO LA SELEZIONE E LA CONFERMA DELLE CAUSE NEL CAUSALIZZAZIONEFERMOPANEL
@@ -451,7 +447,6 @@ sap.ui.define([
                 }
             }
             this.ModelGuasti.getData().GuastiLinee[this.oLinea_index] = data;
-//            this.ModelGuasti.setData(data);
             this.getView().setModel(this.ModelGuasti, "guasti");
 
             this.onCloseDialog();
@@ -467,7 +462,6 @@ sap.ui.define([
         },
         ControlloCausalizzazioneGuasti: function (data) {
             var check = false;
-//            var data = this.ModelGuasti.getData().NoCause.guasti;
             data = data.NoCause.guasti;
             var i;
             for (i in data) {
