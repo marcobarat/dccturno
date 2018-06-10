@@ -103,6 +103,10 @@
                     "name": "guastidilinea",
                     "pattern": "managePianoGrey/{turnoPath}/{pianoPath}/Report/{guastiPath}",
                     "target": "guastiLinea"
+                }, {
+                    "name": "RiepilogoLinee",
+                    "pattern": "RiepilogoLinee",
+                    "target": "RiepilogoLinee"
                 }],
             "targets": {
                 "main": {
@@ -123,6 +127,9 @@
                 },
                 "guastiLinea": {
                     "viewName": "view.guastiLinea"
+                },
+                "RiepilogoLinee": {
+                    "viewName": "view.RiepilogoLinee"
                 }
             }
         },

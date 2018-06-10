@@ -61,12 +61,29 @@ sap.ui.define([
                                 jQuery.sap.byId(this.getId()).addClass("internoLineaBordeaux");
                                 break;
                         }
-                        } else {
-                            jQuery.sap.byId(this.getId()).removeClass("internoLineaBordeaux internoLineaRed internoLineaGreen internoLineaYellow internoLineaWhite");
-                        }
-
-                        }
+                    } else {
+                        jQuery.sap.byId(this.getId()).removeClass("internoLineaBordeaux internoLineaRed internoLineaGreen internoLineaYellow internoLineaWhite");
                     }
+
+                }
+            }
+
+            if (oType === "batch") {
+                switch (oState) {
+                    case "NonTrasferito":
+                        break;
+                    case "InLavorazione":
+                        jQuery.sap.byId(this.getId()).addClass("neroreno");
+                        break;
+                    case "Chiuso":
+                        this.destroy();
+                        break;
+                    case "Attrezzaggio":
+                        jQuery.sap.byId(this.getId()).addClass("giallogallo");
+                        break;
+
+                }
+            }
 
 
 
@@ -90,30 +107,13 @@ sap.ui.define([
 
                 }
             }
-            if (oType === "batch") {
-                switch (oState) {
-                    case "Non confezionato":
-//                        jQuery.sap.byId(this.getId()).addClass("bianconco");
-                        break;
-                    case "1":
-                        jQuery.sap.byId(this.getId()).addClass("neroreno");
-                        break;
-                    case "2":
-                        jQuery.sap.byId(this.getId()).addClass("rossorso");
-                        break;
-                    case "3":
-                        jQuery.sap.byId(this.getId()).addClass("giallogallo");
-                        break;
-
-                }
-            }
             if (oType === "graficoSPC") {
                 switch (oState) {
                     case "0":
                         jQuery.sap.byId(this.getId()).addClass("progressBarButtonYellow");
                         break;
                     case "1":
-                          jQuery.sap.byId(this.getId()).addClass("internoLineaGreen");
+                        jQuery.sap.byId(this.getId()).addClass("internoLineaGreen");
 //                        jQuery.sap.byId(this.getId()).addClass("progressBarButtonGreen");
                         break;
                 }

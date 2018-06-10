@@ -14,29 +14,6 @@ sap.ui.define([
         turnoPath: null,
         data_json: {},
         onInit: function () {
-            var oModel = new JSONModel();
-            var that = this;
-            $.ajax({
-                type: "GET",
-                url: "model/OEE.json",
-                dataType: "json",
-                success: function (oData) {
-                    oModel.setData(oData);
-                    that.RecursivePropertyAdder(oModel.getData().ReportOEE.Confezionamenti[0], "hierarchy", 0);
-                    setTimeout(that.setWorstValues(oModel.getData().ReportOEE.Confezionamenti[0], "OEE"), 0);
-                    setTimeout(that.setWorstValues(oModel.getData().ReportOEE.Confezionamenti[0], "disponibilitàOEE"), 0);
-                    setTimeout(that.setWorstValues(oModel.getData().ReportOEE.Confezionamenti[0], "produttivitàOEE"), 0);
-                    setTimeout(that.setWorstValues(oModel.getData().ReportOEE.Confezionamenti[0], "qualitàOEE"), 0);
-                    setTimeout(that.setHighestValues(oModel.getData().ReportOEE.Confezionamenti[0], "dispFermate"), 0);
-                    setTimeout(that.setHighestValues(oModel.getData().ReportOEE.Confezionamenti[0], "dispSetup"), 0);
-                    setTimeout(that.setHighestValues(oModel.getData().ReportOEE.Confezionamenti[0], "prodCadRidotta"), 0);
-                    setTimeout(that.setHighestValues(oModel.getData().ReportOEE.Confezionamenti[0], "prodMFermate"), 0);
-                    setTimeout(that.setHighestValues(oModel.getData().ReportOEE.Confezionamenti[0], "qualitàScarti"), 0);
-                    setTimeout(that.setHighestValues(oModel.getData().ReportOEE.Confezionamenti[0], "qualitàRilavor"), 0);
-                }
-            });
-
-            this.getView().setModel(oModel, "ReportOEE");
             this.getView().byId("ComponentiOEE").setHeaderSpan([3, 1, 1]);
             this.getView().byId("ComponentiPerdita").setHeaderSpan([9, 3, 1]);
             this.getView().byId("ComponentiProduttivita").setHeaderSpan([9, 3, 1]);
@@ -45,19 +22,22 @@ sap.ui.define([
             oRouter.getRoute("Report").attachPatternMatched(this._onObjectMatched, this);
         },
         SUCCESSDatiOEE: function (Jdata) {
-            var that = this;
+            var data_new;
             this.ModelOEE.setData(Jdata);
-            that.RecursivePropertyAdder(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "hierarchy", 0);
-            setTimeout(that.setWorstValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "OEE"), 0);
-            setTimeout(that.setWorstValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "disponibilitàOEE"), 0);
-            setTimeout(that.setWorstValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "produttivitàOEE"), 0);
-            setTimeout(that.setWorstValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "qualitàOEE"), 0);
-            setTimeout(that.setHighestValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "dispFermate"), 0);
-            setTimeout(that.setHighestValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "dispSetup"), 0);
-            setTimeout(that.setHighestValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "prodCadRidotta"), 0);
-            setTimeout(that.setHighestValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "prodMFermate"), 0);
-            setTimeout(that.setHighestValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "qualitàScarti"), 0);
-            setTimeout(that.setHighestValues(that.ModelOEE.getData().ReportOEE.Confezionamenti[0], "qualitàRilavor"), 0);
+            var bck = this.RecursivePropertyAdder(Jdata.ReportOEE.Confezionamenti[0], "hierarchy", 0);
+            Jdata.ReportOEE.Confezionamenti[0] = bck;
+            data_new = Jdata;
+            data_new = this.setWorstValues(data_new, "OEE");
+            data_new = this.setWorstValues(data_new, "disponibilitàOEE");
+            data_new = this.setWorstValues(data_new, "produttivitàOEE");
+            data_new = this.setWorstValues(data_new, "qualitàOEE");
+            data_new = this.setHighestValues(data_new, "dispFermate");
+            data_new = this.setHighestValues(data_new, "dispSetup");
+            data_new = this.setHighestValues(data_new, "prodCadRidotta");
+            data_new = this.setHighestValues(data_new, "prodMFermate");
+            data_new = this.setHighestValues(data_new, "qualitàScarti");
+            data_new = this.setHighestValues(data_new, "qualitàRilavor");
+            this.ModelOEE.setData(data_new);
         },
         _onObjectMatched: function (oEvent) {
             this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
@@ -65,16 +45,17 @@ sap.ui.define([
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             if (Number(this.ISLOCAL)===1){
             Library.AjaxCallerData("model/OEE.json", this.SUCCESSDatiOEE.bind(this));
+            this.getView().byId("TreeTableReport").setModel(this.ModelOEE, "ReportOEE");
             } else {
                 
             }
             this.ModelTurni = this.getOwnerComponent().getModel("turni");
             if (!this.ModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf.json", Library.SUCCESSDatiTurni.bind(this));
+                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
                 this.getOwnerComponent().setModel(this.ModelTurni, "turni");
             }
             var oTitle = this.getView().byId("ReportTitle");
-            this.piano = this.ModelTurni.getData()[this.turnoPath][this.pianoPath];
+            this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
         },
@@ -135,22 +116,24 @@ sap.ui.define([
         },
 //RICERCO I 3 VALORI PIU' BASSI (O PIU' ALTI) DI OGNI COLONNA E SETTO LA PROPRIETA' RED CHE MI SERVE PER QUANDO RICHIAMO IL CONTROLLO CUSTOM TEXTHIERARCHYTABLE
         setWorstValues: function (bck, property) {
+            var data_new = bck;
             this.minValues = [];
             this.takeAllElements(bck, property);
             this.minValues.sort(function (a, b) {
                 return a - b;
             });
-            this.setJSONWorstValues(bck, property, this.minValues[0], this.minValues[1], this.minValues[2]);
-            return;
+            data_new.ReportOEE.Confezionamenti[0] = this.setJSONWorstValues(bck.ReportOEE.Confezionamenti[0], property, this.minValues[0], this.minValues[1], this.minValues[2]);
+            return data_new;
         },
         setHighestValues: function (bck, property) {
+            var data_new = bck;
             this.minValues = [];
             this.takeAllElements(bck, property);
             this.minValues.sort(function (a, b) {
                 return b - a;
             });
-            this.setJSONWorstValues(bck, property, this.minValues[0], this.minValues[1], this.minValues[2]);
-            return;
+            data_new.ReportOEE.Confezionamenti[0] = this.setJSONWorstValues(bck.ReportOEE.Confezionamenti[0], property, this.minValues[0], this.minValues[1], this.minValues[2]);
+            return data_new;
         },
         takeAllElements: function (bck, property) {
             var numero;
@@ -173,7 +156,7 @@ sap.ui.define([
         setJSONWorstValues: function (bck, property, a, b, c) {
             var numero;
             for (var key in bck) {
-                if (typeof bck[key] === "object") {
+                if (typeof bck[key] === "object" && key!== "red") {
                     bck[key] = this.setJSONWorstValues(bck[key], property, a, b, c);
                 }
             }
@@ -222,31 +205,7 @@ sap.ui.define([
         onBackNav: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGrey", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
-        },
-        groupTurni: function (data, group0, group1, group2, group3) {
-            for (var key in data) {
-                if (typeof data[key] === "object") {
-                    this.groupTurni(data[key], group0, group1, group2, group3);
-                }
-            }
-            if (data.area) {
-                switch (data.area) {
-                    case "0":
-                        this.data_json[group0].push(data);
-                        break;
-                    case "1":
-                        this.data_json[group1].push(data);
-                        break;
-                    case "2":
-                        this.data_json[group2].push(data);
-                        break;
-                    case "-1":
-                        this.data_json[group3].push(data);
-                }
-            }
-            return;
         }
-
 
 
 

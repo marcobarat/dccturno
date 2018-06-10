@@ -46,6 +46,10 @@ sap.ui.define([
         standardToMinutes: function (string) {
             return parseInt(string.split(":")[1], 10) + parseInt(string.split(":")[0], 10) * 60;
         },
+        fromStandardToDate: function (data, ora) {
+            var array_data = data.split("/");
+            return array_data[2] + "-" + array_data[1] + "-" + array_data[0] + "T" + ora;
+        },
 // FUNZIONI PER LA SUDDIVISIONE DEI GUASTI IN CAUSALIZZATI E NON
 
 
@@ -171,37 +175,20 @@ sap.ui.define([
             return json;
         },
         SUCCESSDatiTurni: function (Jdata) {
-            this.data_json = {};
             this.ModelTurni = new JSONModel({});
-            this.data_json.turniconclusi = [];
-            this.data_json.turnoincorso = [];
-            this.data_json.turniprogrammati = [];
-            this.data_json.turnodacreare = [];
-            this.groupTurni(Jdata, "turniconclusi", "turnoincorso", "turniprogrammati", "turnodacreare");
-            this.ModelTurni.setData(this.data_json);
+            this.ModelTurni.setData(Jdata);
         },
-        groupTurni: function (data, group0, group1, group2, group3) {
-            for (var key in data) {
-                if (typeof data[key] === "object") {
-                    this.groupTurni(data[key], group0, group1, group2, group3);
-                }
-            }
-            if (data.area) {
-                switch (data.area) {
-                    case "0":
-                        this.data_json[group0].push(data);
-                        break;
-                    case "1":
-                        this.data_json[group1].push(data);
-                        break;
-                    case "2":
-                        this.data_json[group2].push(data);
-                        break;
-                    case "-1":
-                        this.data_json[group3].push(data);
-                }
-            }
-            return;
+
+//CREAZIONE DEI FILE XML PER LA PARTE DI BACKEND
+        createXMLFermo: function (obj) {
+            var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
+            var bottom = '</root>';
+            var parameters = '<caso>' + obj.caso + '</caso>' +
+                    '<logId>' + obj.logId + '</logId>' +
+                    '<batchId>' + obj.batchId + '</batchId>' +
+                    '<dataFine>' + obj.dataFine + '</dataFine>' +
+                    '<dataInizio>' + obj.dataInizio + '</dataInizio>';
+            return top + parameters + bottom;
         }
     };
 });

@@ -4,7 +4,6 @@ sap.ui.define([
     'myapp/controller/Library'
 ], function (Controller, JSONModel, Library) {
     "use strict";
-
     return Controller.extend("myapp.controller.guastiLinea", {
         ISLOCAL: 0,
         linea: "",
@@ -15,7 +14,7 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
-        data_json: {},  
+        data_json: {},
         onInit: function () {
             this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -29,7 +28,6 @@ sap.ui.define([
                 });
             }
             this.getView().setModel(model, "cause");
-
         },
         _onObjectMatched: function (oEvent) {
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
@@ -43,13 +41,13 @@ sap.ui.define([
                 });
             }
             this.getView().setModel(oModel, "guasti");
-            var oModelTurni = this.getOwnerComponent().getModel("turni");
-            if (!oModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf.json", Library.SUCCESSDatiTurni.bind(this));
+            this.ModelTurni = this.getOwnerComponent().getModel("turni");
+            if (!this.ModelTurni) {
+                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
                 this.getOwnerComponent().setModel(this.ModelTurni, "turni");
             }
             var oTitle = this.getView().byId("turno");
-            this.piano = oModelTurni.getData()[this.turnoPath][this.pianoPath];
+            this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
         },
@@ -89,23 +87,16 @@ sap.ui.define([
             var row_id = oEvent.getSource().getParent().getId();
             var split_id = row_id.split("-");
             this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[split_id.length - 1], 10)];
-            // create menu only once
             if (!this._menu) {
                 this._menu = sap.ui.xmlfragment(
                         "myapp.view.MenuCausalizzazione",
                         this
                         );
                 this.getView().addDependent(this._menu);
-
             }
             var eDock = sap.ui.core.Popup.Dock;
-//                var oModel = new JSONModel();
-//                oModel.setData(this.menuJSON);
-//                this._menu.setModel(oModel, "menu");
             this._menu.open(this._bKeyboard, oButton, eDock.EndTop, eDock.BeginBottom, oButton);
-//                this._menu.open(this._bKeyboard, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
         },
-
 //GESTIONE DEL MENU DI MODIFICA GUASTI
         modificaGuasti: function (oEvent) {
             var oText = oEvent.getParameter("item").getText();
@@ -129,75 +120,77 @@ sap.ui.define([
         },
         onConfermaCambio: function (oEvent) {
             var oText = this.getView().byId("title").getText();
-            var i;
-            var oModel = new JSONModel();
-            var stringa_inizio, stringa_fine, selected_key, causale;
+            var obj, doc;
             switch (oText) {
                 case "Modifica Causale Fermo":
-                    selected_key = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
-                    for (i in this.guasti.guasti) {
-                        if (this.isObjectEquivalent(this.guasti.guasti[i], this.row_binded)) {
-                            var causa = this.takeCausaById(selected_key);
-                            this.guasti.guasti[i].causa = causa;
-                            oModel.setData(this.guasti);
-                            this.getView().setModel(oModel, "guasti");
-                            break;
-                        }
+                    if (Number(this.ISLOCAL) === 1) {
+                        this.LOCALModificaCausaleFermo(oEvent);
+                    } else {
+                        obj = {};
+                        obj.caso = "updateCausale";
+                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
+                        obj.batchId = "6"; // COME SOPRA
+                        obj.dataFine = "";
+                        obj.dataInizio = "";
+                        obj.causaleId = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
+                        doc = Library.createXMLFermo(obj);
                     }
                     break;
                 case "Modifica Inizio/Fine del Fermo":
-                    stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
-                    stringa_fine = sap.ui.getCore().byId("Fine").getValue();
-                    if (stringa_inizio !== "" || stringa_fine !== "") {
-                        if (stringa_inizio === "") {
-                            stringa_inizio = this.row_binded.inizio;
-                        }
-                        if (stringa_fine === "") {
-                            stringa_fine = this.row_binded.fine;
-                        }
-                        var secondi_inizio = this.fromStringToSeconds(stringa_inizio);
-                        var secondi_fine = this.fromStringToSeconds(stringa_fine);
-                        if (secondi_fine - secondi_inizio > 0) {
-                            var stringa_intervallo = Library.MillisecsToStandard(1000 * (secondi_fine - secondi_inizio));
-                            for (i in this.guasti.guasti) {
-                                if (this.isObjectEquivalent(this.guasti.guasti[i], this.row_binded)) {
-                                    this.guasti.guasti[i].inizio = stringa_inizio;
-                                    this.guasti.guasti[i].fine = stringa_fine;
-                                    this.guasti.guasti[i].intervallo = stringa_intervallo;
-                                    oModel = new JSONModel();
-                                    oModel.setData(this.guasti);
-                                    this.getView().setModel(oModel, "guasti");
-                                    break;
-                                }
-                            }
-                        }
+                    if (Number(this.ISLOCAL) === 1) {
+                        this.LOCALModificaTempiFermo();
+                    } else {
+                        obj = {};
+                        obj.caso = "updateInizioFine";
+                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
+                        obj.batchId = "6"; // COME SOPRA
+                        obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
+                        obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
+                        obj.causaleId = "";
+                        doc = Library.createXMLFermo(obj);
                     }
                     break;
                 case "Fraziona Causale di Fermo":
-                    var binded_inizio = this.row_binded.inizio;
-                    stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
-                    stringa_fine = sap.ui.getCore().byId("Fine").getValue();
-                    var binded_fine = this.row_binded.fine;
-                    var binded_causale = this.row_binded.causa;
-                    selected_key = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                    causale = this.takeCausaById(selected_key);
-                    i = this.findIndex(this.guasti.guasti, this.row_binded);
-                    //il terzo parametro mi serve per decidere sesettare o no il modello (così da poterlo settare solo alla fine e poter riusare le funzioni anche per azioni successive
-                    this.removeGuasto(this.guasti, i, false);
-                    this.addGuasto(this.guasti, binded_inizio, stringa_inizio, binded_causale, false);
-                    this.addGuasto(this.guasti, stringa_inizio, stringa_fine, causale, false);
-                    this.addGuasto(this.guasti, stringa_fine, binded_fine, binded_causale, true);
+                    if (Number(this.ISLOCAL) === 1) {
+                        this.LOCALFrazionaFermo();
+                    } else {
+                        obj = {};
+                        obj.caso = "divide";
+                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
+                        obj.batchId = "6"; // COME SOPRA
+                        obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
+                        obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
+                        obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
+                        doc = Library.createXMLFermo(obj);
+                    }
                     break;
                 case "Elimina Fermo":
-                    i = this.findIndex(this.guasti.guasti, this.row_binded);
-                    this.removeGuasto(this.guasti, i, true);
+                    if (Number(this.ISLOCAL) === 1) {
+                        this.LOCALEliminaFermo();
+                    } else {
+                        obj = {};
+                        obj.caso = "delete";
+                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
+                        obj.batchId = "6"; // COME SOPRA
+                        obj.dataFine = "";
+                        obj.dataInizio = "";
+                        obj.causaleId = "";
+                        doc = Library.createXMLFermo(obj);
+                    }
                     break;
                 case "Inserisci Fermo":
-                    stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
-                    stringa_fine = sap.ui.getCore().byId("Fine").getValue();
-                    selected_key = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                    causale = this.takeCausaById(selected_key);
-                    this.addGuasto(this.guasti, stringa_inizio, stringa_fine, causale, true);
+                    if (Number(this.ISLOCAL) === 1) {
+                        this.LOCALInserisciFermo();
+                    } else {
+                        obj = {};
+                        obj.caso = "delete";
+                        obj.logId = ""; 
+                        obj.batchId = "6"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
+                        obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
+                        obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
+                        obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
+                        doc = Library.createXMLFermo(obj);
+                    }
                     break;
             }
             this.oDialog.destroy();
@@ -206,7 +199,6 @@ sap.ui.define([
             var id_dialog = this.oDialog.getId();
             sap.ui.getCore().byId(id_dialog).destroy();
         },
-
 //MODIFICA CAUSALE DIALOG
         creaFinestraModificaCausale: function (text) {
             var oView = this.getView();
@@ -257,7 +249,6 @@ sap.ui.define([
             var oView = this.getView();
             this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
             oView.addDependent(this.oDialog);
-
             var oTitle = oView.byId("title");
             oTitle.setText(text);
             var topBox = oView.byId("topBox");
@@ -300,7 +291,6 @@ sap.ui.define([
             oHBoxTop.addItem(oHBox2);
             oVBox2.addItem(oHBoxTop);
             topBox.addStyleClass("blackBorder");
-
             var bottomBox = oView.byId("bottomBox");
             oVBox1 = bottomBox.getItems()[0];
             oVBox2 = bottomBox.getItems()[1];
@@ -345,9 +335,7 @@ sap.ui.define([
             oHBoxBottom.addItem(oHBox1);
             oHBoxBottom.addItem(oHBox2);
             oVBox2.addItem(oHBoxBottom);
-
             this.oDialog.open();
-
         },
 //CREA FRAZIONAMENTO DIALOG
         creaFinestraFrazionamento: function (text) {
@@ -419,7 +407,6 @@ sap.ui.define([
             oHBoxTop.addItem(oText1);
             oHBoxTop.addItem(oTextInizio);
             centralBox.addItem(oHBoxTop);
-
             oText1 = new sap.m.Text({
                 text: "causale"
             });
@@ -439,7 +426,6 @@ sap.ui.define([
             oHBoxCentral.addItem(oText1);
             oHBoxCentral.addItem(selectMenu);
             centralBox.addItem(oHBoxCentral);
-
             oText1 = new sap.m.Text({
                 text: "fine"
             });
@@ -455,17 +441,13 @@ sap.ui.define([
             oHBoxBottom.addItem(oTextFine);
             centralBox.addStyleClass("blackBorder sapUiSmallMargin");
             centralBox.addItem(oHBoxBottom);
-
             this.oDialog.open();
-
-
         },
 //ELIMINAZIONE DIALOG 
         creaFinestraEliminazione: function (text) {
             var oView = this.getView();
             this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
             oView.addDependent(this.oDialog);
-
             var oTitle = oView.byId("title");
             oTitle.setText(text);
             var centralBox = oView.byId("centralBox");
@@ -492,7 +474,6 @@ sap.ui.define([
             oHBoxTop.addItem(oText);
             oHBoxTop.addItem(oTextInizio);
             centralBox.addItem(oHBoxTop);
-
             oText = new sap.m.Text({
                 text: "causale"
             });
@@ -510,7 +491,6 @@ sap.ui.define([
             oHBoxCentral.addItem(oText);
             oHBoxCentral.addItem(Causale);
             centralBox.addItem(oHBoxCentral);
-
             oText = new sap.m.Text({
                 text: "fine"
             });
@@ -532,7 +512,6 @@ sap.ui.define([
             var oView = this.getView();
             this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
             oView.addDependent(this.oDialog);
-
             var oTitle = oView.byId("title");
             oTitle.setText(text);
             var centralBox = oView.byId("centralBox");
@@ -559,7 +538,6 @@ sap.ui.define([
             oHBoxTop.addItem(oText);
             oHBoxTop.addItem(oTextInizio);
             centralBox.addItem(oHBoxTop);
-
             oText = new sap.m.Text({
                 text: "causale"
             });
@@ -579,7 +557,6 @@ sap.ui.define([
             oHBoxCentral.addItem(oText);
             oHBoxCentral.addItem(selectMenu);
             centralBox.addItem(oHBoxCentral);
-
             oText = new sap.m.Text({
                 text: "fine"
             });
@@ -595,7 +572,6 @@ sap.ui.define([
             oHBoxBottom.addItem(oTextFine);
             centralBox.addStyleClass("sapUiSmallMargin");
             centralBox.addItem(oHBoxBottom);
-
             this.oDialog.open();
         },
 // FUNZIONI USATE            
@@ -657,6 +633,114 @@ sap.ui.define([
             }
             return true;
         },
+        takeIdByBindedCausa: function (causa) {
+            for (var i in this.menuJSON.cause) {
+                if (this.menuJSON.cause[i].fermo === causa) {
+                    return this.menuJSON.cause[i].id;
+                }
+            }
+            return -1;
+        },
+// NEL CASO IL MODEL NON CI SIA
+        groupTurni: function (data, group0, group1, group2, group3) {
+            for (var key in data) {
+                if (typeof data[key] === "object") {
+                    this.groupTurni(data[key], group0, group1, group2, group3);
+                }
+            }
+            if (data.area) {
+                switch (data.area) {
+                    case "0":
+                        this.data_json[group0].push(data);
+                        break;
+                    case "1":
+                        this.data_json[group1].push(data);
+                        break;
+                    case "2":
+                        this.data_json[group2].push(data);
+                        break;
+                    case "-1":
+                        this.data_json[group3].push(data);
+                }
+            }
+            return;
+        },
+        
+        
+        
+        
+        
+        
+        
+////////////////////////////////////////////////////////////////////////////////////////////////////////////// FUNZIONI LOCALI 
+
+        LOCALModificaCausaleFermo: function (oEvent) {
+            var oModel = new JSONModel();
+            var selected_key = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
+            for (var i in this.guasti.guasti) {
+                if (this.isObjectEquivalent(this.guasti.guasti[i], this.row_binded)) {
+                    var causa = this.takeCausaById(selected_key);
+                    this.guasti.guasti[i].causa = causa;
+                    oModel.setData(this.guasti);
+                    this.getView().setModel(oModel, "guasti");
+                    break;
+                }
+            }
+        },
+        LOCALModificaTempiFermo: function () {
+            var oModel = new JSONModel();
+            var stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
+            var stringa_fine = sap.ui.getCore().byId("Fine").getValue();
+            if (stringa_inizio !== "" || stringa_fine !== "") {
+                if (stringa_inizio === "") {
+                    stringa_inizio = this.row_binded.inizio;
+                }
+                if (stringa_fine === "") {
+                    stringa_fine = this.row_binded.fine;
+                }
+                var secondi_inizio = this.fromStringToSeconds(stringa_inizio);
+                var secondi_fine = this.fromStringToSeconds(stringa_fine);
+                if (secondi_fine - secondi_inizio > 0) {
+                    var stringa_intervallo = Library.MillisecsToStandard(1000 * (secondi_fine - secondi_inizio));
+                    for (var i in this.guasti.guasti) {
+                        if (this.isObjectEquivalent(this.guasti.guasti[i], this.row_binded)) {
+                            this.guasti.guasti[i].inizio = stringa_inizio;
+                            this.guasti.guasti[i].fine = stringa_fine;
+                            this.guasti.guasti[i].intervallo = stringa_intervallo;
+                            oModel.setData(this.guasti);
+                            this.getView().setModel(oModel, "guasti");
+                            break;
+                        }
+                    }
+                }
+            }
+        },
+        LOCALFrazionaFermo: function () {
+            var binded_inizio = this.row_binded.inizio;
+            var stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
+            var stringa_fine = sap.ui.getCore().byId("Fine").getValue();
+            var binded_fine = this.row_binded.fine;
+            var binded_causale = this.row_binded.causa;
+            var selected_key = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
+            var causale = this.takeCausaById(selected_key);
+            var i = this.findIndex(this.guasti.guasti, this.row_binded);
+            //il terzo parametro mi serve per decidere se settare o no il modello (così da poterlo settare solo alla fine e poter riusare le funzioni anche per azioni successive
+            this.removeGuasto(this.guasti, i, false);
+            this.addGuasto(this.guasti, binded_inizio, stringa_inizio, binded_causale, false);
+            this.addGuasto(this.guasti, stringa_inizio, stringa_fine, causale, false);
+            this.addGuasto(this.guasti, stringa_fine, binded_fine, binded_causale, true);
+        },
+        LOCALEliminaFermo: function () {
+            var i = this.findIndex(this.guasti.guasti, this.row_binded);
+            this.removeGuasto(this.guasti, i, true);
+        },
+        LOCALInserisciFermo: function () {
+            var stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
+            var stringa_fine = sap.ui.getCore().byId("Fine").getValue();
+            var selected_key = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
+            var causale = this.takeCausaById(selected_key);
+            this.addGuasto(this.guasti, stringa_inizio, stringa_fine, causale, true);
+        },
         findIndex: function (array, obj) {
             for (var i in array) {
                 if (this.isObjectEquivalent(array[i], obj)) {
@@ -702,43 +786,7 @@ sap.ui.define([
                 }
             }
             return causa;
-        },
-        takeIdByBindedCausa: function (causa) {
-            for (var i in this.menuJSON.cause) {
-                if (this.menuJSON.cause[i].fermo === causa) {
-                    return this.menuJSON.cause[i].id;
-                }
-            }
-            return -1;
-        },
-// NEL CASO IL MODEL NON CI SIA
-        groupTurni: function (data, group0, group1, group2, group3) {
-            for (var key in data) {
-                if (typeof data[key] === "object") {
-                    this.groupTurni(data[key], group0, group1, group2, group3);
-                }
-            }
-            if (data.area) {
-                switch (data.area) {
-                    case "0":
-                        this.data_json[group0].push(data);
-                        break;
-                    case "1":
-                        this.data_json[group1].push(data);
-                        break;
-                    case "2":
-                        this.data_json[group2].push(data);
-                        break;
-                    case "-1":
-                        this.data_json[group3].push(data);
-                }
-            }
-            return;
         }
-
-
-
-
 
 
 

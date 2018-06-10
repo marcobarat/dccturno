@@ -12,7 +12,7 @@
 		<!--</tileContent>-->
 	</GenericTile>
 
-	<GenericTile header="Cumulative Totals" subheader="Expenses" press="press">
+	<GenericTile header="Cumulative Totals" subheader="Expenses" press="onSinotticiPage">
 <!--		<tileContent unit="Unit" footer="Footer Text">
 			<NumericContent value="12" />
 		</tileContent>-->

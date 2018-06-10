@@ -23,6 +23,9 @@ sap.ui.define([
         },
         onToPianiPage: function () {
             this.getOwnerComponent().getRouter().navTo("piani");
+        },
+        onSinotticiPage: function(){
+           this.getOwnerComponent().getRouter().navTo("RiepilogoLinee"); 
         }
     });
     return MainController;

@@ -51,8 +51,9 @@
                                                         <cells>
                                                             <VBox width="100%" height="100%" class="sfondobianco">
                                                                 <HBox width="100%" height="35%"  alignItems="Start">
-                                                                    <VBox width="20%" height="100%" class="">
-                                                                        <cus:CustomButt text="Linea {linea>lineaID}"
+                                                                    <VBox width="20%" height="100%">
+                                                                        <VBox>
+                                                                        <cus:CustomButt text="{linea>linea}"
                                                                                         press="onOpenStatoLinea"
                                                                                         width="100%"
                                                                                         class="fix_b noFocus"
@@ -63,25 +64,26 @@
                                                                                 <FlexItemData growFactor="1" />
                                                                             </cus:layoutData>
                                                                         </cus:CustomButt>
+                                                                        </VBox>
+                                                                        <VBox height="1.5px"/>
                                                                         <Table 
                                                                             showNoData="false"
-                                                                            class="sapUiSmallMarginEnd borderb mysapMListTblNoBorders">
+                                                                            class="mysapMListTblNoBorders borderBoxRight">
                                                                             <columns>
                                                                                 <Column  hAlign="Center">
                                                                                     <Text text="Operatori"/>
                                                                                 </Column>
                                                                             </columns>
                                                                         </Table>
-                                                                        <ScrollContainer height='231px' vertical='true'>  
+                                                                        <ScrollContainer height='232px' vertical='true' class="borderBoxRight">  
                                                                             <content>
                                                                                 <Table 
-                                                                                    showHeader="false"
                                                                                     items="{path: 'operatore>/Operator'}"
                                                                                     inset="false"
                                                                                     growing="true"
                                                                                     fixedLayout="false"
                                                                                     growingThreshold="{operatore>numeroOperatori}"
-                                                                                    class="sapUiSmallMarginEnd borderb mysapMListTblNoBorders">
+                                                                                    class="sapUiSmallMarginEnd mysapMListTblNoBorders">
                                                                                     <columns>
                                                                                         <Column  hAlign="Center">
                                                                                         </Column>
@@ -109,7 +111,7 @@
                                                                                         percentValue="{= Number(${linea>avanzamento})}"
                                                                                         displayValue="{linea>perc_avanzamento}"
                                                                                         showValue="true"
-                                                                                        barColor="{linea>barColor}"
+                                                                                        barColor="{linee>barColor}"
                                                                                     />
                                                                                 </VBox>
                                                                                 <VBox width="10%">
@@ -164,7 +166,9 @@
                                                                             </Table>
                                                                             <ScrollContainer height='231px' vertical='true'>
                                                                                 <content>
-                                                                                    <Table selectionMode="None" class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" width="930px" items="{linea>batchlist}">
+                                                                                    <Table class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" 
+                                                                                           width="930px" 
+                                                                                           items="{linea>batchlist}">
                                                                                         <columns>
                                                                                             <Column hAlign="Center"/>
                                                                                             <Column width="5%"  hAlign="Center"/>
@@ -201,7 +205,7 @@
                                                                                                     >-->
                                                                                                     <!--                                                                                        <core:ListItem key="{linea>formato} {linea>materiale}" text="{linea>formato} {linea>materiale}" />
                                                                                                     </Select>-->
-                                                                                                    <Select>
+                                                                                                    <Select width="106px">
                                                                                                         <core:Item key="{linea>confezione}gr" text="{linea>confezione}gr" />
                                                                                                     </Select>
                                                                                                     <cus:CustomButt text=""

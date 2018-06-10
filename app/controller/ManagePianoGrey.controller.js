@@ -30,6 +30,11 @@ sap.ui.define([
         onInit: function () {
             Library.RemoveClosingButtons.bind(this)("TabContainerTurniConclusi");
 
+            var link = "model/JSON_FermoTestiNew.json";
+            Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
+            this.getView().setModel(this.ModelCausali, "CausaliFermo");
+
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this._onObjectMatched, this);
 
@@ -41,11 +46,11 @@ sap.ui.define([
             var link;
             this.ModelTurni = this.getOwnerComponent().getModel("turni");
             if (!this.ModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf.json", Library.SUCCESSDatiTurni.bind(this));
+                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
                 this.getOwnerComponent().setModel(this.ModelTurni, "turni");
             }
             var oTitle = this.getView().byId("ReportTitle");
-            this.piano = this.ModelTurni.getData()[this.turnoPath][this.pianoPath];
+            this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
 
@@ -57,9 +62,9 @@ sap.ui.define([
                 this.getView().setModel(this.ModelLinea, "linea");
                 Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
                 sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
-                link = "model/JSON_FermoTestiNew.json";
-                Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
-                this.getView().setModel(this.ModelCausali, "CausaliFermo");
+//                link = "model/JSON_FermoTestiNew.json";
+//                Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
+//                this.getView().setModel(this.ModelCausali, "CausaliFermo");
             }
             var oItems = this.getView().byId("ManagePianoTable").getItems();
             for (var i = 0; i < oItems.length; i++) {
@@ -499,31 +504,7 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("piani", true);
             this.removeReport();
-        },
-        groupTurni: function (data, group0, group1, group2, group3) {
-            for (var key in data) {
-                if (typeof data[key] === "object") {
-                    this.groupTurni(data[key], group0, group1, group2, group3);
-                }
-            }
-            if (data.area) {
-                switch (data.area) {
-                    case "0":
-                        this.data_json[group0].push(data);
-                        break;
-                    case "1":
-                        this.data_json[group1].push(data);
-                        break;
-                    case "2":
-                        this.data_json[group2].push(data);
-                        break;
-                    case "-1":
-                        this.data_json[group3].push(data);
-                }
-            }
-            return;
         }
-
     });
 
 

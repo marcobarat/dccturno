@@ -75,10 +75,10 @@ sap.ui.define([
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.ModelTurni = this.getOwnerComponent().getModel("turni");
             if (!this.ModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf.json", Library.SUCCESSDatiTurni.bind(this));
+                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
                 this.getOwnerComponent().setModel(this.ModelTurni, "turni");
             }
-            this.piano = this.ModelTurni.getData()[this.turnoPath][this.pianoPath];
+            this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             if (Number(this.ISLOCAL) === 1) {
                 Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));
                 this.getView().setModel(this.ModelLinea, 'linea');
@@ -151,29 +151,6 @@ sap.ui.define([
             Library.AjaxCallerData("./model/prova.json", function (Jdata) {
                 that.SUCCESSMenu.bind(that)(Jdata, oButton);
             });
-        },
-        groupTurni: function (data, group0, group1, group2, group3) {
-            for (var key in data) {
-                if (typeof data[key] === "object") {
-                    this.groupTurni(data[key], group0, group1, group2, group3);
-                }
-            }
-            if (data.area) {
-                switch (data.area) {
-                    case "0":
-                        this.data_json[group0].push(data);
-                        break;
-                    case "1":
-                        this.data_json[group1].push(data);
-                        break;
-                    case "2":
-                        this.data_json[group2].push(data);
-                        break;
-                    case "-1":
-                        this.data_json[group3].push(data);
-                }
-            }
-            return;
         },
         // MODIFICA DELLA VIEW DELLA CREAZIONE TURNO (IN REALTA' DISTINGUO SOLO IL CASO IN CUI IL TURNO E' IN CORSO)
         addFieldsCreazione: function () {
@@ -325,8 +302,8 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
             Library.RemoveClosingButtons.bind(this)("attributiContainer");
-            
-            
+
+
             this.oDialog.open();
         },
         closeDialog: function () {
@@ -377,7 +354,14 @@ sap.ui.define([
                 VBox.getItems()[i].getItems()[1].setEnabled(false);
                 VBox.getItems()[i].getItems()[0].addStyleClass("textNotEnabled");
             }
+        },
+
+// RITORNARE ALLA VIEW MAIN
+        onMenu: function () {
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("main", true);
         }
+
     });
     return ManagePiano;
 });
