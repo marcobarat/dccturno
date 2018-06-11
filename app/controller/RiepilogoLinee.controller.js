@@ -20,8 +20,11 @@ sap.ui.define([
         },
         GoToSinotticoLinea: function (oEvent) {
             var oLinea = oEvent.getSource().getText();
+            var oModel = new JSONModel({lineaPath: oLinea});
+            this.getView().setModel(oModel, "LineaCliccata");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("sinotticoLinea", {lineaPath: oLinea});
+            oRouter.navTo("sinotticoLinea");
+
         }
 
 
