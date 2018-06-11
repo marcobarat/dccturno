@@ -107,6 +107,10 @@
                     "name": "RiepilogoLinee",
                     "pattern": "RiepilogoLinee",
                     "target": "RiepilogoLinee"
+                }, {
+                    "name": "sinotticoLinea",
+                    "pattern": "sinotticoLinea/{lineaPath}",
+                    "target": "sinotticoLinea"
                 }],
             "targets": {
                 "main": {
@@ -130,6 +134,9 @@
                 },
                 "RiepilogoLinee": {
                     "viewName": "view.RiepilogoLinee"
+                },
+                "sinotticoLinea": {
+                    "viewName": "view.SinotticiDiLinea"
                 }
             }
         },
