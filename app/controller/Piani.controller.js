@@ -10,10 +10,35 @@ sap.ui.define([
     var PianiController = Controller.extend("myapp.controller.Piani", {
         data_json: {},
         ModelTurni: new JSONModel(),
+        StabilimentoID: 1,
+        ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
+
         onInit: function () {
             var params = jQuery.sap.getUriParameters(window.location.href);
-            Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-            this.getOwnerComponent().setModel(this.ModelTurni, "turni");
+            sap.ui.getCore().setModel(this.ModelTurni, "turni");
+            this.RefreshCall();
+        },
+        RefreshFunction: function () {
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), 5000);
+        },
+        RefreshCall: function () {
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/pianidiconf_new.json";
+            } else {
+//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&OutputParameter=JSON";
+            }
+            Library.SyncAjaxCallerData(link, this.SUCCESSDatiTurni.bind(this));
+        },
+        SUCCESSDatiTurni: function (Jdata) {
+            this.ModelTurni = new JSONModel({});
+            this.ModelTurni.setData(Jdata);
+            this.getView().setModel(this.ModelTurni, "turni");
+            sap.ui.getCore().setModel(this.ModelTurni, "turni");
+            if (this.ISLOCAL !== 1) {
+                this.RefreshFunction();
+            }
         },
         managePiano: function (oEvent) {
             var oTable = oEvent.getSource().getParent().getBindingContext("turni");

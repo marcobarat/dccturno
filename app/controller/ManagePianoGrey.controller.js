@@ -8,7 +8,7 @@ sap.ui.define([
 
     return Controller.extend("myapp.controller.ManagePianoGrey", {
         ModelCausali: new JSONModel({}),
-        ModelTurni: new JSONModel({}),
+        ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelLinea: new JSONModel({}),
         ModelGuasti: new JSONModel({}),
         ModelGuastiLinea: new JSONModel({}),
@@ -34,7 +34,6 @@ sap.ui.define([
             Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
             this.getView().setModel(this.ModelCausali, "CausaliFermo");
 
-
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this._onObjectMatched, this);
 
@@ -44,11 +43,11 @@ sap.ui.define([
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             var link;
-            this.ModelTurni = this.getOwnerComponent().getModel("turni");
-            if (!this.ModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
-            }
+//            this.ModelTurni = this.getOwnerComponent().getModel("turni");
+//            if (!this.ModelTurni) {
+//                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
+//                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
+//            }
             var oTitle = this.getView().byId("ReportTitle");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);

@@ -174,10 +174,6 @@ sap.ui.define([
             }
             return json;
         },
-        SUCCESSDatiTurni: function (Jdata) {
-            this.ModelTurni = new JSONModel({});
-            this.ModelTurni.setData(Jdata);
-        },
 
 //CREAZIONE DEI FILE XML PER LA PARTE DI BACKEND
         createXMLFermo: function (obj) {
