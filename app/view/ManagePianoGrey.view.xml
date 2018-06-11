@@ -113,7 +113,7 @@
                                                                 <HBox height="65%" width="100%">
                                                                     <VBox width="100%">
                                                                         <Table 
-                                                                            items="{linea>ProductCollection}"
+                                                                            items="{linea>batchlist}"
                                                                             inset="false"
                                                                             growing="true"
                                                                             fixedLayout="false"
@@ -155,7 +155,7 @@
                                                                                     <cells>
                                                                                         <Text
                                                                                             class="sapUiSmallMarginTop"
-                                                                                            text="{linea>seq}" />
+                                                                                            text="{linea>sequenza}" />
                                                                                         <Select>
                                                                                             <core:Item key="semola" text="Semola 093" />
                                                                                         </Select>
@@ -172,7 +172,7 @@
                                                                                             text="{linea>qli}" />
                                                                                         <Text
                                                                                             class="sapUiSmallMarginTop"
-                                                                                            text="{linea>cart}" />
+                                                                                            text="{linea>cartoni}" />
                                                                                         <Text
                                                                                             class="sapUiSmallMarginTop"
                                                                                             text="{linea>ore}" />
