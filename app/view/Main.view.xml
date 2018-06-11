@@ -7,12 +7,12 @@
         <content>
             
             
-            <GenericTile header="Cumulative Totals" subheader="Expenses" press="onToPianiPage" backgroundImage="sap-icon://legend">
+            <GenericTile header="Piani di Confezionamento" press="onToPianiPage" backgroundImage="sap-icon://legend">
 		<!--<tileContent unit="Unit" footer="Footer Text" backgroundImage="sap-icon://line-charts"/>-->
 		<!--</tileContent>-->
 	</GenericTile>
 
-	<GenericTile header="Cumulative Totals" subheader="Expenses" press="onSinotticiPage">
+	<GenericTile header="Sinottici" press="onSinotticiPage">
 <!--		<tileContent unit="Unit" footer="Footer Text">
 			<NumericContent value="12" />
 		</tileContent>-->

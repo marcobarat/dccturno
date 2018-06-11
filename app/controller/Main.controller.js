@@ -12,7 +12,7 @@ sap.ui.define([
         onInit: function () {
 //            this.getSplitAppObj().toDetail(this.createId("Home"));
             this.ISLOCALModel.setData({"ISLOCAL": Number(jQuery.sap.getUriParameters().get("ISLOCAL"))});
-            sap.ui.getCore().setModel(this.ISLOCALModel);
+            sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
         },
         getSplitAppObj: function () {
             var result = this.byId("SplitAppDemo");

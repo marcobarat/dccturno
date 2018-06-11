@@ -25,6 +25,7 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
+        
         onInit: function () {
             this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
             Library.RemoveClosingButtons.bind(this)("TabContainer");
