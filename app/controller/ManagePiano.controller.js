@@ -14,10 +14,10 @@ sap.ui.define([
         ISLOCAL: 0,
         data_json: {},
         ModelMenu: new JSONModel({}),
-        ModelLinea: new JSONModel({}),
+        ModelLinea: sap.ui.getCore().getModel("linee"),
         ModelOperatori: new JSONModel({}),
         ModelSKU: new JSONModel({}),
-        ModelTurni: new JSONModel({}),
+        ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelSKUstd: new JSONModel({}),
         ModelCause: new JSONModel({}),
         prova: null,
@@ -74,11 +74,11 @@ sap.ui.define([
         URLChangeCheck: function (oEvent) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            this.ModelTurni = this.getOwnerComponent().getModel("turni");
-            if (!this.ModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
-            }
+//            this.ModelTurni = this.getOwnerComponent().getModel("turni");
+//            if (!this.ModelTurni) {
+//                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
+//                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
+//            }
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             if (Number(this.ISLOCAL) === 1) {
                 Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));

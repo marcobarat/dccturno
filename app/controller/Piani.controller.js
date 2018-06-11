@@ -9,8 +9,11 @@ sap.ui.define([
 
     var PianiController = Controller.extend("myapp.controller.Piani", {
         data_json: {},
+        ModelLinea: new JSONModel(),
         ModelTurni: new JSONModel(),
+        ModelReparti: sap.ui.getCore().getModel("reparti"),
         StabilimentoID: 1,
+        paths: null,
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
 
         onInit: function () {
@@ -26,13 +29,12 @@ sap.ui.define([
             if (this.ISLOCAL === 1) {
                 link = "model/pianidiconf_new.json";
             } else {
-//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&OutputParameter=JSON";
             }
             Library.SyncAjaxCallerData(link, this.SUCCESSDatiTurni.bind(this));
         },
         SUCCESSDatiTurni: function (Jdata) {
-            this.ModelTurni = new JSONModel({});
             this.ModelTurni.setData(Jdata);
             this.getView().setModel(this.ModelTurni, "turni");
             sap.ui.getCore().setModel(this.ModelTurni, "turni");
@@ -44,13 +46,45 @@ sap.ui.define([
             var oTable = oEvent.getSource().getParent().getBindingContext("turni");
             var Row = oTable.getModel().getProperty(oTable.sPath);
             var area = Row.area;
-            var paths = oEvent.getSource().getBindingContext("turni").getPath().substr(1).split("/");
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            if (area === "0") {
-                oRouter.navTo("managePianoGrey", {turnoPath: paths[1], pianoPath: paths[2]});
+            this.paths = oEvent.getSource().getBindingContext("turni").getPath().substr(1).split("/");
+            var pdcId = Row.PdcID;
+            var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
+            var link;
+            if (this.ISLOCAL === 1) {
+                if (area === "0") {
+                    link = "model/linee.json";
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
+                } else {
+                    link = "model/linee_new.json";
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                }
             } else {
-                oRouter.navTo("managePiano", {turnoPath: paths[1], pianoPath: paths[2]});
+                if (area === "0") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
+                } else if (area === "1") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                } else if (area === "2") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                }
             }
+        },
+        SUCCESSTurnoChiuso: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("managePianoGrey", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
+        },
+        SUCCESSTurnoAperto: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("managePiano", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
         },
         GoToHome: function () {
             this.getOwnerComponent().getRouter().navTo("Main");

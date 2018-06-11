@@ -9,11 +9,11 @@ sap.ui.define([
     return Controller.extend("myapp.controller.ManagePianoGrey", {
         ModelCausali: new JSONModel({}),
         ModelTurni: sap.ui.getCore().getModel("turni"),
-        ModelLinea: new JSONModel({}),
+        ModelLinea: sap.ui.getCore().getModel("linee"),
         ModelGuasti: new JSONModel({}),
         ModelGuastiLinea: new JSONModel({}),
         oLinea_index: null,
-        ISLOCAL: 0,
+        ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
         oColumn: null,
         oContent: null,
         oVBox: null,
@@ -39,7 +39,6 @@ sap.ui.define([
 
         },
         _onObjectMatched: function (oEvent) {
-            this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             var link;
@@ -52,19 +51,27 @@ sap.ui.define([
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
-
-            if (Number(this.ISLOCAL) === 1) {
-                var that = this;
-                Library.AjaxCallerData("./model/linee.json", function (Jdata) {
-                    that.ModelLinea.setData(Jdata);
-                });
-                this.getView().setModel(this.ModelLinea, "linea");
-                Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
-                sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
-//                link = "model/JSON_FermoTestiNew.json";
-//                Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
-//                this.getView().setModel(this.ModelCausali, "CausaliFermo");
-            }
+            this.getView().setModel(this.ModelLinea, "linea");
+            Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
+            sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+//            if (this.ISLOCAL === 1) {
+////                Library.AjaxCallerData("./model/linee.json", function (Jdata) {
+////                    that.ModelLinea.setData(Jdata);
+////                });
+//                this.getView().setModel(this.ModelLinea, "linea");
+//                Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
+//                sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+////                link = "model/JSON_FermoTestiNew.json";
+////                Library.AjaxCallerData(link, that.SUCCESSFermo.bind(that));
+////                this.getView().setModel(this.ModelCausali, "CausaliFermo");
+//            } else {
+////                Library.AjaxCallerData("./model/linee.json", function (Jdata) {
+////                    that.ModelLinea.setData(Jdata);
+////                });
+//                this.getView().setModel(this.ModelLinea, "linea");
+//                Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
+//                sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+//            }
             var oItems = this.getView().byId("ManagePianoTable").getItems();
             for (var i = 0; i < oItems.length; i++) {
                 var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
