@@ -22,11 +22,11 @@
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="90%">
-                            <TabContainer id="TabContainerSinotticiLinea" items="{sinotticiLinea>/linee}">
+                            <TabContainer id="TabContainerSinotticiLinea" items="{elencolinee>/elencoLinee}">
                                 <items>
-                                    <TabContainerItem name="{sinotticiLinea>linea}">
+                                    <TabContainerItem name="{elencolinee>linea}">
                                         <content>
-                                            <Table items="{sinotticiLinea>macchine}">
+                                            <Table>
                                                 <columns>
                                                     <Column/>
                                                 </columns>

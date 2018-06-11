@@ -8,8 +8,9 @@ sap.ui.define([
     return Controller.extend("myapp.controller.SinotticiDiLinea", {
         ModelLinee: new JSONModel({}),
         onInit: function () {
-            Library.AjaxCallerData("model/sinotticodilinea.json", this.SUCCESSLinee.bind(this));
-            this.getView().setModel(this.ModelLinee, "sinotticiLinea");
+            this.getView().setModel(sap.ui.getCore().getModel("elencolinee"), "elencolinee");
+//            Library.AjaxCallerData("model/sinotticodilinea.json", this.SUCCESSLinee.bind(this));
+//            this.getView().setModel(this.ModelLinee, "sinotticiLinea");
 
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("sinotticoLinea").attachPatternMatched(this._onObjectMatched, this);
@@ -47,7 +48,8 @@ sap.ui.define([
 
         },
         _onObjectMatched: function (oEvent) {
-//            var TabContainer = this.getView().byId("TabContainerSinotticiLinea");
+            var oModel = sap.ui.getCore().getModel("elencolinee");
+            var TabContainer = this.getView().byId("TabContainerSinotticiLinea");
 //            if (TabContainer.getItems().length > 0) {
 //                this.selectItem(this.getView().byId("TabContainerSinotticiLinea"));
 //            }

@@ -7,6 +7,8 @@ sap.ui.define([
 
     return Controller.extend("myapp.controller.RiepilogoLinee", {
         ModelLinee: new JSONModel(),
+        ModelElencoLinee: new JSONModel(),
+        ModelSinotticoLinea: new JSONModel(),
         onInit: function () {
             var that = this;
             Library.AjaxCallerData("model/linee_riepilogo.json", function (Jdata) {
@@ -19,12 +21,28 @@ sap.ui.define([
             oRouter.navTo("main", true);
         },
         GoToSinotticoLinea: function (oEvent) {
-            var oLinea = oEvent.getSource().getText();
             var oModel = new JSONModel({lineaPath: oLinea});
             this.getView().setModel(oModel, "LineaCliccata");
+            var oLinea = oEvent.getSource().getText();
+
+            Library.AjaxCallerData("model/elencolinee.json", this.SUCCESSElencoLinee.bind(this));
+            sap.ui.getCore().setModel(this.ModelElencoLinee, "elencolinee");
+
+// NEL BACKEND PASSERO' COME PARAMETRO LA VARIABLE OLINEA
+            Library.AjaxCallerData("model/sinotticodilinea.json", this.SUCCESSLineaSinottico.bind(this));
+            sap.ui.getCore().setModel(this.ModelSinotticoLinea, "sinotticodilinea");
+
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("sinotticoLinea");
 
+
+
+        },
+        SUCCESSElencoLinee: function (Jdata) {
+            this.ModelElencoLinee.setData(Jdata);
+        },
+        SUCCESSLineaSinottico: function (Jdata){
+            this.ModelSinotticoLinea.setData(Jdata);
         }
 
 
