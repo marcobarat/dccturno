@@ -24,70 +24,148 @@
                         <VBox height="100%" width="90%">
                             <ScrollContainer width="100%" height="100%">
                                 <HBox width="100%" height="100%">
-                                    <Table items="{linee>/linee/PastaLunga}" width="50%">
-                                        <columns>
-                                            <Column/>
-                                        </columns>
-                                        <items>
-                                            <ColumnListItem class="noDelimitator">
-                                                <cells>
-                                                    <HBox class="sapUiTinyMargin">
-                                                        <VBox width="30%" height="100%">
-                                                            <VBox height="30%" width="100%" class="sapUiTinyMarginBottom">
-                                                            <cus:CustomButt width="100%"
-                                                                            text="{linee>linea}"
-                                                                            class="noFocus"
-                                                                            state="{linee>statolinea}"
-                                                                            customType="linea">
+                                    <VBox width="50%">
+                                        <Table items="{linee>/linee/PastaLunga}" width="100%">
+                                            <columns>
+                                                <Column/>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem class="noDelimitator">
+                                                    <cells>
+                                                        <HBox class="sapUiTinyMargin RiepilogoLineaElement">
+                                                            <VBox width="30%" height="100%">
+                                                                <VBox height="30%" width="100%" class="paddingVBox">
+                                                                    <cus:CustomButt width="100%"
+                                                                                    text="{linee>linea}"
+                                                                                    class="noFocus"
+                                                                                    state="{linee>statolinea}"
+                                                                                    customType="linea"
+                                                                                    press="GoToSinotticoLinea">
                                                                 
-                                                            </cus:CustomButt>
-                                                            </VBox>
-                                                            <HBox>
-                                                                <VBox width="50%"> 
-                                                                <Text class="sapUiMediumMarginBegin" text="{linee>disponibilita}"/>
-                                                                </VBox>
-                                                                <VBox width="50%">
-                                                                <Text class="sapUiMediumMarginBegin" text="{linee>efficienza}"/>
-                                                                </VBox>
-                                                            </HBox>
-                                                        </VBox>
-                                                        <VBox width="70%" height="100%" class="sapUiTinyMarginBegin">
-                                                            <HBox height="30%" width="100%" class="sapUiTinyMarginBottom">
-                                                                <VBox width="80%">
-                                                                <cus:NewProgressIndicator
-                                                                        class="LineeMPI"
-                                                                        width="100%"
-                                                                        displayValue="{linee>oreRimanenti}"
-                                                                        percentValue="{= Number(${linee>avanzamento})}"
-                                                                        barColor="{linee>barColor}"
-                                                                        >
-                                                                </cus:NewProgressIndicator>
-                                                                </VBox>
-                                                                <VBox  width="20%" class="sapUiTinyMarginBegin">
-                                                                    <cus:CustomButt width="100%">
                                                                     </cus:CustomButt>
                                                                 </VBox>
-                                                            </HBox>
-                                                            <HBox>
-                                                                <VBox width="20%">
-                                                                    <Text class="sapUiMediumMarginBegin" text="{linee>cniconf}"/>
+                                                                <HBox height="">
+                                                                    <VBox width="50%" class="BorderTopRight paddingVBox textVBox"> 
+                                                                        <Text text="{linee>disponibilita}"/>
+                                                                    </VBox>
+                                                                    <VBox width="50%" class="BorderTop paddingVBox textVBox">
+                                                                        <Text text="{linee>efficienza}"/>
+                                                                    </VBox>
+                                                                </HBox>
+                                                            </VBox>
+                                                            <VBox width="70%" height="100%">
+                                                                <HBox height="30%" width="100%" class="paddingVBox">
+                                                                    <VBox width="80%">
+                                                                        <cus:NewProgressIndicator
+                                                                            class="LineeMPI"
+                                                                            width="100%"
+                                                                            displayValue="{linee>oreRimanenti}"
+                                                                            percentValue="{= Number(${linee>avanzamento})}"
+                                                                            barColor="{linee>barColor}"
+                                                                        >
+                                                                        </cus:NewProgressIndicator>
+                                                                    </VBox>
+                                                                    <VBox  width="20%" class="sapUiTinyMarginBegin">
+                                                                        <cus:CustomButt width="80%"
+                                                                                        icon="img/triangoloprova.png"
+                                                                                        text="4"
+                                                                                        press="onPress"
+                                                                                        ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                                                                        customType="graficoSPC"
+                                                                                        state="1"
+                                                                                        class="sapUiSmallMarginBegin monobuttonSPC noFocus">
+                                                                        </cus:CustomButt>
+                                                                    </VBox>
+                                                                </HBox>
+                                                                <HBox>
+                                                                    <VBox width="20%" height="100%" class="BorderLeftTopRight paddingVBox textVBox">
+                                                                        <Text text="{linee>cniconf}"/>
+                                                                    </VBox>
+                                                                    <VBox width="60%" class="BorderTopRight paddingVBox textVBox">
+                                                                        <Text text="{linee>batchLavorazione}"/>
+                                                                    </VBox>
+                                                                    <VBox width="20%" class="BorderTop paddingVBox textVBox">
+                                                                        <Text text="{linee>cniresidui}"></Text>
+                                                                    </VBox>
+                                                                </HBox>
+                                                            </VBox> 
+                                                        </HBox>
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </VBox>
+                                    <VBox width="50%">
+                                        <Table items="{linee>/linee/PastaCorta}" width="100%">
+                                            <columns>
+                                                <Column/>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem class="noDelimitator">
+                                                    <cells>
+                                                        <HBox class="sapUiTinyMargin RiepilogoLineaElement">
+                                                            <VBox width="30%" height="100%">
+                                                                <VBox height="30%" width="100%" class="paddingVBox">
+                                                                    <cus:CustomButt width="100%"
+                                                                                    text="{linee>linea}"
+                                                                                    class="noFocus"
+                                                                                    state="{linee>statolinea}"
+                                                                                    customType="linea"
+                                                                                    press="GoToSinotticoLinea">
+                                                                
+                                                                    </cus:CustomButt>
                                                                 </VBox>
-                                                                <VBox width="60%">
-                                                                    <Text class="sapUiMediumMarginBegin" text="{linee>batchLavorazione}"/>
-                                                                </VBox>
-                                                                <VBox width="20%">
-                                                                    <Text class="sapUiMediumMarginBegin" text="{linee>cniresidui}"></Text>
-                                                                </VBox>
-                                                            </HBox>
-                                                        </VBox> 
-                                                    </HBox>
-                                                </cells>
-                                            </ColumnListItem>
-                                        </items>
-                                    </Table>
-<!--                                    <Table items="{linee>/linee/PastaCorta}" width="50%">
-                                        
-                                    </Table>-->
+                                                                <HBox height="">
+                                                                    <VBox width="50%" class="BorderTopRight paddingVBox textVBox"> 
+                                                                        <Text text="{linee>disponibilita}"/>
+                                                                    </VBox>
+                                                                    <VBox width="50%" class="BorderTop paddingVBox textVBox">
+                                                                        <Text text="{linee>efficienza}"/>
+                                                                    </VBox>
+                                                                </HBox>
+                                                            </VBox>
+                                                            <VBox width="70%" height="100%">
+                                                                <HBox height="30%" width="100%" class="paddingVBox">
+                                                                    <VBox width="80%">
+                                                                        <cus:NewProgressIndicator
+                                                                            class="LineeMPI"
+                                                                            width="100%"
+                                                                            displayValue="{linee>oreRimanenti}"
+                                                                            percentValue="{= Number(${linee>avanzamento})}"
+                                                                            barColor="{linee>barColor}"
+                                                                        >
+                                                                        </cus:NewProgressIndicator>
+                                                                    </VBox>
+                                                                    <VBox  width="20%" class="sapUiTinyMarginBegin">
+                                                                        <cus:CustomButt width="80%"
+                                                                                        icon="img/triangoloprova.png"
+                                                                                        text="4"
+                                                                                        press="onPress"
+                                                                                        ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                                                                        customType="graficoSPC"
+                                                                                        state="1"
+                                                                                        class="sapUiSmallMarginBegin monobuttonSPC noFocus">
+                                                                        </cus:CustomButt>
+                                                                    </VBox>
+                                                                </HBox>
+                                                                <HBox>
+                                                                    <VBox width="20%" height="100%" class="BorderLeftTopRight paddingVBox textVBox">
+                                                                        <Text text="{linee>cniconf}"/>
+                                                                    </VBox>
+                                                                    <VBox width="60%" class="BorderTopRight paddingVBox textVBox">
+                                                                        <Text text="{linee>batchLavorazione}"/>
+                                                                    </VBox>
+                                                                    <VBox width="20%" class="BorderTop paddingVBox textVBox">
+                                                                        <Text text="{linee>cniresidui}"></Text>
+                                                                    </VBox>
+                                                                </HBox>
+                                                            </VBox> 
+                                                        </HBox>
+                                                    </cells>
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </VBox>
                                 </HBox>
                             </ScrollContainer>
                         </VBox>
