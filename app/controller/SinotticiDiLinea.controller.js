@@ -50,7 +50,7 @@ sap.ui.define([
         _onObjectMatched: function (oEvent) {
             var oModel = sap.ui.getCore().getModel("elencolinee");
             var TabContainer = this.getView().byId("TabContainerSinotticiLinea");
-            var Table = TabContainer.getItems()[0].getContent()git 
+            var Table = TabContainer.getItems()[0].getContent();
 //            if (TabContainer.getItems().length > 0) {
 //                this.selectItem(this.getView().byId("TabContainerSinotticiLinea"));
 //            }
