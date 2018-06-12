@@ -10,10 +10,12 @@ sap.ui.define([
 
         ISLOCALModel: new JSONModel({}),
         ModelReparti: new JSONModel({}),
-        
+        ISLOCAL: null,
+
         onInit: function () {
 //            this.getSplitAppObj().toDetail(this.createId("Home"));
-            this.ISLOCALModel.setData({"ISLOCAL": Number(jQuery.sap.getUriParameters().get("ISLOCAL"))});
+            this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
+            this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
         },
         getSplitAppObj: function () {
@@ -24,7 +26,12 @@ sap.ui.define([
             return result;
         },
         onToPianiPage: function () {
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllReparti&Content-Type=text/json&OutputParameter=JSON";
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_Reparti.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllReparti&Content-Type=text/json&OutputParameter=JSON";
+            }
             Library.AjaxCallerData(link, this.SUCCESSReparti.bind(this));
         },
         SUCCESSReparti: function (Jdata) {
