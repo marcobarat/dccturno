@@ -69,17 +69,21 @@ sap.ui.define([
 //                Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
 //                sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
 //            }
-            var oItems = this.getView().byId("ManagePianoTable").getItems();
-            for (var i = 0; i < oItems.length; i++) {
-                var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
-                if (oLinea.getItems().length > 1) {
-                    if (!this.ControlloCausalizzazioneGuasti(this.ModelGuasti.getData().GuastiLinee[i])) {
-                        oLinea.getItems()[3].setEnabled(false);
-                    } else {
-                        oLinea.getItems()[3].setEnabled(true);
-                    }
-                }
-            }
+
+
+
+
+//            var oItems = this.getView().byId("ManagePianoTable").getItems();
+//            for (var i = 0; i < oItems.length; i++) {
+//                var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
+//                if (oLinea.getItems().length > 1) {
+//                    if (!this.ControlloCausalizzazioneGuasti(this.ModelGuasti.getData().GuastiLinee[i])) {
+//                        oLinea.getItems()[3].setEnabled(false);
+//                    } else {
+//                        oLinea.getItems()[3].setEnabled(true);
+//                    }
+//                }
+//            }
         },
         changeReparto: function (oEvent) {
             var link;
@@ -130,7 +134,7 @@ sap.ui.define([
 //        },
         SUCCESSFermo: function (Jdata) {
             this.ModelCausali.setData(Jdata);
-            this.getView().setModel(Jdata, "CausaliFermo");
+            this.getView().setModel(this.ModelCausali, "CausaliFermo");
             var oView = this.getView();
             this.onCloseDialog();
             //PULIZIA DELLA PAGINA -DESELEZIONO UN'EVENTUALE CASELLA SELEZIONATA 
@@ -147,13 +151,16 @@ sap.ui.define([
                 oView.addDependent(dialog);
             }
             this.oDialog = dialog;
-            dialog.open();
+//            dialog.open();
             var data = this.ModelCausali.getData().gerarchie;
             var num_gerarchie = data.length;
             var ID, CB;
             var cols = 2;
             var rows = Math.ceil(num_gerarchie / cols);
             var outerVBox = this.getView().byId("CausalizzazioneFermoPanelBox");
+            if (outerVBox.getItems().length > 0) {
+                outerVBox.destroyItems();
+            }
             var vvbb1 = new sap.m.VBox({height: "90%", width: "100%"});
             var vvbb3 = new sap.m.VBox({height: "10%", width: "100%"});
             vvbb3.addStyleClass("sapUiMediumMarginTop");
@@ -229,6 +236,8 @@ sap.ui.define([
             hbox1.addItem(vb4);
             vvbb3.addItem(hbox1);
             outerVBox.addItem(vvbb3);
+
+            dialog.open();
         },
 //SI ATTIVA QUANDO PREMO CREA REPORT OEE
         onReport: function () {
@@ -506,7 +515,7 @@ sap.ui.define([
                 }
             }
             this.ModelGuasti.getData().GuastiLinee[this.oLinea_index] = data;
-            this.getView().setModel(this.ModelGuasti, "guasti");
+            this.getView().setModel(this.ModelGuasti, "guastilinea");
             this.onCloseDialog();
             this.onCausalizzazioneFermi();
         },

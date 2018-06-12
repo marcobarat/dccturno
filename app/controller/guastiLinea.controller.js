@@ -12,7 +12,7 @@ sap.ui.define([
         ModelCausali: new JSONModel({}),
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelGuasti: sap.ui.getCore().getModel("guasti"),
-        guasti: {},
+        guasti: sap.ui.getCore().getModel("guasti").getData(),
         piano: null,
         button: null,
         pianoPath: null,
@@ -634,19 +634,6 @@ sap.ui.define([
             var array_stringa = stringa.split(":");
             return  parseInt(array_stringa[0], 10) * 60 * 60 + parseInt(array_stringa[1], 10) * 60 + parseInt(array_stringa[2], 10);
         },
-        isObjectEquivalent: function (obj1, obj2) {
-            var aProps = Object.getOwnPropertyNames(obj1);
-            var bProps = Object.getOwnPropertyNames(obj1);
-            if (aProps.length !== bProps.length) {
-                return false;
-            }
-            for (var key in obj1) {
-                if (obj1[key] !== obj2[key]) {
-                    return false;
-                }
-            }
-            return true;
-        },
         takeIdByBindedCausa: function (causa) {
             for (var i in this.menuJSON.cause) {
                 if (this.menuJSON.cause[i].fermo === causa) {
@@ -756,6 +743,19 @@ sap.ui.define([
                 }
             }
             return -1;
+        },
+        isObjectEquivalent: function (obj1, obj2) {
+            var aProps = Object.getOwnPropertyNames(obj1);
+            var bProps = Object.getOwnPropertyNames(obj1);
+            if (aProps.length !== bProps.length) {
+                return false;
+            }
+            for (var key in obj1) {
+                if (obj1[key] !== obj2[key]) {
+                    return false;
+                }
+            }
+            return true;
         },
         removeGuasto: function (JSONObject, index, flag) {
             var aProps = Object.getOwnPropertyNames(JSONObject);
