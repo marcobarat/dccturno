@@ -48,7 +48,6 @@ sap.ui.define([
             var area = Row.area;
             this.paths = oEvent.getSource().getBindingContext("turni").getPath().substr(1).split("/");
             var pdcId = Row.PdcID;
-            var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
             var link;
             if (this.ISLOCAL === 1) {
                 if (area === "0") {
@@ -59,6 +58,7 @@ sap.ui.define([
                     Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 }
             } else {
+                var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
                 if (area === "0") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
