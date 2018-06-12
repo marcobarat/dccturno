@@ -61,6 +61,8 @@ sap.ui.define([
                 }
             } else {
                 var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
+                var PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
+                sap.ui.getCore().setModel(PDCParameters, "ParametriPiano");
                 if (area === "0") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
