@@ -4,14 +4,17 @@ sap.ui.define([
     'myapp/controller/Library'
 ], function (Controller, JSONModel, Library) {
     "use strict";
-
     return Controller.extend("myapp.controller.Report", {
-        ModelTurni: new JSONModel(),
-        ModelOEE: new JSONModel(),
+        ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
+        ModelTurni: sap.ui.getCore().getModel("turni"),
+        ModelOEE: sap.ui.getCore().getModel("ReportOEE"),
+        ModelGuasti: new JSONModel({}),
         minValues: [],
+        guasti: {},
         piano: null,
         pianoPath: null,
         turnoPath: null,
+        rowHTML: null,
         data_json: {},
         onInit: function () {
             this.getView().byId("ComponentiOEE").setHeaderSpan([3, 1, 1]);
@@ -21,9 +24,10 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("Report").attachPatternMatched(this._onObjectMatched, this);
         },
-        SUCCESSDatiOEE: function (Jdata) {
+        FillOEETable: function () {
             var data_new;
-            this.ModelOEE.setData(Jdata);
+//            this.ModelOEE.setData(Jdata);
+            var Jdata = this.ModelOEE.getData();
             var bck = this.RecursivePropertyAdder(Jdata.ReportOEE.Confezionamenti[0], "hierarchy", 0);
             Jdata.ReportOEE.Confezionamenti[0] = bck;
             data_new = Jdata;
@@ -38,26 +42,23 @@ sap.ui.define([
             data_new = this.setHighestValues(data_new, "qualitàScarti");
             data_new = this.setHighestValues(data_new, "qualitàRilavor");
             this.ModelOEE.setData(data_new);
+            this.getView().setModel(this.ModelOEE, "ReportOEE");
+            sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
         },
         _onObjectMatched: function (oEvent) {
-            this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
-            if (Number(this.ISLOCAL)===1){
-            Library.AjaxCallerData("model/OEE.json", this.SUCCESSDatiOEE.bind(this));
-            this.getView().byId("TreeTableReport").setModel(this.ModelOEE, "ReportOEE");
-            } else {
-                
-            }
-            this.ModelTurni = this.getOwnerComponent().getModel("turni");
-            if (!this.ModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
-            }
+//            if (Number(this.ISLOCAL)===1){
+//            Library.AjaxCallerData("model/OEE.json", this.SUCCESSDatiOEE.bind(this));
+//            this.getView().byId("TreeTableReport").setModel(this.ModelOEE, "ReportOEE");
+//            } else {
+//                
+//            }
             var oTitle = this.getView().byId("ReportTitle");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
+            this.FillOEETable();
         },
         RecursivePropertyAdder: function (bck, prop_name, i) {
             for (var key in bck) {
@@ -73,9 +74,7 @@ sap.ui.define([
                 bck[prop_name] = i;
             }
             return bck;
-
         },
-
 //ricambio i colori delle righe quando faccio il collapse o espando la treetable   (richiama la funziona impostata all'inizio nella mia custom table)         
         onToggleOpenState: function () {
             var oTable = this.getView().byId("TreeTableReport");
@@ -152,11 +151,10 @@ sap.ui.define([
             }
             return bck;
         },
-
         setJSONWorstValues: function (bck, property, a, b, c) {
             var numero;
             for (var key in bck) {
-                if (typeof bck[key] === "object" && key!== "red") {
+                if (typeof bck[key] === "object" && key !== "red") {
                     bck[key] = this.setJSONWorstValues(bck[key], property, a, b, c);
                 }
             }
@@ -184,32 +182,45 @@ sap.ui.define([
             var clicked_row = event.getParameters().rowBindingContext.getObject();
             var index_column = parseInt(event.getParameters().columnIndex, 10);
             var index_row = parseInt(event.getParameters().rowIndex, 10);
-            var row_html;
+            var batchId = clicked_row.BatchID;
             if (clicked_row.hierarchy === 3 && (index_column === 5 || index_column === 6 || index_column === 7)) {
                 for (var i = index_row - 1; i >= 0; i--) {
-                    row_html = event.getSource().getRows()[i];
-                    if (row_html._bHasChildren) {
+                    this.rowHTML = event.getSource().getRows()[i];
+                    if (this.rowHTML._bHasChildren) {
                         break;
                     }
                 }
-                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                oRouter.navTo("guastidilinea",
-                        {
-                            turnoPath: this.turnoPath,
-                            pianoPath: this.pianoPath,
-                            guastiPath: row_html.getCells()[0].getText()
-                        });
+                var link;
+                if (this.ISLOCAL === 1) {
+                    link = "model/guasti_linee.json";
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
+                }
+                Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
             }
         },
-
+        SUCCESSGuasti: function (Jdata) {
+            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
+                if (Jdata.GuastiLinee[i].nome === this.rowHTML.getCells()[0].getText()) {
+                    this.guasti = Jdata.GuastiLinee[i];
+                    break;
+                }
+            }
+            this.guasti = Library.AddTimeGaps(this.guasti);
+            this.ModelGuasti.setData(this.guasti);
+            sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("guastidilinea",
+                    {
+                        turnoPath: this.turnoPath,
+                        pianoPath: this.pianoPath,
+                        guastiPath: this.rowHTML.getCells()[0].getText()
+                    });
+        },
         onBackNav: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGrey", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
         }
-
-
-
-
 
     });
 });

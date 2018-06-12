@@ -5,15 +5,16 @@ sap.ui.define([
     'myapp/controller/Library'
 ], function (Controller, JSONModel, History, Library) {
     "use strict";
-
     return Controller.extend("myapp.controller.ManagePianoGrey", {
         ModelCausali: new JSONModel({}),
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelLinea: sap.ui.getCore().getModel("linee"),
+        ModelOEE: new JSONModel({}),
         ModelGuasti: new JSONModel({}),
         ModelGuastiLinea: new JSONModel({}),
+        ModelPianoParameters: sap.ui.getCore().getModel("ParametriPiano"),
         oLinea_index: null,
-        ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
+        ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
         oColumn: null,
         oContent: null,
         oVBox: null,
@@ -27,21 +28,19 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         data_json: {},
+
         onInit: function () {
             Library.RemoveClosingButtons.bind(this)("TabContainerTurniConclusi");
-
-            var link = "model/JSON_FermoTestiNew.json";
-            Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
-            this.getView().setModel(this.ModelCausali, "CausaliFermo");
-
+//            var link = "model/JSON_FermoTestiNew.json";
+//            Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
+//            this.getView().setModel(this.ModelCausali, "CausaliFermo");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this._onObjectMatched, this);
-
         },
         _onObjectMatched: function (oEvent) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            var link;
+//            var link;
 //            this.ModelTurni = this.getOwnerComponent().getModel("turni");
 //            if (!this.ModelTurni) {
 //                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
@@ -52,8 +51,8 @@ sap.ui.define([
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
             this.getView().setModel(this.ModelLinea, "linea");
-            Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
-            sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+//            Library.AjaxCallerData("./model/guasti_new.json", this.SUCCESSGuasti.bind(this));
+//            sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
 //            if (this.ISLOCAL === 1) {
 ////                Library.AjaxCallerData("./model/linee.json", function (Jdata) {
 ////                    that.ModelLinea.setData(Jdata);
@@ -84,34 +83,47 @@ sap.ui.define([
                 }
             }
         },
-        SUCCESSGuasti: function (Jdata) {
-            var data = {};
-            data.GuastiLinee = [];
-            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
-                var dataAll = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
-                var dataReduced = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
-                dataAll = Library.AddTimeGaps(dataAll);
-                data.GuastiLinee.push({});
-                data.GuastiLinee[i].nome = null;
-                data.GuastiLinee[i].All = {};
-                data.GuastiLinee[i].NoCause = {};
-                data.GuastiLinee[i].nome = Jdata.GuastiLinee[i].nome;
-                data.GuastiLinee[i].All = dataAll;
-                dataReduced = Library.RemoveCaused(dataReduced);
-                dataReduced = Library.AddTimeGaps(dataReduced);
-                data.GuastiLinee[i].NoCause = dataReduced;
-            }
-            this.ModelGuasti.setData(data);
-        },
+//        SUCCESSGuasti: function (Jdata) {
+//            var data = {};
+//            data.GuastiLinee = [];
+//            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
+//                var dataAll = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+//                var dataReduced = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+//                dataAll = Library.AddTimeGaps(dataAll);
+//                data.GuastiLinee.push({});
+//                data.GuastiLinee[i].nome = null;
+//                data.GuastiLinee[i].All = {};
+//                data.GuastiLinee[i].NoCause = {};
+//                data.GuastiLinee[i].nome = Jdata.GuastiLinee[i].nome;
+//                data.GuastiLinee[i].All = dataAll;
+//                dataReduced = Library.RemoveCaused(dataReduced);
+//                dataReduced = Library.AddTimeGaps(dataReduced);
+//                data.GuastiLinee[i].NoCause = dataReduced;
+//            }
+//            this.ModelGuasti.setData(data);
+//        },
         SUCCESSFermo: function (Jdata) {
+            this.ModelCausali.setData(Jdata);
+            this.getView().setModel(Jdata, "CausaliFermo");
             var oView = this.getView();
+            this.onCloseDialog();
+
+            //PULIZIA DELLA PAGINA -DESELEZIONO UN'EVENTUALE CASELLA SELEZIONATA 
+            var old_id = this.GetActiveCB();
+            if (old_id !== 0) {
+                var old_CB = sap.ui.getCore().byId(old_id);
+                old_CB.setSelected(false);
+                this.CheckFermo[old_id] = 0;
+            }
+
             var dialog = oView.byId("CausalizzazioneFermoPanel");
             if (!dialog) {
                 dialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);
                 oView.addDependent(dialog);
             }
-            this.ModelCausali.setData(Jdata);
-            var data = Jdata.gerarchie;
+            this.oDialog = dialog;
+            dialog.open();
+            var data = this.ModelCausali.getData().gerarchie;
             var num_gerarchie = data.length;
             var ID, CB;
             var cols = 2;
@@ -192,61 +204,74 @@ sap.ui.define([
             hbox1.addItem(vb4);
             vvbb3.addItem(hbox1);
             outerVBox.addItem(vvbb3);
-
-
-
         },
 //SI ATTIVA QUANDO PREMO CREA REPORT OEE
         onReport: function () {
             if (!this.getView().byId("reportButton").getVisible()) {
-                this.getView().byId("reportButton").setVisible(true);
-                this.getView().byId("confermaButton").setVisible(true);
-                var oItems = this.getView().byId("ManagePianoTable").getAggregation("items");
-                for (var i = 0; i < oItems.length; i++) {
-                    var oTable = oItems[i].getAggregation("cells")[0].getAggregation("items")[1].getAggregation("items")[0].getAggregation("items")[0];
-                    var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
-                    this.oContent = new sap.m.TextArea({value: "{linea>disp}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
-                    oLinea.addItem(this.oContent);
-                    this.oContent = new sap.m.TextArea({value: "{linea>prod}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
-                    oLinea.addItem(this.oContent);
-                    this.oContent = new sap.m.Button({text: "{linea>fermo}", press: this.onCausalizzazioneFermi.bind(this)});
-                    oLinea.addItem(this.oContent);
-                    this.oColumn = new sap.m.Column({
-                        styleClass: "sapUiSmallMarginBegin",
-                        header: new sap.m.Label({text: "Disp"}),
-                        hAlign: "Center"});
-                    oTable.addColumn(this.oColumn);
-                    this.oColumn = new sap.m.Column({
-                        header: new sap.m.Label({text: "Prod"}),
-                        hAlign: "Center"});
-                    oTable.addColumn(this.oColumn);
-                    this.oColumn = new sap.m.Column({
-                        styleClass: "sapUiMediumMarginBegin",
-                        header: new sap.m.Label({text: ""}),
-                        hAlign: "Center"});
-                    oTable.addColumn(this.oColumn);
-                    var oColumnListItems = oTable.getAggregation("items");
-                    for (var j = 0; j < oColumnListItems.length; j++) {
-                        var oText = new sap.m.Text({text: "{linea>disp}"});
-                        oText.addStyleClass("sapUiSmallMarginTop");
-                        oColumnListItems[j].addCell(oText);
-                        oText = new sap.m.Text({text: "{linea>prod}"});
-                        oText.addStyleClass("sapUiSmallMarginTop");
-                        oColumnListItems[j].addCell(oText);
-                        oText = new sap.m.Text({text: "{linea>fermo}"});
-                        oText.addStyleClass("sapUiSmallMarginTop");
-                        oColumnListItems[j].addCell(oText);
-
-                    }
+                var link;
+                if (this.ISLOCAL === 1) {
+                    link = "model/OEE.json";
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcPassato_GetReportOEE&Content-Type=text/json&stabilimentoID=" + this.ModelPianoParameters.stabilimento + "&pdcID=" + this.ModelPianoParameters.pdc + "&repartoID=" + this.ModelPianoParameters.reparto + "&OutputParameter=JSON";
                 }
-
+                Library.AjaxCallerData(link, this.SUCCESSReportCreated.bind(this));
+            }
+        },
+        SUCCESSReportCreated: function (Jdata) {
+            if (this.ISLOCAL === 1) {
+                this.ModelOEE.setData(Jdata);
+            } else {
+                this.ModelLinea.setData(Jdata.PDC);
+                sap.ui.getCore().setModel(this.ModelLinea, "linee");
+                this.getView().setModel(this.ModelLinea, "linea");
+                this.ModelOEE.setData(Jdata.OEE);
+            }
+            sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
+            this.getView().setModel(this.ModelOEE, "ReportOEE");
+            this.getView().byId("reportButton").setVisible(true);
+            this.getView().byId("confermaButton").setVisible(true);
+            var oItems = this.getView().byId("ManagePianoTable").getAggregation("items");
+            for (var i = 0; i < oItems.length; i++) {
+                var oTable = oItems[i].getAggregation("cells")[0].getAggregation("items")[1].getAggregation("items")[0].getAggregation("items")[0];
+                var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
+                this.oContent = new sap.m.TextArea({value: "{linea>disp}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+                oLinea.addItem(this.oContent);
+                this.oContent = new sap.m.TextArea({value: "{linea>prod}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+                oLinea.addItem(this.oContent);
+                this.oContent = new sap.m.Button({text: "{linea>fermo}", press: this.onCausalizzazioneFermi.bind(this)});
+                oLinea.addItem(this.oContent);
+                this.oColumn = new sap.m.Column({
+                    styleClass: "sapUiSmallMarginBegin",
+                    header: new sap.m.Label({text: "Disp"}),
+                    hAlign: "Center"});
+                oTable.addColumn(this.oColumn);
+                this.oColumn = new sap.m.Column({
+                    header: new sap.m.Label({text: "Prod"}),
+                    hAlign: "Center"});
+                oTable.addColumn(this.oColumn);
+                this.oColumn = new sap.m.Column({
+                    styleClass: "sapUiMediumMarginBegin",
+                    header: new sap.m.Label({text: ""}),
+                    hAlign: "Center"});
+                oTable.addColumn(this.oColumn);
+                var oColumnListItems = oTable.getAggregation("items");
+                for (var j = 0; j < oColumnListItems.length; j++) {
+                    var oText = new sap.m.Text({text: "{linea>disp}"});
+                    oText.addStyleClass("sapUiSmallMarginTop");
+                    oColumnListItems[j].addCell(oText);
+                    oText = new sap.m.Text({text: "{linea>prod}"});
+                    oText.addStyleClass("sapUiSmallMarginTop");
+                    oColumnListItems[j].addCell(oText);
+                    oText = new sap.m.Button({text: "{linea>fermo}", press: ["{linea>batchID}", this.onCausalizzazioneFermi, this]});
+                    oText.addStyleClass("sapUiSmallMarginTop");
+                    oColumnListItems[j].addCell(oText);
+                }
             }
         },
         removeReport: function () {
             if (this.getView().byId("reportButton").getVisible()) {
                 this.getView().byId("reportButton").setVisible(false);
                 this.getView().byId("confermaButton").setVisible(false);
-
                 var oItems = this.getView().byId("ManagePianoTable").getAggregation("items");
                 for (var i = 0; i < oItems.length; i++) {
                     var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
@@ -262,34 +287,56 @@ sap.ui.define([
                         oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[9]);
                         oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[8]);
                         oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[7]);
-
                     }
                 }
 
             }
         },
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // APRO IL DIALOG E INIZIALIZZO TUTTE LE CHECKBOX E LE PROPRIETA' DEL CONTROLLER CHE MI SERVONO PER MONITORARE LE CHECKBOX
-        onCausalizzazioneFermi: function (oEvent) {
+        onCausalizzazioneFermi: function (oEvent, batchId) {
             //NB sto supponendo che linee e guasti siano ordinati nello stesso modo
             if (oEvent) {
                 this.oLinea_index = oEvent.getSource().getBindingContext("linea").sPath.split("/")[2];
             }
-            //var oLinea_index = this.ModelLinea.getData().linee[oEvent.getSource().getBindingContext("linea").sPath.split("/")[2]].linea; questa se non mi basta l'indice e voglio il nome della linea
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/guasti_new.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
+            }
+            Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
+        },
+        SUCCESSGuasti: function (Jdata) {
+            var data = {};
+            data.GuastiLinee = [];
+            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
+                var dataAll = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+                var dataReduced = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+                dataAll = Library.AddTimeGaps(dataAll);
+                data.GuastiLinee.push({});
+                data.GuastiLinee[i].nome = null;
+                data.GuastiLinee[i].All = {};
+                data.GuastiLinee[i].NoCause = {};
+                data.GuastiLinee[i].nome = Jdata.GuastiLinee[i].nome;
+                data.GuastiLinee[i].All = dataAll;
+                dataReduced = Library.RemoveCaused(dataReduced);
+                dataReduced = Library.AddTimeGaps(dataReduced);
+                data.GuastiLinee[i].NoCause = dataReduced;
+            }
+            this.ModelGuasti.setData(data);
             var oView = this.getView();
             this.CheckSingoloCausa = [];
-            var dato_linea = this.ModelGuasti.getData().GuastiLinee[this.oLinea_index];
+            var dato_linea = data.GuastiLinee[this.oLinea_index];
             for (var j in dato_linea.NoCause.guasti) {
                 this.CheckSingoloCausa.push(0);
                 dato_linea.NoCause.guasti[j].selected = false;
             }
-            this.ModelGuasti.getData().GuastiLinee[this.oLinea_index] = dato_linea;
+            data.GuastiLinee[this.oLinea_index] = dato_linea;
             this.ModelGuastiLinea = new JSONModel({});
             this.ModelGuastiLinea.setData(dato_linea);
             oView.setModel(this.ModelGuastiLinea, "guastilinea");
-
             this.oDialog = oView.byId("CausalizzazioneFermo");
             if (!this.oDialog) {
                 this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermo", this);
@@ -298,7 +345,6 @@ sap.ui.define([
 
             //disabilito il bottone di accettazione
             this.getView().byId("ConfermaFermi").setEnabled(false);
-
             if (!this.ControlloCausalizzazioneGuasti(this.ModelGuastiLinea.getData())) {
                 oView.byId("TotaleTable").setVisible(false);
                 oView.byId("NoFermiDaCausalizzare").setVisible(true);
@@ -307,17 +353,11 @@ sap.ui.define([
                 oTable.setVisible(true);
                 oTable.getItems()[0].getCells()[3].setSelected(false);
                 this.CheckTotaleCausa = 0;
-
                 this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
             }
 
-
-
             this.oDialog.open();
-
-
         },
-
 //CHIUDO IL DIALOG (SIA CAUSALIZZAZIONE FERMO CHE CAUSALIZZAZIONE FERMO PANEL)	
         onCloseDialog: function () {
             var id_dialog = this.oDialog.getId().split("--")[1];
@@ -330,12 +370,10 @@ sap.ui.define([
                     } else {
                         oLinea.getAggregation("items")[3].setEnabled(true);
                     }
-
                 }
             }
             this.getView().byId(id_dialog).close();
             this.oDialog = null;
-
         },
 //GESTIONE DELLE CHECKBOX DEL DIALOG CAUSALIZZAZIONE FERMO    
         ChangeCheckedCausa: function (event) {
@@ -344,10 +382,6 @@ sap.ui.define([
             var root_name_totale = "CBTotaleCausa";
             var i, temp_id;
             if (id.indexOf(root_name_totale) > -1) {
-
-
-
-
                 if (CB.getSelected()) {
                     this.CheckTotaleCausa = 1;
                     for (i = 0; i < this.CheckSingoloCausa.length; i++) {
@@ -362,7 +396,6 @@ sap.ui.define([
                         this.CheckSingoloCausa[i] = 0;
                     }
                     this.ModelGuastiLinea.refresh();
-
                 }
 
 
@@ -392,23 +425,13 @@ sap.ui.define([
         },
 //CHIUDO IL DIALOG CAUSALIZZAZIONE FERMO E APRO IL CAUSALIZZAZIONE FERMO PANEL                        
         onCausalizzaButton: function () {
-            var oView = this.getView();
-            this.onCloseDialog();
-            this.oDialog = oView.byId("CausalizzazioneFermoPanel");
-            if (!this.oDialog) {
-                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);
-                oView.addDependent(this.oDialog);
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_FermoTestiNew.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
             }
-
-            //PULIZIA DELLA PAGINA -DESELEZIONO UN'EVENTUALE CASELLA SELEZIONATA 
-            var old_id = this.GetActiveCB();
-            if (old_id !== 0) {
-                var old_CB = sap.ui.getCore().byId(old_id);
-                old_CB.setSelected(false);
-                this.CheckFermo[old_id] = 0;
-            }
-
-            this.oDialog.open();
+            Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
         },
 // GESTISCO LA SELEZIONE E LA CONFERMA DELLE CAUSE NEL CAUSALIZZAZIONEFERMOPANEL
         ChangeCheckedFermo: function (event) {
@@ -459,7 +482,6 @@ sap.ui.define([
             }
             this.ModelGuasti.getData().GuastiLinee[this.oLinea_index] = data;
             this.getView().setModel(this.ModelGuasti, "guasti");
-
             this.onCloseDialog();
             this.onCausalizzazioneFermi();
         },
@@ -495,15 +517,12 @@ sap.ui.define([
             dataTurni.pianidiconfezionamento.splice(this.pianoPath, 1);
             oModelTurni.setData(dataTurni);
             this.getOwnerComponent().setModel("turni");
-
             var oModel = new JSONModel();
             var view = this.getOwnerComponent()._oViews._oViews["myapp.view.Piani"];
             var data = view.getModel().getData().turniconclusi.splice(this.pianoPath, 1);
             oModel.setData(data);
             view.setModel(oModel);
-
             oRouter.navTo("piani");
-
         },
 //BUTTON NAVBACK        
         onNavBack: function () {
@@ -512,8 +531,6 @@ sap.ui.define([
             this.removeReport();
         }
     });
-
-
 });
 
 

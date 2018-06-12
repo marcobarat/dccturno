@@ -5,10 +5,12 @@ sap.ui.define([
 ], function (Controller, JSONModel, Library) {
     "use strict";
     return Controller.extend("myapp.controller.guastiLinea", {
-        ISLOCAL: 0,
+        ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
         linea: "",
         menuJSON: {},
         row_binded: {},
+        ModelTurni: sap.ui.getCore().getModel("turni"),
+        ModelGuasti: sap.ui.getCore().getModel("guasti"),
         guasti: {},
         piano: null,
         pianoPath: null,
@@ -16,13 +18,12 @@ sap.ui.define([
         oDialog: null,
         data_json: {},
         onInit: function () {
-            this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("guastidilinea").attachPatternMatched(this._onObjectMatched, this);
             var that = this;
             this.menuJSON.cause = [];
             var model = new JSONModel();
-            if (Number(this.ISLOCAL) === 1) {
+            if (this.ISLOCAL === 1) {
                 Library.AjaxCallerData("model/JSON_FermoTestiNew.json", function (Jdata) {
                     that.SUCCESSCausali.bind(that)(Jdata, model);
                 });
@@ -33,19 +34,19 @@ sap.ui.define([
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.linea = oEvent.getParameter("arguments").guastiPath;
-            var oModel = new JSONModel();
-            var that = this;
-            if (Number(this.ISLOCAL) === 1) {
-                Library.AjaxCallerData("model/guasti_linee.json", function (Jdata) {
-                    that.SUCCESSGuasti.bind(that)(Jdata, oModel);
-                });
-            }
-            this.getView().setModel(oModel, "guasti");
-            this.ModelTurni = this.getOwnerComponent().getModel("turni");
-            if (!this.ModelTurni) {
-                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
-            }
+//            var oModel = new JSONModel();
+//            var that = this;
+//            if (this.ISLOCAL === 1) {
+//                Library.AjaxCallerData("model/guasti_linee.json", function (Jdata) {
+//                    that.SUCCESSGuasti.bind(that)(Jdata, oModel);
+//                });
+//            }
+            this.getView().setModel(this.ModelGuasti, "guasti");
+//            this.ModelTurni = this.getOwnerComponent().getModel("turni");
+//            if (!this.ModelTurni) {
+//                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
+//                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
+//            }
             var oTitle = this.getView().byId("turno");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
@@ -55,17 +56,17 @@ sap.ui.define([
             this.takeAllCause(Jdata);
             model.setData(this.menuJSON);
         },
-        SUCCESSGuasti: function (Jdata, oModel) {
-            //da rimpiazzare con parametrizzazione ajax (o comunque in base a come sarà la transazione)
-            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
-                if (Jdata.GuastiLinee[i].nome === this.linea) {
-                    this.guasti = Jdata.GuastiLinee[i];
-                    break;
-                }
-            }
-            this.guasti = Library.AddTimeGaps(this.guasti);
-            oModel.setData(this.guasti);
-        },
+//        SUCCESSGuasti: function (Jdata, oModel) {
+//            //da rimpiazzare con parametrizzazione ajax (o comunque in base a come sarà la transazione)
+//            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
+//                if (Jdata.GuastiLinee[i].nome === this.linea) {
+//                    this.guasti = Jdata.GuastiLinee[i];
+//                    break;
+//                }
+//            }
+//            this.guasti = Library.AddTimeGaps(this.guasti);
+//            oModel.setData(this.guasti);
+//        },
         takeAllCause: function (bck) {
             for (var key in bck) {
                 if (typeof bck[key] === "object") {
