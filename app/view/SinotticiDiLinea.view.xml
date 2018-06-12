@@ -38,7 +38,7 @@
                                     </IconTabFilter>
                                 </items>
                                 <content>
-                                    <Table id="sinotticiTable" items="{sinotticodilinea>/sinotticodilinea/macchine}">
+                                    <Table width="" id="sinotticiTable" items="{sinotticodilinea>/sinotticodilinea/macchine}">
                                         <columns>
                                             <Column/>
                                         </columns>
@@ -56,18 +56,14 @@
                                                     <ScrollContainer>
                                                             <Table items="{sinotticodilinea>tag}">
                                                                 <columns>
-                                                                    <Column>
-                                                                        <Text text="Nome Tag"/>
-                                                                    </Column>
-                                                                    <Column>
-                                                                        <Text text="Attributi Tag"/>
-                                                                    </Column>
+                                                                    <Column/>
+                                                                    <Column/>
                                                                 </columns>
                                                                 <items>
                                                                     <ColumnListItem>
                                                                         <cells>
                                                                             <Text text="{sinotticodilinea>nomeTag}"/>
-                                                                            <Text text="ciao"/>
+                                                                            <Text text="{sinotticodilinea>attributiTag/attributo}"/>
                                                                         </cells>
                                                                     </ColumnListItem>
                                                                 </items>
