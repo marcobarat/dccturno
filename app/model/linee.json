@@ -5,26 +5,26 @@
             "disp": "74%",
             "prod": "84%",
             "fermo": "6:30",
-            "ProductCollection": [
+            "batchlist": [
                 {
-                    "seq": ">>>1a",
+                    "sequenza": ">>>1a",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
-                    "cart": "125",
+                    "cartoni": "125",
                     "ore": "0:35",
                     "disp": "65%",
                     "prod": "83%",
                     "fermo": "3:36"
                 },
                 {
-                    "seq": ">>>1b",
+                    "sequenza": ">>>1b",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
-                    "cart": "125",
+                    "cartoni": "125",
                     "ore": "0:35",
                     "disp": "79%",
                     "prod": "85%",
@@ -36,14 +36,14 @@
             "disp": "74%",
             "prod": "84%",  
             "fermo": "6:30",            
-            "ProductCollection": [
+            "batchlist": [
                 {
-                    "seq": ">>>2",
+                    "sequenza": ">>>2",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
-                    "cart": "125",
+                    "cartoni": "125",
                     "ore": "0:35",
                     "disp": "65%",
                     "prod": "83%",
@@ -55,14 +55,14 @@
             "disp": "74%",
             "prod": "84%",  
             "fermo": "6:30",            
-            "ProductCollection": [
+            "batchlist": [
                 {
-                    "seq": ">>>3",
+                    "sequenza": ">>>3",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
-                    "cart": "125",
+                    "cartoni": "125",
                     "ore": "0:35",
                     "disp": "65%",
                     "prod": "83%",
@@ -74,14 +74,14 @@
             "disp": "74%",
             "prod": "84%",
             "fermo": "6:30",           
-            "ProductCollection": [
+            "batchlist": [
                 {
-                    "seq": ">>>4",
+                    "sequenza": ">>>4",
                     "formato": "093 semolino",
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
-                    "cart": "125",
+                    "cartoni": "125",
                     "ore": "0:35",
                     "disp": "65%",
                     "prod": "83%",
@@ -93,14 +93,14 @@
             "disp": "74%",
             "prod": "84%", 
             "fermo": "6:30",            
-            "ProductCollection": [
+            "batchlist": [
                 {
-                    "seq": ">>>5",
+                    "sequenza": ">>>5",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
                     "button": "0",
                     "qli": "31",
-                    "cart": "125",
+                    "cartoni": "125",
                     "ore": "0:35",
                     "disp": "65%",
                     "prod": "83%",
