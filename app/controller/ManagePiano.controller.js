@@ -10,9 +10,11 @@ sap.ui.define([
 ], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library, TimeFormatter) {
     "       use strict";
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
+        StabilimentoID: sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID,
         TimeFormatter: TimeFormatter,
-        ISLOCAL: 0,
+        ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
         data_json: {},
+        ModelReparti: sap.ui.getCore().getModel("reparti"),
         ModelMenu: new JSONModel({}),
         ModelLinea: sap.ui.getCore().getModel("linee"),
         ModelOperatori: new JSONModel({}),
@@ -25,10 +27,12 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
-        
+
         onInit: function () {
-            this.ISLOCAL = jQuery.sap.getUriParameters().get("ISLOCAL");
-            Library.RemoveClosingButtons.bind(this)("TabContainer");
+            this.getView().setModel(this.ModelReparti, "reparti");
+
+
+//            Library.RemoveClosingButtons.bind(this)("TabContainer");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePiano").attachPatternMatched(this.URLChangeCheck, this);
         },
@@ -110,6 +114,28 @@ sap.ui.define([
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
         },
+        changeReparto: function (oEvent) {
+            var link;
+            var that = this;
+            var area = this.piano.area;
+            var repartoId = oEvent.getParameters().key;
+            var pdcId = this.piano.PdcID;
+            if (this.ISLOCAL === 0) {
+                if (area === "0") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else if (area === "1") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else if (area === "2") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                }
+                Library.AjaxCallerData(link, function (Jdata) {
+                    that.ModelLinea.setData(Jdata);
+                });
+                this.getView().setModel(this.ModelLinea, "linee");
+            }
+        },
         takeAllCause: function (bck) {
             for (var key in bck) {
                 if (typeof bck[key] === "object") {
@@ -153,7 +179,7 @@ sap.ui.define([
                 that.SUCCESSMenu.bind(that)(Jdata, oButton);
             });
         },
-        // MODIFICA DELLA VIEW DELLA CREAZIONE TURNO (IN REALTA' DISTINGUO SOLO IL CASO IN CUI IL TURNO E' IN CORSO)
+// MODIFICA DELLA VIEW DELLA CREAZIONE TURNO (IN REALTA' DISTINGUO SOLO IL CASO IN CUI IL TURNO E' IN CORSO)
         addFieldsCreazione: function () {
             var j, oTable, oRows, oButton;
             var oTables = this.getView().byId("managePianoTable").getItems();
@@ -266,7 +292,7 @@ sap.ui.define([
                 }
             }
         },
-        // AGGIUNGO UNA RIGA QUANDO PREMO SU AGGIUNGI RIGA
+// AGGIUNGO UNA RIGA QUANDO PREMO SU AGGIUNGI RIGA
         onAddItem: function (oEvent) {
             oEvent.getSource().getParent().getParent().removeItem(oEvent.getSource().getParent());
             var ModelLinea = this.getView().getModel("linea");
@@ -279,7 +305,7 @@ sap.ui.define([
             this.getView().byId("managePianoTable").setModel(ModelLinea, "linea");
             this.addFieldsCreazione();
         },
-        //GESTIONE VISUALIZZA ATTRIBUTI BATCH
+//GESTIONE VISUALIZZA ATTRIBUTI BATCH
         azioneBatch: function (oEvent) {
             var oText = oEvent.getParameter("item").getText();
             switch (oText) {
@@ -329,7 +355,6 @@ sap.ui.define([
             this.oDialog.open();
         },
         onGestioneStato: function (oEvent) {
-//            var VBox = jQuery.sap.byId(this.getView().byId("nondisponibileBox").getId());
             var oText = oEvent.getSource().getText();
             if (oText === "Disponibile per la produzione") {
                 this.getView().byId("disponibile").setSelected(true);

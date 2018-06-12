@@ -31,7 +31,7 @@
                         <!--<VBox height="100%" width="5%"/>-->
                         <VBox height="100%" width="100%">
                             <wt:HierarchyTable
-                                rows="{path:'ReportOEE>/ReportOEE', parameters: {arrayNames:['Confezionamenti']}}"
+                                rows="{path:'ReportOEE>/', parameters: {arrayNames:['Sottogruppo']}}"
                                 id="TreeTableReport"
                                 selectionMode="None"
                                 toggleOpenState="onToggleOpenState"
@@ -42,7 +42,7 @@
                                 <wt:columns>
                                     <t:Column width="20%" resizable="false">
                                         <t:template>
-                                            <Text text="{ReportOEE>nome}"/>
+                                            <Text text="{ReportOEE>Descrizione}"/>
                                         </t:template>                    
                                     </t:Column>
                                     <t:Column class="reportHeaderCell" resizable="false">
@@ -58,7 +58,7 @@
                                             <Label text="Disponibilità" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable  text="{ReportOEE>disponibilitàOEE}" red="{ReportOEE>red/disponibilitàOEE}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable  text="{ReportOEE>Ar}" red="{ReportOEE>red/Ar}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column resizable="false" class="noBorderRight">
@@ -68,7 +68,7 @@
                                             <Label text="Produttività" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>produttivitàOEE}" red="{ReportOEE>red/produttivitàOEE}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>Pr}" red="{ReportOEE>red/Pr}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column resizable="false">
@@ -78,7 +78,7 @@
                                             <Label text="Qualità" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>qualitàOEE}" red="{ReportOEE>red/qualitàOEE}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>Qr}" red="{ReportOEE>red/Qr}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column> 
                                     <t:Column id="ComponentiPerdita" resizable="false">
@@ -88,7 +88,7 @@
                                             <Label text="Totale" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <Text text="{ReportOEE>dispTotale}"/>
+                                            <Text text="{ReportOEE>Al}"/>
                                         </t:template>
                                     </t:Column>  
                                     <t:Column resizable="false">
@@ -98,7 +98,7 @@
                                             <Label text="Fermate" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>dispFermate}" red="{ReportOEE>red/dispFermate}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>AlFermo}" red="{ReportOEE>red/AlFermo}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column> 
                                     <t:Column resizable="false">
@@ -108,7 +108,7 @@
                                             <Label text="Set-up" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>dispSetup}" red="{ReportOEE>red/dispSetup}" hierarchy="{ReportOEE>hierarchy}" colName="dispSetup"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>AlSetup}" red="{ReportOEE>red/AlSetup}" hierarchy="{ReportOEE>hierarchy}" colName="dispSetup"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column id="ComponentiProduttivita" resizable="false">
@@ -118,7 +118,7 @@
                                             <Label text="Totale" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <Text text="{ReportOEE>prodTotale}"/>
+                                            <Text text="{ReportOEE>Pl}"/>
                                         </t:template>
                                     </t:Column>  
                                     <t:Column resizable="false">
@@ -128,7 +128,7 @@
                                             <Label text="Cad.Ridotta" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>prodCadRidotta}" red="{ReportOEE>red/prodCadRidotta}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>PlVelocita}" red="{ReportOEE>red/PlVelocita}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column resizable="false">
@@ -138,7 +138,7 @@
                                             <Label text="M.Fermate" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>prodMFermate}" red="{ReportOEE>red/prodMFermate}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>PlMicrofermate}" red="{ReportOEE>red/PlMicrofermate}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column> 
                                     <t:Column id="ComponentiQualita" resizable="false">
@@ -148,27 +148,27 @@
                                             <Label text="Totale" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <Text text="{ReportOEE>qualitàTotale}"/>
+                                            <Text text="{ReportOEE>Ql}"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column resizable="false">
                                         <t:multiLabels>
                                             <Label text="Principali componenti di perdita (in minuti)"/>
                                             <Label text="Qualità"/>
-                                            <Label text="Scarti" class="reportSapLabel"/>
+                                            <Label text="Scarti Lavor." class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>qualitàScarti}" red="{ReportOEE>red/qualitàScarti}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>QlScartiProduzione}" red="{ReportOEE>red/QlScartiProduzione}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column> 
                                     <t:Column resizable="false">
                                         <t:multiLabels>
                                             <Label text="Principali componenti di perdita (in minuti)"/>
                                             <Label text="Qualità"/>
-                                            <Label text="Rilavor." class="reportSapLabel"/>
+                                            <Label text="Scarti Setup" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>qualitàRilavor}" red="{ReportOEE>red/qualitàRilavor}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{ReportOEE>QlScartiSetup}" red="{ReportOEE>red/QlScartiSetup}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>                                                                                                                                                                         
                                 </wt:columns>

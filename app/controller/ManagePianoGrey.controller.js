@@ -6,6 +6,8 @@ sap.ui.define([
 ], function (Controller, JSONModel, History, Library) {
     "use strict";
     return Controller.extend("myapp.controller.ManagePianoGrey", {
+        StabilimentoID: sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID,
+        ModelReparti: sap.ui.getCore().getModel("reparti"),
         ModelCausali: new JSONModel({}),
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelLinea: sap.ui.getCore().getModel("linee"),
@@ -28,12 +30,8 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         data_json: {},
-
         onInit: function () {
-            Library.RemoveClosingButtons.bind(this)("TabContainerTurniConclusi");
-//            var link = "model/JSON_FermoTestiNew.json";
-//            Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
-//            this.getView().setModel(this.ModelCausali, "CausaliFermo");
+            this.getView().setModel(this.ModelReparti, "reparti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this._onObjectMatched, this);
         },
@@ -83,6 +81,28 @@ sap.ui.define([
                 }
             }
         },
+        changeReparto: function (oEvent) {
+            var link;
+            var that = this;
+            var area = this.piano.area;
+            var repartoId = oEvent.getParameters().key;
+            var pdcId = this.piano.PdcID;
+            if (this.ISLOCAL === 0) {
+                if (area === "0") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else if (area === "1") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else if (area === "2") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                }
+                Library.AjaxCallerData(link, function (Jdata) {
+                    that.ModelLinea.setData(Jdata);
+                });
+                this.getView().setModel(this.ModelLinea, "linee");
+            }
+        },
 //        SUCCESSGuasti: function (Jdata) {
 //            var data = {};
 //            data.GuastiLinee = [];
@@ -107,7 +127,6 @@ sap.ui.define([
             this.getView().setModel(Jdata, "CausaliFermo");
             var oView = this.getView();
             this.onCloseDialog();
-
             //PULIZIA DELLA PAGINA -DESELEZIONO UN'EVENTUALE CASELLA SELEZIONATA 
             var old_id = this.GetActiveCB();
             if (old_id !== 0) {
@@ -234,9 +253,9 @@ sap.ui.define([
             for (var i = 0; i < oItems.length; i++) {
                 var oTable = oItems[i].getAggregation("cells")[0].getAggregation("items")[1].getAggregation("items")[0].getAggregation("items")[0];
                 var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
-                this.oContent = new sap.m.TextArea({value: "{linea>disp}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+                this.oContent = new sap.m.TextArea({value: "{linea>disponibilita}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
                 oLinea.addItem(this.oContent);
-                this.oContent = new sap.m.TextArea({value: "{linea>prod}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+                this.oContent = new sap.m.TextArea({value: "{linea>efficienza}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
                 oLinea.addItem(this.oContent);
                 this.oContent = new sap.m.Button({text: "{linea>fermo}", press: this.onCausalizzazioneFermi.bind(this)});
                 oLinea.addItem(this.oContent);
@@ -256,10 +275,10 @@ sap.ui.define([
                 oTable.addColumn(this.oColumn);
                 var oColumnListItems = oTable.getAggregation("items");
                 for (var j = 0; j < oColumnListItems.length; j++) {
-                    var oText = new sap.m.Text({text: "{linea>disp}"});
+                    var oText = new sap.m.Text({text: "{linea>disponibilita}"});
                     oText.addStyleClass("sapUiSmallMarginTop");
                     oColumnListItems[j].addCell(oText);
-                    oText = new sap.m.Text({text: "{linea>prod}"});
+                    oText = new sap.m.Text({text: "{linea>produttivita}"});
                     oText.addStyleClass("sapUiSmallMarginTop");
                     oColumnListItems[j].addCell(oText);
                     oText = new sap.m.Button({text: "{linea>fermo}", press: ["{linea>batchID}", this.onCausalizzazioneFermi, this]});

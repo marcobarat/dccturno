@@ -35,16 +35,16 @@
                         <VBox height="100%" width="90%">
                             <IconTabBar
                                 id="ManageIconTabBar"
-                                select="handleIconTabBarSelect"
-                                class="sapUiResponsiveContentPadding"
+                                select="changeReparto"
                                 applyContentPadding="true"
                                 expandable="false"
-                                items="{elencolinee>/elencoLinee}"
+                                items="{reparti>/ListaReparti}"
+                                selectedKey="1"
                             >
                                 <items>
                                     <IconTabFilter
-                                        text="{elencolinee>linea}"
-                                        key="{elencolinee>idLinea}">
+                                        text="{reparti>Reparto}"
+                                        key="{reparti>RepartoID}">
                                     </IconTabFilter>                  
                                 </items>
                                 <content>
@@ -201,7 +201,7 @@
                                                                                             <Select>
                                                                                                 <core:Item key="{linea>formato}" text="{linea>formato}" />
                                                                                             </Select>
-                                                                                            <!--                                                                                    <Select
+<!--                                                                                                                                                                                <Select
                                                                                                 selectedKey="{linea>formato} {linea>materiale}"
                                                                                                 showSecondaryValues= "true"
                                                                                                 items="{
@@ -211,8 +211,8 @@
                                                                                             group: true
                                                                                             }
                                                                                     }"
-                                                                                            >-->
-                                                                                            <!--                                                                                        <core:ListItem key="{linea>formato} {linea>materiale}" text="{linea>formato} {linea>materiale}" />
+                                                                                            >
+                                                                                                                                                                                    <core:ListItem key="{linea>formato} {linea>materiale}" text="{linea>formato} {linea>materiale}" />
                                                                                             </Select>-->
                                                                                             <Select width="106px">
                                                                                                 <core:Item key="{linea>confezione}gr" text="{linea>confezione}gr" />

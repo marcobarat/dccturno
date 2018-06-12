@@ -25,22 +25,19 @@ sap.ui.define([
             oRouter.getRoute("Report").attachPatternMatched(this._onObjectMatched, this);
         },
         FillOEETable: function () {
-            var data_new;
-//            this.ModelOEE.setData(Jdata);
             var Jdata = this.ModelOEE.getData();
-            var bck = this.RecursivePropertyAdder(Jdata.ReportOEE.Confezionamenti[0], "hierarchy", 0);
-            Jdata.ReportOEE.Confezionamenti[0] = bck;
-            data_new = Jdata;
+            var bck = this.RecursivePropertyAdder(Jdata, "hierarchy", 0);
+            var data_new = bck;
             data_new = this.setWorstValues(data_new, "OEE");
-            data_new = this.setWorstValues(data_new, "disponibilitàOEE");
-            data_new = this.setWorstValues(data_new, "produttivitàOEE");
-            data_new = this.setWorstValues(data_new, "qualitàOEE");
-            data_new = this.setHighestValues(data_new, "dispFermate");
-            data_new = this.setHighestValues(data_new, "dispSetup");
-            data_new = this.setHighestValues(data_new, "prodCadRidotta");
-            data_new = this.setHighestValues(data_new, "prodMFermate");
-            data_new = this.setHighestValues(data_new, "qualitàScarti");
-            data_new = this.setHighestValues(data_new, "qualitàRilavor");
+            data_new = this.setWorstValues(data_new, "Ar");
+            data_new = this.setWorstValues(data_new, "Pr");
+            data_new = this.setWorstValues(data_new, "Qr");
+            data_new = this.setHighestValues(data_new, "AlSetup");
+            data_new = this.setHighestValues(data_new, "AlFermo");
+            data_new = this.setHighestValues(data_new, "PlVelocita");
+            data_new = this.setHighestValues(data_new, "PlMicrofermate");
+            data_new = this.setHighestValues(data_new, "QlScartiSetup");
+            data_new = this.setHighestValues(data_new, "QlScartiProduzione");
             this.ModelOEE.setData(data_new);
             this.getView().setModel(this.ModelOEE, "ReportOEE");
             sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
@@ -53,6 +50,16 @@ sap.ui.define([
 //            this.getView().byId("TreeTableReport").setModel(this.ModelOEE, "ReportOEE");
 //            } else {
 //                
+//            if (Number(this.ISLOCAL)===1){
+//            Library.AjaxCallerData("model/OEE.json", this.SUCCESSDatiOEE.bind(this));
+//            this.getView().byId("TreeTableReport").setModel(this.ModelOEE, "ReportOEE");
+//            } else {
+//                
+//            }
+//            this.ModelTurni = this.getOwnerComponent().getModel("turni");
+//            if (!this.ModelTurni) {
+//                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
+//                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
 //            }
             var oTitle = this.getView().byId("ReportTitle");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
@@ -121,7 +128,7 @@ sap.ui.define([
             this.minValues.sort(function (a, b) {
                 return a - b;
             });
-            data_new.ReportOEE.Confezionamenti[0] = this.setJSONWorstValues(bck.ReportOEE.Confezionamenti[0], property, this.minValues[0], this.minValues[1], this.minValues[2]);
+            data_new = this.setJSONWorstValues(bck, property, this.minValues[0], this.minValues[1], this.minValues[2]);
             return data_new;
         },
         setHighestValues: function (bck, property) {
@@ -131,7 +138,7 @@ sap.ui.define([
             this.minValues.sort(function (a, b) {
                 return b - a;
             });
-            data_new.ReportOEE.Confezionamenti[0] = this.setJSONWorstValues(bck.ReportOEE.Confezionamenti[0], property, this.minValues[0], this.minValues[1], this.minValues[2]);
+            data_new = this.setJSONWorstValues(bck, property, this.minValues[0], this.minValues[1], this.minValues[2]);
             return data_new;
         },
         takeAllElements: function (bck, property) {
