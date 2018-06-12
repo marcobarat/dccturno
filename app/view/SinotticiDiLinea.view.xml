@@ -22,47 +22,69 @@
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="90%">
-                            <TabContainer id="TabContainerSinotticiLinea" items="{elencolinee>/elencoLinee}">
+
+                            <IconTabBar
+                                id="IconTabBar"
+                                select="handleIconTabBarSelect"
+                                class="sapUiResponsiveContentPadding"
+                                applyContentPadding="true"
+                                expandable="false"
+                                items="{elencolinee>/elencoLinee}"
+                            >
                                 <items>
-                                    <TabContainerItem name="{elencolinee>linea}">
-                                        <content>
-                                            <Table>
-                                                <columns>
-                                                    <Column/>
-                                                </columns>
-                                                <items>
-                                                    <ColumnListItem>
-                                                        <cells>
-                                                            <Table showNoData="false">
+                                    <IconTabFilter
+                                        text="{elencolinee>linea}"
+                                        key="{elencolinee>idLinea}">
+                                    </IconTabFilter>
+                                </items>
+                                <content>
+                                    <Table id="sinotticiTable" items="{sinotticodilinea>/sinotticodilinea/macchine}">
+                                        <columns>
+                                            <Column/>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem>
+                                                <cells>
+                                                    <VBox>
+                                                    <Table showNoData="false">
+                                                        <columns>
+                                                            <Column>
+                                                                <Text text="{sinotticodilinea>nomeMacchina}"/>
+                                                            </Column>
+                                                        </columns>
+                                                    </Table>
+                                                    <ScrollContainer>
+                                                            <Table items="{sinotticodilinea>tag}">
                                                                 <columns>
                                                                     <Column>
-                                                                        <Text text="{sinotticiLinea>nomeMacchina}"/>
+                                                                        <Text text="Nome Tag"/>
+                                                                    </Column>
+                                                                    <Column>
+                                                                        <Text text="Attributi Tag"/>
                                                                     </Column>
                                                                 </columns>
+                                                                <items>
+                                                                    <ColumnListItem>
+                                                                        <cells>
+                                                                            <Text text="{sinotticodilinea>nomeTag}"/>
+                                                                            <Text text="ciao"/>
+                                                                        </cells>
+                                                                    </ColumnListItem>
+                                                                </items>
                                                             </Table>
-                                                            <ScrollContainer>
-                                                                <Table items="sinotticidilinea>tag">
-                                                                    <columns>
-                                                                        <Column/>
-                                                                        <Column/>
-                                                                    </columns>
-                                                                    <items>
-                                                                        <ColumnListItem>
-                                                                            <cells>
-                                                                                <Text text="{sinotticidilinea>nomeTag}"/>
-                                                                            </cells>
-                                                                        </ColumnListItem>
-                                                                    </items>
-                                                                </Table>
-                                                            </ScrollContainer>
-                                                        </cells>
-                                                    </ColumnListItem>
-                                                </items>
-                                            </Table>
-                                        </content>
-                                    </TabContainerItem>
-                                </items>
-                            </TabContainer>
+                                                    </ScrollContainer>
+                                                    </VBox>
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </content>
+                            </IconTabBar>
+                            
+                            
+                            
+                            
+
                         </VBox>
                         <VBox height="100%" width="5%"/> 
                     </HBox>
