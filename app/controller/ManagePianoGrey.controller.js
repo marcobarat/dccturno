@@ -87,7 +87,13 @@ sap.ui.define([
             var area = this.piano.area;
             var repartoId = oEvent.getParameters().key;
             var pdcId = this.piano.PdcID;
-            if (this.ISLOCAL === 0) {
+            if (this.ISLOCAL === 1) {
+                if (area === "0") {
+                    link = "model/linee.json";
+                } else {
+                    link = "model/linee_new.json";
+                }
+            } else {
                 if (area === "0") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                 } else if (area === "1") {
@@ -97,11 +103,11 @@ sap.ui.define([
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                 }
-                Library.AjaxCallerData(link, function (Jdata) {
-                    that.ModelLinea.setData(Jdata);
-                });
-                this.getView().setModel(this.ModelLinea, "linee");
             }
+            Library.AjaxCallerData(link, function (Jdata) {
+                that.ModelLinea.setData(Jdata);
+            });
+            this.getView().setModel(this.ModelLinea, "linee");
         },
 //        SUCCESSGuasti: function (Jdata) {
 //            var data = {};

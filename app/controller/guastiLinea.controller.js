@@ -9,10 +9,12 @@ sap.ui.define([
         linea: "",
         menuJSON: {},
         row_binded: {},
+        ModelCausali: new JSONModel({}),
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelGuasti: sap.ui.getCore().getModel("guasti"),
         guasti: {},
         piano: null,
+        button: null,
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
@@ -20,15 +22,14 @@ sap.ui.define([
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("guastidilinea").attachPatternMatched(this._onObjectMatched, this);
-            var that = this;
             this.menuJSON.cause = [];
-            var model = new JSONModel();
-            if (this.ISLOCAL === 1) {
-                Library.AjaxCallerData("model/JSON_FermoTestiNew.json", function (Jdata) {
-                    that.SUCCESSCausali.bind(that)(Jdata, model);
-                });
-            }
-            this.getView().setModel(model, "cause");
+//            var model = new JSONModel();
+//            if (this.ISLOCAL === 1) {
+//                Library.AjaxCallerData("model/JSON_FermoTestiNew.json", function (Jdata) {
+//                    that.SUCCESSCausali.bind(that)(Jdata, model);
+//                });
+//            }
+//            this.getView().setModel(model, "cause");
         },
         _onObjectMatched: function (oEvent) {
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
@@ -52,10 +53,10 @@ sap.ui.define([
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
         },
-        SUCCESSCausali: function (Jdata, model) {
-            this.takeAllCause(Jdata);
-            model.setData(this.menuJSON);
-        },
+//        SUCCESSCausali: function (Jdata, model) {
+//            this.takeAllCause(Jdata);
+//            model.setData(this.menuJSON);
+//        },
 //        SUCCESSGuasti: function (Jdata, oModel) {
 //            //da rimpiazzare con parametrizzazione ajax (o comunque in base a come sarà la transazione)
 //            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
@@ -84,8 +85,20 @@ sap.ui.define([
         },
 //GESTIONE DEL TASTO CHE VIENE PREMUTO -> GENERO IL MENU CON LE VOCI PER LA MODIFICA/GESTIONE DEI GUASTI
         handlePressOpenMenuCausalizzazione: function (oEvent) {
-            var oButton = oEvent.getSource();
-            var row_id = oEvent.getSource().getParent().getId();
+            this.Button = oEvent.getSource();
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_FermoTestiNew.json";
+            } else {
+//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=" + this.Button;
+            }
+            Library.AjaxCallerData(link, this.SUCCESSCausali.bind(this));
+        },
+        SUCCESSCausali: function (Jdata) {
+            this.takeAllCause(Jdata);
+            this.ModelCausali.setData(this.menuJSON);
+            this.getView().setModel(this.ModelCausali, "cause");
+            var row_id = this.Button.getParent().getId();
             var split_id = row_id.split("-");
             this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[split_id.length - 1], 10)];
             if (!this._menu) {
@@ -96,7 +109,7 @@ sap.ui.define([
                 this.getView().addDependent(this._menu);
             }
             var eDock = sap.ui.core.Popup.Dock;
-            this._menu.open(this._bKeyboard, oButton, eDock.EndTop, eDock.BeginBottom, oButton);
+            this._menu.open(this._bKeyboard, this.Button, eDock.EndTop, eDock.BeginBottom, this.Button);
         },
 //GESTIONE DEL MENU DI MODIFICA GUASTI
         modificaGuasti: function (oEvent) {
@@ -185,7 +198,7 @@ sap.ui.define([
                     } else {
                         obj = {};
                         obj.caso = "delete";
-                        obj.logId = ""; 
+                        obj.logId = "";
                         obj.batchId = "6"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
@@ -666,13 +679,7 @@ sap.ui.define([
             }
             return;
         },
-        
-        
-        
-        
-        
-        
-        
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////// FUNZIONI LOCALI 
 
         LOCALModificaCausaleFermo: function (oEvent) {
