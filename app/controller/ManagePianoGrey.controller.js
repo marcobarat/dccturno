@@ -7,6 +7,8 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("myapp.controller.ManagePianoGrey", {
+        StabilimentoID: sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID,
+        ModelReparti: sap.ui.getCore().getModel("reparti"),
         ModelCausali: new JSONModel({}),
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelLinea: sap.ui.getCore().getModel("linee"),
@@ -28,8 +30,7 @@ sap.ui.define([
         turnoPath: null,
         data_json: {},
         onInit: function () {
-            Library.RemoveClosingButtons.bind(this)("TabContainerTurniConclusi");
-
+            this.getView().setModel(this.ModelReparti, "reparti");
             var link = "model/JSON_FermoTestiNew.json";
             Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
             this.getView().setModel(this.ModelCausali, "CausaliFermo");
@@ -82,6 +83,28 @@ sap.ui.define([
                         oLinea.getItems()[3].setEnabled(true);
                     }
                 }
+            }
+        },
+        changeReparto: function (oEvent) {
+            var link;
+            var that = this;
+            var area = this.piano.area;
+            var repartoId = oEvent.getParameters().key;
+            var pdcId = this.piano.PdcID;
+            if (this.ISLOCAL === 0) {
+                if (area === "0") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else if (area === "1") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else if (area === "2") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                }
+                Library.AjaxCallerData(link, function (Jdata) {
+                    that.ModelLinea.setData(Jdata);
+                });
+                this.getView().setModel(this.ModelLinea, "linee");
             }
         },
         SUCCESSGuasti: function (Jdata) {

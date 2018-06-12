@@ -116,23 +116,24 @@ sap.ui.define([
         },
         changeReparto: function (oEvent) {
             var link;
+            var that = this;
             var area = this.piano.area;
-            var repartoId = oEvent.getParameters("key");
+            var repartoId = oEvent.getParameters().key;
             var pdcId = this.piano.PdcID;
             if (this.ISLOCAL === 0) {
                 if (area === "0") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
                 } else if (area === "1") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 } else if (area === "2") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 }
+                Library.AjaxCallerData(link, function (Jdata) {
+                    that.ModelLinea.setData(Jdata);
+                });
+                this.getView().setModel(this.ModelLinea, "linee");
             }
         },
         takeAllCause: function (bck) {
