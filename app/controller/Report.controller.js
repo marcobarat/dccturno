@@ -144,7 +144,7 @@ sap.ui.define([
         takeAllElements: function (bck, property) {
             var numero;
             for (var key in bck) {
-                if (typeof bck[key] === "object") {
+                if (typeof bck[key] === "object" && key !== "red") {
                     bck[key] = this.takeAllElements(bck[key], property);
                 }
             }

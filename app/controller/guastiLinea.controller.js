@@ -11,7 +11,7 @@ sap.ui.define([
         row_binded: {},
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelGuasti: sap.ui.getCore().getModel("guasti"),
-        guasti: {},
+        guasti: sap.ui.getCore().getModel("guasti").getData(),
         piano: null,
         pianoPath: null,
         turnoPath: null,
@@ -185,7 +185,7 @@ sap.ui.define([
                     } else {
                         obj = {};
                         obj.caso = "delete";
-                        obj.logId = ""; 
+                        obj.logId = "";
                         obj.batchId = "6"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
@@ -621,19 +621,6 @@ sap.ui.define([
             var array_stringa = stringa.split(":");
             return  parseInt(array_stringa[0], 10) * 60 * 60 + parseInt(array_stringa[1], 10) * 60 + parseInt(array_stringa[2], 10);
         },
-        isObjectEquivalent: function (obj1, obj2) {
-            var aProps = Object.getOwnPropertyNames(obj1);
-            var bProps = Object.getOwnPropertyNames(obj1);
-            if (aProps.length !== bProps.length) {
-                return false;
-            }
-            for (var key in obj1) {
-                if (obj1[key] !== obj2[key]) {
-                    return false;
-                }
-            }
-            return true;
-        },
         takeIdByBindedCausa: function (causa) {
             for (var i in this.menuJSON.cause) {
                 if (this.menuJSON.cause[i].fermo === causa) {
@@ -666,13 +653,7 @@ sap.ui.define([
             }
             return;
         },
-        
-        
-        
-        
-        
-        
-        
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////// FUNZIONI LOCALI 
 
         LOCALModificaCausaleFermo: function (oEvent) {
@@ -749,6 +730,19 @@ sap.ui.define([
                 }
             }
             return -1;
+        },
+        isObjectEquivalent: function (obj1, obj2) {
+            var aProps = Object.getOwnPropertyNames(obj1);
+            var bProps = Object.getOwnPropertyNames(obj1);
+            if (aProps.length !== bProps.length) {
+                return false;
+            }
+            for (var key in obj1) {
+                if (obj1[key] !== obj2[key]) {
+                    return false;
+                }
+            }
+            return true;
         },
         removeGuasto: function (JSONObject, index, flag) {
             var aProps = Object.getOwnPropertyNames(JSONObject);
