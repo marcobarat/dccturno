@@ -205,9 +205,9 @@ sap.ui.define([
                 for (var i = 0; i < oItems.length; i++) {
                     var oTable = oItems[i].getAggregation("cells")[0].getAggregation("items")[1].getAggregation("items")[0].getAggregation("items")[0];
                     var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
-                    this.oContent = new sap.m.TextArea({value: "{linea>disp}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+                    this.oContent = new sap.m.TextArea({value: "{linea>disponibilita}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
                     oLinea.addItem(this.oContent);
-                    this.oContent = new sap.m.TextArea({value: "{linea>prod}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+                    this.oContent = new sap.m.TextArea({value: "{linea>efficienza}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
                     oLinea.addItem(this.oContent);
                     this.oContent = new sap.m.Button({text: "{linea>fermo}", press: this.onCausalizzazioneFermi.bind(this)});
                     oLinea.addItem(this.oContent);
@@ -227,10 +227,10 @@ sap.ui.define([
                     oTable.addColumn(this.oColumn);
                     var oColumnListItems = oTable.getAggregation("items");
                     for (var j = 0; j < oColumnListItems.length; j++) {
-                        var oText = new sap.m.Text({text: "{linea>disp}"});
+                        var oText = new sap.m.Text({text: "{linea>disponibilita}"});
                         oText.addStyleClass("sapUiSmallMarginTop");
                         oColumnListItems[j].addCell(oText);
-                        oText = new sap.m.Text({text: "{linea>prod}"});
+                        oText = new sap.m.Text({text: "{linea>produttivita}"});
                         oText.addStyleClass("sapUiSmallMarginTop");
                         oColumnListItems[j].addCell(oText);
                         oText = new sap.m.Text({text: "{linea>fermo}"});

@@ -17,6 +17,8 @@ sap.ui.define([
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
 
         onInit: function () {
+            var oModel = new JSONModel({StabilimentoID: this.StabilimentoID});
+            sap.ui.getCore().setModel(oModel, "stabilimento");
             var params = jQuery.sap.getUriParameters(window.location.href);
             sap.ui.getCore().setModel(this.ModelTurni, "turni");
             this.RefreshCall();

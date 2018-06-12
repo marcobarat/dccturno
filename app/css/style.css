@@ -619,3 +619,10 @@
 .textVBox .sapMFlexItem {
     text-align: center; 
 }
+
+/*ICONTABBAR*/
+
+.sapMITBContent {
+    padding-left: 0px;
+    padding-right: 0px;
+}

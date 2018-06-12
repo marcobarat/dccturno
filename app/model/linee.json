@@ -1,12 +1,14 @@
 {
     "linee": [
         {
+            "LineaID": "1",
             "linea": "Linea 1",
-            "disp": "74%",
-            "prod": "84%",
+            "disponibilita": "74%",
+            "efficienza": "84%",
             "fermo": "6:30",
             "batchlist": [
                 {
+                    "BatchID": "1",
                     "sequenza": ">>>1a",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
@@ -14,11 +16,12 @@
                     "qli": "31",
                     "cartoni": "125",
                     "ore": "0:35",
-                    "disp": "65%",
-                    "prod": "83%",
+                    "disponibilita": "65%",
+                    "produttivita": "83%",
                     "fermo": "3:36"
                 },
                 {
+                    "BatchID": "2",
                     "sequenza": ">>>1b",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
@@ -26,18 +29,20 @@
                     "qli": "31",
                     "cartoni": "125",
                     "ore": "0:35",
-                    "disp": "79%",
-                    "prod": "85%",
+                    "disponibilita": "79%",
+                    "produttivita": "85%",
                     "fermo": "2:54"                    
                 }
             ]
         }, {
+            "LineaID": "2",
             "linea": "Linea 2",
-            "disp": "74%",
-            "prod": "84%",  
+            "disponibilita": "74%",
+            "efficienza": "84%",  
             "fermo": "6:30",            
             "batchlist": [
                 {
+                    "BatchID": "3",
                     "sequenza": ">>>2",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
@@ -45,18 +50,20 @@
                     "qli": "31",
                     "cartoni": "125",
                     "ore": "0:35",
-                    "disp": "65%",
-                    "prod": "83%",
+                    "disponibilita": "65%",
+                    "produttivita": "83%",
                     "fermo": "3:36"                    
                 }
             ]
         }, {
+            "LineaID": "3",
             "linea": "Linea 3",
-            "disp": "74%",
-            "prod": "84%",  
+            "disponibilita": "74%",
+            "efficienza": "84%",  
             "fermo": "6:30",            
             "batchlist": [
                 {
+                    "BatchID": "4",
                     "sequenza": ">>>3",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
@@ -64,18 +71,20 @@
                     "qli": "31",
                     "cartoni": "125",
                     "ore": "0:35",
-                    "disp": "65%",
-                    "prod": "83%",
+                    "disponibilita": "65%",
+                    "produttivita": "83%",
                     "fermo": "3:36"                    
                 }
             ]
         }, {
+            "LineaID": "4",
             "linea": "Linea 4",
-            "disp": "74%",
-            "prod": "84%",
+            "disponibilita": "74%",
+            "efficienza": "84%",
             "fermo": "6:30",           
             "batchlist": [
                 {
+                    "BatchID": "5",
                     "sequenza": ">>>4",
                     "formato": "093 semolino",
                     "confezionamento": "500 gr",
@@ -83,18 +92,20 @@
                     "qli": "31",
                     "cartoni": "125",
                     "ore": "0:35",
-                    "disp": "65%",
-                    "prod": "83%",
+                    "disponibilita": "65%",
+                    "produttivita": "83%",
                     "fermo": "3:36"                    
                 }
             ]
         }, {
+            "LineaID": "5",
             "linea": "Linea 5",
-            "disp": "74%",
-            "prod": "84%", 
+            "disponibilita": "74%",
+            "efficienza": "84%", 
             "fermo": "6:30",            
             "batchlist": [
                 {
+                    "BatchID": "6",
                     "sequenza": ">>>5",
                     "formato": "093 semola",
                     "confezionamento": "500 gr",
@@ -102,8 +113,8 @@
                     "qli": "31",
                     "cartoni": "125",
                     "ore": "0:35",
-                    "disp": "65%",
-                    "prod": "83%",
+                    "disponibilita": "65%",
+                    "produttivita": "83%",
                     "fermo": "3:36"                    
                 }
             ]
