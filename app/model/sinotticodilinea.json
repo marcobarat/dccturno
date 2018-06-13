@@ -17,6 +17,20 @@
                         }
                     }
                 ]
+            },
+            {
+                "macchinaID": 25,
+                "nomeMacchina": "Marker A",
+                "statusMacchina": "Attivo",
+                "sinottico": false,
+                "tag": [
+                    {
+                        "nomeTag": "layout stampa",
+                        "attributiTag": {
+                            "attributo": "CEE"
+                        }
+                    }
+                ]
             }
         ]
     }

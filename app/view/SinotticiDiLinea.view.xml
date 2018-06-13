@@ -38,7 +38,7 @@
                                     </IconTabFilter>
                                 </items>
                                 <content>
-                                    <Table width="" id="sinotticiTable" items="{sinotticodilinea>/sinotticodilinea/macchine}">
+                                    <Table width="25%" id="sinotticiTable" items="{sinotticodilinea>/sinotticodilinea/macchine}">
                                         <columns>
                                             <Column/>
                                         </columns>
@@ -48,7 +48,7 @@
                                                     <VBox>
                                                     <Table showNoData="false">
                                                         <columns>
-                                                            <Column>
+                                                            <Column hAlign="Center">
                                                                 <Text text="{sinotticodilinea>nomeMacchina}"/>
                                                             </Column>
                                                         </columns>
@@ -56,14 +56,16 @@
                                                     <ScrollContainer>
                                                             <Table items="{sinotticodilinea>tag}">
                                                                 <columns>
-                                                                    <Column/>
-                                                                    <Column/>
+                                                                    <Column hAlign="Center"/>
+                                                                    <Column hAlign="Center"/>
                                                                 </columns>
                                                                 <items>
                                                                     <ColumnListItem>
                                                                         <cells>
                                                                             <Text text="{sinotticodilinea>nomeTag}"/>
-                                                                            <Text text="{sinotticodilinea>attributiTag/attributo}"/>
+                                                                            <HBox>
+                                                                                <Text text="{sinotticodilinea>attributiTag/attributo}"/>
+                                                                            </HBox>
                                                                         </cells>
                                                                     </ColumnListItem>
                                                                 </items>

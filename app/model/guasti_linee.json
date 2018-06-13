@@ -1,6 +1,7 @@
 {   
     "GuastiLinee":[
     {
+    "LineaID": "2",
     "nome": "Gruppo 2",
     "guasti": [
         {
@@ -61,6 +62,7 @@
     ]
     },
     {
+    "LineaID": "4",
     "nome": "Gruppo 3",
     "guasti": [
         {

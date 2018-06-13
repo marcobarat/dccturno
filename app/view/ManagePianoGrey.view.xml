@@ -108,13 +108,13 @@
                                                 <cells>
                                                     <VBox width="100%" height="100%" class="sfondobianco">
                                                         <HBox height="35%">
-                                                            <VBox width="80%">
+                                                            <VBox width="78%">
                                                                 <Text text="{linea>linea}"
-                                                                              width="50%"
-                                                                              class="fix_linea">
+                                                                      width="50%"
+                                                                      class="fix_linea">
                                                                 </Text>                                        
                                                             </VBox>
-                                                            <HBox width="20%" class="mysapMInputBaseWidthPadding FermoButton">
+                                                            <HBox width="23%" class="mysapMInputBaseWidthPadding FermoButton">
                                                                 <VBox/>                                  
                                                             </HBox>
 
@@ -131,6 +131,7 @@
                                                                 >
                                                                     <columns class="mysapMListTbl">
                                                                         <Column
+                                                                            vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Sequenza" />
                                                                         </Column>
@@ -147,14 +148,17 @@
                                                                             <Text text="" />
                                                                         </Column>
                                                                         <Column
+                                                                            vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Qli" />
                                                                         </Column>
                                                                         <Column
+                                                                            vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Cartoni" />
                                                                         </Column>
                                                                         <Column
+                                                                            vAlign="Middle"
                                                                             hAlign="End">
                                                                             <Text text="Ore" />
                                                                         </Column>
@@ -163,7 +167,6 @@
                                                                         <ColumnListItem>
                                                                             <cells>
                                                                                 <Text
-                                                                                    class="sapUiSmallMarginTop"
                                                                                     text="{linea>sequenza}" />
                                                                                 <Select>
                                                                                     <core:Item key="semola" text="Semola 093" />
@@ -172,18 +175,15 @@
                                                                                     <core:Item key="500gr" text="500gr" />
                                                                                 </Select>
                                                                                 <cus:CustomButt text=""
-                                                                                                        press="onPress"
-                                                                                                        type="batch"
-                                                                                                        value="2">
+                                                                                                press="onPress"
+                                                                                                type="batch"
+                                                                                                value="2">
                                                                                 </cus:CustomButt>
                                                                                 <Text
-                                                                                    class="sapUiSmallMarginTop"
                                                                                     text="{linea>qli}" />
                                                                                 <Text
-                                                                                    class="sapUiSmallMarginTop"
                                                                                     text="{linea>cartoni}" />
                                                                                 <Text
-                                                                                    class="sapUiSmallMarginTop"
                                                                                     text="{linea>ore}" />
                                                                             </cells>
                                                                         </ColumnListItem>

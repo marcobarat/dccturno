@@ -273,31 +273,31 @@ sap.ui.define([
                 this.oContent = new sap.m.TextArea({value: "{linea>efficienza}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
                 oLinea.addItem(this.oContent);
                 this.oContent = new sap.m.Button({text: "{linea>fermo}", press: this.onCausalizzazioneFermi.bind(this)});
+                this.oContent.addStyleClass("sapUiTinyMarginBegin");
                 oLinea.addItem(this.oContent);
                 this.oColumn = new sap.m.Column({
                     styleClass: "sapUiSmallMarginBegin",
                     header: new sap.m.Label({text: "Disp"}),
+                    vAlign: "Middle",
                     hAlign: "Center"});
                 oTable.addColumn(this.oColumn);
                 this.oColumn = new sap.m.Column({
                     header: new sap.m.Label({text: "Prod"}),
+                    vAlign: "Middle",
                     hAlign: "Center"});
                 oTable.addColumn(this.oColumn);
                 this.oColumn = new sap.m.Column({
-                    styleClass: "sapUiMediumMarginBegin",
                     header: new sap.m.Label({text: ""}),
+                    vAlign: "Middle",
                     hAlign: "Center"});
                 oTable.addColumn(this.oColumn);
                 var oColumnListItems = oTable.getAggregation("items");
                 for (var j = 0; j < oColumnListItems.length; j++) {
                     var oText = new sap.m.Text({text: "{linea>disponibilita}"});
-                    oText.addStyleClass("sapUiSmallMarginTop");
                     oColumnListItems[j].addCell(oText);
                     oText = new sap.m.Text({text: "{linea>produttivita}"});
-                    oText.addStyleClass("sapUiSmallMarginTop");
                     oColumnListItems[j].addCell(oText);
                     oText = new sap.m.Button({text: "{linea>fermo}", press: ["{linea>batchID}", this.onCausalizzazioneFermi, this]});
-                    oText.addStyleClass("sapUiSmallMarginTop");
                     oColumnListItems[j].addCell(oText);
                 }
             }

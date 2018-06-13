@@ -1,11 +1,13 @@
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
-    'myapp/controller/Library'
-], function (Controller, JSONModel, Library) {
+    'myapp/controller/Library',
+    'sap/m/MessageToast'
+], function (Controller, JSONModel, Library, MessageToast) {
     "use strict";
     return Controller.extend("myapp.controller.guastiLinea", {
         ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
+        pdcID: sap.ui.getCore().getModel("ParametriPiano").pdc,
         linea: "",
         menuJSON: {},
         row_binded: {},
@@ -18,7 +20,6 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
-        data_json: {},
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("guastidilinea").attachPatternMatched(this._onObjectMatched, this);
@@ -80,8 +81,14 @@ sap.ui.define([
             return bck;
         },
         onReturnToReport: function () {
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("Report", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/OEE_update.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/CreateReportOEE&Content-Type=text/json&PdcID=" + this.pdcID + "&OutputParameter=JSON";
+            }
+            Library.AjaxCallerData(link, this.SUCCESSModificaOEE.bind(this));
+
         },
 //GESTIONE DEL TASTO CHE VIENE PREMUTO -> GENERO IL MENU CON LE VOCI PER LA MODIFICA/GESTIONE DEI GUASTI
         handlePressOpenMenuCausalizzazione: function (oEvent) {
@@ -111,6 +118,21 @@ sap.ui.define([
             var eDock = sap.ui.core.Popup.Dock;
             this._menu.open(this._bKeyboard, this.Button, eDock.EndTop, eDock.BeginBottom, this.Button);
         },
+        SUCCESSGuastoModificato: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                this.oDialog.destroy();
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 10});
+            }
+
+        },
+        SUCCESSModificaOEE: function (Jdata) {
+            var ModelOEE = sap.ui.getCore().getModel("ReportOEE");
+            ModelOEE.setData(Jdata);
+            sap.ui.getCore().setModel(ModelOEE, "ReportOEE");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("Report", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
+        },
 //GESTIONE DEL MENU DI MODIFICA GUASTI
         modificaGuasti: function (oEvent) {
             var oText = oEvent.getParameter("item").getText();
@@ -134,80 +156,89 @@ sap.ui.define([
         },
         onConfermaCambio: function (oEvent) {
             var oText = this.getView().byId("title").getText();
-            var obj, doc;
+            var obj, link;
             switch (oText) {
                 case "Modifica Causale Fermo":
                     if (Number(this.ISLOCAL) === 1) {
                         this.LOCALModificaCausaleFermo(oEvent);
+                        this.oDialog.destroy();
                     } else {
                         obj = {};
                         obj.caso = "updateCausale";
-                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
-                        obj.batchId = "6"; // COME SOPRA
+                        obj.logId = this.row_binded.LogID;
+                        obj.batchId = this.row_binded.BatchID;
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
-                        doc = Library.createXMLFermo(obj);
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Modifica Inizio/Fine del Fermo":
                     if (Number(this.ISLOCAL) === 1) {
                         this.LOCALModificaTempiFermo();
+                        this.oDialog.destroy();
                     } else {
                         obj = {};
                         obj.caso = "updateInizioFine";
-                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
-                        obj.batchId = "6"; // COME SOPRA
+                        obj.logId = this.row_binded.LogID;
+                        obj.batchId = this.row_binded.BatchID;
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = "";
-                        doc = Library.createXMLFermo(obj);
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Fraziona Causale di Fermo":
                     if (Number(this.ISLOCAL) === 1) {
                         this.LOCALFrazionaFermo();
+                        this.oDialog.destroy();
                     } else {
                         obj = {};
                         obj.caso = "divide";
-                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
-                        obj.batchId = "6"; // COME SOPRA
+                        obj.logId = this.row_binded.LogID;
+                        obj.batchId = this.row_binded.BatchID;
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                        doc = Library.createXMLFermo(obj);
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Elimina Fermo":
                     if (Number(this.ISLOCAL) === 1) {
                         this.LOCALEliminaFermo();
+                        this.oDialog.destroy();
                     } else {
                         obj = {};
                         obj.caso = "delete";
-                        obj.logId = "2089"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
-                        obj.batchId = "6"; // COME SOPRA
+                        obj.logId = this.row_binded.LogID;
+                        obj.batchId = this.row_binded.BatchID;
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = "";
-                        doc = Library.createXMLFermo(obj);
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Inserisci Fermo":
                     if (Number(this.ISLOCAL) === 1) {
                         this.LOCALInserisciFermo();
+                        this.oDialog.destroy();
                     } else {
                         obj = {};
                         obj.caso = "delete";
                         obj.logId = "";
-                        obj.batchId = "6"; //DA SOSTITUIRE CON L'ID DEL FERMO (LO AVRO' NEL JSON E DOVREBBE ESSERE NEL ROW_BINDED
+                        obj.batchId = this.row_binded.BatchID;
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                        doc = Library.createXMLFermo(obj);
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
             }
-            this.oDialog.destroy();
         },
         onClose: function () {
             var id_dialog = this.oDialog.getId();
@@ -642,32 +673,7 @@ sap.ui.define([
             }
             return -1;
         },
-// NEL CASO IL MODEL NON CI SIA
-        groupTurni: function (data, group0, group1, group2, group3) {
-            for (var key in data) {
-                if (typeof data[key] === "object") {
-                    this.groupTurni(data[key], group0, group1, group2, group3);
-                }
-            }
-            if (data.area) {
-                switch (data.area) {
-                    case "0":
-                        this.data_json[group0].push(data);
-                        break;
-                    case "1":
-                        this.data_json[group1].push(data);
-                        break;
-                    case "2":
-                        this.data_json[group2].push(data);
-                        break;
-                    case "-1":
-                        this.data_json[group3].push(data);
-                }
-            }
-            return;
-        },
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////// FUNZIONI LOCALI 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////// FUNZIONI LOCALI (QUANDO IL BACKEND NON E' PRESENTE)
 
         LOCALModificaCausaleFermo: function (oEvent) {
             var oModel = new JSONModel();
@@ -759,7 +765,7 @@ sap.ui.define([
         },
         removeGuasto: function (JSONObject, index, flag) {
             var aProps = Object.getOwnPropertyNames(JSONObject);
-            var array = JSONObject[aProps[1]];
+            var array = JSONObject[aProps[2]];
             array.splice(index, 1);
             if (flag) {
                 var oModel = new JSONModel();
@@ -769,7 +775,7 @@ sap.ui.define([
         },
         addGuasto: function (JSONObject, inizio, fine, causale, flag) {
             var aProps = Object.getOwnPropertyNames(JSONObject);
-            var array = JSONObject[aProps[1]];
+            var array = JSONObject[aProps[2]];
             var secondi_intervallo = 1000 * (this.fromStringToSeconds(fine) - this.fromStringToSeconds(inizio));
             if (secondi_intervallo !== 0) {
                 var obj = {};

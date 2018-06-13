@@ -15,7 +15,6 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         rowHTML: null,
-        data_json: {},
         onInit: function () {
             this.getView().byId("ComponentiOEE").setHeaderSpan([3, 1, 1]);
             this.getView().byId("ComponentiPerdita").setHeaderSpan([9, 3, 1]);
@@ -207,14 +206,20 @@ sap.ui.define([
             }
         },
         SUCCESSGuasti: function (Jdata) {
-            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
-                if (Jdata.GuastiLinee[i].nome === this.rowHTML.getCells()[0].getText()) {
-                    this.guasti = Jdata.GuastiLinee[i];
-                    break;
+            if (this.ISLOCAL === 1) {
+                for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
+                    if (Jdata.GuastiLinee[i].nome === this.rowHTML.getCells()[0].getText()) {
+                        this.guasti = Jdata.GuastiLinee[i];
+                        break;
+                    }
                 }
+                this.guasti = Library.AddTimeGaps(this.guasti);
+                this.ModelGuasti.setData(this.guasti);
+            } else {
+                this.guasti = Jdata;
+                this.guasti = Library.AddTimeGaps(this.guasti);
+                this.ModelGuasti.setData(this.guasti);
             }
-            this.guasti = Library.AddTimeGaps(this.guasti);
-            this.ModelGuasti.setData(this.guasti);
             sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("guastidilinea",

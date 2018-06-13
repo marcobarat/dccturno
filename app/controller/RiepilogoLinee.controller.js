@@ -21,9 +21,10 @@ sap.ui.define([
             oRouter.navTo("main", true);
         },
         GoToSinotticoLinea: function (oEvent) {
-            var oModel = new JSONModel({lineaPath: oLinea});
-            this.getView().setModel(oModel, "LineaCliccata");
-            var oLinea = oEvent.getSource().getText();
+            var oLinea = oEvent.getSource().getBindingContext("linee").sPath; 
+            var lineaID = this.getView().getModel("linee").getProperty(oLinea).lineaID;
+            var oModel = new JSONModel({lineaID: lineaID});
+            sap.ui.getCore().setModel(oModel, "LineaCliccata");
 
             Library.AjaxCallerData("model/elencolinee.json", this.SUCCESSElencoLinee.bind(this));
             sap.ui.getCore().setModel(this.ModelElencoLinee, "elencolinee");
@@ -41,7 +42,7 @@ sap.ui.define([
         SUCCESSElencoLinee: function (Jdata) {
             this.ModelElencoLinee.setData(Jdata);
         },
-        SUCCESSLineaSinottico: function (Jdata){
+        SUCCESSLineaSinottico: function (Jdata) {
             this.ModelSinotticoLinea.setData(Jdata);
         }
 

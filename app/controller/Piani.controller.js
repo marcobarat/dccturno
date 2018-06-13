@@ -51,6 +51,9 @@ sap.ui.define([
             this.paths = oEvent.getSource().getBindingContext("turni").getPath().substr(1).split("/");
             var pdcId = Row.PdcID;
             var link;
+            var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
+            var PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
+            sap.ui.getCore().setModel(PDCParameters, "ParametriPiano");
             if (this.ISLOCAL === 1) {
                 if (area === "0") {
                     link = "model/linee.json";
@@ -60,9 +63,9 @@ sap.ui.define([
                     Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 }
             } else {
-                var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
-                var PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
-                sap.ui.getCore().setModel(PDCParameters, "ParametriPiano");
+//                var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
+//                var PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
+//                sap.ui.getCore().setModel(PDCParameters, "ParametriPiano");
                 if (area === "0") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
