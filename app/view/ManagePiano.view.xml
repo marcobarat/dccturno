@@ -180,7 +180,7 @@
                                                                                            items="{linea>batchlist}">
                                                                                 <columns>
                                                                                     <Column hAlign="Center"/>
-                                                                                    <Column width="5%"  hAlign="Center"/>
+                                                                                    <Column width="5%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="25%" hAlign="Center"/>
                                                                                     <Column width="15%" hAlign="Center"/>
                                                                                     <Column hAlign="Center"/>
@@ -196,7 +196,6 @@
                                                                                                                     state="{linea>statoBatch}"
                                                                                                                     press="handlePressOpenMenu" />
                                                                                             <Text
-                                                                                                class="sapUiSmallMarginTop"
                                                                                                 text="{linea>sequenza}" />
                                                                                             <Select>
                                                                                                 <core:Item key="{linea>formato}" text="{linea>formato}" />
