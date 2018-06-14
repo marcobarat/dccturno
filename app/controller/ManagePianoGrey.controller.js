@@ -272,7 +272,7 @@ sap.ui.define([
                 oLinea.addItem(this.oContent);
                 this.oContent = new sap.m.TextArea({value: "{linea>efficienza}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
                 oLinea.addItem(this.oContent);
-                this.oContent = new sap.m.Button({text: "{linea>fermo}", press: this.onCausalizzazioneFermi.bind(this)});
+                this.oContent = new sap.m.Button({text: "10:00", press: ["totali", this.onCausalizzazioneFermi, this]});
                 this.oContent.addStyleClass("sapUiTinyMarginBegin");
                 oLinea.addItem(this.oContent);
                 this.oColumn = new sap.m.Column({
@@ -338,7 +338,11 @@ sap.ui.define([
             if (this.ISLOCAL === 1) {
                 link = "model/guasti_new.json";
             } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
+                if (batchId === "totali") {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromLineaID&Content-Type=text/json&LineaID=" + this.oLinea_index + "&OutputParameter=JSON";
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
+                }
             }
             Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
         },

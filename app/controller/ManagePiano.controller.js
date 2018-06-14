@@ -11,8 +11,8 @@ sap.ui.define([
     "       use strict";
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
         StabilimentoID: sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID,
-        pdcID: sap.ui.getCore().getModel("ParametriPiano").getData().pdc,
-        repartoID: sap.ui.getCore().getModel("ParametriPiano").getData().reparto,
+        pdcID: sap.ui.getCore().getModel("ParametriPiano").pdc,
+        repartoID: sap.ui.getCore().getModel("ParametriPiano").reparto,
         TimeFormatter: TimeFormatter,
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
         data_json: {},
@@ -29,7 +29,7 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
-        STOP: 0,
+        STOP: 1,
 
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -85,6 +85,7 @@ sap.ui.define([
         URLChangeCheck: function (oEvent, Jdata) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+            this.getView().setModel(this.ModelLinea, 'linea');
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             this.addFieldsCreazione();
             if (Number(this.piano.area) === 1) {
@@ -99,8 +100,10 @@ sap.ui.define([
                 Library.AjaxCallerData("model/SKU_backend.json", this.SUCCESSSKU.bind(this));
                 this.getView().setModel(this.ModelSKU, 'SKU');
             } else {
-                this.ModelLinea.setData(Jdata);
-                sap.ui.getCore().setModel(this.ModelLinea, "linee");
+                if (typeof Jdata !== "undefined") {
+                    this.ModelLinea.setData(Jdata);
+                    sap.ui.getCore().setModel(this.ModelLinea, "linee");
+                }
             }
             var oTitle = this.getView().byId("Title");
             var oSubtitle = this.getView().byId("Subtitle");
@@ -397,11 +400,11 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("main", true);
         },
-        manageSPCButton: function(){
+        manageSPCButton: function () {
             var oItems = this.getView().byId("managePianoTable").getItems();
-            for (var i=0; i<oItems.length; i++){
+            for (var i = 0; i < oItems.length; i++) {
                 var SPCButton = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
-                if (Number(this.piano.area) === 1 ) {
+                if (Number(this.piano.area) === 1) {
                     SPCButton.setVisible(true);
                 } else {
                     SPCButton.setVisible(false);
