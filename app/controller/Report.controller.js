@@ -189,6 +189,7 @@ sap.ui.define([
             var index_column = parseInt(event.getParameters().columnIndex, 10);
             var index_row = parseInt(event.getParameters().rowIndex, 10);
             var batchId = clicked_row.BatchID;
+            sap.ui.getCore().setModel({batchID: batchId}, "batchID");
             if (clicked_row.hierarchy === 3 && (index_column === 5 || index_column === 6 || index_column === 7)) {
                 for (var i = index_row - 1; i >= 0; i--) {
                     this.rowHTML = event.getSource().getRows()[i];
@@ -201,7 +202,7 @@ sap.ui.define([
                     link = "model/guasti_linee.json";
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
-                    sap.ui.getCore().setModel({batchID: batchId},"batchID");
+//                    sap.ui.getCore().setModel({batchID: batchId}, "batchID");
                 }
                 Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
             }

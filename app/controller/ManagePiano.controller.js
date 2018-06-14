@@ -87,11 +87,6 @@ sap.ui.define([
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.getView().setModel(this.ModelLinea, 'linea');
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
-            this.addFieldsCreazione();
-            if (Number(this.piano.area) === 1) {
-                this.changeFields();
-            }
-            this.manageSPCButton();
             if (this.ISLOCAL === 1) {
                 Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
                 this.getView().setModel(this.ModelOperatori, 'operatore');
@@ -124,6 +119,11 @@ sap.ui.define([
                 this.RefreshFunction();
             }
             this.getView().setModel(this.ModelLinea, 'linea');
+            this.addFieldsCreazione();
+            if (Number(this.piano.area) === 1) {
+                this.changeFields();
+            }
+            this.manageSPCButton();
 // MI SERVE PER LO STATO LINEA                
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
@@ -194,7 +194,7 @@ sap.ui.define([
         },
 // MODIFICA DELLA VIEW DELLA CREAZIONE TURNO (IN REALTA' DISTINGUO SOLO IL CASO IN CUI IL TURNO E' IN CORSO)
         addFieldsCreazione: function () {
-            var j, oTable, oRows, oButton;
+            var j, oTable, oRows, oButton, oCell;
             var oTables = this.getView().byId("managePianoTable").getItems();
             for (var i = 0; i < oTables.length; i++) {
                 oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
@@ -223,7 +223,8 @@ sap.ui.define([
                             ]
                         }));
                     }
-                    for (j = 0; j < oRows.length; j++) {
+                    oRows = oTable.getItems();
+                    for (j = 0; j < oRows.length - 1; j++) {
                         if (oRows[j].getCells().length >= 8) {
                             oRows[j].removeCell(7);
                             oRows[j].removeCell(6);
@@ -232,6 +233,13 @@ sap.ui.define([
                         } else if (oRows[j].getCells().length < 8 && oRows[j].getCells().length > 1) {
                             this.addCellInput(oRows[j]);
                         }
+                        oRows[j].removeCell(1);
+                        oCell = new sap.m.Input({
+                            value: "{linea>sequenza}",
+                            width: "4rem",
+                            type: "Number"
+                        });
+                        oRows[j].insertCell(oCell, 1);
                     }
                 }
             }
@@ -286,8 +294,8 @@ sap.ui.define([
             for (var i = 0; i < oTables.length; i++) {
                 oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
                 oRows = oTable.getItems();
-                oTable.removeItem(oRows[oRows.length - 1]);
-                for (j = 0; j < oRows.length; j++) {
+//                oTable.removeItem(oRows[oRows.length - 1]);
+                for (j = 0; j < oRows.length - 1; j++) {
                     if (oRows[j].getCells().length >= 8) {
                         oRows[j].removeCell(7);
                         oRows[j].removeCell(6);
@@ -302,6 +310,13 @@ sap.ui.define([
                     oText = new sap.m.Text().bindText({path: 'linea>ore', formatter: this.TimeFormatter.TimeText});
                     oText.addStyleClass("sapUiSmallMarginTop sapUiMediumMarginBegin");
                     oRows[j].addCell(oText);
+
+                    oRows[j].removeCell(1);
+                    oText = new sap.m.Text({
+                        text: "{linea>sequenza}",
+                        width: "4rem"
+                    });
+                    oRows[j].insertCell(oText, 1);
                 }
             }
         },
