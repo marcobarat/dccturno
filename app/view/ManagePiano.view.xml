@@ -197,9 +197,9 @@
                                                                                                                     press="handlePressOpenMenu" />
                                                                                             <Text
                                                                                                 text="{linea>sequenza}" />
-                                                                                            <Select>
+                                                                                            <ComboBox width="106px">
                                                                                                 <core:Item key="{linea>formato}" text="{linea>formato}" />
-                                                                                            </Select>
+                                                                                            </ComboBox>
 <!--                                                                                                                                                                                <Select
                                                                                                 selectedKey="{linea>formato} {linea>materiale}"
                                                                                                 showSecondaryValues= "true"
@@ -213,9 +213,9 @@
                                                                                             >
                                                                                                                                                                                     <core:ListItem key="{linea>formato} {linea>materiale}" text="{linea>formato} {linea>materiale}" />
                                                                                             </Select>-->
-                                                                                            <Select width="106px">
+                                                                                            <ComboBox width="106px">
                                                                                                 <core:Item key="{linea>confezione}gr" text="{linea>confezione}gr" />
-                                                                                            </Select>
+                                                                                            </ComboBox>
                                                                                             <cus:CustomButt text=""
                                                                                                                     press="onPress"
                                                                                                                     state="2"
