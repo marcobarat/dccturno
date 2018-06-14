@@ -78,6 +78,7 @@ sap.ui.define([
         URLChangeCheck: function (oEvent) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+            this.getView().setModel(this.ModelLinea, 'linea');
 //            this.ModelTurni = this.getOwnerComponent().getModel("turni");
 //            if (!this.ModelTurni) {
 //                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
@@ -85,8 +86,8 @@ sap.ui.define([
 //            }
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             if (Number(this.ISLOCAL) === 1) {
-                Library.AjaxCallerData("model/linee_new.json", this.SUCCESSDatiLinee.bind(this));
-                this.getView().setModel(this.ModelLinea, 'linea');
+//                Library.AjaxCallerData("model/linee_prova.json", this.SUCCESSDatiLinee.bind(this));
+//                this.getView().setModel(this.ModelLinea, 'linea');
                 Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
                 this.getView().setModel(this.ModelOperatori, 'operatore');
                 Library.AjaxCallerData("model/SKU_standard.json", this.SUCCESSSKUstd.bind(this));

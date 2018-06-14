@@ -1,0 +1,76 @@
+{
+    "linee": [
+        {
+            "lineaID": "1",
+            "linea": "Coppia 04",
+            "statolinea": "Disponibile.Vuota",
+            "disponibilita": "",
+            "efficienza": "",
+            "qualita": "",
+            "fermo": "",
+            "avanzamento": "0",
+            "perc_avanzamento": "0 %",
+            "barColor": "orange",
+            "batchlist": [
+                {
+                    "batchID": "3",
+                    "sequenza": "10",
+                    "statoBatch": "Non trasferito",
+                    "erroreBatch": "NA",
+                    "formato": "020",
+                    "confezione": "500",
+                    "qli": "0",
+                    "cartoni": "0",
+                    "ore": "0:24:50",
+                    "disponibilita": "",
+                    "produttivita": "",
+                    "qualita": "",
+                    "fermo": ""
+                },
+                {
+                    "batchID": "4",
+                    "sequenza": "20",
+                    "statoBatch": "Non trasferito",
+                    "erroreBatch": "NA",
+                    "formato": "020",
+                    "confezione": "500",
+                    "qli": "0",
+                    "cartoni": "0",
+                    "ore": "0:24:50",
+                    "disponibilita": "",
+                    "produttivita": "",
+                    "qualita": "",
+                    "fermo": ""
+                }
+            ],
+            "lastbatch": [
+                {
+                    "sequenza": "20",
+                    "formato": "020",
+                    "confezione": "500"
+                }
+            ]
+        },
+        {
+            "lineaID": "12",
+            "linea": "Coppia 02",
+            "statolinea": "",
+            "disponibilita": "",
+            "efficienza": "",
+            "qualita": "",
+            "fermo": "",
+            "avanzamento": "0",
+            "perc_avanzamento": "0 %",
+            "barColor": "orange",
+            "batchlist": [
+            ],
+            "lastbatch": [
+                {
+                    "sequenza": "20",
+                    "formato": "020",
+                    "confezione": ""
+                }
+            ]
+        }
+    ]
+}

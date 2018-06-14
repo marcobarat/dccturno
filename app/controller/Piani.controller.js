@@ -59,7 +59,7 @@ sap.ui.define([
                     link = "model/linee.json";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
                 } else {
-                    link = "model/linee_new.json";
+                    link = "model/linee_prova.json";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 }
             } else {
