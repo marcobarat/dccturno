@@ -85,6 +85,11 @@ sap.ui.define([
 //                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
 //            }
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
+            this.addFieldsCreazione();
+            if (Number(this.piano.area) === 1) {
+                this.changeFields();
+            }
+            this.manageSPCButton();
             if (Number(this.ISLOCAL) === 1) {
 //                Library.AjaxCallerData("model/linee_prova.json", this.SUCCESSDatiLinee.bind(this));
 //                this.getView().setModel(this.ModelLinea, 'linea');
@@ -387,6 +392,17 @@ sap.ui.define([
         onMenu: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("main", true);
+        },
+        manageSPCButton: function(){
+            var oItems = this.getView().byId("managePianoTable").getItems();
+            for (var i=0; i<oItems.length; i++){
+                var SPCButton = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
+                if (Number(this.piano.area) === 1 ) {
+                    SPCButton.setVisible(true);
+                } else {
+                    SPCButton.setVisible(false);
+                }
+            }
         }
 
     });
