@@ -7,7 +7,8 @@ sap.ui.define([
     "use strict";
     return Controller.extend("myapp.controller.guastiLinea", {
         ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
-        pdcID: sap.ui.getCore().getModel("ParametriPiano").pdc,
+        pdcID: sap.ui.getCore().getModel("ParametriPiano").getData().pdc,
+        batchID: sap.ui.getCore().getModel("batchID").getData().batchID,
         linea: "",
         menuJSON: {},
         row_binded: {},
@@ -94,10 +95,13 @@ sap.ui.define([
         handlePressOpenMenuCausalizzazione: function (oEvent) {
             this.Button = oEvent.getSource();
             var link;
+            var row_id = this.Button.getParent().getId();
+            var split_id = row_id.split("-");
+            this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[split_id.length - 1], 10)];
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {
-//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=" + this.Button;
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=" + this.row_binded.isManuale;
             }
             Library.AjaxCallerData(link, this.SUCCESSCausali.bind(this));
         },
@@ -105,9 +109,6 @@ sap.ui.define([
             this.takeAllCause(Jdata);
             this.ModelCausali.setData(this.menuJSON);
             this.getView().setModel(this.ModelCausali, "cause");
-            var row_id = this.Button.getParent().getId();
-            var split_id = row_id.split("-");
-            this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[split_id.length - 1], 10)];
             if (!this._menu) {
                 this._menu = sap.ui.xmlfragment(
                         "myapp.view.MenuCausalizzazione",
@@ -119,12 +120,16 @@ sap.ui.define([
             this._menu.open(this._bKeyboard, this.Button, eDock.EndTop, eDock.BeginBottom, this.Button);
         },
         SUCCESSGuastoModificato: function (Jdata) {
-            if (Number(Jdata.error) === 0) {
+            if (Number(Jdata.Log.error) === 0) {
                 this.oDialog.destroy();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 10});
+                MessageToast.show(Jdata.Log.errorMessage, {duration: 10});
             }
-
+            this.guasti = Jdata.AllFermi;
+            this.guasti = Library.AddTimeGaps(this.guasti);
+            this.ModelGuasti.setData(this.guasti);
+            sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+            this.getView().setModel(this.ModelGuasti, "guasti");
         },
         SUCCESSModificaOEE: function (Jdata) {
             var ModelOEE = sap.ui.getCore().getModel("ReportOEE");
@@ -159,7 +164,7 @@ sap.ui.define([
             var obj, link;
             switch (oText) {
                 case "Modifica Causale Fermo":
-                    if (Number(this.ISLOCAL) === 1) {
+                    if (this.ISLOCAL === 1) {
                         this.LOCALModificaCausaleFermo(oEvent);
                         this.oDialog.destroy();
                     } else {
@@ -170,12 +175,12 @@ sap.ui.define([
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Modifica Inizio/Fine del Fermo":
-                    if (Number(this.ISLOCAL) === 1) {
+                    if (this.ISLOCAL === 1) {
                         this.LOCALModificaTempiFermo();
                         this.oDialog.destroy();
                     } else {
@@ -186,12 +191,12 @@ sap.ui.define([
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = "";
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Fraziona Causale di Fermo":
-                    if (Number(this.ISLOCAL) === 1) {
+                    if (this.ISLOCAL === 1) {
                         this.LOCALFrazionaFermo();
                         this.oDialog.destroy();
                     } else {
@@ -202,12 +207,12 @@ sap.ui.define([
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Elimina Fermo":
-                    if (Number(this.ISLOCAL) === 1) {
+                    if (this.ISLOCAL === 1) {
                         this.LOCALEliminaFermo();
                         this.oDialog.destroy();
                     } else {
@@ -218,12 +223,12 @@ sap.ui.define([
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = "";
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
                 case "Inserisci Fermo":
-                    if (Number(this.ISLOCAL) === 1) {
+                    if (this.ISLOCAL === 1) {
                         this.LOCALInserisciFermo();
                         this.oDialog.destroy();
                     } else {
@@ -234,7 +239,7 @@ sap.ui.define([
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GestioneFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
@@ -801,12 +806,6 @@ sap.ui.define([
             }
             return causa;
         }
-
-
-
-
-
-
     });
 });
 
