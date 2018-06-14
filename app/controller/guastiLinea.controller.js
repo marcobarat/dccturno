@@ -7,7 +7,7 @@ sap.ui.define([
     "use strict";
     return Controller.extend("myapp.controller.guastiLinea", {
         ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
-        pdcID: sap.ui.getCore().getModel("ParametriPiano").getData().pdc,
+        pdcID: sap.ui.getCore().getModel("ParametriPiano").pdc,
         batchID: sap.ui.getCore().getModel("batchID").getData().batchID,
         linea: "",
         menuJSON: {},

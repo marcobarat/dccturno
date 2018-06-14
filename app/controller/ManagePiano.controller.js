@@ -11,6 +11,8 @@ sap.ui.define([
     "       use strict";
     var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
         StabilimentoID: sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID,
+        pdcID: sap.ui.getCore().getModel("ParametriPiano").getData().pdc,
+        repartoID: sap.ui.getCore().getModel("ParametriPiano").getData().reparto,
         TimeFormatter: TimeFormatter,
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
         data_json: {},
@@ -27,14 +29,19 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
+        STOP: 0,
 
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
-
-
-//            Library.RemoveClosingButtons.bind(this)("TabContainer");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePiano").attachPatternMatched(this.URLChangeCheck, this);
+        },
+        RefreshFunction: function () {
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), 5000);
+        },
+        RefreshCall: function () {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.URLChangeCheck.bind(this));
         },
         SUCCESSCause: function (Jdata) {
             this.data_json = {};
@@ -75,19 +82,11 @@ sap.ui.define([
             }
             this.ModelMenu.setData(Jdata);
         },
-        URLChangeCheck: function (oEvent) {
+        URLChangeCheck: function (oEvent, Jdata) {
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            this.getView().setModel(this.ModelLinea, 'linea');
-//            this.ModelTurni = this.getOwnerComponent().getModel("turni");
-//            if (!this.ModelTurni) {
-//                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-//                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
-//            }
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
-            if (Number(this.ISLOCAL) === 1) {
-//                Library.AjaxCallerData("model/linee_prova.json", this.SUCCESSDatiLinee.bind(this));
-//                this.getView().setModel(this.ModelLinea, 'linea');
+            if (this.ISLOCAL === 1) {
                 Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
                 this.getView().setModel(this.ModelOperatori, 'operatore');
                 Library.AjaxCallerData("model/SKU_standard.json", this.SUCCESSSKUstd.bind(this));
@@ -95,6 +94,8 @@ sap.ui.define([
                 Library.AjaxCallerData("model/SKU_backend.json", this.SUCCESSSKU.bind(this));
                 this.getView().setModel(this.ModelSKU, 'SKU');
             } else {
+                this.ModelLinea.setData(Jdata);
+                sap.ui.getCore().setModel(this.ModelLinea, "linee");
             }
             var oTitle = this.getView().byId("Title");
             var oSubtitle = this.getView().byId("Subtitle");
@@ -111,6 +112,10 @@ sap.ui.define([
                 oSubtitle.setText("Turno in corso");
                 oSubtitle.addStyleClass("customText");
             }
+            if (this.ISLOCAL !== 1 && this.STOP === 0) {
+                this.RefreshFunction();
+            }
+            this.getView().setModel(this.ModelLinea, 'linea');
 // MI SERVE PER LO STATO LINEA                
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
@@ -119,17 +124,16 @@ sap.ui.define([
             var link;
             var that = this;
             var area = this.piano.area;
-            var repartoId = oEvent.getParameters().key;
-            var pdcId = this.piano.PdcID;
+            this.repartoID = oEvent.getParameters().key;
             if (this.ISLOCAL === 0) {
                 if (area === "0") {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                 } else if (area === "1") {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                 } else if (area === "2") {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                 } else {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                 }
                 Library.AjaxCallerData(link, function (Jdata) {
                     that.ModelLinea.setData(Jdata);
