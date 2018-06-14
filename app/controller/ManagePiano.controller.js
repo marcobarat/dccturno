@@ -86,6 +86,11 @@ sap.ui.define([
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
+            this.addFieldsCreazione();
+            if (Number(this.piano.area) === 1) {
+                this.changeFields();
+            }
+            this.manageSPCButton();
             if (this.ISLOCAL === 1) {
                 Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
                 this.getView().setModel(this.ModelOperatori, 'operatore');
@@ -391,6 +396,17 @@ sap.ui.define([
         onMenu: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("main", true);
+        },
+        manageSPCButton: function(){
+            var oItems = this.getView().byId("managePianoTable").getItems();
+            for (var i=0; i<oItems.length; i++){
+                var SPCButton = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
+                if (Number(this.piano.area) === 1 ) {
+                    SPCButton.setVisible(true);
+                } else {
+                    SPCButton.setVisible(false);
+                }
+            }
         }
 
     });
