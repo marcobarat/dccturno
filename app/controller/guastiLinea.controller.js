@@ -106,6 +106,8 @@ sap.ui.define([
             Library.AjaxCallerData(link, this.SUCCESSCausali.bind(this));
         },
         SUCCESSCausali: function (Jdata) {
+            this.menuJSON = {};
+            this.menuJSON.cause = [];
             this.takeAllCause(Jdata);
             this.ModelCausali.setData(this.menuJSON);
             this.getView().setModel(this.ModelCausali, "cause");

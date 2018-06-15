@@ -185,6 +185,20 @@ sap.ui.define([
                     '<dataFine>' + obj.dataFine + '</dataFine>' +
                     '<dataInizio>' + obj.dataInizio + '</dataInizio>';
             return top + parameters + bottom;
+        },
+        createXMLBatch: function (obj) {
+            var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
+            var bottom = '</root>';
+            var parameters = '<pianoDiConfezionamentoId>' + obj.pianodiconfezionamento + '</pianoDiConfezionamentoId>' +
+                    '<lineaId>' + obj.lineaId + '</lineaId>' +
+                    '<formatoId>' + obj.formatoId + '</formatoId>' +
+                    '<confezioneId>' + obj.confezionamentoId + '</confezioneId>' +
+                    '<sequenza>' + obj.sequenza + '</sequenza>' +
+                    '<qliTeo>' + obj.quintali + '</qliTeo>' +
+                    '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
+                    '<oreTeo>' + obj.ore + '</oreTeo>';
+            return top + parameters + bottom;
         }
+
     };
 });
