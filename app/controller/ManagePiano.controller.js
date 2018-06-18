@@ -30,7 +30,8 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
-        STOP: 1,
+        STOP: 0,
+        oButton: null,
 
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -42,7 +43,7 @@ sap.ui.define([
         },
         RefreshCall: function () {
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-            Library.AjaxCallerData(link, this.URLChangeCheck.bind(this));
+            Library.AjaxCallerData(link, this.RefreshDataSet.bind(this));
         },
         SUCCESSCause: function (Jdata) {
             this.data_json = {};
@@ -60,21 +61,21 @@ sap.ui.define([
         SUCCESSSKUstd: function (Jdata) {
             this.ModelSKUstd.setData(Jdata);
         },
-        SUCCESSMenu: function (Jdata, oButton) {
-            var oState = oButton.getState();
-            if (oState === "Non trasferito") {
-                Jdata.menu[0].attivo = false;
-                Jdata.menu[1].attivo = true;
-                Jdata.menu[2].attivo = true;
-                Jdata.menu[3].attivo = true;
-                Jdata.menu[4].attivo = true;
-                Jdata.menu[5].attivo = false;
-                Jdata.menu[6].attivo = true;
-                Jdata.menu[7].attivo = false;
-                Jdata.menu[8].attivo = false;
-            }
-            this.ModelMenu.setData(Jdata);
-        },
+//        SUCCESSMenu: function (Jdata, oButton) {
+//            var oState = oButton.getState();
+//            if (oState === "Non trasferito") {
+//                Jdata.menu[0].attivo = false;
+//                Jdata.menu[1].attivo = true;
+//                Jdata.menu[2].attivo = true;
+//                Jdata.menu[3].attivo = true;
+//                Jdata.menu[4].attivo = true;
+//                Jdata.menu[5].attivo = false;
+//                Jdata.menu[6].attivo = true;
+//                Jdata.menu[7].attivo = false;
+//                Jdata.menu[8].attivo = false;
+//            }
+//            this.ModelMenu.setData(Jdata);
+//        },
         SUCCESSCreazioneBatch: function (Jdata) {
             if (Number(Jdata.error) === 0) {
                 this.RefreshCall();
@@ -109,11 +110,7 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 30});
             }
         },
-        URLChangeCheck: function (oEvent, Jdata) {
-            this.turnoPath = oEvent.getParameter("arguments").turnoPath;
-            this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            this.getView().setModel(this.ModelLinea, 'linea');
-            this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
+        RefreshDataSet: function (Jdata) {
             if (this.ISLOCAL === 1) {
                 Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
                 this.getView().setModel(this.ModelOperatori, 'operatore');
@@ -122,11 +119,19 @@ sap.ui.define([
                 Library.AjaxCallerData("model/SKU_backend.json", this.SUCCESSSKU.bind(this));
                 this.getView().setModel(this.ModelSKU, 'SKU');
             } else {
-                if (typeof Jdata !== "undefined") {
-                    this.ModelLinea.setData(Jdata);
-                    sap.ui.getCore().setModel(this.ModelLinea, "linee");
-                }
+                this.ModelLinea.setData(Jdata);
+                this.getView().setModel(this.ModelLinea, "linea");
+                sap.ui.getCore().setModel(this.ModelLinea, "linee");
             }
+            this.URLChangeCheck();
+        },
+        URLChangeCheck: function (oEvent) {
+            if (typeof oEvent !== "undefined") {
+                this.turnoPath = oEvent.getParameter("arguments").turnoPath;
+                this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+                this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
+            }
+            this.getView().setModel(this.ModelLinea, 'linea');
             var oTitle = this.getView().byId("Title");
             var oSubtitle = this.getView().byId("Subtitle");
             oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
@@ -198,7 +203,17 @@ sap.ui.define([
             }
         },
         handlePressOpenMenu: function (oEvent) {
-            var oButton = oEvent.getSource();
+            this.oButton = oEvent.getSource();
+            var PathBatch = this.oButton.getParent().getBindingContext("linea").sPath;
+            var PathLinea = this.oButton.getParent().getParent().getBindingContext("linea").sPath;
+            this.linea_id = sap.ui.getCore().getModel("linee").getProperty(PathLinea).lineaID;
+            this.batch_id = sap.ui.getCore().getModel("linee").getProperty(PathBatch).batchID;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMenuFromBatchID&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSMenuOpened.bind(this));
+        },
+        SUCCESSMenuOpened: function (Jdata) {
+            this.ModelMenu.setData(Jdata);
+            this.getView().setModel(this.ModelMenu);
             if (!this._menu) {
                 this._menu = sap.ui.xmlfragment(
                         "myapp.view.MenuItemEventing",
@@ -206,19 +221,18 @@ sap.ui.define([
                         );
                 this.getView().addDependent(this._menu);
             }
-
             var eDock = sap.ui.core.Popup.Dock;
-            this.callMenu(oButton);
-            this.getView().setModel(this.ModelMenu);
+//            this.callMenu(this.oButton);
+//            this.getView().setModel(this.ModelMenu);
             this._menu.setModel(this.prova);
-            this._menu.open(this._bKeyboard, oButton, eDock.BeginTop, eDock.BeginBottom, oButton);
+            this._menu.open(this._bKeyboard, this.oButton, eDock.BeginTop, eDock.BeginBottom, this.oButton);
         },
-        callMenu: function (oButton) {
-            var that = this;
-            Library.AjaxCallerData("./model/prova.json", function (Jdata) {
-                that.SUCCESSMenu.bind(that)(Jdata, oButton);
-            });
-        },
+//        callMenu: function (oButton) {
+//            var that = this;
+//            Library.AjaxCallerData("./model/prova.json", function (Jdata) {
+//                that.SUCCESSMenu.bind(that)(Jdata, oButton);
+//            });
+//        },
 // MODIFICA DELLA VIEW DELLA CREAZIONE TURNO (IN REALTA' DISTINGUO SOLO IL CASO IN CUI IL TURNO E' IN CORSO)
         addFieldsCreazione: function () {
             var j, oTable, oRows, oButton, oCell;
@@ -293,7 +307,6 @@ sap.ui.define([
                 width: "7rem",
                 displayFormat: "HH:mm",
                 change: this.ChangeValues.bind(this)
-
             });
             oRow.addCell(oInput);
         },
@@ -390,30 +403,72 @@ sap.ui.define([
 //GESTIONE VISUALIZZA ATTRIBUTI BATCH
         azioneBatch: function (oEvent) {
             var oText = oEvent.getParameter("item").getText();
+            var link;
             switch (oText) {
                 case "Visualizza Attributi Batch":
                     this.visuBatch();
+                    break;
+                case "Trasferimento Batch a Linea":
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimento&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatch.bind(this));
+                    break;
+                case "Trasferimento Batch a Linea (solo attrezzaggio)":
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoPredisposizione&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatchAttrezzaggio.bind(this));
+                    break;
+                case "Richiamo Batch":
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchRichiamo&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSRichiamoBatch.bind(this));
+                    break;
+                case "Cancellazione Batch":
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/CancellazioneBatch&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
                     break;
             }
 
         },
         visuBatch: function () {
-            var oView = this.getView();
-            var std = this.getView().getModel("SKUstd").getData();
-            var bck = this.getView().getModel("SKU").getData();
-            bck = Library.RecursiveJSONComparison(std, bck, "attributi");
-            bck = Library.RecursiveParentExpansion(bck);
-            this.ModelSKU.setData(bck);
-            this.getView().setModel(this.ModelSKU, "SKU");
-            this.oDialog = oView.byId("modificaAttributi");
-            if (!this.oDialog) {
-                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
-                oView.addDependent(this.oDialog);
+            if (this.ISLOCAL === 1) {
+                var oView = this.getView();
+                var std = this.getView().getModel("SKUstd").getData();
+                var bck = this.getView().getModel("SKU").getData();
+                bck = Library.RecursiveJSONComparison(std, bck, "attributi");
+                bck = Library.RecursiveParentExpansion(bck);
+                this.ModelSKU.setData(bck);
+                this.getView().setModel(this.ModelSKU, "SKU");
+                this.oDialog = oView.byId("modificaAttributi");
+                if (!this.oDialog) {
+                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
+                    oView.addDependent(this.oDialog);
+                }
+                Library.RemoveClosingButtons.bind(this)("attributiContainer");
+                this.oDialog.open();
+            } else {
             }
-            Library.RemoveClosingButtons.bind(this)("attributiContainer");
-
-
-            this.oDialog.open();
+        },
+        SUCCESSTrasferimentoBatch: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            this.getView().setModel(this.ModelLinea, "linea");
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
+        },
+        SUCCESSTrasferimentoBatchAttrezzaggio: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            this.getView().setModel(this.ModelLinea, "linea");
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
+        },
+        SUCCESSRichiamoBatch: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                this.RefreshCall();
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 30});
+            }
+        },
+        SUCCESSCancellazioneBatch: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                this.RefreshCall();
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 30});
+            }
         },
         closeDialog: function () {
             this.oDialog.close();
@@ -490,9 +545,8 @@ sap.ui.define([
             var SelectBox = oEvent.getSource();
             if (this.ISLOCAL === 1) {
                 link = "model/formati.json";
-            }
-            if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFormatiFilteredByLineID&Content-Type=text/json&LineaID=" + this.pdcID + "&OutputParameter=JSON";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFormatiFilteredByLineID&Content-Type=text/json&LineaID=" + this.linea_id + "&OutputParameter=JSON";
             }
             Library.AjaxCallerData(link, function (Jdata) {
                 that.SUCCESSFormati.bind(that)(Jdata, SelectBox);
@@ -507,13 +561,13 @@ sap.ui.define([
                 link = "model/confezionamenti.json";
             }
             if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFormatiFilteredByLineID&Content-Type=text/json&LineaID=" + this.pdcID + "&FormatoID=" + formato_id + "&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllConfezioniFilteredByLineIDAndFormatoID&Content-Type=text/json&LineaID=" + this.linea_id + "&FormatoID=" + formato_id + "&OutputParameter=JSON";
             }
             Library.AjaxCallerData(link, function (Jdata) {
                 that.SUCCESSConfezionamenti.bind(that)(Jdata, SelectBox);
             });
         },
-        ResetConfezionamenti: function (oEvent){
+        ResetConfezionamenti: function (oEvent) {
             this.getView().byId("confezionamento").destroyItems();
             this.getView().byId("confezionamento").setValue("");
         }

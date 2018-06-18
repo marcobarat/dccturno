@@ -21,7 +21,8 @@ sap.ui.define([
             sap.ui.getCore().setModel(oModel, "stabilimento");
             var params = jQuery.sap.getUriParameters(window.location.href);
             sap.ui.getCore().setModel(this.ModelTurni, "turni");
-            this.RefreshCall();
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.getRoute("piani").attachPatternMatched(this.URLChangeCheck, this);
         },
         RefreshFunction: function () {
             this.TIMER = setTimeout(this.RefreshCall.bind(this), 5000);
@@ -32,7 +33,6 @@ sap.ui.define([
                 link = "model/pianidiconf_new.json";
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-//                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllPianiDiConfezionamento&Content-Type=text/json&OutputParameter=JSON";
             }
             Library.SyncAjaxCallerData(link, this.SUCCESSDatiTurni.bind(this));
         },
@@ -43,6 +43,12 @@ sap.ui.define([
             if (this.ISLOCAL !== 1) {
                 this.RefreshFunction();
             }
+        },
+        URLChangeCheck: function (oEvent) {
+            this.turnoPath = oEvent.getParameter("arguments").turnoPath;
+            this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+            this.getView().setModel(this.ModelLinea, 'linea');
+            this.RefreshCall();
         },
         managePiano: function (oEvent) {
             var oTable = oEvent.getSource().getParent().getBindingContext("turni");
@@ -63,9 +69,6 @@ sap.ui.define([
                     Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 }
             } else {
-//                var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
-//                var PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
-//                sap.ui.getCore().setModel(PDCParameters, "ParametriPiano");
                 if (area === "0") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
@@ -76,7 +79,7 @@ sap.ui.define([
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 } else {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertPdcManuale&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
                 }
             }

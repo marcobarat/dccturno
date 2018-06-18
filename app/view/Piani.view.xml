@@ -8,14 +8,15 @@
             <VBox height="100%" width="100%">
                 <VBox height="5%" width="100%">
                     <HBox>
-                        <VBox height="100%" width="5%"/>
-                        <VBox height="100%" width="10%">
-                            <Button text="Esci" width="100%" press="GoToHome" class="annullaButton"/>
-                        </VBox>
-                        <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="75%">
+                        <VBox height="100%" width="15%"/>
+                        <VBox height="100%" width="65%">
                             <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
                         </VBox>
+                        <VBox height="100%" width="5%"/>
+                        <VBox height="100%" width="10%">
+                            <Button text="Esci" width="100%" press="GoToHome"/>
+                        </VBox>
+                        <VBox height="100%" width="5%"/>
                     </HBox>
                 </VBox>
                 <VBox height="95%" width="100%">
@@ -23,7 +24,7 @@
                         <HBox>
                             <VBox height="100%" width="5%"/>
                             <VBox height="100%" width="90%">
-                                <Table showNoData='false' class="sapUiLargeMarginTop totalWhiteTable tableTextSize">
+<!--                                <Table showNoData='false' class="sapUiLargeMarginTop totalWhiteTable tableTextSize">
                                     <columns>
                                         <Column>
                                             <header>
@@ -62,32 +63,50 @@
                                         </Column>                                             
                                     </columns>
                                 </Table>            
-    
+    -->
                                 <ScrollContainer height='188.4px' horizontal='false' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
                                     <!-- Table to hold data, data ,data -->
                                     <Table 
                                         width="1242.18px"
                                         class="noBorder tableTextSize"
-                                        items="{path: 'turni>/pianidiconfezionamento/conclusi',
-                                                sorter: {
-                                                        path: 'data',
-                                                        descending: true}}"
-                                    > <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                                        items="{path: 'turni>/pianidiconfezionamento/conclusi', sorter: {path: 'data', descending: true}}">
+                                        <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
                                         <columns>
                                             <!-- Dont need columns header, as upper table has already defined them. -->
                                             <Column hAlign="Center">
+                                                <header>
+                                                    <comp:StyleTextTableAttr text="" />
+                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
+                                                <header>
+                                                    <comp:StyleTextTableAttr text="Data"/>
+                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
+                                                <header>
+                                                    <comp:StyleTextTableAttr text="Data"/>
+                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
+                                                <header>
+                                                    <comp:StyleTextTableAttr text="Data"/>
+                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
+                                                <header>
+                                                    <comp:StyleTextTableAttr text="Data"/>
+                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
+                                                <header>
+                                                    <comp:StyleTextTableAttr text="Data"/>
+                                                </header>
                                             </Column> 
                                             <Column hAlign="Center">
+                                                <header>
+                                                    <comp:StyleTextTableAttr text="Data"/>
+                                                </header>
                                             </Column>                                         
                                         </columns>
                                         <items>
@@ -99,9 +118,6 @@
                                                         press="managePiano"
                                                         color="black" >
                                                     </core:Icon>
-             
-                    
-
                                                     <comp:StyleTextTableAttr
                                                         text="{turni>data}" area="{turni>area}"/>
                                                     <comp:StyleTextTableAttr
@@ -114,7 +130,6 @@
                                                         text="{turni>lineep}"/>
                                                     <comp:StyleTextTableAttr
                                                         text="{turni>turni}"/>
-
                                                 </cells>
                                             </ColumnListItem>
                                         </items>

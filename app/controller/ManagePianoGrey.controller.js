@@ -8,6 +8,7 @@ sap.ui.define([
     return Controller.extend("myapp.controller.ManagePianoGrey", {
         StabilimentoID: sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID,
         ModelReparti: sap.ui.getCore().getModel("reparti"),
+        pdcID: sap.ui.getCore().getModel("ParametriPiano").pdc,
         ModelCausali: new JSONModel({}),
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelLinea: sap.ui.getCore().getModel("linee"),
@@ -549,17 +550,24 @@ sap.ui.define([
         },
 // quando chiudo il piano ritorno alla pagina iniziale e: 1) creo PDF tree table 2) salvo dati (quindi il file json) 3) archivio dati (backend??)        
         onConfermaChiusuraPiano: function () {
+//            var dataTurni = this.ModelTurni.getData();
+//            dataTurni.pianidiconfezionamento.splice(this.pianoPath, 1);
+//            this.ModelTurni.setData(dataTurni);
+//            this.getOwnerComponent().setModel("turni");
+//            var oModel = new JSONModel();
+//            var view = this.getOwnerComponent()._oViews._oViews["myapp.view.Piani"];
+//            var data = view.getModel().getData().turniconclusi.splice(this.pianoPath, 1);
+//            oModel.setData(data);
+//            view.setModel(oModel);
+            if (this.ISLOCAL === 1) {
+                this.SUCCESSConfermaChiusura();
+            } else {
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdatePdcToChiuso&Content-Type=text/json&PdcID=" + this.pdcID + "&OutputParameter=JSON";
+                Library.AjaxCallerData(link, this.SUCCESSConfermaChiusura.bind(this));
+            }
+        },
+        SUCCESSConfermaChiusura: function (Jdata) {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            var oModelTurni = this.getOwnerComponent().getModel("turni");
-            var dataTurni = oModelTurni.getData();
-            dataTurni.pianidiconfezionamento.splice(this.pianoPath, 1);
-            oModelTurni.setData(dataTurni);
-            this.getOwnerComponent().setModel("turni");
-            var oModel = new JSONModel();
-            var view = this.getOwnerComponent()._oViews._oViews["myapp.view.Piani"];
-            var data = view.getModel().getData().turniconclusi.splice(this.pianoPath, 1);
-            oModel.setData(data);
-            view.setModel(oModel);
             oRouter.navTo("piani");
         },
 //BUTTON NAVBACK        

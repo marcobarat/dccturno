@@ -20,7 +20,7 @@
                 <VBox width="50%">
                     <Text text="Formato"/>
                 </VBox>
-                <ComboBox id="formato" width= "7rem"  loadItems="CaricaFormati" selectionChange="ResetConfezionamenti"></ComboBox>
+                <ComboBox id="formato" width="7rem"  loadItems="CaricaFormati" selectionChange="ResetConfezionamenti"></ComboBox>
             </HBox>
             <HBox width="50%">
                 <VBox width="50%">
