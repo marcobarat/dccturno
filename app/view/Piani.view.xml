@@ -24,7 +24,7 @@
                         <HBox>
                             <VBox height="100%" width="5%"/>
                             <VBox height="100%" width="90%">
-<!--                                <Table showNoData='false' class="sapUiLargeMarginTop totalWhiteTable tableTextSize">
+                                <Table showNoData='false' class="sapUiLargeMarginTop totalWhiteTable tableTextSize">
                                     <columns>
                                         <Column>
                                             <header>
@@ -58,11 +58,11 @@
                                         </Column> 
                                         <Column hAlign="Center">
                                             <header>
-                                                <comp:StyleTextTableAttr text="Turno"/>
+                                                <comp:StyleTextTableAttr text="Turni"/>
                                             </header>
                                         </Column>                                             
                                     </columns>
-                                </Table>            
+                                </Table>            <!--
     -->
                                 <ScrollContainer height='188.4px' horizontal='false' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
                                     <!-- Table to hold data, data ,data -->
@@ -74,39 +74,18 @@
                                         <columns>
                                             <!-- Dont need columns header, as upper table has already defined them. -->
                                             <Column hAlign="Center">
-                                                <header>
-                                                    <comp:StyleTextTableAttr text="" />
-                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
-                                                <header>
-                                                    <comp:StyleTextTableAttr text="Data"/>
-                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
-                                                <header>
-                                                    <comp:StyleTextTableAttr text="Data"/>
-                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
-                                                <header>
-                                                    <comp:StyleTextTableAttr text="Data"/>
-                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
-                                                <header>
-                                                    <comp:StyleTextTableAttr text="Data"/>
-                                                </header>
                                             </Column>
                                             <Column hAlign="Center">
-                                                <header>
-                                                    <comp:StyleTextTableAttr text="Data"/>
-                                                </header>
                                             </Column> 
                                             <Column hAlign="Center">
-                                                <header>
-                                                    <comp:StyleTextTableAttr text="Data"/>
-                                                </header>
                                             </Column>                                         
                                         </columns>
                                         <items>
