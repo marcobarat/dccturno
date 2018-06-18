@@ -43,6 +43,10 @@ sap.ui.define([
                 return  String(val);
             }
         },
+        InvertStringTime: function (time) {
+            var array = time.split("-");
+            return array[2] + "/" + array[1] + "/" + array[0];
+        },
         standardToMinutes: function (string) {
             return parseInt(string.split(":")[1], 10) + parseInt(string.split(":")[0], 10) * 60;
         },
@@ -156,6 +160,18 @@ sap.ui.define([
                         json[key].expand = this.exp;
                     }
                     json[key] = this.RecursiveParentExpansion(json[key]);
+                }
+            }
+            return json;
+        },
+        RecursiveJSONTimeConversion: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveJSONTimeConversion(json[key]);
+                } else {
+                    if (key === "data") {
+                        json[key] = this.InvertStringTime(json[key]);
+                    }
                 }
             }
             return json;

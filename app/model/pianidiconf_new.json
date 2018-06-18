@@ -92,11 +92,33 @@
                 "turni": "0",
                 "area": "2",
                 "PdcID": "8"
+            },
+            {
+                "icon": "bo-strategy-management",
+                "data": "2018-06-08",
+                "turno": "14:00 - 22:00",
+                "qliconf": "0.0",
+                "qliresidui": "0.0",
+                "lineep": "0",
+                "turni": "0",
+                "area": "2",
+                "PdcID": "8"
+            },
+            {
+                "icon": "bo-strategy-management",
+                "data": "2018-06-09",
+                "turno": "22:00 - 06:00",
+                "qliconf": "0.0",
+                "qliresidui": "0.0",
+                "lineep": "0",
+                "turni": "0",
+                "area": "2",
+                "PdcID": "8"
             }
         ],
         "dacreare": [
             {
-                "icon": "sap-icon://initiative",
+                "icon": "sap-icon://feeder-arrow",
                 "data": "2018-06-08",
                 "turno": "14:00 - 22:00",
                 "qliconf": "",
