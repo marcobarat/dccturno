@@ -4,6 +4,11 @@ sap.ui.define([
     return {
         exp: null,
 // FUNZIONI TEMPORALI 
+        roundTo: function (value, decimalpositions) {
+            var i = value * Math.pow(10, decimalpositions);
+            i = Math.round(i);
+            return i / Math.pow(10, decimalpositions);
+        },
         MillisecsToStandard: function (val) {
             var hours = Math.floor(val / 1000 / 60 / 60);
             val -= hours * 1000 * 60 * 60;
@@ -32,8 +37,8 @@ sap.ui.define([
             val -= hours * 60;
             var mins = val;
             var string_hours, string_mins;
-            string_hours = this.stringTime(hours);
-            string_mins = this.stringTime(mins);
+            string_hours = this.StringTime(hours);
+            string_mins = this.StringTime(mins);
             return (string_hours + ":" + string_mins);
         },
         StringTime: function (val) {
@@ -174,7 +179,6 @@ sap.ui.define([
             }
             return json;
         },
-
 //CREAZIONE DEI FILE XML PER LA PARTE DI BACKEND
         createXMLFermo: function (obj) {
             var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
