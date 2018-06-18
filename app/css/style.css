@@ -380,8 +380,26 @@
 
 /*CSS PER LE MIE TABELLE  */
 .totalWhiteTable .sapMListTbl th {
-    background-color: white !important;
-    border: 0px !important;
+    background: white;
+    border: 0px;
+}
+
+.borderMiddleTable .sapMListTbl th {
+    border: solid 1px;
+}
+
+.border {
+    border: solid 1px;
+}
+
+.green {
+    background: #7CA295;
+}
+.grey {
+    background: #f2f2f2;
+}
+.yellow {
+    background: #FFD300;
 }
 
 .noBorder *{

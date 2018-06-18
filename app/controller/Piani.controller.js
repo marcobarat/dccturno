@@ -37,7 +37,7 @@ sap.ui.define([
             Library.SyncAjaxCallerData(link, this.SUCCESSDatiTurni.bind(this));
         },
         SUCCESSDatiTurni: function (Jdata) {
-            this.ModelTurni.setData(Jdata);
+            this.ModelTurni.setData(Library.RecursiveJSONTimeConversion(Jdata));
             this.getView().setModel(this.ModelTurni, "turni");
             sap.ui.getCore().setModel(this.ModelTurni, "turni");
             if (this.ISLOCAL !== 1) {
@@ -45,6 +45,7 @@ sap.ui.define([
             }
         },
         URLChangeCheck: function (oEvent) {
+            
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.getView().setModel(this.ModelLinea, 'linea');
