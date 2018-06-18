@@ -24,7 +24,7 @@ sap.ui.define([
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("guastidilinea").attachPatternMatched(this._onObjectMatched, this);
-            this.menuJSON.cause = [];
+//            this.menuJSON.cause = [];
 //            var model = new JSONModel();
 //            if (this.ISLOCAL === 1) {
 //                Library.AjaxCallerData("model/JSON_FermoTestiNew.json", function (Jdata) {

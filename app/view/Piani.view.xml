@@ -127,48 +127,48 @@
                                 </VBox>
                                 <VBox height="10%" width="100%" class="border green">
                                     <Table height="100%" width="100%" items='{turni>/pianidiconfezionamento/incorso}' class="tableTextSize">
-                                        <columns>
-                                            <Column hAlign="Center">
-                                            </Column>
-                                            <Column hAlign="Center">
-                                            </Column>
-                                            <Column hAlign="Center">
-                                            </Column>
-                                            <Column hAlign="Center">
-                                            </Column>
-                                            <Column hAlign="Center">
-                                            </Column>
-                                            <Column hAlign="Center">
-                                            </Column> 
-                                            <Column hAlign="Center">
-                                            </Column>                                         
-                                        </columns>
-                                        <items>
-                                            <ColumnListItem>
-                                                <cells>
-                                                    <core:Icon
-                                                        src="{turni>icon}"
-                                                        class="size4"
-                                                        press="managePiano"
-                                                        color="black" >
-                                                    </core:Icon>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>data}" area="{turni>area}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>turno}" />
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>qliconf}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>qliresidui}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>lineep}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>turni}"/>
-                                                </cells>
-                                            </ColumnListItem>
-                                        </items>
-                                    </Table>
-                                </VBox>
+                            <VBox height="100%" width="5%"/>
+                            <VBox height="100%" width="90%">
+                                <Table showNoData='false' class="sapUiLargeMarginTop totalWhiteTable tableTextSize">
+                                    <columns>
+                                        <Column>
+                                            <header>
+                                                <comp:StyleTextTableAttr text="" />
+                                            </header>
+                                        </Column>
+                                        <Column hAlign="Center">
+                                            <header>
+                                                <comp:StyleTextTableAttr text="Data"/>
+                                            </header>
+                                        </Column>
+                                        <Column hAlign="Center">
+                                            <header>
+                                                <comp:StyleTextTableAttr text="Turno"/>
+                                            </header>
+                                        </Column>
+                                        <Column hAlign="Center">
+                                            <header>
+                                                <comp:StyleTextTableAttr text="Q.li confezionati"/>
+                                            </header>
+                                        </Column>
+                                        <Column hAlign="Center">
+                                            <header>
+                                                <comp:StyleTextTableAttr text="Q.li residui"/>
+                                            </header>
+                                        </Column>  
+                                        <Column hAlign="Center">
+                                            <header>
+                                                <comp:StyleTextTableAttr text="LineeP"/>
+                                            </header>
+                                        </Column> 
+                                        <Column hAlign="Center">
+                                            <header>
+                                                <comp:StyleTextTableAttr text="Turni"/>
+                                            </header>
+                                        </Column>                                             
+                                    </columns>
+                                </Table>            
+                                </VBox> 
                                 <VBox height="5%" width="100%">
                                     <Text/>
                                 </VBox>
