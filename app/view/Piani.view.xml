@@ -66,7 +66,7 @@
                                 <ScrollContainer height='188.4px' horizontal='false' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
                                     <!-- Table to hold data, data ,data -->
                                     <Table 
-                                        width="1242.18px"
+                                        width="1368px"
                                         class="noBorder tableTextSize"
                                         items="{path: 'turni>/pianidiconfezionamento/conclusi',
                                                 sorter: {
@@ -121,7 +121,7 @@
                                     </Table>
                                 </ScrollContainer>
         
-                                <Table width="1242.18px" items='{turni>/pianidiconfezionamento/incorso}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                                <Table width="1368px" items='{turni>/pianidiconfezionamento/incorso}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
                                     <columns>
                                         <!-- Dont need columns header, as upper table has already defined them. -->
                                         <Column hAlign="Center">
@@ -172,7 +172,7 @@
                                 <ScrollContainer height='188.4px' horizontal='false' vertical='true' class="sapUiMediumMarginTop"> <!-- To have fixed with and enable vertical scrolling of data table -->
                                     <!-- Table to hold data, data ,data -->
                                     <Table 
-                                        width="1242.18px"
+                                        width="1368px"
                                         items="{path: 'turni>/pianidiconfezionamento/programmati',
                                                 sorter: {
                                                         path: 'data',
@@ -227,7 +227,7 @@
                                     </Table>
                                 </ScrollContainer>            
             
-                                <Table width="1242.18px" items='{turni>/pianidiconfezionamento/dacreare}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
+                                <Table width="1368px" items='{turni>/pianidiconfezionamento/dacreare}' class="noBorder sapUiMediumMarginTop tableTextSize"> <!--  CSS class to hide the column header, otherwise we will have 2 headers. -->
                                     <columns>
                                         <!-- Dont need columns header, as upper table has already defined them. -->
                                         <Column hAlign="Center">

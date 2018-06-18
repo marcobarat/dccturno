@@ -139,36 +139,36 @@
                                                                 <VBox height="80%" width="100%">
                                                         
                                                                     <Table
+                                                                        width="1066.4px"
                                                                         showNoData="false"
                                                                         inset="false"
                                                                         growing="true"
                                                                         fixedLayout="false"
                                                                         growingThreshold="2"
-                                                                        class="sapUiSmallMarginEnd mysapMListTblNoBorders" 
+                                                                        class="mysapMListTblNoBorders" 
                                                                     >
                                                                         <columns>
-                                                                            <Column width="8%" hAlign="Center">
-                                                                                <Text text="" />
+                                                                            <Column width="92px" hAlign="Center">
                                                                             </Column>
-                                                                            <Column width="10%"  hAlign="Center">
+                                                                            <Column width="110px" hAlign="Center">
                                                                                 <Text text="Sequenza" />
                                                                             </Column>
-                                                                            <Column width="18%" hAlign="Center">
+                                                                            <Column width="190px" hAlign="Center">
                                                                                 <Text text="Formato" />
                                                                             </Column>
-                                                                            <Column width="22%" hAlign="Center">
+                                                                            <Column  width="130px" hAlign="Center">
                                                                                 <Text text="Confezionamento" />
                                                                             </Column>
-                                                                            <Column width="5%">
+                                                                            <Column width="80px">
                                                                                 <Text text="" />
                                                                             </Column>
-                                                                            <Column hAlign="Center">
-                                                                                <Text class="sapUiTinyMarginBegin" text="Qli" />
+                                                                            <Column width="92px" hAlign="Center">
+                                                                                <Text text="Qli" />
                                                                             </Column>
-                                                                            <Column width="10%" hAlign="Center">
+                                                                            <Column width="92px" hAlign="Center">
                                                                                 <Text text="Cartoni" />
                                                                             </Column>
-                                                                            <Column class="sapUiSmallMarginBegin" hAlign="Center">
+                                                                            <Column width="140px" hAlign="Center">
                                                                                 <Text text="Ore" />
                                                                             </Column>
                                                                         </columns>
@@ -176,17 +176,17 @@
                                                                     <ScrollContainer height='231px' vertical='true'>
                                                                         <content>
                                                                             <Table class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" 
-                                                                                           width="930px" 
+                                                                                           width="1066.4px" 
                                                                                            items="{linea>batchlist}">
                                                                                 <columns>
-                                                                                    <Column hAlign="Center"/>
-                                                                                    <Column width="5%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="25%" hAlign="Center"/>
-                                                                                    <Column width="15%" hAlign="Center"/>
-                                                                                    <Column hAlign="Center"/>
-                                                                                    <Column hAlign="Center"/>
-                                                                                    <Column hAlign="Center"/>
-                                                                                    <Column hAlign="Center"/>
+                                                                                    <Column width="90px" hAlign="Center"/>
+                                                                                    <Column width="110px" vAlign="Middle" hAlign="Center"/>
+                                                                                    <Column width="190px" hAlign="Center"/>
+                                                                                    <Column width="130px" hAlign="Center"/>
+                                                                                    <Column width="80px" hAlign="Center"/>
+                                                                                    <Column width="92px" vAlign="Middle" hAlign="Center"/>
+                                                                                    <Column width="92px" vAlign="Middle" hAlign="Center"/>
+                                                                                    <Column width="140px" vAlign="Middle" hAlign="Center"/>
                                                                                 </columns>
                                                                                 <items>
                                                                                     <ColumnListItem class="noDelimitator">
@@ -197,7 +197,7 @@
                                                                                                                     press="handlePressOpenMenu" />
                                                                                             <Text
                                                                                                 text="{linea>sequenza}" />
-                                                                                            <ComboBox width="106px">
+                                                                                            <ComboBox width="100%">
                                                                                                 <core:Item key="{linea>formato}" text="{linea>formato}" />
                                                                                             </ComboBox>
 <!--                                                                                                                                                                                <Select
@@ -213,7 +213,7 @@
                                                                                             >
                                                                                                                                                                                     <core:ListItem key="{linea>formato} {linea>materiale}" text="{linea>formato} {linea>materiale}" />
                                                                                             </Select>-->
-                                                                                            <ComboBox width="106px">
+                                                                                            <ComboBox>
                                                                                                 <core:Item key="{linea>confezione}gr" text="{linea>confezione}gr" />
                                                                                             </ComboBox>
                                                                                             <cus:CustomButt text=""

@@ -75,12 +75,24 @@ sap.ui.define([
             }
             this.ModelMenu.setData(Jdata);
         },
-        SUCCESSCreazioneBatch: function (Jdata) {
-            if (Number(Jdata.error) === 0) {
-                this.RefreshCall();
+        SUCCESSCreazioneBatch: function (Jdata, obj) {
+            var oTables = this.getView().byId("managePianoTable").getItems();
+            for (var i = 0; i < oTables.length; i++) {
+                var oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
+                var oRows = oTable.getItems();
+                oTable.removeItem(oRows.length - 1);
+            }
+            if (Number(this.ISLOCAL) === 1) {
+                this.LOCALTakeLineaById(this.linea_id, obj);
                 this.oDialog.close();
+                this.URLChangeCheck();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 30});
+                if (Number(Jdata.error) === 0) {
+                    this.RefreshCall();
+                    this.oDialog.close();
+                } else {
+                    MessageToast.show(Jdata.errorMessage, {duration: 30});
+                }
             }
         },
         SUCCESSFormati: function (Jdata, selectBox) {
@@ -148,6 +160,7 @@ sap.ui.define([
                 this.changeFields();
             }
             this.manageSPCButton();
+            this.manageComboBox();
 // MI SERVE PER LO STATO LINEA                
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
@@ -326,13 +339,10 @@ sap.ui.define([
                         oRows[j].removeCell(5);
                     }
                     oText = new sap.m.Text({text: "{linea>qli}"});
-                    oText.addStyleClass("sapUiSmallMarginTop");
                     oRows[j].addCell(oText);
                     oText = new sap.m.Text({text: "{linea>cartoni}"});
-                    oText.addStyleClass("sapUiSmallMarginTop");
                     oRows[j].addCell(oText);
                     oText = new sap.m.Text().bindText({path: 'linea>ore', formatter: this.TimeFormatter.TimeText});
-                    oText.addStyleClass("sapUiSmallMarginTop sapUiMediumMarginBegin");
                     oRows[j].addCell(oText);
 
                     oRows[j].removeCell(1);
@@ -368,6 +378,7 @@ sap.ui.define([
 //            this.addFieldsCreazione(); 
         },
         confermaCreazioneBatch: function () {
+            var that = this;
             var link;
             var obj = {};
             obj.pianodiconfezionamento = this.pdcID;
@@ -379,10 +390,15 @@ sap.ui.define([
             obj.cartoni = this.getView().byId("cartoni").getValue();
             obj.ore = this.getView().byId("ore").getValue();
             var doc_xml = Library.createXMLBatch(obj);
-            if (Number(this.ISLOCAL) !== 1) {
+            if (Number(this.ISLOCAL) === 1) {
+                this.SUCCESSCreazioneBatch({}, obj);
+            } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertNewBatch&Content-Type=text/json&xml=" + doc_xml + "&OutputParameter=JSON";
-                Library.AjaxCallerData(link, this.SUCCESSCreazioneBatch.bind(this));
+                Library.AjaxCallerData(link, function (Jdata) {
+                    that.SUCCESSCreazioneBatch.bind(that)(Jdata, obj);
+                });
             }
+
         },
 //GESTIONE VISUALIZZA ATTRIBUTI BATCH
         azioneBatch: function (oEvent) {
@@ -510,9 +526,46 @@ sap.ui.define([
                 that.SUCCESSConfezionamenti.bind(that)(Jdata, SelectBox);
             });
         },
-        ResetConfezionamenti: function (oEvent){
+        ResetConfezionamenti: function (oEvent) {
             this.getView().byId("confezionamento").destroyItems();
             this.getView().byId("confezionamento").setValue("");
+        },
+        manageComboBox: function () {
+            var oTables = this.getView().byId("managePianoTable").getItems();
+            for (var i = 0; i < oTables.length; i++) {
+                var oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
+                var oRows = oTable.getItems();
+                for (var j = 0; j < oRows.length - 1; j++) {
+//                    oRows[j].getCells()[2].getPicker().mEventRegistry.getContent()[0];
+//                    oRows[j].getCells()[2].getPicker().mEventRegistry.getContent()[0];
+//                    oRows[j].getCells()[3].getPicker().mEventRegistry.beforeOpen[0].fFunction = this.CaricaConfezionamentiView();
+                }
+            }
+        },
+        CaricaFormatiView: function (SelectBox) {
+            var link;
+            var that = this;
+//            var SelectBox = oEvent.getSource();
+            SelectBox.destroyItems();
+            if (this.ISLOCAL === 1) {
+                link = "model/formati.json";
+            }
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFormatiFilteredByLineID&Content-Type=text/json&LineaID=" + this.pdcID + "&OutputParameter=JSON";
+            }
+            Library.AjaxCallerData(link, function (Jdata) {
+                that.SUCCESSFormati.bind(that)(Jdata, SelectBox);
+            });
+        },
+// FUNZIONI LOCALI
+        LOCALTakeLineaById: function(id, obj) {
+            for (var j = 0; j < this.ModelLinea.getData().linee.length; j++) {
+                if (Number(this.ModelLinea.getData().linee[j].id) === Number(id)) {
+                    this.ModelLinea.getData().linee[j].batchlist.push(obj);
+                    return;
+                }
+            }
+            return;
         }
     });
     return ManagePiano;
