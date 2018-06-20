@@ -5,7 +5,6 @@
     <Page id="managePiano" class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-<!--                <VBox height="5%" width="100%"/>-->
                 <VBox height="5%" width="100%">
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
@@ -35,8 +34,7 @@
                                 applyContentPadding="true"
                                 expandable="false"
                                 items="{reparti>/ListaReparti}"
-                                selectedKey="1"
-                            >
+                                selectedKey="1">
                                 <items>
                                     <IconTabFilter
                                         text="{reparti>Reparto}"
@@ -44,104 +42,99 @@
                                     </IconTabFilter>                  
                                 </items>
                                 <content>
-                                    <Table 
-                                        inset="false" items="{path: 'linea>/linee'}" class="sapUiSmallMarginEnd" id="managePianoTable">
+                                    <Table inset="false" items="{path: 'linea>/linee'}" id="managePianoTable">
                                         <columns>
-                                            <Column
-                                                width="12em">
-                                            </Column>
+                                            <Column width="12em"/>
                                         </columns>
                                         <items>
                                             <ColumnListItem class="noDelimitator">
                                                 <cells>
-                                                    <VBox width="100%" height="80%" class="sfondobianco">
-                                                        <HBox width="100%" height="35%"  alignItems="Start">
+                                                    <VBox width="100%" height="100%" class="sfondobianco">
+                                                        <HBox>
                                                             <VBox width="20%" height="100%">
                                                                 <VBox>
-                                                                    <cus:CustomButt text="{linea>linea}"
-                                                                                    press="onOpenStatoLinea"
-                                                                                    width="100%"
-                                                                                    class="fix_b noFocus"
-                                                                                    state="{linea>statolinea}"
-                                                                                    customType="linea">
-                                                            
-                                                                        <cus:layoutData>
-                                                                            <FlexItemData growFactor="1" />
-                                                                        </cus:layoutData>
-                                                                    </cus:CustomButt>
-                                                                </VBox>
-                                                                <Table 
-                                                                    showNoData="false"
-                                                                    class="mysapMListTblNoBorders borderBoxRight sapMListTblHeader_b">
-                                                                    <columns>
-                                                                        <Column  hAlign="Center">
-                                                                            <Text text="Operatori"/>
-                                                                        </Column>
-                                                                    </columns>
-                                                                </Table>
-                                                                <VBox class="borderBoxRight">
-                                                                    <ScrollContainer vertical='true' height="155px">  
-                                                                        <content>
+                                                                    <VBox width="100%" height="20%">
+                                                                        <cus:CustomButt text="{linea>linea}"
+                                                                                        press="onOpenStatoLinea"
+                                                                                        width="100%"
+                                                                                        class="noFocus buttonDimension"
+                                                                                        state="{linea>statolinea}"
+                                                                                        customType="linea">
+                                                                        </cus:CustomButt>
+                                                                    </VBox >
+                                                                    <VBox width="100%" height="80%" class="bordoBlu">
+                                                                        <VBox width="100%" height="30%">
                                                                             <Table 
-                                                                                items="{path: 'operatore>/Operator'}"
-                                                                                inset="false"
-                                                                                growing="true"
-                                                                                fixedLayout="false"
-                                                                                class="sapUiSmallMarginEnd mysapMListTblNoBorders">
+                                                                                showNoData="false"
+                                                                                class="mysapMListTblNoBorders sapMListTblHeader_b">
                                                                                 <columns>
                                                                                     <Column  hAlign="Center">
+                                                                                        <Text text="Operatori"/>
                                                                                     </Column>
                                                                                 </columns>
-                                                                                <items>
-                                                                                    <ColumnListItem class="noDelimitator sapMListTblCell_b sapMListTblCell_op">
-                                                                                        <cells>
-                                                                                            <ComboBox items="{operatore>Operator}" width="100%">
-                                                                                                <core:Item key="{operatore>nome}" text="{operatore>nome} {operatore>cognome}" />
-                                                                                            </ComboBox>
-                                                                                        </cells>
-                                                                                    </ColumnListItem>
-                                                                                </items>
-                                                                            </Table>    
-                                                                        </content> 
-                                                                    </ScrollContainer> 
+                                                                            </Table>
+                                                                        </VBox>
+                                                                        <VBox width="100%" height="70%">
+                                                                            <ScrollContainer vertical='true' height="155px">  
+                                                                                <Table 
+                                                                                    items="{path: 'operatore>/Operator'}"
+                                                                                    inset="false"
+                                                                                    growing="true"
+                                                                                    fixedLayout="false"
+                                                                                    class="sapUiSmallMarginEnd mysapMListTblNoBorders">
+                                                                                    <columns>
+                                                                                        <Column  hAlign="Center">
+                                                                                        </Column>
+                                                                                    </columns>
+                                                                                    <items>
+                                                                                        <ColumnListItem class="noDelimitator sapMListTblCell_b sapMListTblCell_op">
+                                                                                            <cells>
+                                                                                                <ComboBox items="{operatore>Operator}" width="90%">
+                                                                                                    <core:Item key="{operatore>nome}" text="{operatore>nome} {operatore>cognome}" />
+                                                                                                </ComboBox>
+                                                                                            </cells>
+                                                                                        </ColumnListItem>
+                                                                                    </items>
+                                                                                </Table>    
+                                                                            </ScrollContainer> 
+                                                                        </VBox>
+                                                                    </VBox>
                                                                 </VBox>
                                                             </VBox>
-              
                                                             <VBox width="80%" height="100%">
                                                                 <VBox height="20%" width="100%">
                                                                     <HBox>
-                                                                        <VBox width="90%" >
+                                                                        <VBox width="90%" height="100%" class="progressBarVBox">
                                                                             <cus:NewProgressIndicator
-                                                                                class="largo"
+                                                                                class="largo progressBarFix"
                                                                                 percentValue="{= Number(${linea>avanzamento})}"
                                                                                 displayValue="{linea>perc_avanzamento}"
                                                                                 showValue="true"
-                                                                                barColor="{linee>barColor}"
-                                                                            />
+                                                                                width="40rem"
+                                                                                height="3.2rem"
+                                                                                barColor="{linee>barColor}"/>
                                                                         </VBox>
-                                                                        <VBox width="10%">
+                                                                        <VBox width="10%" height="100%" class="bordoBlu3 SPCVBox">
                                                                             <cus:CustomButt icon="img/triangoloprova.png"
                                                                                             text="4"
                                                                                             press="onPress"
                                                                                             ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                                                                             customType="graficoSPC"
                                                                                             state="1"
-                                                                                            width="80%"
-                                                                                            class="sapUiSmallMarginBegin monobuttonSPC noFocus">
+                                                                                            width="100%"
+                                                                                            class="monobuttonSPC noFocus">
                                                                             </cus:CustomButt>
                                                                         </VBox>
                                                                     </HBox>
                                                                 </VBox>
-                                                                <VBox height="80%" width="100%">
-                                                        
+                                                                <VBox height="80%" width="100%" class="bordoBlu styleVBoxbottom">
                                                                     <Table
                                                                         showNoData="false"
                                                                         inset="false"
                                                                         growing="true"
                                                                         fixedLayout="false"
                                                                         growingThreshold="2"
-                                                                        class="sapUiSmallMarginEnd mysapMListTblNoBorders sapMListTblHeader_b scrollingbar" 
-                                                                    >
+                                                                        class="sapUiSmallMarginEnd mysapMListTblNoBorders sapMListTblHeader_b scrollingbar">
                                                                         <columns>
                                                                             <Column width="5%" hAlign="Center">
                                                                                 <Text text="" />
@@ -173,63 +166,40 @@
                                                                         </columns>
                                                                     </Table>
                                                                     <ScrollContainer vertical='true' height="155px" class="scrollingbar">
-                                                                        <content>
-                                                                            <Table class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" 
-                                                                                   width="100%" 
-                                                                                   items="{linea>batchlist}">
-                                                                                <columns>
-                                                                                    <Column width="5%"  vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="10%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="20%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="15%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="15%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="10%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="10%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column  vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column  width="5%" vAlign="Middle" hAlign="Center"/>
-                                                                                </columns>
-                                                                                <items>
-                                                                                    <ColumnListItem class="noDelimitator sapMListTblCell_b" height="90%">
-                                                                                        <cells>
-                                                                                            <cus:CustomButt 
-                                                                                                            text="" 
-                                                                                                            customType="batch"
-                                                                                                            state="{linea>statoBatch}"
-                                                                                                            press="handlePressOpenMenu" />
-                                                                                            <Text
-                                                                                                text="{linea>sequenza}" />
-                                                                                            <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti">
-                                                                                                <!--<core:Item key="{linea>formato}" text="{linea>formato}"/>-->
-                                                                                            </ComboBox>
-                                                                                            <!--                                                                                                                                                                                <Select
-                                                                                                selectedKey="{linea>formato} {linea>materiale}"
-                                                                                                showSecondaryValues= "true"
-                                                                                                items="{
-                                                                                    path: 'linea>Formati',
-                                                                                    sorter: {
-                                                                                            path: 'formato',
-                                                                                            group: true
-                                                                                            }
-                                                                                    }"
-                                                                                            >
-                                                                                                                                                                                    <core:ListItem key="{linea>formato} {linea>materiale}" text="{linea>formato} {linea>materiale}" />
-                                                                                            </Select>-->
-                                                                                            <ComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione">
-                                                                                                <!--<core:Item key="{linea>confezione}gr" text="{linea>confezione}gr" />-->
-                                                                                            </ComboBox>
-                                                                                            <Button         width="90%"
-                                                                                                            text="{linea>destinazione}"
-                                                                                                            press="visuBatch"
-                                                                                                            >
-                                                                                            </Button>
-                                                                                            <Button visible="false" press="confermaCreazioneBatch">
-                                                                                                
-                                                                                            </Button>
-                                                                                        </cells>
-                                                                                    </ColumnListItem>
-                                                                                </items>                                                                                                                                
-                                                                            </Table>
-                                                                        </content>
+                                                                        <Table class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" 
+                                                                               width="100%" 
+                                                                               items="{linea>batchlist}">
+                                                                            <columns>
+                                                                                <Column width="5%"  vAlign="Middle" hAlign="Center"/>
+                                                                                <Column width="10%" vAlign="Middle" hAlign="Center"/>
+                                                                                <Column width="20%" vAlign="Middle" hAlign="Center"/>
+                                                                                <Column width="15%" vAlign="Middle" hAlign="Center"/>
+                                                                                <Column width="15%" vAlign="Middle" hAlign="Center"/>
+                                                                                <Column width="10%" vAlign="Middle" hAlign="Center"/>
+                                                                                <Column width="10%" vAlign="Middle" hAlign="Center"/>
+                                                                                <Column  vAlign="Middle" hAlign="Center"/>
+                                                                                <Column  width="5%" vAlign="Middle" hAlign="Center"/>
+                                                                            </columns>
+                                                                            <items>
+                                                                                <ColumnListItem class="noDelimitator sapMListTblCell_b" height="90%">
+                                                                                    <cells>
+                                                                                        <cus:CustomButt 
+                                                                                            text=""
+                                                                                            icon="sap-icon://action-settings"
+                                                                                            customType="batch"
+                                                                                            state="{linea>statoBatch}"
+                                                                                            press="handlePressOpenMenu"/>
+                                                                                        <Text text="{linea>sequenza}" />
+                                                                                        <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti">
+                                                                                        </ComboBox>
+                                                                                        <ComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione">
+                                                                                        </ComboBox>
+                                                                                        <Button width="90%" text="{linea>destinazione}" press="visuBatch"/>
+                                                                                        <Button visible="false" press="confermaCreazioneBatch" icon="sap-icon://accept"/>
+                                                                                    </cells>
+                                                                                </ColumnListItem>
+                                                                            </items>                                                                                                                                
+                                                                        </Table>
                                                                     </ScrollContainer>  
                                                                 </VBox>
                                                             </VBox>       

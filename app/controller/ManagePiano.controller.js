@@ -614,10 +614,10 @@ sap.ui.define([
                 var SPCButton = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
                 if (Number(this.piano.area) === 1) {
                     SPCButton.setVisible(true);
-                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].removeStyleClass("prova");
+//                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].removeStyleClass("prova");
                 } else {
                     SPCButton.setVisible(false);
-                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].addStyleClass("prova");
+//                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].addStyleClass("prova");
                 }
             }
         },

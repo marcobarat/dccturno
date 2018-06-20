@@ -83,7 +83,6 @@
 }
 .fix_b {
     margin-bottom: 0px;
-
 }
 .centrati * {
     width: 100% !important;
@@ -165,8 +164,8 @@
 }*/
 
 .FermoButton .sapMBtn {
-/*    padding-left: 0.85rem;
-    height: 3.3rem;*/
+    /*    padding-left: 0.85rem;
+        height: 3.3rem;*/
     padding-top: 0.4rem; 
     padding-right: 0.1rem; 
 }
@@ -401,7 +400,7 @@
 
 /*GESTIONE DEL BUTTON LINEA*/
 
-.bordoLineaGreen .sapMBtnText{
+.bordoLineaGreen .sapMBtnInner{
     border: 3px solid #7CA295 !important;
 }
 
@@ -409,69 +408,72 @@
     border: 3px solid #bfbfbf !important;
 }
 
-.internoLineaWhite>.sapMBtnInner{
-    background-image: none;
-    text-shadow: none;
-    background-color: white !important;
-    color: #003A6B !important; 
+.internoLineaWhite .sapMBtnInner{
+    background: white ;
+    color: #003A6B; 
 }
 
-.internoLineaYellow>.sapMBtnInner{
-    background-image: none;
-    text-shadow: none;
-    background-color: #FFD300 !important;
-    color: #003A6B !important; 
+.internoLineaYellow .sapMBtnInner{
+    background: #FFD300 ;
+    color: #003A6B;
 }
 
 .internoLineaYellow:hover>.sapMBtnInner:hover{
-    background-image: none;
-    text-shadow: none;
-    background-color: #ffe14d !important;
-    color: #003A6B !important; 
+    background: #ffe14d ;
+    color: #003A6B;
 }
 
-.internoLineaGreen>.sapMBtnInner{
-    background-image: none;
-    text-shadow: none;
-    background-color: #7CA295 !important;
-    color: white !important; 
+.internoLineaGreen .sapMBtnInner{
+    background: #7CA295 ;
+    color: white;
 }
 
 .internoLineaGreen:hover>.sapMBtnInner:hover{
-    background-image: none;
-    text-shadow: none;
-    background-color: #55776b !important;
-    color: white !important; 
+    background: #55776b ;
+    color: white;
 }
 
-.internoLineaRed>.sapMBtnInner{
-    background-image: none;
-    text-shadow: none;
-    background-color: #A71930 !important;
-    color: white !important; 
+.internoLineaRed> .sapMBtnInner{
+    background: #A71930 ;
+    color: white;
 }
 
 .internoLineaRed:hover>.sapMBtnInner:hover{
-    background-image: none;
-    text-shadow: none;
-    background-color: #c81e3a !important;
-    color: white !important; 
+    background: #c81e3a ;
+    color: white;
 }
 
 .internoLineaBordeaux>.sapMBtnInner{
-    background-image: none;
-    text-shadow: none;
-    background-color: #5E3032 !important;
-    color: white !important; 
+    background: #5E3032 ;
+    color: white;
 }
 
 .internoLineaBordeaux:hover>.sapMBtnInner:hover{
-    background-image: none;
-    text-shadow: none;
-    background-color: #974e52 !important;
-    color: white !important; 
+    background: #974e52 ;
+    color: white;
 }
-
+.buttonDimension .sapMBtnInner {
+    bottom: 0.38rem;
+    right: 0.02rem;
+    height: 3.1rem;
+    width: 16.7rem;
+}
+.progressBarFix {
+    border: solid 3px;
+    border-color: #003A6B;
+    height: 3.05rem;
+    margin: 0rem;
+}
+.progressBarVBox {
+    bottom: 0.1rem;
+}
+.SPCVBox {
+    bottom: 0.1rem;
+    height: 3.2rem !important;
+}
+.styleVBoxbottom {
+    bottom: 0.2rem;
+}
 
 
 .progressBarButtonEmpty * {
@@ -499,10 +501,13 @@
 .mysapMListTblNoBorders .sapMListTbl th {
     border: 0px;
 }
-
-.sfondobianco
-{
+.bordoBlu {
     border: 1.5px solid #003A6B;
+}
+.bordoBlu3 {
+    border: 3px solid #003A6B;
+}
+.sfondobianco {
     background-color: white;
 }
 
@@ -524,8 +529,10 @@
     padding-left:25% !important;
     padding-right:25% !important;
     position: relative;
-    text-shadow: none;
-    /*height: 3.5rem;*/ 
+    border: 0px;
+    border-radius: 0px;
+    height: 2.78rem;
+    bottom: 0.25rem;
 }
 
 .monobuttonSPC .sapMBtnIcon {
