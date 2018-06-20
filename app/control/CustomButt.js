@@ -70,14 +70,14 @@ sap.ui.define([
 
             if (oType === "batch") {
                 switch (oState) {
-                    case "NonTrasferito":
+                    case "Non trasferito":
                         break;
-                    case "InLavorazione":
+                    case "In lavorazione":
                         jQuery.sap.byId(this.getId()).addClass("neroreno");
                         break;
-                    case "Chiuso":
-                        this.destroy();
-                        break;
+//                    case "Chiuso":
+//                        this.destroy();
+//                        break;
                     case "Attrezzaggio":
                         jQuery.sap.byId(this.getId()).addClass("giallogallo");
                         break;

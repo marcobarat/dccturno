@@ -3,11 +3,11 @@
     "errorMessage": "",
     "formati": [
         {
-            "formato": "020",
+            "formato": "Zitone tagliato 020",
             "ID": "1"
         },
         {
-            "formato": "025",
+            "formato": "Zitone tagliato 025",
             "ID": "3"
         }
     ]

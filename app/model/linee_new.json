@@ -1,95 +1,52 @@
 {
-    "linee": [{
-            "lineaID": "1",
-            "linea": "Coppia 04",
-            "statolinea": "Disponibile.Lavorazione",
-            "disponibilita": "",
-            "efficienza": "",
-            "qualita": "",
-            "fermo": "",
-            "avanzamento": "0",
-            "perc_avanzamento": "0 %",
-            "barColor": "orange",
-            "batchlist": [{
-                    "batchID": "4",
-                    "sequenza": "10",
-                    "statoBatch": "Non trasferito",
-                    "erroreBatch": "0",
-                    "formato": "93",
-                    "confezione": "500",
-                    "qli": "5",
-                    "cartoni": "41",
-                    "ore": "0:20:40",
-                    "disponibilita": "",
-                    "produttivita": "",
-                    "qualita": "",
-                    "fermo": ""
-                }, {
-                    "batchID": "5",
-                    "sequenza": "20",
-                    "statoBatch": "Non trasferito",
-                    "erroreBatch": "0",
-                    "formato": "93",
-                    "confezione": "1000",
-                    "qli": "5",
-                    "cartoni": "41",
-                    "ore": "0:20:40",
-                    "disponibilita": "",
-                    "produttivita": "",
-                    "qualita": "",
-                    "fermo": ""
-                }, {
-                    "batchID": "6",
-                    "sequenza": "30",
-                    "statoBatch": "Non trasferito",
-                    "erroreBatch": "0",
-                    "formato": "93",
-                    "confezione": "500",
-                    "qli": "5",
-                    "cartoni": "41",
-                    "ore": "0:20:40",
-                    "disponibilita": "",
-                    "produttivita": "",
-                    "qualita": "",
-                    "fermo": ""
-                }]
-        }, {
-            "lineaID": "12",
-            "linea": "Coppia 02",
-            "statolinea": "Nondisponibile",
-            "disponibilita": "",
-            "efficienza": "",
-            "qualita": "",
-            "fermo": "",
-            "avanzamento": "0",
-            "perc_avanzamento": "0 %",
-            "barColor": "orange",
-            "batchlist": [{
-                    "batchID": "7",
-                    "sequenza": "10",
-                    "statoBatch": "Non trasferito",
-                    "erroreBatch": "0",
-                    "formato": "41",
-                    "confezione": "500",
-                    "qli": "0",
-                    "cartoni": "0",
-                    "ore": "0:00:00",
-                    "disponibilita": "",
-                    "produttivita": "",
-                    "qualita": "",
-                    "fermo": ""
-                }]
-        }, {
-            "lineaID": "41",
-            "linea": "Linea 12",
-            "statolinea": "Disponibile.Attrezzaggio",
-            "disponibilita": "",
-            "efficienza": "",
-            "qualita": "",
-            "fermo": "",
-            "avanzamento": "0",
-            "perc_avanzamento": "0 %",
-            "barColor": "orange",
-            "batchlist": []
-        }]
+  "linee": [
+    {
+      "lineaID": "1",
+      "linea": "Coppia 04",
+      "statolinea": "Disponibile.Vuota",
+      "nOperatori": "2",
+      "disponibilita": "",
+      "efficienza": "",
+      "qualita": "",
+      "fermo": "",
+      "avanzamento": "0",
+      "perc_avanzamento": "0 %",
+      "barColor": "orange",
+      "batchlist": [
+        {
+          "batchID": "3",
+          "sequenza": "",
+          "statoBatch": "Chiuso",
+          "erroreBatch": "NA",
+          "formatoProduttivo": "Zitone tagliato 020",
+          "confezione": "Film",
+          "grammatura": "500",
+          "destinazione": "ITALIA + ESTERO",
+          "qli": "3.42.4.22",
+          "cartoni": "612",
+          "ore": "attesa",
+          "disponibilita": "wait",
+          "produttivita": "wait",
+          "qualita": "wait",
+          "fermo": "wait"
+        }
+      ]
+    },
+    {
+      "lineaID": "12",
+      "linea": "Coppia 02",
+      "statolinea": "Disponibile.Vuota",
+      "nOperatori": "2",
+      "disponibilita": "",
+      "efficienza": "",
+      "qualita": "",
+      "fermo": "",
+      "avanzamento": "0",
+      "perc_avanzamento": "0 %",
+      "barColor": "orange",
+      "batchlist": [
+        
+      ]
+    }
+  ]
 }

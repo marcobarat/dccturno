@@ -9,73 +9,59 @@
                 <VBox height="5%" width="100%"/>
                 <VBox height="10%" width="100%">
                     <HBox>
-                        <VBox height="100%" width="6.2%"/>
-                        <VBox height="100%" width="13.8%">
-                            <Button text="Annulla" press="onNavBack" width="100%" class="annullaButton noFocus" />
-                        </VBox>
-                        <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="40%">
-                            <VBox height="50%" width="100%">
+                        <VBox height="100%" width="5%"/>
+                        <HBox height="100%" width="20%">
+                            <!--<VBox width="1rem"/>-->
+                            <HBox>
+
+                                <Button text="Creazione report OEE"
+                                        press="onReport"
+                                        ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                        class="noFocus paddingleft">
+                                </Button>
+                                <Button 
+                                    id="reportButton"
+                                    class="noFocus" 
+                                    text="Report"
+                                    visible="true"
+                                    enabled="false"
+                                    press="onReportView"
+                                    ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                >
+                                </Button>  
+                            </HBox>    
+                        </HBox>                  
+                        <!--<VBox height="100%"/>-->
+                        
+                        <VBox height="100%" width="50%">
+                            <VBox height="50%" width="100%" alignItems="Center">
                                 <Text id="ReportTitle"/>
-                            </VBox>
-                            <VBox height="50%" width="100%">
-                                <Text text="Turno Concluso" class="customText"/>
-                            </VBox>
+                            </VBox> 
                         </VBox>
-                        <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="13.8%">
-                            <Button text="Conferma" press="onMenu" width="100%" class="confermaButton noFocus"/>
-                        </VBox>
-                        <VBox height="100%" width="6.2%"/>
+
+
+
+
+                        <!--<VBox height="100%"/>-->
+                        <HBox height="100%" width="20%">
+                            <HBox width="100%" justifyContent="End">
+                                <Button text="Conferma chiusura piano"
+                                        press="onChiusuraPiano"
+                                        ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                        class="noFocus">
+                                </Button>
+                                <Button text="Esci" press="onNavBack" class="noFocus paddingright"/>
+                            </HBox> 
+                            <!--<VBox width="1rem"/>-->  
+                        </HBox> 
+                        <VBox height="100%" width="5%"/>
                     </HBox>
                 </VBox>
-                <VBox height="5%" width="100%"/>
+                
                 <VBox height="80%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="90%">
-                            <HBox>
-                                <VBox width="33%" class="sapUiSmallMargin">
-                                    <Button text="Creazione Report OEE"
-                                            press="onReport"
-                                            ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                            width="100%"
-                                            class="confermaButton noFocus">
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
-                                    </Button>
-                                </VBox>
-                                <VBox width="33%" class="sapUiSmallMargin">
-                                    <Button 
-                                        id="reportButton"
-                                        class="styleButton noFocus" 
-                                        text="Report"
-                                        visible="false"
-                                        press="onReportView"
-                                        ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        width="100%">
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
-                                    </Button>                        
-                                </VBox>
-                                <VBox width="33%" class="sapUiSmallMargin">
-                                    <Button 
-                                        id="confermaButton" 
-                                        class="styleButton noFocus"
-                                        text="Conferma chiusura piano"
-                                        visible="false"
-                                        press="onConfermaChiusuraPiano"
-                                        ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        width="100%">
-                                        <layoutData>
-                                            <FlexItemData growFactor="1" />
-                                        </layoutData>
-                                    </Button>                        
-                                </VBox>       
-
-                            </HBox>                            
                             <IconTabBar
                                 id="ManageIconTabBar"
                                 select="changeReparto"
@@ -95,7 +81,7 @@
                                         inset="false" 
                                         items="{path: 'linea>/linee'}" 
                                         class="sapUiSmallMarginEnd"
-                                        id="ManagePianoTable">
+                                        id="ManagePianoTableGrey">
                                         <headerToolbar>
                                         </headerToolbar>
                                         <columns>
@@ -114,8 +100,10 @@
                                                                       class="fix_linea">
                                                                 </Text>                                        
                                                             </VBox>
-                                                            <HBox width="23%" class="mysapMInputBaseWidthPadding FermoButton">
-                                                                <VBox/>                                  
+                                                            <HBox width="22%" class="mysapMInputBaseWidthPadding FermoButton">
+                                                                <VBox alignItems="Center" width="27.5%"/>
+                                                                <VBox alignItems="Center" width="27.5%"/>
+                                                                <VBox width="45%"/>                                  
                                                             </HBox>
 
                                                         </HBox>
@@ -136,10 +124,13 @@
                                                                             <Text text="Sequenza" />
                                                                         </Column>
                                                                         <Column
-                                                                            hAlign="Center">
+                                                                            vAlign="Middle"
+                                                                            hAlign="Center"
+                                                                        >
                                                                             <Text text="Formato" />
                                                                         </Column>
                                                                         <Column
+                                                                            vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Confezionamento" />
                                                                         </Column>
@@ -159,21 +150,16 @@
                                                                         </Column>
                                                                         <Column
                                                                             vAlign="Middle"
-                                                                            hAlign="End">
+                                                                            hAlign="Center">
                                                                             <Text text="Ore" />
                                                                         </Column>
                                                                     </columns>
                                                                     <items>
-                                                                        <ColumnListItem>
+                                                                        <ColumnListItem class="sapMListTblCell_b">
                                                                             <cells>
-                                                                                <Text
-                                                                                    text="{linea>sequenza}" />
-                                                                                <Select>
-                                                                                    <core:Item key="semola" text="Semola 093" />
-                                                                                </Select>
-                                                                                <Select>
-                                                                                    <core:Item key="500gr" text="500gr" />
-                                                                                </Select>
+                                                                                <Text text="{linea>sequenza}" />
+                                                                                <Text text="{linea>formatoProduttivo}" />
+                                                                                <Text text="{= ${linea>confezione} + ' ' + ${linea>grammatura} + 'gr'}" />
                                                                                 <cus:CustomButt text=""
                                                                                                 press="onPress"
                                                                                                 type="batch"

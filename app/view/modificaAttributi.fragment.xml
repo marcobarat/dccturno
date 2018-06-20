@@ -13,20 +13,14 @@
                     <content>             
                         <HBox>
                             <VBox width="20%" class="sapUiMediumMargin">
-                                <Select class="sapUiMediumMarginBottom" change="changeSKU">
-                                    <core:Item key="formato" text="formato" />
-                                </Select>
-                                <Select class="sapUiMediumMarginBottom" change="changeSKU">
-                                    <core:Item key="confezione" text="confezione" />
-                                </Select>
-                        
-                                <Select class="sapUiMediumMarginBottom" change="changeSKU">
-                                    <core:Item key="cliente" text="cliente" />
-                                </Select>
-                                
-                                <Select class="sapUiMediumMarginTop" change="changeSKU">
-                                    <core:Item key="SKU" text="SKU" />
-                                </Select>
+                                <ComboBox id="formato_SKU" class="sapUiMediumMarginBottom" change="changeSKU">
+                                </ComboBox>
+                                <ComboBox id="confezione_SKU" class="sapUiMediumMarginBottom" change="changeSKU">
+                                </ComboBox>                        
+                                <ComboBox id="cliente_SKU" class="sapUiMediumMarginBottom" change="changeSKU">
+                                </ComboBox>
+                                <ComboBox id="SKU" class="sapUiMediumMarginTop" change="changeSKU">
+                                </ComboBox>
                             </VBox>
                             <VBox width="80%">
                                 <wt:CustomTreeTable
