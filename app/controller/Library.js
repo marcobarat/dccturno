@@ -4,6 +4,11 @@ sap.ui.define([
     return {
         exp: null,
 // FUNZIONI TEMPORALI 
+        roundTo: function (value, decimalpositions) {
+            var i = value * Math.pow(10, decimalpositions);
+            i = Math.round(i);
+            return i / Math.pow(10, decimalpositions);
+        },
         MillisecsToStandard: function (val) {
             var hours = Math.floor(val / 1000 / 60 / 60);
             val -= hours * 1000 * 60 * 60;
@@ -32,8 +37,8 @@ sap.ui.define([
             val -= hours * 60;
             var mins = val;
             var string_hours, string_mins;
-            string_hours = this.stringTime(hours);
-            string_mins = this.stringTime(mins);
+            string_hours = this.StringTime(hours);
+            string_mins = this.StringTime(mins);
             return (string_hours + ":" + string_mins);
         },
         StringTime: function (val) {
@@ -190,7 +195,6 @@ sap.ui.define([
             }
             return json;
         },
-
 //CREAZIONE DEI FILE XML PER LA PARTE DI BACKEND
         createXMLFermo: function (obj) {
             var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
@@ -206,13 +210,28 @@ sap.ui.define([
             var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
             var bottom = '</root>';
             var parameters = '<pianoDiConfezionamentoId>' + obj.pianodiconfezionamento + '</pianoDiConfezionamentoId>' +
-                    '<lineaId>' + obj.lineaId + '</lineaId>' +
-                    '<formatoId>' + obj.formatoId + '</formatoId>' +
-                    '<confezioneId>' + obj.confezionamentoId + '</confezioneId>' +
-                    '<sequenza>' + obj.sequenza + '</sequenza>' +
-                    '<qliTeo>' + obj.quintali + '</qliTeo>' +
-                    '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
-                    '<oreTeo>' + obj.ore + '</oreTeo>';
+                    '<lineaId>' + obj.lineaId + '</lineaId>';
+            if (obj.batchId) {
+                parameters += '<batchId>' + obj.batchId + '</batchId>';
+            } else {
+                parameters += '<batchId/>';
+            }
+            parameters +=   '<formatoProduttivo>' + obj.formatoProduttivo + '</formatoProduttivo>' +
+                            '<grammatura>' + obj.grammatura + '</grammatura>' +
+                            '<sequenza>' + obj.sequenza + '</sequenza>' +
+                            '<tipologia>' + obj.tipologia + '</tipologia>' +
+                            '<qliTeo>' + obj.quintali + '</qliTeo>' +
+                            '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
+                            '<oreTeo>' + obj.ore + '</oreTeo>';
+            return top + parameters + bottom;
+        },
+        createXMLDestinazione: function (obj) {
+            var top = '<?xml version="1.0" encoding="UTF-8"?><root><pianoDiConfezionamentoId/>';
+            var bottom = '<sequenza/> <qliTeo/><cartoniTeo/><oreTeo/></root>';
+            var parameters = '<lineaId>' + obj.lineaID + '</lineaId>' +
+                             '<formatoProduttivo>' +obj.formatoProduttivo + '</formatoProduttivo>' +
+                             '<grammatura>' + obj.grammatura + '</grammatura>' +
+                             '<tipologia>' + obj.tipologia + '</tipologia>';
             return top + parameters + bottom;
         }
 

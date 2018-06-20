@@ -4,6 +4,7 @@
             "lineaID": "1",
             "linea": "Coppia 04",
             "statolinea": "Disponibile.Vuota",
+            "nOperatori": "2",
             "disponibilita": "",
             "efficienza": "",
             "qualita": "",
@@ -15,39 +16,51 @@
                 {
                     "batchID": "3",
                     "sequenza": "10",
-                    "statoBatch": "Non trasferito",
+                    "statoBatch": "In lavorazione",
                     "erroreBatch": "NA",
-                    "formato": "020",
-                    "confezione": "500",
+                    "formatoProduttivo": "Zitone tagliato 020",
+                    "confezione": "Film",
+                    "grammatura": "500",
+                    "destinazione": "ITALIA + ESTERO",
                     "qli": "0",
                     "cartoni": "0",
                     "ore": "0:24:50",
                     "disponibilita": "",
                     "produttivita": "",
                     "qualita": "",
-                    "fermo": ""
+                    "fermo": "",
+                    "pezziCartone": "24",
+                    "secondiPerPezzo": "1.24"
                 },
                 {
                     "batchID": "4",
                     "sequenza": "20",
                     "statoBatch": "Non trasferito",
                     "erroreBatch": "NA",
-                    "formato": "020",
-                    "confezione": "500",
+                    "formatoProduttivo": "Zitone tagliato 020",
+                    "confezione": "Film",
+                    "grammatura": "500",
+                    "destinazione": "ITALIA + ESTERO",
                     "qli": "0",
                     "cartoni": "0",
                     "ore": "0:24:50",
                     "disponibilita": "",
                     "produttivita": "",
                     "qualita": "",
-                    "fermo": ""
+                    "fermo": "",
+                    "pezziCartone": "24",
+                    "secondiPerPezzo": "1.24"
                 }
             ],
             "lastbatch": [
                 {
                     "sequenza": "20",
-                    "formato": "020",
-                    "confezione": "500"
+                    "formatoProduttivo": "Zitone tagliato 020",
+                    "confezione": "Film",
+                    "grammatura": "500",
+                    "destinazione": "ITALIA + ESTERO",
+                    "pezziCartone": "24",
+                    "secondiPerPezzo": "1.24"
                 }
             ]
         },
@@ -55,6 +68,7 @@
             "lineaID": "12",
             "linea": "Coppia 02",
             "statolinea": "",
+            "nOperatori": "2",
             "disponibilita": "",
             "efficienza": "",
             "qualita": "",
@@ -67,8 +81,38 @@
             "lastbatch": [
                 {
                     "sequenza": "20",
-                    "formato": "020",
-                    "confezione": ""
+                    "formatoProduttivo": "Zitone tagliato 020",
+                    "confezione": "Film",
+                    "grammatura": "500",
+                    "destinazione": "ITALIA + ESTERO",
+                    "pezziCartone": "24",
+                    "secondiPerPezzo": "1.24"
+                }
+            ]
+        },
+        {
+            "lineaID": "13",
+            "linea": "Coppia 02",
+            "statolinea": "",
+            "nOperatori": "2",
+            "disponibilita": "",
+            "efficienza": "",
+            "qualita": "",
+            "fermo": "",
+            "avanzamento": "0",
+            "perc_avanzamento": "0 %",
+            "barColor": "orange",
+            "batchlist": [
+            ],
+            "lastbatch": [
+                {
+                    "sequenza": "20",
+                    "formatoProduttivo": "Zitone tagliato 020",
+                    "confezione": "Film",
+                    "grammatura": "500",
+                    "destinazione": "ITALIA + ESTERO",
+                    "pezziCartone": "24",
+                    "secondiPerPezzo": "1.24"
                 }
             ]
         }

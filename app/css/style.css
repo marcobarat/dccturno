@@ -82,7 +82,7 @@
     font-weight: bold;
 }
 .fix_b {
-    margin-bottom: 4.6%;
+    margin-bottom: 0px;
 
 }
 .centrati * {
@@ -111,6 +111,7 @@
 }
 .largo {
     width:100% !important;
+    margin-bottom: 0px !important;
 }
 .size2 {
     font-size : 2.5rem;
@@ -176,8 +177,8 @@
 }
 
 .fix_linea.sapMText {
-    margin-bottom: 2.5%;
-    margin-top: 2.5%;
+    margin-bottom: 1%;
+    margin-top: 1%;
     margin-left: 3%;
     font-size: large;
     font-weight: bold; 
@@ -187,15 +188,17 @@
     background-color: white;
 }
 
-.mysapMInputBaseWidthPadding .sapMInputBaseWidthPadding {
+/*.mysapMInputBaseWidthPadding .sapMInputBaseWidthPadding {
     padding-top: 0.3rem;
-    padding-left: 0.25rem;
+    padding-left: 0.5rem;
     padding-right: 0.9rem;
-}
+}*/
 
 .FermoButton .sapMBtn {
-    padding-left: 0.85rem;
-    height: 3.3rem;
+/*    padding-left: 0.85rem;
+    height: 3.3rem;*/
+    padding-top: 0.4rem; 
+    padding-right: 0.1rem; 
 }
 
 .customTextFermo {
@@ -380,11 +383,13 @@
 
 /*CSS PER LE MIE TABELLE  */
 .totalWhiteTable .sapMListTbl th {
-    background: white;
-    border: 0px;
+    background-color: white !important;
+    border: 0px !important;
+
 }
 
-.borderMiddleTable .sapMListTbl th {
+
+/*.borderMiddleTable .sapMListTbl th {
     border: solid 1px;
     color: #003A6B;
 }
@@ -406,6 +411,7 @@
 .blueText * {
     color: #003A6B !important;
 }
+}*/
 
 .noBorder *{
     border: 0px !important;
@@ -556,10 +562,10 @@
 .monobuttonSPC .sapMBtnIcon {
     position: absolute;
     left: 25%;
-/*    max-height: 3.5rem;
-    height: 3.5rem;
-    width: 2.6875rem; */
-    
+    /*    max-height: 3.5rem;
+        height: 3.5rem;
+        width: 2.6875rem; */
+
     /* new_width = (new_height*43)/56 */
 }
 
@@ -626,7 +632,7 @@
 }
 
 .BorderTop {
-   border-top: 1.5px solid #003A6B; 
+    border-top: 1.5px solid #003A6B; 
 }
 
 .BorderLeftTopRight {
@@ -652,4 +658,111 @@
 .tileSize{
     width: 250px !important;
     height: 250px !important;
+
+/*TABELLA*/
+
+.sapMListTblCell_b .sapMListTblCell{
+    padding: 0.1rem !important;
+}
+
+.sapMListTblCell_b .sapMInput {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.sapMListTblCell_b.sapMLIB {
+    padding: 0px !important; 
+}
+
+.sapMListTblCell_op .sapMListTblCell {
+    padding: 0.35rem 0.1rem !important;
+}
+
+/*.sapMListTblCell_b .sapMComboBox {
+    padding: 0.2rem 0.2rem !important; 
+    width: 100% !important;
+    height: 100% !important;
+}*/
+.sapMListTblCell_b .sapMComboBoxTextField {
+    margin: 0rem !important;
+}
+
+.TimesapMInputBase {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.sapMListTblCell_b .sapMBtn {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.sapMListTblCell_b .sapMBtn {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.sapMListTblCell_b .sapMListTblCell .sapMBTimePicker {
+    width: 100% !important;
+    height: 100% !important;
+}
+/*.sapMListTblCell_b .sapMInput {
+    height: 90%;
+}*/
+
+/*.sapMListTblCell_b .sapMTimePicker {
+    margin-top: 5% !important;
+}*/
+
+.nomarg * {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+
+
+.unpodimargin {
+    margin-left: 2%;
+}
+
+/*.sapMListTblCell_b.sapMLIB {
+    padding: 0px !important;
+}*/
+
+/*.sapMListTblCell_b .sapMListTblHeader .sapMListTblHeaderCell > th{
+    padding: 0px !important;
+}*/
+
+.sapMListTblHeader_b .sapMListTbl .sapMListTblHeader .sapMListTblCell{
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+
+
+/*.sapMListTblHeader .sapMListTblCell:first-child {
+    padding-left: 0px;
+}*/
+
+
+
+
+/* SCROLLING CONTAINER */
+.scrollingbar {
+    overflow-y: scroll !important; 
+}
+
+
+.prova {
+    margin-bottom: 0.35%;
+}
+
+/*BOTTONI MANAGEPIANOGREY*/
+
+.paddingright {
+    padding-right: 1rem;
+}
+.paddingleft {
+    padding-left: 1rem;
 }
