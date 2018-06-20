@@ -434,7 +434,6 @@ sap.ui.define([
 //            oTable.addItem(columnListItem);
 //            oTable.rerender();
             Model.setData(oData);
-
             this.addFieldsCreazione();
 ////            this.getView().setModel(Model, "linea");
 //            var oButton = new sap.m.Button({
