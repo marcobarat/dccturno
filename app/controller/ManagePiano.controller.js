@@ -155,6 +155,7 @@ sap.ui.define([
                 this.RefreshFunction();
             }
             this.getView().setModel(this.ModelLinea, 'linea');
+            this.getView().byId("managePianoTable").rerender();
             this.addFieldsCreazione();
 //            if (Number(this.piano.area) === 1) {
 //                this.changeFields();
@@ -277,22 +278,22 @@ sap.ui.define([
                     }
                     oRows = oTable.getItems();
                     for (j = 0; j < oRows.length - 1; j++) {
-                        if (oRows[j].getCells().length >= 8) {
-                            oRows[j].removeCell(7);
-                            oRows[j].removeCell(6);
-                            oRows[j].removeCell(5);
-                            this.addCellInput(oRows[j]);
-                        } else if (oRows[j].getCells().length < 8 && oRows[j].getCells().length > 1) {
-                            this.addCellInput(oRows[j]);
-                        }
-                        oRows[j].removeCell(1);
-                        oCell = new sap.m.Input({
-                            value: "{linea>sequenza}",
-                            width: "4rem",
-                            type: "Number",
-                            textAlign: "Center"
-                        });
-                        oRows[j].insertCell(oCell, 1);
+////                        if (oRows[j].getCells().length >= 8) {
+////                            oRows[j].removeCell(7);
+////                            oRows[j].removeCell(6);
+////                            oRows[j].removeCell(5);
+////                            this.addCellInput(oRows[j]);
+////                        } else if (oRows[j].getCells().length < 8 && oRows[j].getCells().length > 1) {
+////                            this.addCellInput(oRows[j]);
+////                        }
+//                        oRows[j].removeCell(1);
+//                        oCell = new sap.m.Input({
+//                            value: "{linea>sequenza}",
+//                            width: "4rem",
+//                            type: "Number",
+//                            textAlign: "Center"
+//                        });
+//                        oRows[j].insertCell(oCell, 1);
                         if (j === oRows.length - 2) {
                             var row_path = oRows[j].getBindingContext("linea").sPath;
                             var row_binded = this.getView().getModel("linea").getProperty(row_path);
@@ -399,8 +400,8 @@ sap.ui.define([
             var columnListItem;
             var oTable = oEvent.getSource().getParent().getParent();
             oEvent.getSource().getParent().getParent().removeItem(oEvent.getSource().getParent());
-            var ModelLinea = this.getView().getModel("linea");
-            var oData = ModelLinea.getData();
+            var Model = this.getView().getModel("linea");
+            var oData = Model.getData();
             var oLinea_path = oEvent.getSource().getBindingContext("linea").getPath().split("/");
             var obj = {};
             var last_batch = oData[oLinea_path[1]][oLinea_path[2]].lastbatch[0];
@@ -412,6 +413,8 @@ sap.ui.define([
             obj.secondiPerPezzo = last_batch.secondiPerPezzo;
             obj.pezziCartone = last_batch.pezziCartone;
             oData[oLinea_path[1]][oLinea_path[2]].batchlist.push(obj);
+            oEvent.getSource().getParent().destroy();
+//            oTable.removeItem(oTable.getItems(oRows.length-1));
 ////            var timePicker = new sap.m.TimePicker({value: "", valueFormat: "HH:mm", width: "7rem", displayFormat: "HH:mm", change: this.ChangeValues.bind(this)});
 ////            timePicker.addStyleClass("TimesapMInputBase");
 ////            var columnListItem = new sap.m.ColumnListItem({
@@ -429,21 +432,25 @@ sap.ui.define([
 ////            });
 //            columnListItem.addStyleClass("noDelimitator sapMListTblCell_b");
 //            oTable.addItem(columnListItem);
-            ModelLinea.setData(oData);
-            this.getView().setModel(ModelLinea, "linea");
-            var oButton = new sap.m.Button({
-                icon: "sap-icon://add",
-                press: this.onAddItem.bind(this)
-            });
-            columnListItem = new sap.m.ColumnListItem({
-                cells: [
-                    oButton
-                ]
-            });
-            columnListItem.addStyleClass("noDelimitator sapMListTblCell_b");
-            oTable.addItem(columnListItem);
-            oTable.rerender();
+//            oTable.rerender();
+            Model.setData(oData);
+
             this.addFieldsCreazione();
+////            this.getView().setModel(Model, "linea");
+//            var oButton = new sap.m.Button({
+//                icon: "sap-icon://add",
+//                press: this.onAddItem.bind(this)
+//            });
+//            columnListItem = new sap.m.ColumnListItem({
+//                cells: [
+//                    oButton
+//                ]
+//            });
+//            columnListItem.addStyleClass("noDelimitator sapMListTblCell_b");
+//            oTable.addItem(columnListItem);
+//            oTable.rerender();
+//            oTable.rerender();
+//            this.addFieldsCreazione();
         },
         confermaCreazioneBatch: function (oEvent) {
             var PathLinea = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;

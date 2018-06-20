@@ -5,7 +5,7 @@
     <Page id="managePiano" class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-<!--                <VBox height="5%" width="100%"/>-->
+                <VBox height="5%" width="100%"/>
                 <VBox height="5%" width="100%">
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
@@ -25,7 +25,7 @@
                         <VBox height="100%" width="6.2%"/>
                     </HBox>
                 </VBox>
-                <VBox height="95%" width="100%">
+                <VBox height="90%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="90%">
@@ -196,8 +196,9 @@
                                                                                                             customType="batch"
                                                                                                             state="{linea>statoBatch}"
                                                                                                             press="handlePressOpenMenu" />
-                                                                                            <Text
-                                                                                                text="{linea>sequenza}" />
+                                                                                            <Input
+                                                                                                textAlign="Center"
+                                                                                                value="{= Number(${linea>sequenza})}" />
                                                                                             <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti">
                                                                                                 <!--<core:Item key="{linea>formato}" text="{linea>formato}"/>-->
                                                                                             </ComboBox>
@@ -222,6 +223,9 @@
                                                                                                             press="visuBatch"
                                                                                                             >
                                                                                             </Button>
+                                                                                            <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues"></Input>
+                                                                                            <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues"></Input>
+                                                                                            <TimePicker class="TimesapMInputBase" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm"></TimePicker>
                                                                                             <Button visible="false" press="confermaCreazioneBatch">
                                                                                                 
                                                                                             </Button>
