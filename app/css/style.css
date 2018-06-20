@@ -624,9 +624,10 @@
     padding-left: 0px;
     padding-right: 0px;
 }
-.tileSize{
+.tileSize {
     width: 250px !important;
     height: 250px !important;
+}
 
 /*TABELLA*/
 
@@ -701,7 +702,7 @@
     padding: 0px !important;
 }*/
 
-.sapMListTblHeader_b .sapMListTbl .sapMListTblHeader .sapMListTblCell{
+.sapMListTblHeader_b .sapMListTbl .sapMListTblHeader .sapMListTblCell {
     padding-left: 0px;
     padding-right: 0px;
     padding-top: 0.4rem;
