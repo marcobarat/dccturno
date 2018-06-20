@@ -386,10 +386,12 @@
 
 .borderMiddleTable .sapMListTbl th {
     border: solid 1px;
+    color: #003A6B;
 }
 
 .border {
     border: solid 1px;
+    color: #003A6B;
 }
 
 .green {
@@ -400,6 +402,9 @@
 }
 .yellow {
     background: #FFD300;
+}
+.blueText * {
+    color: #003A6B !important;
 }
 
 .noBorder *{
@@ -643,4 +648,8 @@
 .sapMITBContent {
     padding-left: 0px;
     padding-right: 0px;
+}
+.tileSize{
+    width: 250px !important;
+    height: 250px !important;
 }
