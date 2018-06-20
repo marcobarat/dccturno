@@ -26,7 +26,7 @@
                             <VBox height="100%" width="12%"/>
                             <VBox height="100%" width="76%">
                                 <VBox height="10%" width="100%">
-                                    <Table width="100%" showNoData='false' class="totalWhiteTable tableTextSize">
+                                    <Table width="100%" showNoData='false' class="totalWhiteTable tableTextSize blueText">
                                         <columns>
                                             <Column>
                                                 <header>
@@ -232,7 +232,7 @@
                                         <Table 
                                             width="100%"
                                             class="tableTextSize noBorder"
-                                            items="{path: 'turni>/pianidiconfezionamento/conclusi', sorter: {path: 'data', descending: true}}">
+                                            items="{path: 'turni>/pianidiconfezionamento/conclusi', sorter: {path: 'data', descending: false}}">
                                             <columns>
                                                 <Column hAlign="Center">
                                                 </Column>
@@ -331,7 +331,7 @@
                                     <ScrollContainer height="187px" horizontal="false" vertical="true">
                                         <Table 
                                             width="100%"
-                                            items="{path: 'turni>/pianidiconfezionamento/programmati', sorter: {path: 'data',descending: true}}"
+                                            items="{path: 'turni>/pianidiconfezionamento/programmati', sorter: {path: 'data',descending: false}}"
                                             class="tableTextSize noBorder">
                                             <columns>
                                                 <Column hAlign="Center">
@@ -405,18 +405,12 @@
                                                         press="managePiano"
                                                         color="black" >
                                                     </core:Icon>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>data}" area="{turni>area}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>turno}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>qliconf}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>qliresidui}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>lineep}"/>
-                                                    <comp:StyleTextTableAttr
-                                                        text="{turni>turni}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>data}" area="{turni>area}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>turno}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>qliconf}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>qliresidui}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>lineep}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>turni}"/>
                                                 </cells>
                                             </ColumnListItem>
                                         </items>

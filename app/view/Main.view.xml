@@ -5,67 +5,22 @@
           controllerName="myapp.controller.Main">
     <Page id="myPage" showHeader="false">
         <content>
-            
-            
-            <GenericTile header="Piani di Confezionamento" press="onToPianiPage" backgroundImage="sap-icon://legend">
-		<!--<tileContent unit="Unit" footer="Footer Text" backgroundImage="sap-icon://line-charts"/>-->
-		<!--</tileContent>-->
-	</GenericTile>
-
-	<GenericTile header="Sinottici" press="onSinotticiPage">
-<!--		<tileContent unit="Unit" footer="Footer Text">
-			<NumericContent value="12" />
-		</tileContent>-->
-	</GenericTile>
-            
-            
-<!--            <SplitApp id="SplitAppDemo" initialDetail="Home" initialMaster="processi"> 
-                <detailPages>
-                    <Page id="Home" showHeader="false">
-                        <content>
-                            <Panel>
-                                <FlexBox width="100%" alignItems="Center"
-                                         justifyContent="Center" class="middleImg">
-                                    <items>
-                                        <Image
-                                            src="img/dececco.jpg"                               
-                                            width="60%" class="sapUiSmallMarginEnd" >
-                                        </Image>
-                                    </items>
-                                </FlexBox>
-                            </Panel>
-                        </content>
-                    </Page>
-                </detailPages>
-                
-                
-                
-                <masterPages>
-                    <Page id="processi" class="colorPage" showHeader="false">
-                        <content>
-                            <VBox height="10%"/>
-                            <VBox height="90%" width="100%">
-                                    <VBox height="60%" width="100%" justifyContent="center" alignItems="start">
-                                        <Button text="Home" enabled="true" pressed="true" press="onInit" width="100%" class="styleButton">
-                                        </Button>
-                                        <Text/>
-                                        <Button text="Gestione piani di confezionamento" enabled="true" press="onToPianiPage" width="100%" class="styleButton">
-                                        </Button>
-                                        <Text/>
-                                        <Button text="Sinottico reparto" enabled="true" press="FinePredisposizione" width="100%" class="styleButton">
-                                        </Button>
-                                        <Text/>
-                                        <Button text="Sinottico linea" enabled="true" press="FinePredisposizione" width="100%" class="styleButton">
-                                        </Button>
-                                        <Text/>
-                                        <Button text="Sinottico macchina" enabled="true" press="FinePredisposizione" width="100%" class="styleButton">
-                                        </Button>
-                                    </VBox>
-                            </VBox>
-                        </content>
-                    </Page>
-                </masterPages>
-            </SplitApp>-->
+            <VBox height="30%" width="100%"/>
+            <VBox height="50%" width="100%">
+                <HBox>
+                    <VBox height="100%" width="25%"/>
+                    <VBox height="100%" width="30%">
+                        <GenericTile header="Piani di Confezionamento" press="onToPianiPage" backgroundImage="sap-icon://feeder-arrow" class="tileSize">
+                        </GenericTile>
+                    </VBox>
+                    <VBox height="100%" width="30%">
+                        <GenericTile header="Sinottici" press="onSinotticiPage" class="tileSize">
+                        </GenericTile>
+                    </VBox>
+                    <VBox height="100%" width="15%"/>
+                </HBox>
+            </VBox>
+            <VBox height="20%" width="100%"/>
         </content>
     </Page>
 </mvc:View>
