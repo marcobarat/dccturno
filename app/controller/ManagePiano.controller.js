@@ -60,7 +60,13 @@ sap.ui.define([
             this.getView().setModel(this.ModelOperatori, 'operatore');
         },
         SUCCESSSKU: function (Jdata) {
-            this.ModelSKU.setData(Jdata);
+            var bck = Jdata.SKUattuale;
+            var std = Jdata.SKUstandard;
+//            var std = this.getView().getModel("SKUstd").getData();
+            bck = Library.RecursiveJSONComparison(std, bck, "attributi");
+            bck = Library.RecursiveParentExpansion(bck);
+            this.ModelSKU.setData(bck);
+            this.getView().setModel(this.ModelSKU, "SKU");
         },
         SUCCESSSKUstd: function (Jdata) {
             this.ModelSKUstd.setData(Jdata);
@@ -599,6 +605,33 @@ sap.ui.define([
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
             } else {
+                var oView = this.getView();
+                var obj = {};
+                obj.pianodiconfezionamento = "";
+                obj.lineaId = "";
+                obj.batchId = "";
+                obj.sequenza = "";
+                obj.quintali = "";
+                obj.cartoni = "";
+                obj.ore = "";
+                obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
+                obj.formatoProduttivo = row_binded.formatoProduttivo;
+                obj.tipologia = row_binded.tipologia;
+                obj.grammatura = row_binded.grammatura;
+                obj.destinazione = row_binded.destinazione;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch();
+                Library.SyncAjaxCallerData(link, this.SUCCESSSKU());
+                this.oDialog = oView.byId("modificaAttributi");
+                if (!this.oDialog) {
+                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
+                    oView.addDependent(this.oDialog);
+                }
+                this.getView().byId("formato_SKU").setValue(oRow.getCells()[2].getValue());
+                this.getView().byId("confezione_SKU").setValue(oRow.getCells()[3].getValue());
+                this.getView().byId("cliente_SKU").setValue(oRow.getCells()[4].getText());
+                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
+                Library.RemoveClosingButtons.bind(this)("attributiContainer");
+                this.oDialog.open();
             }
         },
         SUCCESSTrasferimentoBatch: function (Jdata) {
@@ -634,7 +667,7 @@ sap.ui.define([
 // GESTIONE POPUP STATO LINEA
         onOpenStatoLinea: function () {
             var oView = this.getView();
-            this.getView().setModel(this.ModelSKU, "SKU");
+//            this.getView().setModel(this.ModelSKU, "SKU");
             this.oDialog = oView.byId("statoLinea");
             if (!this.oDialog) {
                 this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.statoLinea", this);
@@ -711,6 +744,25 @@ sap.ui.define([
             this.getView().byId("SKU").setValue("");
             this.getView().byid("SKU").setEnabled(true);
         },
+        changeSKU: function () {
+            if (this.ISLOCAL !== 1) {
+                var array_confezione = this.getView().byId("confezione_SKU").getValue();
+                var obj = {};
+                obj.pianodiconfezionamento = "";
+                obj.lineaId = "";
+                obj.batchId = "";
+                obj.sequenza = "";
+                obj.quintali = "";
+                obj.cartoni = "";
+                obj.ore = "";
+                obj.SKUCodiceInterno = this.getView().byId("SKU").getValue();
+                obj.formatoProduttivo = this.getView().byId("formato_SKU").getValue();
+                obj.tipologia = array_confezione[0];
+                obj.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch();
+                Library.SyncAjaxCallerData(link, this.SUCCESSSKU());
+            }
+        },
         enableDestinazioni: function () {
             this.getView().byId("cliente_SKU").destroyItems();
             this.getView().byId("cliente_SKU").setValue("");
@@ -756,7 +808,7 @@ sap.ui.define([
                 obj.quintali = this.row.getCells()[5].getValue();
                 obj.cartoni = this.row.getCells()[6].getValue();
                 obj.ore = this.row.getCells()[7].getValue();
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllSKUCodiceInternoFiltered &Content-Type=text/json&xml=xml " + Library.createXMLBatch(obj);
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllSKUCodiceInternoFiltered &Content-Type=text/json&xml=" + Library.createXMLBatch(obj);
                 Library.AjaxCallerData(link, this.SUCCESSListaSKU.bind(this));
             }
         },
