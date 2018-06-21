@@ -104,7 +104,7 @@
                                                             <VBox width="80%" height="100%">
                                                                 <VBox height="20%" width="100%">
                                                                     <HBox>
-                                                                        <VBox width="90%" height="100%" class="progressBarVBox">
+                                                                        <VBox width="100%" height="100%" class="progressBarVBox">
                                                                             <cus:NewProgressIndicator
                                                                                 class="largo progressBarFix"
                                                                                 percentValue="{= Number(${linea>avanzamento})}"
@@ -189,12 +189,15 @@
                                                                                             customType="batch"
                                                                                             state="{linea>statoBatch}"
                                                                                             press="handlePressOpenMenu"/>
-                                                                                        <Text text="{linea>sequenza}" />
+                                                                                        <Input textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton"/>
                                                                                         <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti">
                                                                                         </ComboBox>
                                                                                         <ComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione">
                                                                                         </ComboBox>
                                                                                         <Button width="90%" text="{linea>destinazione}" press="visuBatch"/>
+                                                                                        <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues"></Input>
+                                                                                        <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues"></Input>
+                                                                                        <TimePicker class="TimesapMInputBase" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues"></TimePicker>
                                                                                         <Button visible="false" press="confermaCreazioneBatch" icon="sap-icon://accept"/>
                                                                                     </cells>
                                                                                 </ColumnListItem>

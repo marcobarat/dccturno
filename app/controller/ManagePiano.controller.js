@@ -364,7 +364,7 @@ sap.ui.define([
                 oRow.getCells()[5].setValue(Library.roundTo(quintali, 2));
                 oRow.getCells()[6].setValue(cartoni);
             }
-
+            oRow.getCells()[8].setVisible(true);
         },
         changeFields: function () {
             var j, oTable, oRows, oText;
@@ -619,15 +619,25 @@ sap.ui.define([
             for (var i = 0; i < oItems.length; i++) {
                 var SPCButton = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
                 if (Number(this.piano.area) === 1) {
+                    SPCButton.getParent().setVisible(true);
+                    SPCButton.getParent().setWidth("10%");
+                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].setWidth("90%");
                     SPCButton.setVisible(true);
 //                    oItems[i].getCells()[0].getItems()[0].getI    tems()[1].getItems()[0].getItems()[0].removeStyleClass("prova");
                 } else {
+                    SPCButton.getParent().setVisible(false);
+                    SPCButton.getParent().setWidth("0%");
+                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].setWidth("100%");
                     SPCButton.setVisible(false);
 //                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].addStyleClass("prova");
                 }
             }
         },
 //GESTIONE DEI FORMATI E CONFEZIONAMENTI
+        showUpdateButton: function (oEvent) {
+            var oRow = oEvent.getSource().getParent();
+            oRow.getCells()[8].setVisible(true);
+        },
         CaricaFormati: function (oEvent) {
             var link;
             var that = this;
@@ -671,6 +681,7 @@ sap.ui.define([
             oRow.getCells()[5].setEnabled(false);
             oRow.getCells()[6].setEnabled(false);
             oRow.getCells()[7].setEnabled(false);
+            oRow.getCells()[8].setVisible(true);
         },
         loadDestinazione: function (oEvent) {
             var that = this;
@@ -701,7 +712,7 @@ sap.ui.define([
                     that.SUCCESSDestinazione.bind(that)(Jdata, oRow, row_binded);
                 });
             }
-
+            oRow.getCells()[8].setVisible(true);
         },
 // FUNZIONI LOCALI
         LOCALTakeLineaById: function (id, obj) {

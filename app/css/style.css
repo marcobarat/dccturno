@@ -453,16 +453,27 @@
     color: white;
 }
 .buttonDimension .sapMBtnInner {
-    bottom: 0.38rem;
+    bottom: 0.35rem;
     right: 0.02rem;
     height: 3.1rem;
     width: 16.7rem;
+    border-radius: 0px;
 }
+
+.buttonDimension .sapMBtnInner .sapMBtnContent{
+    padding-top: 0.24rem;
+    font-size: 1rem;
+}
+
 .progressBarFix {
     border: solid 3px;
     border-color: #003A6B;
     height: 3.05rem;
     margin: 0rem;
+}
+.progressBarFix .sapMPIText{
+    padding-top: 0.24rem;
+    font-size: 1rem;
 }
 .progressBarVBox {
     bottom: 0.1rem;
@@ -532,12 +543,16 @@
     border: 0px;
     border-radius: 0px;
     height: 2.78rem;
-    bottom: 0.25rem;
+    bottom: 0.24rem;
 }
 
 .monobuttonSPC .sapMBtnIcon {
     position: absolute;
-    left: 25%;
+    left: 30%;
+    max-width: 3.5rem;
+    max-height: 3.5rem;
+    width: 2.7rem;
+    height: 2.8rem;
     /*    max-height: 3.5rem;
         height: 3.5rem;
         width: 2.6875rem; */
@@ -547,8 +562,8 @@
 
 .monobuttonSPC .sapMBtnContent {
     position: absolute;
-    left: 35%;
-    top: 2.5%;
+    left: 40%;
+    top: 10%;
     background-color: transparent !important;
 }
 
