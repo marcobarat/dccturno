@@ -216,22 +216,25 @@ sap.ui.define([
             } else {
                 parameters += '<batchId/>';
             }
-            parameters +=   '<formatoProduttivo>' + obj.formatoProduttivo + '</formatoProduttivo>' +
-                            '<grammatura>' + obj.grammatura + '</grammatura>' +
-                            '<sequenza>' + obj.sequenza + '</sequenza>' +
-                            '<tipologia>' + obj.tipologia + '</tipologia>' +
-                            '<qliTeo>' + obj.quintali + '</qliTeo>' +
-                            '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
-                            '<oreTeo>' + obj.ore + '</oreTeo>';
+            parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';
+            parameters += '<formatoProduttivo>' + obj.formatoProduttivo + '</formatoProduttivo>' +
+                    '<grammatura>' + obj.grammatura + '</grammatura>' +
+                    '<sequenza>' + obj.sequenza + '</sequenza>' +
+                    '<tipologia>' + obj.tipologia + '</tipologia>' +
+                    '<destinazione>' + obj.destinazione + '</destinazione>' +
+                    '<qliTeo>' + obj.quintali + '</qliTeo>' +
+                    '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
+                    '<oreTeo>' + obj.ore + '</oreTeo>';
             return top + parameters + bottom;
         },
         createXMLDestinazione: function (obj) {
             var top = '<?xml version="1.0" encoding="UTF-8"?><root><pianoDiConfezionamentoId/>';
             var bottom = '<sequenza/> <qliTeo/><cartoniTeo/><oreTeo/></root>';
-            var parameters = '<lineaId>' + obj.lineaID + '</lineaId>' +
-                             '<formatoProduttivo>' +obj.formatoProduttivo + '</formatoProduttivo>' +
-                             '<grammatura>' + obj.grammatura + '</grammatura>' +
-                             '<tipologia>' + obj.tipologia + '</tipologia>';
+            var parameters = '<lineaId>' + obj.lineaID + '</lineaId>';
+            parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';
+            parameters += '<formatoProduttivo>' + obj.formatoProduttivo + '</formatoProduttivo>' +
+                    '<grammatura>' + obj.grammatura + '</grammatura>' +
+                    '<tipologia>' + obj.tipologia + '</tipologia>';
             return top + parameters + bottom;
         }
 

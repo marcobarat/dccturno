@@ -5,7 +5,7 @@
     xmlns:wt="myapp.control" 
     controllerName="myapp.controller.MenuItemEventing"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1000px" horizontalScrolling="false" verticalScrolling="true" showHeader="false" class="colorPage"  id="modificaAttributi">
+    <Dialog contentWidth="1000px" contentHeight="600px" horizontalScrolling="false" verticalScrolling="true" showHeader="false" class="colorPage"  id="modificaAttributi">
         <TabContainer
             id="attributiContainer" class="sapUiMediumMarginBottom">
             <items>    
@@ -13,13 +13,13 @@
                     <content>             
                         <HBox>
                             <VBox width="20%" class="sapUiMediumMargin">
-                                <ComboBox id="formato_SKU" class="sapUiMediumMarginBottom" change="changeSKU">
+                                <ComboBox id="formato_SKU" class="sapUiMediumMarginBottom" loadItems="CaricaFormati" selectionChange="ResetConfezionamentiDialog">
                                 </ComboBox>
-                                <ComboBox id="confezione_SKU" class="sapUiMediumMarginBottom" change="changeSKU">
+                                <ComboBox id="confezione_SKU" class="sapUiMediumMarginBottom" loadItems="CaricaConfezionamenti" selectionChange="enableDestinazioni">
                                 </ComboBox>                        
-                                <ComboBox id="cliente_SKU" class="sapUiMediumMarginBottom" change="changeSKU">
+                                <ComboBox id="cliente_SKU" class="sapUiMediumMarginBottom" loadItems="CaricaDestinazioni" selectionChange="enableSKU">
                                 </ComboBox>
-                                <ComboBox id="SKU" class="sapUiMediumMarginTop" change="changeSKU">
+                                <ComboBox id="SKU" class="sapUiMediumMarginTop" loadItems="CaricaSKU" selectionChange="changeSKU">
                                 </ComboBox>
                             </VBox>
                             <VBox width="80%">
@@ -58,11 +58,11 @@
         </TabContainer> 
         <HBox>
             <VBox width="40%">
-            <Button text="Annulla" width="100%" class="annullaButton" press="closeDialog"></Button>
+            <Button text="Annulla" width="100%" class="annullaButton" press="destroyDialog"></Button>
             </VBox>
             <VBox width="20%"/>
             <VBox width="40%">
-            <Button text="Conferma" width="100%" class="confermaButton"></Button>
+            <Button text="Conferma" width="100%" class="confermaButton" press="confermaModifiche"></Button>
             </VBox>
         </HBox>   
     </Dialog>
