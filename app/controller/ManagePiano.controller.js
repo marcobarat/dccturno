@@ -260,7 +260,7 @@ sap.ui.define([
             var PathLinea = this.oButton.getParent().getParent().getBindingContext("linea").sPath;
             this.linea_id = this.getView().getModel("linea").getProperty(PathLinea).lineaID;
             this.linea = this.getView().getModel("linea").getProperty(PathLinea);
-            this.batch_id = this.getView().getModel("linee").getProperty(PathBatch).batchID;
+            this.batch_id = this.getView().getModel("linea").getProperty(PathBatch).batchID;
 //            this.batch = this.getView().getModel("linea").getProperty(PathBatch);
             this.row = oEvent.getSource().getParent();
             var link;
@@ -511,6 +511,11 @@ sap.ui.define([
             var that = this;
             var link;
             var obj = {};
+            if (row_binded.batchID) {
+                obj.batchId = row_binded.batchID;
+            } else {
+                obj.batchId = "";
+            }
             obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
             obj.pianodiconfezionamento = this.pdcID;
             obj.lineaId = this.linea_id;
@@ -572,6 +577,8 @@ sap.ui.define([
                 oRow = this.row;
             }
             this.row = oRow;
+            var rowPath = this.row.getBindingContext("linea").sPath;
+            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
             if (this.ISLOCAL === 1) {
                 var oView = this.getView();
                 var std = this.getView().getModel("SKUstd").getData();
@@ -588,6 +595,7 @@ sap.ui.define([
                 this.getView().byId("formato_SKU").setValue(oRow.getCells()[2].getValue());
                 this.getView().byId("confezione_SKU").setValue(oRow.getCells()[3].getValue());
                 this.getView().byId("cliente_SKU").setValue(oRow.getCells()[4].getText());
+                this.getView().byId("cliente_SKU").setValue(row_binded.SKUCodiceInterno);
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
             } else {
