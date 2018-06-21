@@ -6,16 +6,16 @@ sap.ui.define([
 ], function (Controller, JSONModel, History, Library) {
     "use strict";
     return Controller.extend("myapp.controller.ManagePianoGrey", {
-        StabilimentoID: sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID,
+        StabilimentoID: null,
         ModelReparti: sap.ui.getCore().getModel("reparti"),
-        pdcID: sap.ui.getCore().getModel("ParametriPiano").pdc,
+        pdcID: null,
         ModelCausali: new JSONModel({}),
-        ModelTurni: sap.ui.getCore().getModel("turni"),
-        ModelLinea: sap.ui.getCore().getModel("linee"),
+        ModelTurni: null,
+        ModelLinea: null,
         ModelOEE: new JSONModel({}),
         ModelGuasti: new JSONModel({}),
         ModelGuastiLinea: new JSONModel({}),
-        ModelPianoParameters: sap.ui.getCore().getModel("ParametriPiano"),
+        ModelPianoParameters: null,
         oLinea_index: null,
         linea: null,
         button_fermo: null,
@@ -39,6 +39,12 @@ sap.ui.define([
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this._onObjectMatched, this);
         },
         _onObjectMatched: function (oEvent) {
+            this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
+            this.pdcID = sap.ui.getCore().getModel("ParametriPiano").pdc;
+            this.repartoID = sap.ui.getCore().getModel("ParametriPiano").reparto;
+            this.ModelLinea = sap.ui.getCore().getModel("linee");
+            this.ModelTurni = sap.ui.getCore().getModel("turni");
+            this.ModelPianoParameters = sap.ui.getCore().getModel("ParametriPiano");
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
 //            var link;

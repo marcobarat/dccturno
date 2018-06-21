@@ -8,6 +8,24 @@ sap.ui.define([
     "use strict";
 
     var PianiController = Controller.extend("myapp.controller.Piani", {
+        AddButtonObject: {
+            batchID: "#ADD#",
+            sequenza: "#ADD#",
+            statoBatch: "#ADD#",
+            erroreBatch: "#ADD#",
+            formatoProduttivo: "#ADD#",
+            confezione: "#ADD#",
+            grammatura: "#ADD#",
+            destinazione: "#ADD#",
+            qli: "#ADD#",
+            cartoni: "#ADD#",
+            ore: "#ADD#",
+            disponibilita: "#ADD#",
+            produttivita: "#ADD#",
+            qualita: "#ADD#",
+            fermo: "#ADD#",
+            pezziCartone: "#ADD#",
+            secondiPerPezzo: "#ADD#"},
         data_json: {},
         ModelLinea: new JSONModel(),
         ModelTurni: new JSONModel(),
@@ -45,7 +63,7 @@ sap.ui.define([
             }
         },
         URLChangeCheck: function (oEvent) {
-            
+
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.getView().setModel(this.ModelLinea, 'linea');
@@ -92,6 +110,10 @@ sap.ui.define([
             oRouter.navTo("managePianoGrey", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
         },
         SUCCESSTurnoAperto: function (Jdata) {
+//            var data = Jdata.linee;
+//            for (var l = 0; l < data.length; l++) {
+//                data[l].batchlist.push(this.AddButtonObject);
+//            }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);

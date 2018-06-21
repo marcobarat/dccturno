@@ -189,16 +189,16 @@
                                                                                             customType="batch"
                                                                                             state="{linea>statoBatch}"
                                                                                             press="handlePressOpenMenu"/>
-                                                                                        <Input textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton"/>
-                                                                                        <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti">
-                                                                                        </ComboBox>
-                                                                                        <ComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione">
-                                                                                        </ComboBox>
-                                                                                        <Button width="90%" text="{linea>destinazione}" press="visuBatch"/>
-                                                                                        <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues"></Input>
-                                                                                        <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues"></Input>
-                                                                                        <TimePicker class="TimesapMInputBase" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues"></TimePicker>
-                                                                                        <Button visible="false" press="confermaCreazioneBatch" icon="sap-icon://accept"/>
+                                                                                        <cus:CustomAddInput textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton"/>
+                                                                                        <cus:CustomAddComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti">
+                                                                                        </cus:CustomAddComboBox>
+                                                                                        <cus:CustomAddComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione">
+                                                                                        </cus:CustomAddComboBox>
+                                                                                        <cus:CustomAddButton width="90%" text="{linea>destinazione}" press="visuBatch"/>
+                                                                                        <cus:CustomAddInput textAlign="Center" value="{linea>qli}" liveChange="ChangeValues"></cus:CustomAddInput>
+                                                                                        <cus:CustomAddInput textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues"></cus:CustomAddInput>
+                                                                                        <cus:CustomAddTimePicker class="TimesapMInputBase" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues"></cus:CustomAddTimePicker>
+                                                                                        <cus:CustomAddButton visible="false" press="confermaCreazioneBatch" icon="sap-icon://accept"/>
                                                                                     </cells>
                                                                                 </ColumnListItem>
                                                                             </items>                                                                                                                                

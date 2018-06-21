@@ -81,6 +81,10 @@ sap.ui.define([
                     case "Attrezzaggio":
                         jQuery.sap.byId(this.getId()).addClass("giallogallo");
                         break;
+                    case "#ADD#":
+                        this.setIcon("sap-icon://add");
+                        this.attachPress("onAddItem");
+                        break;
 
                 }
             }
