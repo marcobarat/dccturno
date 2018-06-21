@@ -6,59 +6,49 @@
     <Page id="managePianoGrey" class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-                <VBox height="5%" width="100%"/>
-                <VBox height="10%" width="100%">
+                <VBox height="4%" width="100%"/>
+                <VBox height="6%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <HBox height="100%" width="20%">
-                            <!--<VBox width="1rem"/>-->
                             <HBox>
-
                                 <Button text="Creazione report OEE"
                                         press="onReport"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        class="noFocus paddingleft">
+                                        class="noFocus paddingleft larghezzaButtonLeft">
                                 </Button>
                                 <Button 
                                     id="reportButton"
-                                    class="noFocus" 
+                                    class="noFocus larghezzaButtonRight shiftButtonLeft" 
                                     text="Report"
                                     visible="true"
                                     enabled="false"
                                     press="onReportView"
-                                    ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                >
+                                    ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                                 </Button>  
                             </HBox>    
                         </HBox>                  
-                        <!--<VBox height="100%"/>-->
-                        
                         <VBox height="100%" width="50%">
                             <VBox height="50%" width="100%" alignItems="Center">
                                 <Text id="ReportTitle"/>
                             </VBox> 
                         </VBox>
-
-
-
-
-                        <!--<VBox height="100%"/>-->
                         <HBox height="100%" width="20%">
                             <HBox width="100%" justifyContent="End">
                                 <Button text="Conferma chiusura piano"
+                                        id="chiusuraPiano"
                                         press="onChiusuraPiano"
+                                        enabled="false"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        class="noFocus">
+                                        class="noFocus larghezzaButtonLeft shiftButtonRight">
                                 </Button>
-                                <Button text="Esci" press="onNavBack" class="noFocus paddingright"/>
+                                <Button text="Esci" press="onNavBack" class="noFocus paddingright larghezzaButtonRight"/>
                             </HBox> 
-                            <!--<VBox width="1rem"/>-->  
                         </HBox> 
                         <VBox height="100%" width="5%"/>
                     </HBox>
                 </VBox>
-                
-                <VBox height="80%" width="100%">
+                <VBox height="90%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="90%">
@@ -68,8 +58,7 @@
                                 applyContentPadding="true"
                                 expandable="false"
                                 items="{reparti>/ListaReparti}"
-                                selectedKey="1"
-                            >
+                                selectedKey="1">
                                 <items>
                                     <IconTabFilter
                                         text="{reparti>Reparto}"
@@ -92,7 +81,7 @@
                                         <items>
                                             <ColumnListItem class="noDelimitator noFocus">
                                                 <cells>
-                                                    <VBox width="100%" height="100%" class="sfondobianco">
+                                                    <VBox width="100%" height="100%" class="sfondobianco bordoBlu">
                                                         <HBox height="35%">
                                                             <VBox width="78%">
                                                                 <Text text="{linea>linea}"
@@ -105,7 +94,6 @@
                                                                 <VBox alignItems="Center" width="27.5%"/>
                                                                 <VBox width="45%"/>                                  
                                                             </HBox>
-
                                                         </HBox>
                                                         <HBox height="65%" width="100%">
                                                             <VBox width="100%">
@@ -115,8 +103,7 @@
                                                                     growing="true"
                                                                     fixedLayout="false"
                                                                     growingThreshold="2"
-                                                                    class="sapUiSmallMarginEnd"
-                                                                >
+                                                                    class="sapUiSmallMarginEnd">
                                                                     <columns class="mysapMListTbl">
                                                                         <Column
                                                                             vAlign="Middle"
@@ -125,8 +112,7 @@
                                                                         </Column>
                                                                         <Column
                                                                             vAlign="Middle"
-                                                                            hAlign="Center"
-                                                                        >
+                                                                            hAlign="Center">
                                                                             <Text text="Formato" />
                                                                         </Column>
                                                                         <Column
@@ -134,8 +120,7 @@
                                                                             hAlign="Center">
                                                                             <Text text="Confezionamento" />
                                                                         </Column>
-                                                                        <Column
-                                                                        >
+                                                                        <Column>
                                                                             <Text text="" />
                                                                         </Column>
                                                                         <Column

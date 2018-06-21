@@ -246,6 +246,7 @@ sap.ui.define([
         onReport: function () {
             if (!this.getView().byId("reportButton").getEnabled()) {
                 var link;
+                this.getView().byId("chiusuraPiano").setEnabled(true);
                 if (this.ISLOCAL === 1) {
                     link = "model/OEE.json";
                 } else {
@@ -585,6 +586,7 @@ sap.ui.define([
         onNavBack: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("piani", true);
+            this.getView().byId("chiusuraPiano").setEnabled(false);
             this.removeReport();
         }
     });

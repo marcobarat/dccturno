@@ -466,9 +466,7 @@
 }
 
 .progressBarFix {
-    border: solid 3px;
-    border-color: #003A6B;
-    height: 3.05rem;
+    height: 3.1rem;
     margin: 0rem;
 }
 .progressBarFix .sapMPIText{
@@ -477,6 +475,9 @@
 }
 .progressBarVBox {
     bottom: 0.1rem;
+}
+.RightVBox {
+    bottom: 0.4rem;
 }
 .SPCVBox {
     bottom: 0.1rem;
@@ -518,6 +519,18 @@
 .bordoBlu3 {
     border: 3px solid #003A6B;
 }
+.bordoBluL {
+    border-left: 1.5px solid #003A6B;
+}
+.bordoBluR {
+    border-right: 1.5px solid #003A6B;
+}
+.bordoBluB {
+    border-bottom: 1.5px solid #003A6B;
+}
+.bordoBluT {
+    border-top: 1.5px solid #003A6B;
+}
 .sfondobianco {
     background-color: white;
 }
@@ -542,8 +555,11 @@
     position: relative;
     border: 0px;
     border-radius: 0px;
-    height: 2.78rem;
+    height: 3.1rem;
     bottom: 0.24rem;
+    border-top: 1.5px solid #003A6B;
+    border-bottom: 1.5px solid #003A6B;
+    border-right: 1.5px solid #003A6B;
 }
 
 .monobuttonSPC .sapMBtnIcon {
@@ -729,6 +745,18 @@
     padding-right: 0px;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
+}
+.larghezzaButtonLeft .sapMBtnInner{
+    width: 12rem;
+}
+.larghezzaButtonRight .sapMBtnInner{
+    width: 5rem;
+}
+.shiftButtonRight .sapMBtnInner{
+    right: 0.5rem;
+}
+.shiftButtonLeft .sapMBtnInner{
+    left: 0.5rem;
 }
 
 
