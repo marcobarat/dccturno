@@ -5,7 +5,8 @@
     <Page id="managePiano" class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-                <VBox height="5%" width="100%">
+                 <VBox height="4%" width="100%"/>
+                <VBox height="6%" width="100%">
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
                         <VBox height="100%" width="13.8%">
@@ -62,7 +63,7 @@
                                                                                         customType="linea">
                                                                         </cus:CustomButt>
                                                                     </VBox >
-                                                                    <VBox width="100%" height="80%" class="bordoBlu">
+                                                                    <VBox width="100%" height="80%" class="bordoBluL bordoBluB bordoBluR">
                                                                         <VBox width="100%" height="30%">
                                                                             <Table 
                                                                                 showNoData="false"
@@ -106,15 +107,14 @@
                                                                     <HBox>
                                                                         <VBox width="100%" height="100%" class="progressBarVBox">
                                                                             <cus:NewProgressIndicator
-                                                                                class="largo progressBarFix"
+                                                                                class="largo progressBarFix bordoBluR bordoBluT bordoBluB"
                                                                                 percentValue="{= Number(${linea>avanzamento})}"
                                                                                 displayValue="{linea>perc_avanzamento}"
                                                                                 showValue="true"
                                                                                 width="40rem"
-                                                                                height="3.2rem"
                                                                                 barColor="{linee>barColor}"/>
                                                                         </VBox>
-                                                                        <VBox width="10%" height="100%" class="bordoBlu3 SPCVBox">
+                                                                        <VBox width="10%" height="100%" class="SPCVBox">
                                                                             <cus:CustomButt icon="img/triangoloprova.png"
                                                                                             text="4"
                                                                                             press="onPress"
@@ -127,7 +127,7 @@
                                                                         </VBox>
                                                                     </HBox>
                                                                 </VBox>
-                                                                <VBox height="80%" width="100%" class="bordoBlu styleVBoxbottom">
+                                                                <VBox height="80%" width="100%" class="bordoBluR bordoBluB styleVBoxbottom">
                                                                     <Table
                                                                         showNoData="false"
                                                                         inset="false"
