@@ -18,6 +18,7 @@ sap.ui.define([
         },
         renderer: {},
         onAfterRendering: function () {
+            TimePicker.prototype.onAfterRendering.apply(this, arguments);
             if (this.getValue() === "#ADD#") {
                 this.setVisible(false);
             }

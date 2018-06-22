@@ -18,6 +18,7 @@ sap.ui.define([
         },
         renderer: {},
         onAfterRendering: function () {
+            ComboBox.prototype.onAfterRendering.apply(this, arguments);
             if (this.getValue() === "#ADD#" || this.getValue() === "#ADD# #ADD#gr") {
                 this.setVisible(false);
             }

@@ -108,12 +108,14 @@ sap.ui.define([
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGrey", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
+            this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoInCorso: function (Jdata) {
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGreen", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
+            this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoFuturo: function (Jdata) {
 //            var data = Jdata.linee;
@@ -124,6 +126,7 @@ sap.ui.define([
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoYellow", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
+            this.ModelLinea.refresh(true);
         },
         GoToHome: function () {
             this.getOwnerComponent().getRouter().navTo("Main");
