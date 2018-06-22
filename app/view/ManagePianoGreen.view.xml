@@ -1,8 +1,8 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
           xmlns:cus="myapp.control"
-          controllerName="myapp.controller.ManagePiano">
-    <Page id="managePiano" class="colorPage" showHeader="false">
+          controllerName="myapp.controller.ManagePianoGreen">
+    <Page id="managePianoGreen" class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
                  <VBox height="4%" width="100%"/>

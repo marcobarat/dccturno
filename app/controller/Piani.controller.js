@@ -93,13 +93,13 @@ sap.ui.define([
                     Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
                 } else if (area === "1") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoApertoInCorso.bind(this));
                 } else if (area === "2") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + pdcId + "&RepartoID=" + repartoId + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoApertoFuturo.bind(this));
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertPdcManuale&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoApertoFuturo.bind(this));
                 }
             }
         },
@@ -109,7 +109,13 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGrey", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
         },
-        SUCCESSTurnoAperto: function (Jdata) {
+        SUCCESSTurnoApertoInCorso: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("managePianoGreen", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
+        },
+        SUCCESSTurnoApertoFuturo: function (Jdata) {
 //            var data = Jdata.linee;
 //            for (var l = 0; l < data.length; l++) {
 //                data[l].batchlist.push(this.AddButtonObject);
@@ -117,7 +123,7 @@ sap.ui.define([
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("managePiano", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
+            oRouter.navTo("managePianoYellow", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
         },
         GoToHome: function () {
             this.getOwnerComponent().getRouter().navTo("Main");

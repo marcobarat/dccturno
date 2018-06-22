@@ -9,7 +9,7 @@ sap.ui.define([
     'myapp/model/TimeFormatter'
 ], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library, TimeFormatter) {
     "       use strict";
-    var ManagePiano = Controller.extend("myapp.controller.ManagePiano", {
+    var ManagePianoGreen = Controller.extend("myapp.controller.ManagePianoGreen", {
         AddButtonObject: {
             batchID: "#ADD#",
             sequenza: "#ADD#",
@@ -58,7 +58,7 @@ sap.ui.define([
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.getRoute("managePiano").attachPatternMatched(this.URLChangeCheck, this);
+            oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (oEvent) {
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
@@ -978,5 +978,5 @@ sap.ui.define([
             return;
         }
     });
-    return ManagePiano;
+    return ManagePianoGreen;
 });

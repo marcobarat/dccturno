@@ -91,7 +91,15 @@
                     "name": "managePiano",
                     "pattern": "managePiano/{turnoPath}/{pianoPath}",
                     "target": "managePiano"
+                },{
+                    "name": "managePianoGreen",
+                    "pattern": "managePianoGreen/{turnoPath}/{pianoPath}",
+                    "target": "managePianoGreen"
                 }, {
+                    "name": "managePianoYellow",
+                    "pattern": "managePianoYellow/{turnoPath}/{pianoPath}",
+                    "target": "managePianoYellow"
+                },{
                     "name": "managePianoGrey",
                     "pattern": "managePianoGrey/{turnoPath}/{pianoPath}",
                     "target": "managePianoGrey"
@@ -122,6 +130,12 @@
                 },
                 "managePiano": {
                     "viewName": "view.managePiano"
+                },
+                "managePianoGreen": {
+                    "viewName": "view.managePianoGreen"
+                },
+                "managePianoYellow": {
+                    "viewName": "view.managePianoYellow"
                 },
                 "managePianoGrey": {
                     "viewName": "view.ManagePianoGrey"
