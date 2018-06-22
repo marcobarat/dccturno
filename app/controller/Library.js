@@ -207,7 +207,7 @@ sap.ui.define([
             return top + parameters + bottom;
         },
         createXMLBatch: function (obj) {
-            var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
+            var top = '<root>';
             var bottom = '</root>';
             var parameters = '<pianoDiConfezionamentoId>' + obj.pianodiconfezionamento + '</pianoDiConfezionamentoId>' +
                     '<lineaId>' + obj.lineaId + '</lineaId>';

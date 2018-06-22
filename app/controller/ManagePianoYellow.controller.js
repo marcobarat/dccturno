@@ -297,15 +297,15 @@ sap.ui.define([
             }
         },
         removeAddButtons: function () {
-           var oTable, oRows;
-           this.getView().byId("managePianoTable");
-           var oTables = this.getView().byId("managePianoTable").getItems();
-           for (var i = 0; i < oTables.length; i++) {
-               oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
-               oRows = oTable.getItems();
-               oTable.removeItem(oRows.length-1);
-           }
-       },
+            var oTable, oRows;
+            this.getView().byId("managePianoTable");
+            var oTables = this.getView().byId("managePianoTable").getItems();
+            for (var i = 0; i < oTables.length; i++) {
+                oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
+                oRows = oTable.getItems();
+                oTable.removeItem(oRows.length - 1);
+            }
+        },
         handlePressOpenMenu: function (oEvent) {
             this.oButton = oEvent.getSource();
             var PathBatch = this.oButton.getParent().getBindingContext("linea").sPath;
@@ -668,8 +668,8 @@ sap.ui.define([
                 obj.tipologia = row_binded.tipologia;
                 obj.grammatura = row_binded.grammatura;
                 obj.destinazione = row_binded.destinazione;
-                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch();
-                Library.SyncAjaxCallerData(link, this.SUCCESSSKU());
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj);
+                Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this));
                 this.oDialog = oView.byId("modificaAttributi");
                 if (!this.oDialog) {
                     this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
@@ -762,7 +762,7 @@ sap.ui.define([
 // RITORNARE ALLA VIEW MAIN
         onMenu: function () {
             this.STOP = 1;
-            this.getView().setModel(null,"linea");
+            this.getView().setModel(null, "linea");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("main", true);
         },
@@ -820,7 +820,7 @@ sap.ui.define([
             this.getView().byId("cliente_SKU").setEnabled(true);
             this.getView().byId("SKU").destroyItems();
             this.getView().byId("SKU").setValue("");
-            this.getView().byid("SKU").setEnabled(false);
+            this.getView().byId("SKU").setEnabled(false);
         },
         confermaModifiche: function () {
             var lineaPath = this.row.getParent().getBindingContext("linea").sPath;
@@ -941,14 +941,21 @@ sap.ui.define([
                 oRow.getCells()[6].setEnabled(true);
                 oRow.getCells()[7].setEnabled(true);
             } else {
-                var array_confezione = oRow.getCells()[3].split(" ");
+                var array_confezione = oRow.getCells()[3].getValue().split(" ");
                 var obj = {};
-                obj.lineaID = this.linea_id;
+                obj.pianodiconfezionamento = "";
+                obj.SKUCodiceInterno = "";
+                obj.sequenza = "";
+                obj.destinazione = "";
+                obj.quintali = "";
+                obj.cartoni = "";
+                obj.ore = "";
+                obj.lineaId = this.linea_id;
                 obj.formatoProduttivo = oRow.getCells()[2].getValue();
                 obj.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
                 obj.tipologia = array_confezione[0];
-                var doc_xml = Library.createXMLDestinazione(obj);
-                link = "DeCecco/Transactions/GetInfoNewBatchStandard&Content-Type=text/json&xml=" + doc_xml;
+                var doc_xml = Library.createXMLBatch(obj);
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetInfoNewBatchStandard&Content-Type=text/json&xml=" + doc_xml;
                 Library.AjaxCallerData(link, function (Jdata) {
                     that.SUCCESSDestinazione.bind(that)(Jdata, oRow, row_binded);
                 });
