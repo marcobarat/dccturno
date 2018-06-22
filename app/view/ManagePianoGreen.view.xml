@@ -183,22 +183,15 @@
                                                                             <items>
                                                                                 <ColumnListItem class="noDelimitator sapMListTblCell_b" height="90%">
                                                                                     <cells>
-                                                                                        <cus:CustomButt 
-                                                                                            text=""
-                                                                                            icon="sap-icon://action-settings"
-                                                                                            customType="batch"
-                                                                                            state="{linea>statoBatch}"
-                                                                                            press="handlePressOpenMenu"/>
-                                                                                        <cus:CustomAddInput textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton"/>
-                                                                                        <cus:CustomAddComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti">
-                                                                                        </cus:CustomAddComboBox>
-                                                                                        <cus:CustomAddComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione">
-                                                                                        </cus:CustomAddComboBox>
-                                                                                        <cus:CustomAddButton width="90%" text="{linea>destinazione}" press="visuBatch"/>
-                                                                                        <cus:CustomAddInput textAlign="Center" value="{linea>qli}" liveChange="ChangeValues"></cus:CustomAddInput>
-                                                                                        <cus:CustomAddInput textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues"></cus:CustomAddInput>
-                                                                                        <cus:CustomAddTimePicker class="TimesapMInputBase" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues"></cus:CustomAddTimePicker>
-                                                                                        <cus:CustomAddButton visible="false" press="confermaCreazioneBatch" icon="sap-icon://accept"/>
+                                                                                        <Button icon="{= ${linea>statoBatch} === '#ADD#' ? 'sap-icon://add' : 'sap-icon://action-settings'}" press="BatchButtonPress"/>
+                                                                                        <Input textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
+                                                                                        <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
+                                                                                        <ComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
+                                                                                        <Button width="90%" text="{linea>destinazione}" press="visuBatch" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
+                                                                                        <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
+                                                                                        <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
+                                                                                        <TimePicker class="TimesapMInputBase" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
+                                                                                        <Button visible="false" press="confermaCreazioneBatch" icon="sap-icon://accept"/>
                                                                                     </cells>
                                                                                 </ColumnListItem>
                                                                             </items>                                                                                                                                

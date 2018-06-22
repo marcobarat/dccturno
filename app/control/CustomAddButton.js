@@ -18,6 +18,8 @@ sap.ui.define([
         },
         renderer: {},
         onAfterRendering: function () {
+            Button.prototype.onAfterRendering.apply(this, arguments);
+            this.setVisible(true);
             if (this.getText() === "#ADD#") {
                 this.setVisible(false);
             }
