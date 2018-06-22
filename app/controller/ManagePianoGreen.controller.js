@@ -565,7 +565,8 @@ sap.ui.define([
             var oData = Model.getData();
             var oLinea_path = oEvent.getSource().getBindingContext("linea").getPath().split("/");
             var obj = {};
-            var last_batch = oData[oLinea_path[1]][oLinea_path[2]].lastbatch[0];
+            var linea = oData[oLinea_path[1]][oLinea_path[2]];
+            var last_batch = linea.lastbatch[0];
             obj.sequenza = last_batch.sequenza;
             obj.formatoProduttivo = last_batch.formatoProduttivo;
             obj.confezione = last_batch.confezione;
@@ -573,8 +574,10 @@ sap.ui.define([
             obj.destinazione = last_batch.destinazione;
             obj.secondiPerPezzo = last_batch.secondiPerPezzo;
             obj.pezziCartone = last_batch.pezziCartone;
-            oData[oLinea_path[1]][oLinea_path[2]].batchlist.push(obj);
+            obj.showButton = 0;
+            linea.batchlist.splice(linea.batchlist.length-1, 0, obj);
             Model.setData(oData);
+            this.getView().setModel(Model, "linea");
         },
         confermaCreazioneBatch: function (oEvent) {
             var PathLinea = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
