@@ -276,7 +276,8 @@ sap.ui.define([
 //            this.getView().byId("confermaButton").setVisible(true);
             var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
             for (var i = 0; i < oItems.length; i++) {
-                var oTable = oItems[i].getAggregation("cells")[0].getAggregation("items")[1].getAggregation("items")[0].getAggregation("items")[0];
+                var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
+                var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
                 var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
                 this.oContent = new sap.m.TextArea({value: "{linea>disponibilita}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
                 oLinea.getItems()[0].addItem(this.oContent);
@@ -284,36 +285,40 @@ sap.ui.define([
                 this.oContent = new sap.m.TextArea({value: "{linea>efficienza}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
 //                this.oContent.addStyleClass("sapUiSmallMarginBegin");
                 oLinea.getItems()[1].addItem(this.oContent);
-                this.oContent = new sap.m.Button({width: "100%", text: "{linea>fermo}", press: ["totali", this.onCausalizzazioneFermi, this]});
+                this.oContent = new sap.m.Button({width: "100%", text: "{linea>fermo}", enabled: "{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}", press: ["totali", this.onCausalizzazioneFermi, this]});
 //                this.oContent.addStyleClass("sapUiTinyMarginBegin");
                 oLinea.getItems()[2].addItem(this.oContent);
                 this.oColumn = new sap.m.Column({
-                    width: "6%",
-                    styleClass: "sapUiSmallMarginBegin",
+                    width: "5%",
                     header: new sap.m.Label({text: "Disp"}),
                     vAlign: "Middle",
                     hAlign: "Center"});
-                oTable.addColumn(this.oColumn);
+                oTable_Header.addColumn(this.oColumn);
                 this.oColumn = new sap.m.Column({
-                    width: "6%",
+                    width: "5%",
                     header: new sap.m.Label({text: "Prod"}),
                     vAlign: "Middle",
                     hAlign: "Center"});
-                oTable.addColumn(this.oColumn);
+                oTable_Header.addColumn(this.oColumn);
                 this.oColumn = new sap.m.Column({
                     width: "10%",
                     header: new sap.m.Label({text: ""}),
                     vAlign: "Middle",
                     hAlign: "Center"});
-                oTable.addColumn(this.oColumn);
-                var oColumnListItems = oTable.getAggregation("items");
-                for (var j = 0; j < oColumnListItems.length; j++) {
-                    var oText = new sap.m.Text({text: "{linea>disponibilita}"});
-                    oColumnListItems[j].addCell(oText);
-                    oText = new sap.m.Text({text: "{linea>produttivita}"});
-                    oColumnListItems[j].addCell(oText);
-                    oText = new sap.m.Button({text: "{linea>fermo}", press: ["{linea>batchID}", this.onCausalizzazioneFermi, this]});
-                    oColumnListItems[j].addCell(oText);
+                oTable_Header.addColumn(this.oColumn);
+                oTable.addColumn(new sap.m.Column({width: "5%", vAlign: "Middle", hAlign: "Center"}));
+                oTable.addColumn(new sap.m.Column({width: "5%", vAlign: "Middle", hAlign: "Center"}));
+                oTable.addColumn(new sap.m.Column({width: "10%", vAlign: "Middle", hAlign: "Center"}));
+                var oColumnListItems = oTable.getItems();
+                if (oColumnListItems !== null) {
+                    for (var j = 0; j < oColumnListItems.length; j++) {
+                        var oText = new sap.m.Text({text: "{linea>disponibilita}"});
+                        oColumnListItems[j].addCell(oText);
+                        oText = new sap.m.Text({text: "{linea>produttivita}"});
+                        oColumnListItems[j].addCell(oText);
+                        oText = new sap.m.Button({text: "{linea>fermo}", enabled: "{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}", press: ["{linea>batchID}", this.onCausalizzazioneFermi, this]});
+                        oColumnListItems[j].addCell(oText);
+                    }
                 }
             }
         },
@@ -322,11 +327,15 @@ sap.ui.define([
                 this.getView().byId("reportButton").setEnabled(false);
                 var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
                 for (var i = 0; i < oItems.length; i++) {
-                    var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
+                    var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
+                    var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
                     var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
                     oLinea.getItems()[2].removeItem(oLinea.getItems()[2].getItems()[0]);
                     oLinea.getItems()[1].removeItem(oLinea.getItems()[1].getItems()[0]);
                     oLinea.getItems()[0].removeItem(oLinea.getItems()[0].getItems()[0]);
+                    oTable_Header.removeColumn(oTable_Header.getColumns()[9]);
+                    oTable_Header.removeColumn(oTable_Header.getColumns()[8]);
+                    oTable_Header.removeColumn(oTable_Header.getColumns()[7]);
                     oTable.removeColumn(oTable.getColumns()[9]);
                     oTable.removeColumn(oTable.getColumns()[8]);
                     oTable.removeColumn(oTable.getColumns()[7]);
@@ -345,6 +354,9 @@ sap.ui.define([
 // APRO IL DIALOG E INIZIALIZZO TUTTE LE CHECKBOX E LE PROPRIETA' DEL CONTROLLER CHE MI SERVONO PER MONITORARE LE CHECKBOX
         onCausalizzazioneFermi: function (oEvent, batchId) {
             if (oEvent) {
+                var rowPath = oEvent.getSource().getBindingContext("linea").sPath;
+                var row_binded = this.getView().getModel("linea").getProperty(rowPath);
+                batchId = row_binded.batchID;
                 this.oLinea_index = oEvent.getSource().getBindingContext("linea").sPath.split("/")[2];
                 var oLinea_path = oEvent.getSource().getBindingContext("linea").sPath;
                 this.linea = this.getView().getModel("linea").getProperty(oLinea_path);
@@ -365,15 +377,15 @@ sap.ui.define([
         SUCCESSGuasti: function (Jdata) {
             var data = {};
             data.GuastiLinee = [];
-            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
-                var dataAll = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
-                var dataReduced = JSON.parse(JSON.stringify(Jdata.GuastiLinee[i]));
+            for (var i = 0; i < Jdata.fermi.length; i++) {
+                var dataAll = JSON.parse(JSON.stringify(Jdata.fermi[i]));
+                var dataReduced = JSON.parse(JSON.stringify(Jdata.fermi[i]));
                 dataAll = Library.AddTimeGaps(dataAll);
                 data.GuastiLinee.push({});
                 data.GuastiLinee[i].nome = null;
                 data.GuastiLinee[i].All = {};
                 data.GuastiLinee[i].NoCause = {};
-                data.GuastiLinee[i].nome = Jdata.GuastiLinee[i].nome;
+                data.GuastiLinee[i].nome = Jdata.fermi[i].nome;
                 data.GuastiLinee[i].All = dataAll;
                 dataReduced = Library.RemoveCaused(dataReduced);
                 dataReduced = Library.AddTimeGaps(dataReduced);

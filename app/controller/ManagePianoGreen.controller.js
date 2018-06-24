@@ -244,7 +244,7 @@ sap.ui.define([
                 selectBox.setModel(oModel, "formati");
                 selectBox.bindAggregation("items", "formati>/formati", oItemSelectTemplate);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 30});
+                MessageToast.show(Jdata.errorMessage, {duration: 60});
             }
         },
         SUCCESSListaSKU: function (Jdata) {
@@ -258,7 +258,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "SKUCodiciInterni>/SKUCodiciInterni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 30});
+                MessageToast.show(Jdata.errorMessage, {duration: 60});
             }
         },
         SUCCESSConfezionamenti: function (Jdata, selectBox) {
@@ -272,7 +272,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "confezionamenti>/confezioni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 30});
+                MessageToast.show(Jdata.errorMessage, {duration: 60});
             }
         },
         SUCCESSDestinazione: function (Jdata, oRow, row_binded) {
@@ -280,12 +280,15 @@ sap.ui.define([
                 oRow.getCells()[5].setEnabled(true);
                 oRow.getCells()[6].setEnabled(true);
                 oRow.getCells()[7].setEnabled(true);
+                oRow.getCells()[5].setValue("");
+                oRow.getCells()[6].setValue("");
+                oRow.getCells()[7].setValue("");
                 oRow.getCells()[4].setText(Jdata.destinazione);
                 oRow.getCells()[4].setEnabled(true);
                 row_binded.pezzi_cartone = Number(Jdata.pezziCartone);
                 row_binded.tempo_ciclo = Number(Jdata.secondiPerPezzo);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 30});
+                MessageToast.show(Jdata.errorMessage, {duration: 60});
             }
         },
         SUCCESSDestinazioni: function (Jdata, selectBox) {
@@ -298,7 +301,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "destinazioni>/destinazioni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 30});
+                MessageToast.show(Jdata.errorMessage, {duration: 60});
             }
         },
         SUCCESSQuantita: function (Jdata) {
@@ -316,7 +319,19 @@ sap.ui.define([
                 this.row.getCells()[8].setVisible(true);
                 row_binded.SKUCodiceInterno = this.getView().byId("SKU").getValue();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 30});
+                MessageToast.show(Jdata.errorMessage, {duration: 60});
+            }
+        },
+        SUCCESSOperatori: function (Jdata, selectBox) {
+            if (Number(Jdata.error) === 0) {
+                var oModel = new JSONModel(Jdata);
+                var oItemSelectTemplate = new sap.ui.core.Item({
+                    text: "{operatore>cognome} {operatore>nome}"
+                });
+                selectBox.setModel(oModel, "operatore");
+                selectBox.bindAggregation("items", "operatore>/operatori", oItemSelectTemplate);
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 60});
             }
         },
         changeReparto: function (oEvent) {
@@ -469,34 +484,35 @@ sap.ui.define([
 //                }
 //            }
 //        },
-        addCellInput: function (oRow) {
-            var oInput;
-            oInput = new sap.m.Input({
-                value: "{linea>qli}",
-                width: "4rem",
-                type: "Number",
-                textAlign: "Center",
-                liveChange: this.ChangeValues.bind(this)
-            });
-            oRow.insertCell(oInput, 5);
-            oInput = new sap.m.Input({
-                value: "{linea>cartoni}",
-                width: "4rem",
-                type: "Number",
-                textAlign: "Center",
-                liveChange: this.ChangeValues.bind(this)
-            });
-            oRow.insertCell(oInput, 6);
-            oInput = new sap.m.TimePicker({
-                value: "{linea>ore}",
-                valueFormat: "HH:mm",
-                displayFormat: "HH:mm",
-                change: this.ChangeValues.bind(this)
-            });
-            oInput.addStyleClass("TimesapMInputBase");
-            oRow.insertCell(oInput, 7);
-        },
+//        addCellInput: function (oRow) {
+//            var oInput;
+//            oInput = new sap.m.Input({
+//                value: "{linea>qli}",
+//                width: "4rem",
+//                type: "Number",
+//                textAlign: "Center",
+//                liveChange: this.ChangeValues.bind(this)
+//            });
+//            oRow.insertCell(oInput, 5);
+//            oInput = new sap.m.Input({
+//                value: "{linea>cartoni}",
+//                width: "4rem",
+//                type: "Number",
+//                textAlign: "Center",
+//                liveChange: this.ChangeValues.bind(this)
+//            });
+//            oRow.insertCell(oInput, 6);
+//            oInput = new sap.m.TimePicker({
+//                value: "{linea>ore}",
+//                valueFormat: "HH:mm",
+//                displayFormat: "HH:mm",
+//                change: this.ChangeValues.bind(this)
+//            });
+//            oInput.addStyleClass("TimesapMInputBase");
+//            oRow.insertCell(oInput, 7);
+//        },
         ChangeValues: function (oEvent) {
+            this.STOP = 1; 
             var row_path = oEvent.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(row_path);
             this.pezzi_cartone = row_binded.pezziCartone;
@@ -623,7 +639,6 @@ sap.ui.define([
                     }
                 });
             }
-
         },
 //GESTIONE VISUALIZZA ATTRIBUTI BATCH
         azioneBatch: function (oEvent) {
@@ -653,6 +668,7 @@ sap.ui.define([
 
         },
         visuBatch: function (oEvent) {
+            this.STOP = 1; 
 //            var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
 //            this.linea = this.getView().getModel("linea").getProperty(linea_path);
             var oRow = oEvent.getSource().getParent();
@@ -1008,6 +1024,34 @@ sap.ui.define([
             Library.AjaxCallerData(link, function (Jdata) {
                 that.SUCCESSDestinazioni.bind(that)(Jdata, selectBox);
             });
+        },
+// CARICARE OPERATORI
+        loadOperatori: function (oEvent) {
+            var that = this; 
+            var selectBox = oEvent.getSource();
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllOperatori&OutputParameter=JSON";
+            Library.AjaxCallerData(link, function (Jdata) {
+                 that.SUCCESSOperatori(Jdata, selectBox);
+            }
+            );
+        },
+        checkOperatore: function (oEvent) {
+            var check = 0; 
+            var selectBoxValue = oEvent.getSource().getValue();
+            var oTables = this.getView().byId("managePianoTable").getItems();
+            for (var i=0; i<oTables.length; i++){
+                var table_operatore = oTables[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[0].getContent()[0].getItems();
+                for (var j=0; j<table_operatore.length; j++){
+                    if (table_operatore[i].getCells()[0].getValue() === selectBoxValue){
+                        table_operatore[i].getCells()[0].clearSelection();
+                        check = 1;
+                        break;
+                    }
+                }
+                if (check === 1){
+                    break;
+                }
+            }
         },
 // FUNZIONI LOCALI
         LOCALTakeLineaById: function (id, obj) {

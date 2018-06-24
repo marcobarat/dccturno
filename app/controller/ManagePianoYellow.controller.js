@@ -296,6 +296,7 @@ sap.ui.define([
             }
         },
         BatchButtonPress: function (oEvent) {
+            this.oButton = oEvent.getSource();
             if (this.oButton.getProperty("icon") === "sap-icon://action-settings") {
                 this.handlePressOpenMenu(oEvent);
             } else {

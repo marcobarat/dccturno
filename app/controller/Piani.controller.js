@@ -85,7 +85,7 @@ sap.ui.define([
                     Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
                 } else {
                     link = "model/linee_prova.json";
-                    Library.AjaxCallerData(link, this.SUCCESSTurnoAperto.bind(this));
+                    Library.AjaxCallerData(link, this.SUCCESSTurnoApertoInCorso.bind(this));
                 }
             } else {
                 if (area === "0") {
@@ -111,6 +111,12 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoInCorso: function (Jdata) {
+            for (var i = 0; i < Jdata.linee.length; i++) {
+                Jdata.linee[i].operatori = [];
+                for (var j = 0; j < Jdata.nOperatori; j++) {
+                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
+                }
+            }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -122,6 +128,12 @@ sap.ui.define([
 //            for (var l = 0; l < data.length; l++) {
 //                data[l].batchlist.push(this.AddButtonObject);
 //            }
+            for (var i = 0; i < Jdata.linee.length; i++) {
+                Jdata.linee[i].operatori = [];
+                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
+                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
+                }
+            }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);

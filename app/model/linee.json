@@ -37,6 +37,38 @@
                     "disponibilita": "79%",
                     "produttivita": "85%",
                     "fermo": "2:54"                    
+                },
+                {
+                    "BatchID": "2",
+                    "sequenza": ">>>1b",
+                    "statoBatch": "Chiuso",
+                    "erroreBatch": "NA",
+                    "formatoProduttivo": "Zitone tagliato 020",
+                    "confezione": "Film",
+                    "grammatura": "500",
+                    "destinazione": "ITALIA + ESTERO",
+                    "qli": "31",
+                    "cartoni": "125",
+                    "ore": "0:35",
+                    "disponibilita": "79%",
+                    "produttivita": "85%",
+                    "fermo": "2:54"                    
+                },
+                {
+                    "BatchID": "2",
+                    "sequenza": ">>>1b",
+                    "statoBatch": "Chiuso",
+                    "erroreBatch": "NA",
+                    "formatoProduttivo": "Zitone tagliato 020",
+                    "confezione": "Film",
+                    "grammatura": "500",
+                    "destinazione": "ITALIA + ESTERO",
+                    "qli": "31",
+                    "cartoni": "125",
+                    "ore": "0:35",
+                    "disponibilita": "79%",
+                    "produttivita": "85%",
+                    "fermo": "2:54"                    
                 }
             ]
         }, {
@@ -44,7 +76,7 @@
             "linea": "Linea 2",
             "disponibilita": "74%",
             "efficienza": "84%",  
-            "fermo": "6:30",            
+            "fermo": "0:00:00",            
             "batchlist": [
                 {
                     "BatchID": "3",
@@ -60,7 +92,7 @@
                     "ore": "0:35",
                     "disponibilita": "65%",
                     "produttivita": "83%",
-                    "fermo": "3:36"                    
+                    "fermo": "0:00:00"                   
                 }
             ]
         }, {
