@@ -27,7 +27,7 @@ sap.ui.define([
         onAfterRendering: function () {
 
             if (this.getArea() === "0") {
-                jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#eeeeee");
+                jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#f2f2f2");
             }
             if (this.getArea() === "1") {
                 jQuery.sap.byId(this.getId()).parent().parent().css("background-color", "#7CA295");
