@@ -28,7 +28,7 @@
                     "disponibilita": "",
                     "produttivita": "",
                     "qualita": "",
-                    "fermo": "",
+                    "fermo": "0:00:00",
                     "pezziCartone": "24",
                     "secondiPerPezzo": "1.24"
                 },

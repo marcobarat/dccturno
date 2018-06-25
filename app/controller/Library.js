@@ -197,7 +197,7 @@ sap.ui.define([
         },
 //CREAZIONE DEI FILE XML PER LA PARTE DI BACKEND
         createXMLFermo: function (obj) {
-            var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
+            var top = '<root>';
             var bottom = '</root>';
             var parameters = '<caso>' + obj.caso + '</caso>' +
                     '<logId>' + obj.logId + '</logId>' +
@@ -207,7 +207,7 @@ sap.ui.define([
             return top + parameters + bottom;
         },
         createXMLBatch: function (obj) {
-            var top = '<?xml version="1.0" encoding="UTF-8"?><root>';
+            var top = '<root>';
             var bottom = '</root>';
             var parameters = '<pianoDiConfezionamentoId>' + obj.pianodiconfezionamento + '</pianoDiConfezionamentoId>' +
                     '<lineaId>' + obj.lineaId + '</lineaId>';
@@ -228,7 +228,7 @@ sap.ui.define([
             return top + parameters + bottom;
         },
         createXMLDestinazione: function (obj) {
-            var top = '<?xml version="1.0" encoding="UTF-8"?><root><pianoDiConfezionamentoId/>';
+            var top = '<root><pianoDiConfezionamentoId/>';
             var bottom = '<sequenza/> <qliTeo/><cartoniTeo/><oreTeo/></root>';
             var parameters = '<lineaId>' + obj.lineaID + '</lineaId>';
             parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';

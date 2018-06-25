@@ -39,7 +39,9 @@
         "grunt-string-replace": "^1.2.1"
     },
     "dependencies": {
+        "bower": "^1.8.4",
         "jspdf": "^1.3.5",
-        "jspdf-autotable": "^2.3.2"
+        "jspdf-autotable": "^2.3.2",
+        "sprintf-js": "^1.1.1"
     }
 }
