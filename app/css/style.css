@@ -67,10 +67,9 @@
     background-color: red !important;
     color: white;
 }
-.neroreno *
+.neroreno .sapMBtnInner
 {
-    background-image: none !important;
-    background-color: black !important;    
+    background: black;    
 }
 .giallogallo *
 {

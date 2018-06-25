@@ -14,24 +14,6 @@ sap.ui.define([
 ], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library, TimeFormatter, CInput, CButton, CComboBox, CTimePicker) {
     "       use strict";
     var ManagePianoGreen = Controller.extend("myapp.controller.ManagePianoGreen", {
-        AddButtonObject: {
-            batchID: "#ADD#",
-            sequenza: "#ADD#",
-            statoBatch: "#ADD#",
-            erroreBatch: "#ADD#",
-            formatoProduttivo: "#ADD#",
-            confezione: "#ADD#",
-            grammatura: "#ADD#",
-            destinazione: "#ADD#",
-            qli: "#ADD#",
-            cartoni: "#ADD#",
-            ore: "#ADD#",
-            disponibilita: "#ADD#",
-            produttivita: "#ADD#",
-            qualita: "#ADD#",
-            fermo: "#ADD#",
-            pezziCartone: "#ADD#",
-            secondiPerPezzo: "#ADD#"},
         StabilimentoID: null,
         pdcID: null,
         repartoID: null,
@@ -693,7 +675,7 @@ sap.ui.define([
                 obj.tipologia = row_binded.tipologia;
                 obj.grammatura = row_binded.grammatura;
                 obj.destinazione = row_binded.destinazione;
-                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch();
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
                 Library.SyncAjaxCallerData(link, this.SUCCESSSKU());
                 this.oDialog = oView.byId("modificaAttributi");
                 if (!this.oDialog) {
@@ -712,6 +694,7 @@ sap.ui.define([
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            
         },
         SUCCESSTrasferimentoBatchAttrezzaggio: function (Jdata) {
             this.ModelLinea.setData(Jdata);
