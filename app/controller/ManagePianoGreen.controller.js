@@ -69,86 +69,9 @@ sap.ui.define([
             oTitle.setText(this.piano.data + "    -    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
             this.getView().setModel(this.ModelLinea, 'linea');
-//            var linee = this.ModelLinea.getData().linee;
-//            var data = this.ModelLinea.getData().linee;
-//            for (var l = 0; l < data.length; l++) {
-//                data[l].batchlist.push(this.AddButtonObject);
-//            }
-//            var Tables = this.getView().byId("managePianoTable").getItems();
-//            var tempTable;
-//            for (var i = 0; i < Tables.length; i++) {
-//                tempTable = Tables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
-//                tempTable.bindItems("/linea/batchlist", new sap.m.ColumnListItem({
-//                    cells: [
-//                        new CustomButt({
-//                            text: "",
-//                            icon: "sap-icon://action-settings",
-//                            customType: "batch",
-//                            state: "{statoBatch}",
-//                            press: [this.handlePressOpenMenu, this]}),
-////                            press: "handlePressOpenMenu"}),
-//                        new CInput({
-//                            textAlign: "Center",
-//                            value: "{sequenza}",
-//                            liveChange: [this.showUpdateButton,this]}),
-////                        liveChange: "showUpdateButton"}),
-//                        new CComboBox({
-//                            value: "{formatoProduttivo}",
-//                            width: "100%",
-//                            loadItems: [this.CaricaFormati,this],
-//                            selectionChange: [this.ResetConfezionamenti,this]}),
-////                        loadItems: "CaricaFormati",
-////                            selectionChange: "ResetConfezionamenti"}),
-//                        new CComboBox({
-//                            value: "{confezione} {grammatura}gr",
-//                            loadItems: [this.CaricaConfezionamenti,this],
-//                            selectionChange: [this.loadDestinazione,this]}),
-////                        loadItems: "CaricaConfezionamenti",
-////                            selectionChange: "loadDestinazione"}),
-//                        new CButton({
-//                            width: "90%",
-//                            text: "{destinazione}",
-//                            press: [this.visuBatch,this]}),
-////                        press: "visuBatch"}),
-//                        new CInput({
-//                            textAlign: "Center",
-//                            value: "{qli}",
-//                            liveChange: [this.ChangeValues,this]}),
-////                        liveChange: "ChangeValues"}),
-//                        new CInput({
-//                            textAlign: "Center",
-//                            value: "{cartoni}",
-//                            liveChange: [this.ChangeValues,this]}),
-////                                                    liveChange: "ChangeValues"}),
-//                        new CTimePicker({
-////                            class: "TimesapMInputBase",
-//                            textAlign: "Center",
-//                            value: "{ore}",
-//                            valueFormat: "HH:mm",
-//                            displayFormat: "HH:mm",
-//                            change: [this.ChangeValues,this]}),
-////                        change: "ChangeValues"}),
-//                        new CButton({
-//                            visible: false,
-//                            icon: "sap-icon://accept",
-//                            press: [this.confermaCreazioneBatch,this]})
-////                        press: "confermaCreazioneBatch"})
-//                    ]
-//                }));
-//                var model = new JSONModel({});
-//                model.setData(linee);
-//                tempTable.setModel(model);
-//            }
-//    oTable.setModel(new sap.ui.model.json.JSONModel(summaryDetailData));  
-            if (this.ISLOCAL !== 1 && this.STOP === 2) {
+            if (this.ISLOCAL !== 1 && this.STOP === 0) {
                 this.RefreshFunction();
             }
-//            this.getView().setModel(this.ModelLinea, 'linea');
-//            this.getView().byId("managePianoTable").rerender();
-//            this.addFieldsCreazione();
-//            if (Number(this.piano.area) === 1) {
-//                this.changeFields();
-//            }
             this.manageSPCButton();
 // MI SERVE PER LO STATO LINEA                
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
@@ -359,21 +282,13 @@ sap.ui.define([
                 oRouter.navTo("overview", true);
             }
         },
-        BatchButtonPress: function (oEvent) {
-            this.oButton = oEvent.getSource();
-            if (this.oButton.getProperty("icon") === "sap-icon://action-settings") {
-                this.handlePressOpenMenu(oEvent);
-            } else {
-                this.onAddItem(oEvent);
-            }
-        },
         handlePressOpenMenu: function (oEvent) {
+            this.oButton = oEvent.getSource();
             var PathBatch = this.oButton.getParent().getBindingContext("linea").sPath;
             var PathLinea = this.oButton.getParent().getParent().getBindingContext("linea").sPath;
             this.linea_id = this.getView().getModel("linea").getProperty(PathLinea).lineaID;
             this.linea = this.getView().getModel("linea").getProperty(PathLinea);
             this.batch_id = this.getView().getModel("linea").getProperty(PathBatch).batchID;
-//            this.batch = this.getView().getModel("linea").getProperty(PathBatch);
             this.row = oEvent.getSource().getParent();
             var link;
             if (this.ISLOCAL === 1) {
@@ -382,6 +297,16 @@ sap.ui.define([
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMenuFromBatchID&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
             }
             Library.AjaxCallerData(link, this.SUCCESSMenuOpened.bind(this));
+        },
+        UndoBatchCreation: function (oEvent) {
+            this.STOP = 0;
+            var Model = this.getView().getModel("linea");
+            var oData = Model.getData();
+            var oLinea_path = oEvent.getSource().getBindingContext("linea").getPath().split("/");
+            var linea = oData[oLinea_path[1]][oLinea_path[2]];
+            linea.batchlist.pop();
+            Model.setData(oData);
+            this.getView().setModel(Model, "linea");
         },
         SUCCESSMenuOpened: function (Jdata) {
             this.ModelMenu.setData(Jdata);
@@ -399,100 +324,6 @@ sap.ui.define([
             this._menu.setModel(this.prova);
             this._menu.open(this._bKeyboard, this.oButton, eDock.BeginTop, eDock.BeginBottom, this.oButton);
         },
-//        callMenu: function (oButton) {
-//            var that = this;
-//            Library.AjaxCallerData("./model/prova.json", function (Jdata) {
-//                that.SUCCESSMenu.bind(that)(Jdata, oButton);
-//            });
-//        },
-// MODIFICA DELLA VIEW DELLA CREAZIONE TURNO (IN REALTA' DISTINGUO SOLO IL CASO IN CUI IL TURNO E' IN CORSO)
-//        addFieldsCreazione: function () {
-//            var j, oTable, oRows, oButton, oCell, columnListItem;
-//            var oTables = this.getView().byId("managePianoTable").getItems();
-//            for (var i = 0; i < oTables.length; i++) {
-//                oTable = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0];
-//                oRows = oTable.getItems();
-//                if (oRows.length === 0) {
-//                    oButton = new sap.m.Button({
-//                        icon: "sap-icon://add",
-//                        press: this.onAddItem.bind(this)
-//                    });
-//                    columnListItem = new sap.m.ColumnListItem({
-//                        cells: [
-//                            oButton
-//                        ]});
-//                    columnListItem.addStyleClass("sapMListTblCell_b");
-//                    oTable.addItem(columnListItem);
-//                } else {
-//                    if (oRows[oRows.length - 1].getCells().length !== 1) {
-//                        oButton = new sap.m.Button({
-//                            icon: "sap-icon://add",
-//                            press: this.onAddItem.bind(this)
-//                        });
-//                        columnListItem = new sap.m.ColumnListItem({
-//                            cells: [
-//                                oButton
-//                            ]
-//                        });
-//                        columnListItem.addStyleClass("sapMListTblCell_b");
-//                        oTable.addItem(columnListItem);
-//                    }
-//                    oRows = oTable.getItems();
-//                    for (j = 0; j < oRows.length - 1; j++) {
-//////                        if (oRows[j].getCells().length >= 8) {
-//////                            oRows[j].removeCell(7);
-//////                            oRows[j].removeCell(6);
-//////                            oRows[j].removeCell(5);
-//////                            this.addCellInput(oRows[j]);
-//////                        } else if (oRows[j].getCells().length < 8 && oRows[j].getCells().length > 1) {
-//////                            this.addCellInput(oRows[j]);
-//////                        }
-////                        oRows[j].removeCell(1);
-////                        oCell = new sap.m.Input({
-////                            value: "{linea>sequenza}",
-////                            width: "4rem",
-////                            type: "Number",
-////                            textAlign: "Center"
-////                        });
-////                        oRows[j].insertCell(oCell, 1);
-//                        if (j === oRows.length - 2) {
-//                            var row_path = oRows[j].getBindingContext("linea").sPath;
-//                            var row_binded = this.getView().getModel("linea").getProperty(row_path);
-//                            if (!row_binded.batchID) {
-//                                oRows[j].getCells()[8].setVisible(true);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        },
-//        addCellInput: function (oRow) {
-//            var oInput;
-//            oInput = new sap.m.Input({
-//                value: "{linea>qli}",
-//                width: "4rem",
-//                type: "Number",
-//                textAlign: "Center",
-//                liveChange: this.ChangeValues.bind(this)
-//            });
-//            oRow.insertCell(oInput, 5);
-//            oInput = new sap.m.Input({
-//                value: "{linea>cartoni}",
-//                width: "4rem",
-//                type: "Number",
-//                textAlign: "Center",
-//                liveChange: this.ChangeValues.bind(this)
-//            });
-//            oRow.insertCell(oInput, 6);
-//            oInput = new sap.m.TimePicker({
-//                value: "{linea>ore}",
-//                valueFormat: "HH:mm",
-//                displayFormat: "HH:mm",
-//                change: this.ChangeValues.bind(this)
-//            });
-//            oInput.addStyleClass("TimesapMInputBase");
-//            oRow.insertCell(oInput, 7);
-//        },
         ChangeValues: function (oEvent) {
             this.STOP = 1;
             var row_path = oEvent.getSource().getBindingContext("linea").sPath;
@@ -573,17 +404,18 @@ sap.ui.define([
             obj.secondiPerPezzo = last_batch.secondiPerPezzo;
             obj.pezziCartone = last_batch.pezziCartone;
             obj.showButton = 0;
-            linea.batchlist.splice(linea.batchlist.length - 1, 0, obj);
+            linea.batchlist.push(obj);
+//            linea.batchlist.splice(linea.batchlist.length - 1, 0, obj);
             Model.setData(oData);
             this.getView().setModel(Model, "linea");
         },
-        confermaCreazioneBatch: function (oEvent) {
+        InsertNewBatch: function (oEvent) {
             var PathLinea = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
             this.linea_id = this.getView().getModel("linea").getProperty(PathLinea).lineaID;
             var oRow = oEvent.getSource().getParent();
             var rowPath = oEvent.getSource().getParent().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
-            var array_confezione = oRow.getCells()[3].getValue().split(" ");
+            var array_confezione = oRow.getCells()[2].getValue().split(" ");
             var that = this;
             var link;
             var obj = {};
@@ -599,14 +431,14 @@ sap.ui.define([
             }
             obj.pianodiconfezionamento = this.pdcID;
             obj.lineaId = this.linea_id;
-            obj.formatoProduttivo = oRow.getCells()[2].getValue();
+            obj.formatoProduttivo = oRow.getCells()[1].getValue();
             obj.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
             obj.tipologia = array_confezione[0];
-            obj.sequenza = oRow.getCells()[1].getValue();
-            obj.destinazione = oRow.getCells()[4].getText();
-            obj.quintali = oRow.getCells()[5].getValue();
-            obj.cartoni = oRow.getCells()[6].getValue();
-            obj.ore = oRow.getCells()[7].getValue();
+            obj.sequenza = oRow.getCells()[0].getValue();
+            obj.destinazione = oRow.getCells()[3].getText();
+            obj.quintali = oRow.getCells()[4].getValue();
+            obj.cartoni = oRow.getCells()[5].getValue();
+            obj.ore = oRow.getCells()[6].getValue();
             var doc_xml = Library.createXMLBatch(obj);
             if (Number(this.ISLOCAL) === 1) {
                 oRow.getCells()[8].setVisible(false);

@@ -156,12 +156,6 @@
     background-color: white;
 }
 
-/*.mysapMInputBaseWidthPadding .sapMInputBaseWidthPadding {
-    padding-top: 0.3rem;
-    padding-left: 0.5rem;
-    padding-right: 0.9rem;
-}*/
-
 .FermoButton .sapMBtn {
     padding-top: 0.4rem; 
     padding-right: 0.1rem; 
@@ -193,10 +187,6 @@
 .noBorderRight .sapUiTableCol{
     border-right: 0px !important;
 }
-
-/*.borderRight .sapUiTableCell * {
-    border-right: 1px solid black !important;
-}*/
 
 .mysapUiTableCol.sapUiTableTd{
     border-right: 0px !important;
@@ -455,7 +445,7 @@
     bottom: 0.35rem;
     right: 0.02rem;
     height: 3.1rem;
-    width: 16.7rem;
+    width: 16.88rem;
     border-radius: 0px;
 }
 
@@ -463,9 +453,9 @@
     padding-top: 0.24rem;
     font-size: 1rem;
 }
-
 .progressBarFix {
     height: 3.1rem;
+    width: 50.85rem;
     margin: 0rem;
 }
 .progressBarFix .sapMPIText{
@@ -473,27 +463,30 @@
     font-size: 1rem;
 }
 .progressBarVBox {
+    width: 76% !important;
+    right:0.1rem;
     bottom: 0.1rem;
 }
 .RightVBox {
     bottom: 0.4rem;
 }
 .SPCVBox {
+    width: 8% !important;
     bottom: 0.1rem;
     height: 3.2rem !important;
 }
-.styleVBoxbottom {
+.styleVBoxLeftbottom {
+    bottom: 0rem;
+}
+.styleVBoxRightbottom {
     bottom: 0.2rem;
 }
-
 
 .progressBarButtonEmpty * {
     background-color: white !important;
     background-image: none !important;
     /*border: solid;*/
 }
-
-
 
 /*CSS MANAGEPIANO*/
 
@@ -511,6 +504,7 @@
 
 .mysapMListTblNoBorders .sapMListTbl th {
     border: 0px;
+    bottom: 0.1rem;
 }
 .bordoBlu {
     border: 1.5px solid #003A6B;
@@ -548,6 +542,16 @@
 
 
 /* CSS PER MONOBOTTONE e BIBOTTONE SPC  -COMMENTATI CI SONO I CASI IN CUI DECIDO DI CAMBIARE IL SETTAGGIO DELLE DIMENSIONI*/ 
+.SPCButtonsDimensions .sapMBtnInner {
+    position: relative;
+    border: 0px;
+    border-radius: 0px;
+    height: 3.1rem;
+    bottom: 0.24rem;
+    border-top: 1.5px solid #003A6B;
+    border-bottom: 1.5px solid #003A6B;
+    border-right: 1.5px solid #003A6B;
+}
 .monobuttonSPC .sapMBtnInner {
     padding-left:25% !important;
     padding-right:25% !important;
@@ -568,11 +572,6 @@
     max-height: 3.5rem;
     width: 2.7rem;
     height: 2.8rem;
-    /*    max-height: 3.5rem;
-        height: 3.5rem;
-        width: 2.6875rem; */
-
-    /* new_width = (new_height*43)/56 */
 }
 
 .monobuttonSPC .sapMBtnContent {
@@ -627,11 +626,6 @@
     border: 1.5px solid #003A6B; 
 }
 
-/*.BorderTopLeft {
-    border-top: 1.5px solid #003A6B;
-    border-left: 1.5px solid #003A6B;
-}*/
-
 .BorderTopRight {
     border-right: 1.5px solid #003A6B; 
     border-top: 1.5px solid #003A6B;
@@ -685,11 +679,6 @@
     padding: 0.35rem 0.1rem !important;
 }
 
-/*.sapMListTblCell_b .sapMComboBox {
-    padding: 0.2rem 0.2rem !important; 
-    width: 100% !important;
-    height: 100% !important;
-}*/
 .sapMListTblCell_b .sapMComboBoxTextField {
     margin: 0rem !important;
 }
@@ -713,14 +702,6 @@
     width: 100% !important;
     height: 100% !important;
 }
-/*.sapMListTblCell_b .sapMInput {
-    height: 90%;
-}*/
-
-/*.sapMListTblCell_b .sapMTimePicker {
-    margin-top: 5% !important;
-}*/
-
 .nomarg * {
     margin-right: 0px !important;
     margin-left: 0px !important;
@@ -730,14 +711,6 @@
 .unpodimargin {
     margin-left: 2%;
 }
-
-/*.sapMListTblCell_b.sapMLIB {
-    padding: 0px !important;
-}*/
-
-/*.sapMListTblCell_b .sapMListTblHeader .sapMListTblHeaderCell > th{
-    padding: 0px !important;
-}*/
 
 .sapMListTblHeader_b .sapMListTbl .sapMListTblHeader .sapMListTblCell {
     padding-left: 0px;
@@ -757,15 +730,6 @@
 .shiftButtonLeft .sapMBtnInner{
     left: 0.5rem;
 }
-
-
-
-/*.sapMListTblHeader .sapMListTblCell:first-child {
-    padding-left: 0px;
-}*/
-
-
-
 
 /* SCROLLING CONTAINER */
 .scrollingbar {
@@ -802,6 +766,7 @@
     padding-left: 1rem;
 }
 
+
 /* ICONTABFILTER */
 .sapMITBFilterDefault{
     color: #003A6B !important;
@@ -814,3 +779,4 @@
 .sapMITBSelected > .sapMITBContentArrow {
     border-bottom-color: #003A6B !important;
 }
+
