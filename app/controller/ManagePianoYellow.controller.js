@@ -98,7 +98,7 @@ sap.ui.define([
 //            if (Number(this.piano.area) === 1) {
 //                this.changeFields();
 //            }
-            this.manageSPCButton();
+//            this.manageSPCButton();
 // MI SERVE PER LO STATO LINEA                
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
@@ -762,25 +762,25 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("main", true);
         },
-        manageSPCButton: function () {
-            var oItems = this.getView().byId("managePianoTable").getItems();
-            for (var i = 0; i < oItems.length; i++) {
-                var SPCButton = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
-                if (Number(this.piano.area) === 1) {
-                    SPCButton.getParent().setVisible(true);
-                    SPCButton.getParent().setWidth("10%");
-                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].setWidth("90%");
-                    SPCButton.setVisible(true);
-//                    oItems[i].getCells()[0].getItems()[0].getI    tems()[1].getItems()[0].getItems()[0].removeStyleClass("prova");
-                } else {
-                    SPCButton.getParent().setVisible(false);
-                    SPCButton.getParent().setWidth("0%");
-                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].setWidth("100%");
-                    SPCButton.setVisible(false);
-//                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].addStyleClass("prova");
-                }
-            }
-        },
+//        manageSPCButton: function () {
+//            var oItems = this.getView().byId("managePianoTable").getItems();
+//            for (var i = 0; i < oItems.length; i++) {
+//                var SPCButton = oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
+//                if (Number(this.piano.area) === 1) {
+//                    SPCButton.getParent().setVisible(true);
+//                    SPCButton.getParent().setWidth("10%");
+//                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].setWidth("90%");
+//                    SPCButton.setVisible(true);
+////                    oItems[i].getCells()[0].getItems()[0].getI    tems()[1].getItems()[0].getItems()[0].removeStyleClass("prova");
+//                } else {
+//                    SPCButton.getParent().setVisible(false);
+//                    SPCButton.getParent().setWidth("0%");
+//                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].setWidth("100%");
+//                    SPCButton.setVisible(false);
+////                    oItems[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].addStyleClass("prova");
+//                }
+//            }
+//        },
 //GESTIONE DEI FORMATI E CONFEZIONAMENTI
         showUpdateButton: function (oEvent) {
             var oRow = oEvent.getSource().getParent();

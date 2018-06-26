@@ -103,8 +103,9 @@
                                                                 </VBox>
                                                             </VBox>
                                                             <VBox width="80%" height="100%">
-                                                                <VBox height="20%" width="100%">
-                                                                    <HBox>
+                                                                <VBox height="20%" width="100%" class="blueBorderB">
+                                                                    <Text/>
+<!--                                                                    <HBox>
                                                                         <VBox width="100%" height="100%" class="progressBarVBox">
                                                                             <cus:NewProgressIndicator
                                                                                 class="largo progressBarFix bordoBluR bordoBluT bordoBluB"
@@ -125,7 +126,7 @@
                                                                                             class="monobuttonSPC noFocus">
                                                                             </cus:CustomButt>
                                                                         </VBox>
-                                                                    </HBox>
+                                                                    </HBox>-->
                                                                 </VBox>
                                                                 <VBox height="80%" width="100%" class="bordoBluR bordoBluB styleVBoxbottom">
                                                                     <Table
