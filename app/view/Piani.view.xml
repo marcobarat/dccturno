@@ -26,7 +26,7 @@
                             <VBox height="100%" width="12%"/>
                             <VBox height="100%" width="76%">
                                 <VBox height="10%" width="100%">
-                                    <Table width="100%" showNoData='false' class="totalWhiteTable tableTextSize blueText">
+                                    <Table width="100%" showNoData='false' class="totalWhiteTable tableTextSize blueText scrollingbarTransparent">
                                         <columns>
                                             <Column>
                                                 <header>
@@ -228,7 +228,7 @@
                                 
                                 
                                 <VBox height="30%" width="100%" class="border grey">
-                                    <ScrollContainer height="187px" horizontal="false" vertical="true">
+                                    <ScrollContainer id="scrollTurniConclusi" height="187px" horizontal="false" vertical="true" class="scrollingbar">
                                         <Table 
                                             width="100%"
                                             class="tableTextSize noBorder"
@@ -279,7 +279,7 @@
                                 <VBox height="5%" width="100%">
                                     <Text/>
                                 </VBox>
-                                <VBox height="10%" width="100%" class="border green">
+                                <VBox height="10%" width="100%" class="border green  scrollingbarTransparent">
                                     <Table height="100%" width="100%" items='{turni>/pianidiconfezionamento/incorso}' class="tableTextSize">
                                         <columns>
                                             <Column hAlign="Center">
@@ -328,7 +328,7 @@
                                     <Text/>
                                 </VBox>
                                 <VBox height="30%" width="100%" class="border yellow">
-                                    <ScrollContainer height="187px" horizontal="false" vertical="true">
+                                    <ScrollContainer id="scrollTurniProgrammati" height="187px" horizontal="false" vertical="true" class="scrollingbar">
                                         <Table 
                                             width="100%"
                                             items="{path: 'turni>/pianidiconfezionamento/programmati', sorter: {path: 'data',descending: false}}"
@@ -379,7 +379,7 @@
                                 
                                 
                                 <VBox height="5%" width="100%">
-                                    <Table width="100%" items="{turni>/pianidiconfezionamento/dacreare}" class="noBorder sapUiMediumMarginTop tableTextSize"> 
+                                    <Table width="100%" items="{turni>/pianidiconfezionamento/dacreare}" class="noBorder sapUiMediumMarginTop tableTextSize  scrollingbarTransparent"> 
                                         <columns>
                                             <Column hAlign="Center">
                                             </Column>

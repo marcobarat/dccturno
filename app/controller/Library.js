@@ -65,12 +65,12 @@ sap.ui.define([
         AddTimeGaps: function (data) {
             var millisec_diff = [];
             var start, end;
-            for (var iter in data.guasti) {
-                start = new Date(data.guasti[iter].inizio);
-                end = new Date(data.guasti[iter].fine);
+            for (var iter in data.fermi) {
+                start = new Date(data.fermi[iter].inizio);
+                end = new Date(data.fermi[iter].fine);
                 millisec_diff.push(end - start);
-                data.guasti[iter].inizio = this.DateToStandard(start);
-                data.guasti[iter].fine = this.DateToStandard(end);
+                data.fermi[iter].inizio = this.DateToStandard(start);
+                data.fermi[iter].fine = this.DateToStandard(end);
             }
             var temp;
             var sum = 0;
@@ -81,7 +81,7 @@ sap.ui.define([
                 arrayGaps.push(this.MillisecsToStandard(temp));
             }
             for (var i = 0; i < arrayGaps.length; i++) {
-                data.guasti[i].intervallo = arrayGaps[i];
+                data.fermi[i].intervallo = arrayGaps[i];
             }
             data.Totale = {};
             data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);

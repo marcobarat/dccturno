@@ -58,16 +58,43 @@ sap.ui.define([
             this.ModelTurni.setData(Library.RecursiveJSONTimeConversion(Jdata));
             this.getView().setModel(this.ModelTurni, "turni");
             sap.ui.getCore().setModel(this.ModelTurni, "turni");
+            var oScroll = this.getView().byId("scrollTurniConclusi");
+            this.setScrollHeight(oScroll);
+            oScroll = this.getView().byId("scrollTurniProgrammati");
+            this.setScrollHeight(oScroll);
             if (this.ISLOCAL !== 1) {
                 this.RefreshFunction();
             }
         },
         URLChangeCheck: function (oEvent) {
-
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.getView().setModel(this.ModelLinea, 'linea');
             this.RefreshCall();
+        },
+        setScrollHeight: function (oScroll) {
+            var items_num = this.ModelTurni.getProperty(oScroll.getContent()[0].getBindingInfo("items").path).length;
+            switch (items_num) {
+                case 1:
+                    oScroll.setHeight("61.67px");
+                    oScroll.removeStyleClass("scrollingbar");
+                    oScroll.addStyleClass("scrollingbarTransparent");
+                    break;
+                case 2:
+                    oScroll.setHeight("123.34px");
+                    oScroll.removeStyleClass("scrollingbar");
+                    oScroll.addStyleClass("scrollingbarTransparent");
+                    break;
+                case 3:
+                    oScroll.setHeight("187px");
+                    oScroll.removeStyleClass("scrollingbar");
+                    oScroll.addStyleClass("scrollingbarTransparent");
+                    break;
+                default:
+                    oScroll.setHeight("187px");
+                    oScroll.addStyleClass("scrollingbar");
+                    oScroll.removeStyleClass("scrollingbarTransparent");
+            }
         },
         managePiano: function (oEvent) {
             var oTable = oEvent.getSource().getParent().getBindingContext("turni");
@@ -113,7 +140,7 @@ sap.ui.define([
         SUCCESSTurnoApertoInCorso: function (Jdata) {
             for (var i = 0; i < Jdata.linee.length; i++) {
                 Jdata.linee[i].operatori = [];
-                for (var j = 0; j < Jdata.nOperatori; j++) {
+                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
                     Jdata.linee[i].operatori.push({nome: "", cognome: ""});
                 }
             }

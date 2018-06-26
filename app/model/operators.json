@@ -1,46 +1,48 @@
 {
-    "numeroOperatori": 5,
-    "Operator": [{
-            "Operator": [
-                {
-                    "nome": "Nicolò",
-                    "cognome": "Sartori"
-                }, {
-                    "nome": "Marco",
-                    "cognome": "Baratella"
-                }, {
-                    "nome": "Matteo",
-                    "cognome": "Battilana"
-                }, {
-                    "nome": "Mattia",
-                    "cognome": "Capano"
-                }
-            ]
-        }, {
-            "Operator": [
-                {
-                    "nome": "Nicolò2",
-                    "cognome": "Sartori2"
-                }, {
-                    "nome": "Marco2",
-                    "cognome": "Baratella2"
-                }, {
-                    "nome": "Matteo2",
-                    "cognome": "Battilana2"
-                }, {
-                    "nome": "Mattia2",
-                    "cognome": "Capano2"
-                }
-            ]},
-            {
-            "Operator": [
-                {
-                    "nome": "Nicolò3",
-                    "cognome": "Sartori3"
-                }, {
-                    "nome": "Marco3",
-                    "cognome": "Baratella3"
-                }
-            ]}]
+  "error": "0",
+  "errorMessage": "",
+  "operatori": [
+    {
+      "cognome": "Baratella",
+      "nome": "Marco",
+      "sezione": "Macchinista",
+      "livello": "A"
+    },
+    {
+      "cognome": "Lupi",
+      "nome": "Alessandro",
+      "sezione": "Macchinista",
+      "livello": "A"
+    },
+    {
+      "cognome": "Capano",
+      "nome": "Mattia",
+      "sezione": "Macchinista",
+      "livello": "B"
+    },
+    {
+      "cognome": "Battilana",
+      "nome": "Matteo",
+      "sezione": "Macchinista",
+      "livello": "C"
+    },
+    {
+      "cognome": "Sartori",
+      "nome": "Nicolò",
+      "sezione": "Fardellatore",
+      "livello": "A"
+    },
+    {
+      "cognome": "Sapuppo",
+      "nome": "Andrea",
+      "sezione": "Fardellatore",
+      "livello": "B"
+    },
+    {
+      "cognome": "Marrone",
+      "nome": "Marco",
+      "sezione": "Fardellatore",
+      "livello": "C"
+    }
+  ]
 }
-

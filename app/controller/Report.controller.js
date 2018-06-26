@@ -62,7 +62,7 @@ sap.ui.define([
 //            }
             var oTitle = this.getView().byId("ReportTitle");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
-            oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
+            oTitle.setText(this.piano.data + "    -    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
             this.FillOEETable();
         },
@@ -209,9 +209,9 @@ sap.ui.define([
         },
         SUCCESSGuasti: function (Jdata) {
             if (this.ISLOCAL === 1) {
-                for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
-                    if (Jdata.GuastiLinee[i].nome === this.rowHTML.getCells()[0].getText()) {
-                        this.guasti = Jdata.GuastiLinee[i];
+                for (var i = 0; i < Jdata.fermi.length; i++) {
+                    if (Jdata.fermi[i].nome === this.rowHTML.getCells()[0].getText()) {
+                        this.guasti = Jdata.fermi[i];
                         break;
                     }
                 }

@@ -5,7 +5,7 @@
     <Page id="managePianoGreen" class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-                 <VBox height="4%" width="100%"/>
+                <VBox height="4%" width="100%"/>
                 <VBox height="6%" width="100%">
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
@@ -13,7 +13,7 @@
                             <Button text="Esci" press="onNavBack" width="100%" class="noFocus" />
                         </VBox>
                         <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="40%">
+                        <VBox height="100%" width="50%">
                             <VBox alignItems="Center" height="50%" width="100%">
                                 <Text id="Title"/>
                             </VBox>
@@ -166,7 +166,7 @@
                                                                     <ScrollContainer vertical='true' height="155px" class="scrollingbar">
                                                                         <Table class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" 
                                                                                width="100%" 
-                                                                                items="{path: 'linea>batchlist', templateShareable:false}">
+                                                                               items="{path: 'linea>batchlist', templateShareable:false}">
                                                                             <columns>
                                                                                 <Column width="5%"  vAlign="Middle" hAlign="Center"/>
                                                                                 <Column width="10%" vAlign="Middle" hAlign="Center"/>
@@ -181,7 +181,7 @@
                                                                             <items>
                                                                                 <ColumnListItem class="noDelimitator sapMListTblCell_b" height="90%">
                                                                                     <cells>
-                                                                                        <Button class="{= ${linea>statoBatch} === 'Trasferito' ? 'neroreno' : (${linea>statoBatch} === 'Attrezzaggio' ? 'giallogallo' : '')" icon="{= ${linea>statoBatch} === '#ADD#' ? 'sap-icon://add' : 'sap-icon://action-settings'}" press="BatchButtonPress" visible="{= ${linea>showButton} === 0 ? false : true}"/>
+                                                                                        <Button icon="{= ${linea>statoBatch} === '#ADD#' ? 'sap-icon://add' : 'sap-icon://action-settings'}" press="BatchButtonPress" visible="{= ${linea>showButton} === 0 ? false : true}"/>
                                                                                         <Input textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
                                                                                         <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>
                                                                                         <ComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"/>

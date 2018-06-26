@@ -97,7 +97,7 @@ sap.ui.define([
             var link;
             var row_id = this.Button.getParent().getId();
             var split_id = row_id.split("-");
-            this.row_binded = this.getView().getModel("guasti").getData().guasti[parseInt(split_id[split_id.length - 1], 10)];
+            this.row_binded = this.getView().getModel("guasti").getData().fermi[parseInt(split_id[split_id.length - 1], 10)];
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {
@@ -173,7 +173,7 @@ sap.ui.define([
                         obj = {};
                         obj.caso = "updateCausale";
                         obj.logId = this.row_binded.LogID;
-                        obj.batchId = this.row_binded.BatchID;
+                        obj.batchId = this.row_binded.batchID;
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
@@ -189,7 +189,7 @@ sap.ui.define([
                         obj = {};
                         obj.caso = "updateInizioFine";
                         obj.logId = this.row_binded.LogID;
-                        obj.batchId = this.row_binded.BatchID;
+                        obj.batchId = this.row_binded.batchID;
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = "";
@@ -205,7 +205,7 @@ sap.ui.define([
                         obj = {};
                         obj.caso = "divide";
                         obj.logId = this.row_binded.LogID;
-                        obj.batchId = this.row_binded.BatchID;
+                        obj.batchId = this.row_binded.batchID;
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
@@ -221,7 +221,7 @@ sap.ui.define([
                         obj = {};
                         obj.caso = "delete";
                         obj.logId = this.row_binded.LogID;
-                        obj.batchId = this.row_binded.BatchID;
+                        obj.batchId = this.row_binded.batchID;
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = "";
@@ -237,7 +237,7 @@ sap.ui.define([
                         obj = {};
                         obj.caso = "delete";
                         obj.logId = "";
-                        obj.batchId = this.row_binded.BatchID;
+                        obj.batchId = this.row_binded.batchID;
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
