@@ -52,7 +52,7 @@ sap.ui.define([
 //            }
             var oTitle = this.getView().byId("turno");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
-            oTitle.setText(this.piano.data + "    ---    " + this.piano.turno);
+            oTitle.setText(this.piano.data + "    -    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
         },
 //        SUCCESSCausali: function (Jdata, model) {
@@ -177,7 +177,7 @@ sap.ui.define([
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
@@ -193,7 +193,7 @@ sap.ui.define([
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = "";
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
@@ -209,7 +209,7 @@ sap.ui.define([
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
@@ -225,7 +225,7 @@ sap.ui.define([
                         obj.dataFine = "";
                         obj.dataInizio = "";
                         obj.causaleId = "";
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;
@@ -241,7 +241,7 @@ sap.ui.define([
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
                         obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&batchId=" + this.batchID + "&OutputParameter=JSON";
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
                     }
                     break;

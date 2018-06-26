@@ -252,7 +252,6 @@ sap.ui.define([
         onReport: function () {
             if (!this.getView().byId("reportButton").getEnabled()) {
                 var link;
-                this.getView().byId("chiusuraPiano").setEnabled(true);
                 if (this.ISLOCAL === 1) {
                     link = "model/OEE.json";
                 } else {
@@ -272,87 +271,128 @@ sap.ui.define([
             }
             sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
             this.getView().setModel(this.ModelOEE, "ReportOEE");
+            this.getView().byId("chiusuraPiano").setEnabled(true);
             this.getView().byId("reportButton").setEnabled(true);
-//            this.getView().byId("confermaButton").setVisible(true);
             var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
             for (var i = 0; i < oItems.length; i++) {
                 var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
                 var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
-                var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
-                this.oContent = new sap.m.TextArea({value: "{linea>disponibilita}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
-                oLinea.getItems()[0].addItem(this.oContent);
-//                this.oContent.addStyleClass("sapUiTinyMarginEnd");
-                this.oContent = new sap.m.TextArea({value: "{linea>efficienza}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
-//                this.oContent.addStyleClass("sapUiSmallMarginBegin");
-                oLinea.getItems()[1].addItem(this.oContent);
-                this.oContent = new sap.m.Button({width: "100%", text: "{linea>fermo}", enabled: "{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}", press: ["totali", this.onCausalizzazioneFermi, this]});
-//                this.oContent.addStyleClass("sapUiTinyMarginBegin");
-                oLinea.getItems()[2].addItem(this.oContent);
-                this.oColumn = new sap.m.Column({
-                    width: "5%",
-                    header: new sap.m.Label({text: "Disp"}),
-                    vAlign: "Middle",
-                    hAlign: "Center"});
-                oTable_Header.addColumn(this.oColumn);
-                this.oColumn = new sap.m.Column({
-                    width: "5%",
-                    header: new sap.m.Label({text: "Prod"}),
-                    vAlign: "Middle",
-                    hAlign: "Center"});
-                oTable_Header.addColumn(this.oColumn);
-                this.oColumn = new sap.m.Column({
-                    width: "10%",
-                    header: new sap.m.Label({text: ""}),
-                    vAlign: "Middle",
-                    hAlign: "Center"});
-                oTable_Header.addColumn(this.oColumn);
-                oTable.addColumn(new sap.m.Column({width: "5%", vAlign: "Middle", hAlign: "Center"}));
-                oTable.addColumn(new sap.m.Column({width: "5%", vAlign: "Middle", hAlign: "Center"}));
-                oTable.addColumn(new sap.m.Column({width: "10%", vAlign: "Middle", hAlign: "Center"}));
-                var oColumnListItems = oTable.getItems();
-                if (oColumnListItems !== null) {
-                    for (var j = 0; j < oColumnListItems.length; j++) {
-                        var oText = new sap.m.Text({text: "{linea>disponibilita}"});
-                        oColumnListItems[j].addCell(oText);
-                        oText = new sap.m.Text({text: "{linea>produttivita}"});
-                        oColumnListItems[j].addCell(oText);
-                        oText = new sap.m.Button({text: "{linea>fermo}", enabled: "{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}", press: ["{linea>batchID}", this.onCausalizzazioneFermi, this]});
-                        oColumnListItems[j].addCell(oText);
-                    }
-                }
+                oTable.getColumns()[7].setVisible(true);
+                oTable.getColumns()[8].setVisible(true);
+                oTable.getColumns()[9].setVisible(true);
+                oTable.getColumns()[10].setVisible(true);
+                oTable.getColumns()[11].setVisible(true);
+                oTable_Header.getColumns()[7].setVisible(true);
+                oTable_Header.getColumns()[8].setVisible(true);
+                oTable_Header.getColumns()[9].setVisible(true);
+                oTable_Header.getColumns()[10].setVisible(true);
+                oTable_Header.getColumns()[11].setVisible(true);
+                var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
+                oLinea.getItems()[0].getItems()[0].setVisible(true);
+                oLinea.getItems()[1].getItems()[0].setVisible(true);
+                oLinea.getItems()[2].getItems()[0].setVisible(true);
+                oLinea.getItems()[3].getItems()[0].setVisible(true);
+                oLinea.getItems()[4].getItems()[0].setVisible(true);
             }
+//                var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
+//                this.oContent = new sap.m.TextArea({value: "{linea>disponibilita}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+//                oLinea.getItems()[0].addItem(this.oContent);
+////                this.oContent.addStyleClass("sapUiTinyMarginEnd");
+//                this.oContent = new sap.m.TextArea({value: "{linea>efficienza}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
+////                this.oContent.addStyleClass("sapUiSmallMarginBegin");
+//                oLinea.getItems()[1].addItem(this.oContent);
+//                this.oContent = new sap.m.Button({width: "100%", text: "{linea>fermo}", enabled: "{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}", press: ["totali", this.onCausalizzazioneFermi, this]});
+////                this.oContent.addStyleClass("sapUiTinyMarginBegin");
+//                oLinea.getItems()[2].addItem(this.oContent);
+//                this.oColumn = new sap.m.Column({
+//                    width: "5%",
+//                    header: new sap.m.Label({text: "Disp"}),
+//                    vAlign: "Middle",
+//                    hAlign: "Center"});
+//                oTable_Header.addColumn(this.oColumn);
+//                this.oColumn = new sap.m.Column({
+//                    width: "5%",
+//                    header: new sap.m.Label({text: "Prod"}),
+//                    vAlign: "Middle",
+//                    hAlign: "Center"});
+//                oTable_Header.addColumn(this.oColumn);
+//                this.oColumn = new sap.m.Column({
+//                    width: "10%",
+//                    header: new sap.m.Label({text: ""}),
+//                    vAlign: "Middle",
+//                    hAlign: "Center"});
+//                oTable_Header.addColumn(this.oColumn);
+//                oTable.addColumn(new sap.m.Column({width: "5%", vAlign: "Middle", hAlign: "Center"}));
+//                oTable.addColumn(new sap.m.Column({width: "5%", vAlign: "Middle", hAlign: "Center"}));
+//                oTable.addColumn(new sap.m.Column({width: "10%", vAlign: "Middle", hAlign: "Center"}));
+//                var oColumnListItems = oTable.getItems();
+//                if (oColumnListItems !== null) {
+//                    for (var j = 0; j < oColumnListItems.length; j++) {
+//                        var oText = new sap.m.Text({text: "{linea>disponibilita}"});
+//                        oColumnListItems[j].addCell(oText);
+//                        oText = new sap.m.Text({text: "{linea>produttivita}"});
+//                        oColumnListItems[j].addCell(oText);
+//                        oText = new sap.m.Button({text: "{linea>fermo}", enabled: "{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}", press: ["{linea>batchID}", this.onCausalizzazioneFermi, this]});
+//                        oColumnListItems[j].addCell(oText);
+//                    }
+//                }
+//            }
         },
         removeReport: function () {
-            if (this.getView().byId("reportButton").getEnabled()) {
-                this.getView().byId("reportButton").setEnabled(false);
-                var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
-                for (var i = 0; i < oItems.length; i++) {
-                    var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
-                    var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
-                    var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
-                    oLinea.getItems()[2].removeItem(oLinea.getItems()[2].getItems()[0]);
-                    oLinea.getItems()[1].removeItem(oLinea.getItems()[1].getItems()[0]);
-                    oLinea.getItems()[0].removeItem(oLinea.getItems()[0].getItems()[0]);
-                    oTable_Header.removeColumn(oTable_Header.getColumns()[9]);
-                    oTable_Header.removeColumn(oTable_Header.getColumns()[8]);
-                    oTable_Header.removeColumn(oTable_Header.getColumns()[7]);
-                    oTable.removeColumn(oTable.getColumns()[9]);
-                    oTable.removeColumn(oTable.getColumns()[8]);
-                    oTable.removeColumn(oTable.getColumns()[7]);
-                    var oColumnListItems = oTable.getItems();
-                    for (var j = 0; j < oColumnListItems.length; j++) {
-                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[9]);
-                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[8]);
-                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[7]);
-                    }
-                }
-
+            this.getView().byId("chiusuraPiano").setEnabled(false);
+            this.getView().byId("reportButton").setEnabled(false);
+            var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
+            for (var i = 0; i < oItems.length; i++) {
+                var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
+                var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
+                oTable.getColumns()[7].setVisible(false);
+                oTable.getColumns()[8].setVisible(false);
+                oTable.getColumns()[9].setVisible(false);
+                oTable.getColumns()[10].setVisible(false);
+                oTable.getColumns()[11].setVisible(false);
+                oTable_Header.getColumns()[7].setVisible(false);
+                oTable_Header.getColumns()[8].setVisible(false);
+                oTable_Header.getColumns()[9].setVisible(false);
+                oTable_Header.getColumns()[10].setVisible(false);
+                oTable_Header.getColumns()[11].setVisible(false);
+                var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
+                oLinea.getItems()[0].getItems()[0].setVisible(false);
+                oLinea.getItems()[1].getItems()[0].setVisible(false);
+                oLinea.getItems()[2].getItems()[0].setVisible(false);
+                oLinea.getItems()[3].getItems()[0].setVisible(false);
+                oLinea.getItems()[4].getItems()[0].setVisible(false);
             }
+//            if (this.getView().byId("reportButton").getEnabled()) {
+//                this.getView().byId("reportButton").setEnabled(false);
+//                var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
+//                for (var i = 0; i < oItems.length; i++) {
+//                    var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
+//                    var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
+//                    var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
+//                    oLinea.getItems()[2].removeItem(oLinea.getItems()[2].getItems()[0]);
+//                    oLinea.getItems()[1].removeItem(oLinea.getItems()[1].getItems()[0]);
+//                    oLinea.getItems()[0].removeItem(oLinea.getItems()[0].getItems()[0]);
+//                    oTable_Header.removeColumn(oTable_Header.getColumns()[9]);
+//                    oTable_Header.removeColumn(oTable_Header.getColumns()[8]);
+//                    oTable_Header.removeColumn(oTable_Header.getColumns()[7]);
+//                    oTable.removeColumn(oTable.getColumns()[9]);
+//                    oTable.removeColumn(oTable.getColumns()[8]);
+//                    oTable.removeColumn(oTable.getColumns()[7]);
+//                    var oColumnListItems = oTable.getItems();
+//                    for (var j = 0; j < oColumnListItems.length; j++) {
+//                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[9]);
+//                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[8]);
+//                        oColumnListItems[j].removeCell(oColumnListItems[j].getCells()[7]);
+//                    }
+//                }
+//
+//            }
         },
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // APRO IL DIALOG E INIZIALIZZO TUTTE LE CHECKBOX E LE PROPRIETA' DEL CONTROLLER CHE MI SERVONO PER MONITORARE LE CHECKBOX
-        onCausalizzazioneFermi: function (oEvent, batchId) {
+        onCausalizzazioneFermi: function (oEvent) {
+            var batchId;
             if (oEvent) {
                 var rowPath = oEvent.getSource().getBindingContext("linea").sPath;
                 var row_binded = this.getView().getModel("linea").getProperty(rowPath);
@@ -366,7 +406,7 @@ sap.ui.define([
             if (this.ISLOCAL === 1) {
                 link = "model/guasti_new.json";
             } else {
-                if (batchId === "totali") {
+                if (batchId === undefined) {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromLineaID&Content-Type=text/json&LineaID=" + this.linea.lineaID + "&OutputParameter=JSON";
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";

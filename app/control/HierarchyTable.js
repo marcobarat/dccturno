@@ -3,28 +3,60 @@ sap.ui.define([
     "sap/ui/table/TreeTable"],
         function (Control, TreeTable) {
             "use strict";
-
             return TreeTable.extend("myapp.control.HierarchyTable", {
 
                 renderer: {},
-
                 onAfterRendering: function () {
                     // CSS DELL'HEADER DELLA TREETABLE
 //                    var col_html;
 //                    var col_array = this.getColumns();
 //                    col_html = jQuery.sap.byId(col_array[2].getId());
 //                    col_html.addClass("noBorderRight");
-                    
-                    
-                    
-                    
-                    
+                    if (jQuery.sap.byId(this.getRows()[0].getId())[0] !== undefined) {
+                        var cell_html;
+                        var numero = this.getRows().length;
+                        for (var k = 0; k < numero; k++) {
+                            var row_html = jQuery.sap.byId(this.getRows()[k].getId())[0];
+                            if (row_html.classList.contains("Background0")) {
+                                row_html.classList.remove("Background0");
+                            }
+                            if (row_html.classList.contains("Background1")) {
+                                row_html.classList.remove("Background1");
+                            }
+                            if (row_html.classList.contains("Background2")) {
+                                row_html.classList.remove("Background2");
+                            }
+                            if (row_html.classList.contains("righeOverOut")) {
+                                row_html.classList.remove("righeOverOut");
+                            }
+
+                            for (var j = 1; j < this.getColumns().length; j++) {
+                                row_html = jQuery.sap.byId(this.getRows()[k].getId());
+                                cell_html = row_html.children()[j].children[0];
+                                if (cell_html.classList.contains("Lv1")) {
+                                    cell_html.classList.remove("Lv1");
+                                }
+                                if (cell_html.classList.contains("Lv2")) {
+                                    cell_html.classList.remove("Lv2");
+                                }
+                                if (cell_html.classList.contains("Lv3")) {
+                                    cell_html.classList.remove("Lv3");
+                                }
+
+                                if (j === 5 || j === 6 || j === 7) {
+                                    cell_html.parentElement.classList.remove("handPointer");
+                                }
+                            }
+                        }
+                    }
+
+
                     this.expandToLevel(3);
                     var that = this;
                     setTimeout(function () {
-                        var num = that.getBinding("rows").getLength();
                         var row, rowhtml, cellhtml;
                         var i, j;
+                        var num = that.getBinding("rows").getLength();
                         for (i = 0; i < num; i++) {
                             row = that.getBinding("rows").getContextByIndex(i).getObject();
                             rowhtml = jQuery.sap.byId(that.getRows()[i].getId());

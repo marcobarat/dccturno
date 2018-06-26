@@ -494,7 +494,7 @@ sap.ui.define([
 //            oRow.insertCell(oInput, 7);
 //        },
         ChangeValues: function (oEvent) {
-            this.STOP = 1; 
+            this.STOP = 1;
             var row_path = oEvent.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(row_path);
             this.pezzi_cartone = row_binded.pezziCartone;
@@ -650,7 +650,7 @@ sap.ui.define([
 
         },
         visuBatch: function (oEvent) {
-            this.STOP = 1; 
+            this.STOP = 1;
 //            var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
 //            this.linea = this.getView().getModel("linea").getProperty(linea_path);
             var oRow = oEvent.getSource().getParent();
@@ -721,7 +721,7 @@ sap.ui.define([
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
-            
+
         },
         SUCCESSTrasferimentoBatchAttrezzaggio: function (Jdata) {
             this.ModelLinea.setData(Jdata);
@@ -1011,28 +1011,28 @@ sap.ui.define([
         },
 // CARICARE OPERATORI
         loadOperatori: function (oEvent) {
-            var that = this; 
+            var that = this;
             var selectBox = oEvent.getSource();
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllOperatori&OutputParameter=JSON";
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllOperatori&Content-Type=text/json&OutputParameter=JSON";
             Library.AjaxCallerData(link, function (Jdata) {
-                 that.SUCCESSOperatori(Jdata, selectBox);
-            }
-            );
+                that.SUCCESSOperatori.bind(that)(Jdata, selectBox);
+            });
         },
         checkOperatore: function (oEvent) {
-            var check = 0; 
+            var check = 0;
             var selectBoxValue = oEvent.getSource().getValue();
             var oTables = this.getView().byId("managePianoTable").getItems();
-            for (var i=0; i<oTables.length; i++){
+            for (var i = 0; i < oTables.length; i++) {
                 var table_operatore = oTables[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[0].getContent()[0].getItems();
-                for (var j=0; j<table_operatore.length; j++){
-                    if (table_operatore[i].getCells()[0].getValue() === selectBoxValue){
-                        table_operatore[i].getCells()[0].clearSelection();
+                for (var j = 0; j < table_operatore.length; j++) {
+                    if (table_operatore[j].getCells()[0].getValue() === selectBoxValue && table_operatore[j].getCells()[0]!==oEvent.getSource()) {
+                        table_operatore[j].getCells()[0].setValue("");
+                        table_operatore[j].getCells()[0].clearSelection();
                         check = 1;
                         break;
                     }
                 }
-                if (check === 1){
+                if (check === 1) {
                     break;
                 }
             }

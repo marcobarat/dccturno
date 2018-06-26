@@ -801,3 +801,16 @@
 .paddingleft {
     padding-left: 1rem;
 }
+
+/* ICONTABFILTER */
+.sapMITBFilterDefault{
+    color: #003A6B !important;
+}
+
+.sapMITBText{
+    color: #003A6B !important;
+}
+
+.sapMITBSelected > .sapMITBContentArrow {
+    border-bottom-color: #003A6B !important;
+}
