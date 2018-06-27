@@ -80,7 +80,7 @@
                                             <Text class="sapUiSmallMarginTop" text="{guasti>inizio}"/>
                                             <Text class="sapUiSmallMarginTop" text="{guasti>fine}"/>
                                             <Text class="sapUiSmallMarginTop" text="{guasti>intervallo}"/>
-                                            <Text class="sapUiSmallMarginTop" text="{guasti>causa}"/>
+                                            <Text class="sapUiSmallMarginTop" text="{guasti>causale}"/>
                                             <Button press="handlePressOpenMenuCausalizzazione" icon="sap-icon://technical-object"/>
                                         </cells>
                                     </ColumnListItem> 

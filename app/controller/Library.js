@@ -203,7 +203,8 @@ sap.ui.define([
                     '<logId>' + obj.logId + '</logId>' +
                     '<batchId>' + obj.batchId + '</batchId>' +
                     '<dataFine>' + obj.dataFine + '</dataFine>' +
-                    '<dataInizio>' + obj.dataInizio + '</dataInizio>';
+                    '<dataInizio>' + obj.dataInizio + '</dataInizio>' +
+                    '<causaleId>' + obj.causaleId + '</causaleId>';
             return top + parameters + bottom;
         },
         createXMLBatch: function (obj) {

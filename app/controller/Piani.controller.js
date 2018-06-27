@@ -105,7 +105,7 @@ sap.ui.define([
             var link;
             var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
             var PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
-            sap.ui.getCore().setModel(PDCParameters, "ParametriPiano");
+            sap.ui.getCore().setModel(new JSONModel(PDCParameters), "ParametriPiano");
             if (this.ISLOCAL === 1) {
                 if (area === "0") {
                     link = "model/linee.json";

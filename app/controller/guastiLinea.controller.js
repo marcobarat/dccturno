@@ -7,7 +7,7 @@ sap.ui.define([
     "use strict";
     return Controller.extend("myapp.controller.guastiLinea", {
         ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
-        pdcID: sap.ui.getCore().getModel("ParametriPiano").pdc,
+        pdcID: sap.ui.getCore().getModel("ParametriPiano").getData().pdc,
         batchID: sap.ui.getCore().getModel("batchID").batchID,
         linea: "",
         menuJSON: {},
@@ -122,16 +122,16 @@ sap.ui.define([
             this._menu.open(this._bKeyboard, this.Button, eDock.EndTop, eDock.BeginBottom, this.Button);
         },
         SUCCESSGuastoModificato: function (Jdata) {
-            if (Number(Jdata.Log.error) === 0) {
+            if (Number(Jdata.error) === 0) {
+                this.guasti = Jdata.AllFermi;
+                this.guasti = Library.AddTimeGaps(this.guasti);
+                this.ModelGuasti.setData(this.guasti);
+                sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+                this.getView().setModel(this.ModelGuasti, "guasti");
                 this.oDialog.destroy();
             } else {
-                MessageToast.show(Jdata.Log.errorMessage, {duration: 10});
+                MessageToast.show(Jdata.errorMessage, {duration: 120});
             }
-            this.guasti = Jdata.AllFermi;
-            this.guasti = Library.AddTimeGaps(this.guasti);
-            this.ModelGuasti.setData(this.guasti);
-            sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
-            this.getView().setModel(this.ModelGuasti, "guasti");
         },
         SUCCESSModificaOEE: function (Jdata) {
             var ModelOEE = sap.ui.getCore().getModel("ReportOEE");
@@ -178,7 +178,9 @@ sap.ui.define([
                         obj.dataInizio = "";
                         obj.causaleId = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
-                        Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
+                        Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this), function (error) {
+                            console.log(error);
+                        });
                     }
                     break;
                 case "Modifica Inizio/Fine del Fermo":
@@ -235,7 +237,7 @@ sap.ui.define([
                         this.oDialog.destroy();
                     } else {
                         obj = {};
-                        obj.caso = "delete";
+                        obj.caso = "insert";
                         obj.logId = "";
                         obj.batchId = this.row_binded.batchID;
                         obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
@@ -268,7 +270,7 @@ sap.ui.define([
                 text: "Valore Corrente"
             });
             var oText2 = new sap.m.Text({
-                text: this.row_binded.causa
+                text: this.row_binded.causale
             });
             var bottomBox = oView.byId("bottomBox");
             var bBox1 = bottomBox.getItems()[0];
@@ -531,9 +533,9 @@ sap.ui.define([
             });
             var Causale = new sap.m.Text({
                 id: "Causale",
-                text: this.row_binded.causa
+                text: this.row_binded.causale
             });
-            if (this.row_binded.causa === "") {
+            if (this.row_binded.causale === "") {
                 Causale.setVisible(false);
             } else {
                 Causale.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop red tempoBox");
@@ -728,7 +730,7 @@ sap.ui.define([
             var stringa_inizio = sap.ui.getCore().byId("Inizio").getValue();
             var stringa_fine = sap.ui.getCore().byId("Fine").getValue();
             var binded_fine = this.row_binded.fine;
-            var binded_causale = this.row_binded.causa;
+            var binded_causale = this.row_binded.causale;
             var selected_key = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
             var causale = this.takeCausaById(selected_key);
             var i = this.findIndex(this.guasti.guasti, this.row_binded);

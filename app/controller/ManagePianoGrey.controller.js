@@ -40,11 +40,11 @@ sap.ui.define([
         },
         _onObjectMatched: function (oEvent) {
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
-            this.pdcID = sap.ui.getCore().getModel("ParametriPiano").pdc;
-            this.repartoID = sap.ui.getCore().getModel("ParametriPiano").reparto;
+            this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
+            this.repartoID = sap.ui.getCore().getModel("ParametriPiano").getData().reparto;
             this.ModelLinea = sap.ui.getCore().getModel("linee");
             this.ModelTurni = sap.ui.getCore().getModel("turni");
-            this.ModelPianoParameters = sap.ui.getCore().getModel("ParametriPiano");
+            this.ModelPianoParameters = sap.ui.getCore().getModel("ParametriPiano").getData();
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
 //            var link;

@@ -91,16 +91,16 @@
                                                             </VBox>
                                                             <HBox width="30%" class="FermoButton">
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>OEE}" editable="false" growing="true" rows="1" cols="3" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>OEE}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
                                                                 </VBox>
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>disponibilita}" editable="false" growing="true" rows="1" cols="3" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>disponibilita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
                                                                 </VBox>
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>produttivita}" editable="false" growing="true" rows="1" cols="3" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>produttivita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
                                                                 </VBox>
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>qualita}" editable="false" growing="true" rows="1" cols="3" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>qualita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
                                                                 </VBox>
                                                                 <VBox width="33%">
                                                                     <Button visible="false" width="100%" text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='onCausalizzazioneFermi'/>
