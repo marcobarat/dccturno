@@ -226,6 +226,7 @@ sap.ui.define([
                     '<qliTeo>' + obj.quintali + '</qliTeo>' +
                     '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
                     '<oreTeo>' + obj.ore + '</oreTeo>';
+            parameters = parameters.replace('+', '%2B');
             return top + parameters + bottom;
         },
         createXMLDestinazione: function (obj) {
