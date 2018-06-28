@@ -104,7 +104,7 @@
                                             <Label text="Totale" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <Text text="{ReportOEE>Al}"/>
+                                            <Text text="{= String(${ReportOEE>Al}).split('.')[0]}"/>
                                         </t:template>
                                     </t:Column>  
                                     <t:Column resizable="false">
@@ -114,7 +114,7 @@
                                             <Label text="Fermate" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>AlFermo}" red="{ReportOEE>red/AlFermo}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{= String(${ReportOEE>AlFermo}).split('.')[0]}" red="{ReportOEE>red/AlFermo}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column> 
                                     <t:Column resizable="false">
@@ -124,7 +124,7 @@
                                             <Label text="Set-up" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>AlSetup}" red="{ReportOEE>red/AlSetup}" hierarchy="{ReportOEE>hierarchy}" colName="dispSetup"/>
+                                            <wt:TextHierarchyTable text="{= String(${ReportOEE>AlSetup}).split('.')[0]}" red="{ReportOEE>red/AlSetup}" hierarchy="{ReportOEE>hierarchy}" colName="dispSetup"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column id="ComponentiProduttivita" resizable="false">
@@ -134,7 +134,7 @@
                                             <Label text="Totale" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <Text text="{ReportOEE>Pl}"/>
+                                            <Text text="{= String(${ReportOEE>Pl}).split('.')[0]}"/>
                                         </t:template>
                                     </t:Column>  
                                     <t:Column resizable="false">
@@ -144,7 +144,7 @@
                                             <Label text="Cad.Ridotta" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>PlVelocita}" red="{ReportOEE>red/PlVelocita}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{= String(${ReportOEE>PlVelocita}).split('.')[0]}" red="{ReportOEE>red/PlVelocita}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column resizable="false">
@@ -154,7 +154,7 @@
                                             <Label text="M.Fermate" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>PlMicrofermate}" red="{ReportOEE>red/PlMicrofermate}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{= String(${ReportOEE>PlMicrofermate}).split('.')[0]}" red="{ReportOEE>red/PlMicrofermate}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column> 
                                     <t:Column id="ComponentiQualita" resizable="false">
@@ -164,7 +164,7 @@
                                             <Label text="Totale" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <Text text="{ReportOEE>Ql}"/>
+                                            <Text text="{= String(${ReportOEE>Ql}).split('.')[0]}"/>
                                         </t:template>
                                     </t:Column>
                                     <t:Column resizable="false">
@@ -174,7 +174,7 @@
                                             <Label text="Scarti Lavor." class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>QlScartiProduzione}" red="{ReportOEE>red/QlScartiProduzione}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{= String(${ReportOEE>QlScartiProduzione}).split('.')[0]}" red="{ReportOEE>red/QlScartiProduzione}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column> 
                                     <t:Column resizable="false">
@@ -184,7 +184,7 @@
                                             <Label text="Scarti Setup" class="reportSapLabel"/>
                                         </t:multiLabels>
                                         <t:template>
-                                            <wt:TextHierarchyTable text="{ReportOEE>QlScartiSetup}" red="{ReportOEE>red/QlScartiSetup}" hierarchy="{ReportOEE>hierarchy}"/>
+                                            <wt:TextHierarchyTable text="{= String(${ReportOEE>QlScartiSetup}).split('.')[0]}" red="{ReportOEE>red/QlScartiSetup}" hierarchy="{ReportOEE>hierarchy}"/>
                                         </t:template>
                                     </t:Column>                                                                                                                                                                         
                                 </wt:columns>

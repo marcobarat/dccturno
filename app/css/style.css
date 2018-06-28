@@ -818,5 +818,21 @@
     padding-left: 1rem;
 }
 
-/*MANAGEPIANOGREEN*/
 
+/* ICONTABFILTER */
+.sapMITBFilterDefault{
+    color: #003A6B !important;
+}
+
+.sapMITBText{
+    color: #003A6B !important;
+}
+
+.sapMITBSelected > .sapMITBContentArrow {
+    border-bottom-color: #003A6B !important;
+}
+
+/* TEXT AREAS */
+.sapMTextArea > .sapMInputBaseReadonlyInner.sapMTextAreaInner{
+    border: 1px solid #003A6B !important;   
+}

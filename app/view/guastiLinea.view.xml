@@ -6,9 +6,9 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:cus="myapp.control">
     <Page showHeader="false" class="colorPage"> 
-                <content>
+        <content>
             <VBox height="100%" width="100%">
-                <VBox height="5%" width="100%"/>
+                <!--                <VBox height="5%" width="100%"/>
                 <VBox height="10%" width="100%">
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
@@ -28,8 +28,29 @@
                         <VBox height="100%" width="6.2%"/>
                     </HBox>
                 </VBox>
-                <VBox height="5%" width="100%"/>
-                <VBox height="80%" width="100%">
+                <VBox height="5%" width="100%"/>-->
+                
+                <VBox height="4%" width="100%"/>
+                <VBox height="6%" width="100%">
+                    <HBox>
+                        <VBox height="100%" width="5%"/>
+                        <HBox height="100%" width="20%"></HBox>                
+                        <VBox height="100%" width="50%">
+                            <VBox height="50%" width="100%" alignItems="Center">
+                                <Text id="turno"/>
+                            </VBox> 
+                        </VBox>
+                        <HBox height="100%" width="20%">
+                            <VBox width="100%">
+                                <Button text="Esci" press="onReturnToReport" class="paddingright" width="100%"/>
+                            </VBox>
+                        </HBox> 
+                        <VBox height="100%" width="5%"/>
+                    </HBox>
+                </VBox>
+                <VBox height="4%" width="100%"/>
+                
+                <VBox height="86%" width="100%">
                     <HBox>
                         <!--<VBox height="100%" width="5%"/>-->
                         <VBox height="100%" width="100%">
@@ -59,7 +80,7 @@
                                             <Text class="sapUiSmallMarginTop" text="{guasti>inizio}"/>
                                             <Text class="sapUiSmallMarginTop" text="{guasti>fine}"/>
                                             <Text class="sapUiSmallMarginTop" text="{guasti>intervallo}"/>
-                                            <Text class="sapUiSmallMarginTop" text="{guasti>causa}"/>
+                                            <Text class="sapUiSmallMarginTop" text="{guasti>causale}"/>
                                             <Button press="handlePressOpenMenuCausalizzazione" icon="sap-icon://technical-object"/>
                                         </cells>
                                     </ColumnListItem> 
@@ -72,4 +93,4 @@
             </VBox>
         </content>
     </Page>
-        </mvc:View>        
+</mvc:View>        

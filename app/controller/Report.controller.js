@@ -1,8 +1,9 @@
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
-    'myapp/controller/Library'
-], function (Controller, JSONModel, Library) {
+    'myapp/controller/Library',
+    'myapp/control/HierarchyTable'
+], function (Controller, JSONModel, Library, HierarchyTable) {
     "use strict";
     return Controller.extend("myapp.controller.Report", {
         ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
@@ -40,26 +41,11 @@ sap.ui.define([
             this.ModelOEE.setData(data_new);
             this.getView().setModel(this.ModelOEE, "ReportOEE");
             sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
+            this.getView().byId("TreeTableReport").onAfterRendering();
         },
         _onObjectMatched: function (oEvent) {
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
-//            if (Number(this.ISLOCAL)===1){
-//            Library.AjaxCallerData("model/OEE.json", this.SUCCESSDatiOEE.bind(this));
-//            this.getView().byId("TreeTableReport").setModel(this.ModelOEE, "ReportOEE");
-//            } else {
-//                
-//            if (Number(this.ISLOCAL)===1){
-//            Library.AjaxCallerData("model/OEE.json", this.SUCCESSDatiOEE.bind(this));
-//            this.getView().byId("TreeTableReport").setModel(this.ModelOEE, "ReportOEE");
-//            } else {
-//                
-//            }
-//            this.ModelTurni = this.getOwnerComponent().getModel("turni");
-//            if (!this.ModelTurni) {
-//                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-//                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
-//            }
             var oTitle = this.getView().byId("ReportTitle");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    -    " + this.piano.turno);

@@ -83,16 +83,28 @@
                                                 <cells>
                                                     <VBox width="100%" height="100%" class="sfondobianco bordoBlu">
                                                         <HBox width="100%" height="35%" class="scrollingbarTransparent">
-                                                            <VBox width="80%">
+                                                            <VBox width="70%">
                                                                 <Text text="{linea>linea}"
                                                                       width="50%"
                                                                       class="fix_linea">
                                                                 </Text>                                        
                                                             </VBox>
-                                                            <HBox width="20%" class="FermoButton">
-                                                                <VBox alignItems="Center" width="25%"/>
-                                                                <VBox alignItems="Center" width="25%"/>
-                                                                <VBox width="50%"/>                                  
+                                                            <HBox width="30%" class="FermoButton">
+                                                                <VBox alignItems="Center" width="16.5%">
+                                                                    <TextArea visible="false" value="{linea>OEE}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                </VBox>
+                                                                <VBox alignItems="Center" width="16.5%">
+                                                                    <TextArea visible="false" value="{linea>disponibilita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                </VBox>
+                                                                <VBox alignItems="Center" width="16.5%">
+                                                                    <TextArea visible="false" value="{linea>produttivita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                </VBox>
+                                                                <VBox alignItems="Center" width="16.5%">
+                                                                    <TextArea visible="false" value="{linea>qualita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                </VBox>
+                                                                <VBox width="33%">
+                                                                    <Button visible="false" width="100%" text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='onCausalizzazioneFermi'/>
+                                                                </VBox>
                                                             </HBox>
                                                         </HBox>
                                                         <HBox height="65%" width="100%">
@@ -104,10 +116,10 @@
                                                                     class="sapUiSmallMarginEnd scrollingbar">
                                                                     <columns class="mysapMListTbl">
                                                                         <Column
-                                                                            width=""
+                                                                            width="5%"
                                                                             vAlign="Middle"
                                                                             hAlign="Center">
-                                                                            <Text text="Sequenza" />
+                                                                            <Text text="Seq." />
                                                                         </Column>
                                                                         <Column
                                                                             width="15%"
@@ -121,26 +133,61 @@
                                                                             hAlign="Center">
                                                                             <Text text="Confezionamento" />
                                                                         </Column>
-                                                                        <Column width="15%">
+                                                                        <Column width="25%">
                                                                             <Text text="" />
                                                                         </Column>
                                                                         <Column
-                                                                            width="10%"
+                                                                            width="5%"
                                                                             vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Qli" />
                                                                         </Column>
                                                                         <Column
-                                                                            width="10%"
+                                                                            width="5%"
                                                                             vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Cartoni" />
                                                                         </Column>
                                                                         <Column
-                                                                            width="10%"
+                                                                            width="5%"
                                                                             vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Ore" />
+                                                                        </Column>
+                                                                        <Column
+                                                                            visible="false"
+                                                                            width="5%"
+                                                                            vAlign="Middle"
+                                                                            hAlign="Center">
+                                                                            <Text text="OEE"/>
+                                                                        </Column>
+                                                                        <Column
+                                                                            visible="false"
+                                                                            width="5%"
+                                                                            vAlign="Middle"
+                                                                            hAlign="Center">
+                                                                            <Text text="A"/>
+                                                                        </Column>
+                                                                        <Column
+                                                                            visible="false"
+                                                                            width="5%"
+                                                                            vAlign="Middle"
+                                                                            hAlign="Center">
+                                                                            <Text text="P"/>
+                                                                        </Column>
+                                                                        <Column
+                                                                            visible="false"
+                                                                            width="5%"
+                                                                            vAlign="Middle"
+                                                                            hAlign="Center">
+                                                                            <Text text="Q"/>
+                                                                        </Column>
+                                                                        <Column
+                                                                            visible="false"
+                                                                            width="10%"
+                                                                            vAlign="Middle"
+                                                                            hAlign="Center">
+                                                                            <Text/>
                                                                         </Column>
                                                                     </columns>
                                                                 </Table>
@@ -152,7 +199,7 @@
                                                                         class="sapUiSmallMarginEnd">
                                                                         <columns class="mysapMListTbl">
                                                                             <Column
-                                                                                width=""
+                                                                                width="5%"
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
                                                                             </Column>
@@ -166,19 +213,49 @@
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
                                                                             </Column>
-                                                                            <Column width="15%">
+                                                                            <Column width="25%">
                                                                             </Column>
                                                                             <Column
-                                                                                width="10%"
+                                                                                width="5%"
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
                                                                             </Column>
                                                                             <Column
-                                                                                width="10%"
+                                                                                width="5%"
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
                                                                             </Column>
                                                                             <Column
+                                                                                width="5%"
+                                                                                vAlign="Middle"
+                                                                                hAlign="Center">
+                                                                            </Column>
+                                                                            <Column
+                                                                                visible="false"
+                                                                                width="5%"
+                                                                                vAlign="Middle"
+                                                                                hAlign="Center">
+                                                                            </Column>
+                                                                            <Column
+                                                                                visible="false"
+                                                                                width="5%"
+                                                                                vAlign="Middle"
+                                                                                hAlign="Center">
+                                                                            </Column>
+                                                                            <Column
+                                                                                visible="false"
+                                                                                width="5%"
+                                                                                vAlign="Middle"
+                                                                                hAlign="Center">
+                                                                            </Column>
+                                                                            <Column
+                                                                                visible="false"
+                                                                                width="5%"
+                                                                                vAlign="Middle"
+                                                                                hAlign="Center">
+                                                                            </Column>
+                                                                            <Column
+                                                                                visible="false"
                                                                                 width="10%"
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
@@ -197,6 +274,11 @@
                                                                                         text="{linea>cartoni}" />
                                                                                     <Text
                                                                                         text="{linea>ore}" />
+                                                                                    <Text text="{linea>OEE}" />
+                                                                                    <Text text="{linea>disponibilita}"/>
+                                                                                    <Text text="{linea>produttivita}"/>
+                                                                                    <Text text="{linea>qualita}"/>
+                                                                                    <Button text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='onCausalizzazioneFermi'/>
                                                                                 </cells>
                                                                             </ColumnListItem>
                                                                         </items>
