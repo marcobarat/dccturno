@@ -260,6 +260,13 @@ sap.ui.define([
                 Library.AjaxCallerData(link, this.SUCCESSReportCreated.bind(this));
             }
         },
+        SUCCESSModificaCausale: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            this.getView().setModel(this.ModelLinea, "linea");
+            this.ModelLinea.refresh(true);
+            this.onCloseDialog();
+        },
         SUCCESSReportCreated: function (Jdata) {
             if (this.ISLOCAL === 1) {
                 this.ModelOEE.setData(Jdata);
@@ -415,33 +422,43 @@ sap.ui.define([
             Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
         },
         SUCCESSGuasti: function (Jdata) {
-            var data = {};
-            data.GuastiLinee = [];
-            for (var i = 0; i < Jdata.fermi.length; i++) {
-                var dataAll = JSON.parse(JSON.stringify(Jdata.fermi[i]));
-                var dataReduced = JSON.parse(JSON.stringify(Jdata.fermi[i]));
-                dataAll = Library.AddTimeGaps(dataAll);
-                data.GuastiLinee.push({});
-                data.GuastiLinee[i].nome = null;
-                data.GuastiLinee[i].All = {};
-                data.GuastiLinee[i].NoCause = {};
-                data.GuastiLinee[i].nome = Jdata.fermi[i].nome;
-                data.GuastiLinee[i].All = dataAll;
-                dataReduced = Library.RemoveCaused(dataReduced);
-                dataReduced = Library.AddTimeGaps(dataReduced);
-                data.GuastiLinee[i].NoCause = dataReduced;
-            }
-            this.ModelGuasti.setData(data);
-            var oView = this.getView();
+//            var data = {};
+//            data.GuastiLinee = [];
+//            for (var i = 0; i < Jdata.fermi.length; i++) {
+//                var dataAll = JSON.parse(JSON.stringify(Jdata.fermi[i]));
+//                var dataReduced = JSON.parse(JSON.stringify(Jdata.fermi[i]));
+//                dataAll = Library.AddTimeGaps(dataAll);
+//                data.GuastiLinee.push({});
+//                data.GuastiLinee[i].nome = null;
+//                data.GuastiLinee[i].All = {};
+//                data.GuastiLinee[i].NoCause = {};
+//                data.GuastiLinee[i].nome = Jdata.fermi[i].nome;
+//                data.GuastiLinee[i].All = dataAll;
+//                dataReduced = Library.RemoveCaused(dataReduced);
+//                dataReduced = Library.AddTimeGaps(dataReduced);
+//                data.GuastiLinee[i].NoCause = dataReduced;
+//            }
+//            this.ModelGuasti.setData(data);
+//            this.CheckSingoloCausa = [];
+//            var dato_linea = data.GuastiLinee[this.oLinea_index];
+//            for (var j in dato_linea.NoCause.guasti) {
+//                this.CheckSingoloCausa.push(0);
+//                dato_linea.NoCause.guasti[j].selected = false;
+//            }
+//            data.GuastiLinee[this.oLinea_index] = dato_linea;
+//            this.ModelGuastiLinea = new JSONModel({});
+//            this.ModelGuastiLinea.setData(dato_linea);
             this.CheckSingoloCausa = [];
-            var dato_linea = data.GuastiLinee[this.oLinea_index];
-            for (var j in dato_linea.NoCause.guasti) {
-                this.CheckSingoloCausa.push(0);
-                dato_linea.NoCause.guasti[j].selected = false;
-            }
-            data.GuastiLinee[this.oLinea_index] = dato_linea;
+            Jdata = Library.AddTimeGaps(Jdata);
             this.ModelGuastiLinea = new JSONModel({});
-            this.ModelGuastiLinea.setData(dato_linea);
+            this.ModelGuastiLinea.setData(Jdata);
+            for (var j in Jdata.fermi) {
+                this.CheckSingoloCausa.push(0);
+                Jdata.fermi[j].selected = false;
+            }
+            this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setData(Jdata);
+            var oView = this.getView();
             oView.setModel(this.ModelGuastiLinea, "guastilinea");
             this.oDialog = oView.byId("CausalizzazioneFermo");
             if (!this.oDialog) {
@@ -450,17 +467,17 @@ sap.ui.define([
             }
 
             //disabilito il bottone di accettazione
-            this.getView().byId("ConfermaFermi").setEnabled(false);
-            if (!this.ControlloCausalizzazioneGuasti(this.ModelGuastiLinea.getData())) {
-                oView.byId("TotaleTable").setVisible(false);
-                oView.byId("NoFermiDaCausalizzare").setVisible(true);
-            } else {
-                var oTable = this.getView().byId("TotaleTable");
-                oTable.setVisible(true);
-                oTable.getItems()[0].getCells()[3].setSelected(false);
-                this.CheckTotaleCausa = 0;
-                this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
-            }
+//            this.getView().byId("ConfermaFermi").setEnabled(false);
+//            if (!this.ControlloCausalizzazioneGuasti(this.ModelGuastiLinea.getData())) {
+//                oView.byId("TotaleTable").setVisible(false);
+//                oView.byId("NoFermiDaCausalizzare").setVisible(true);
+//            } else {
+            var oTable = this.getView().byId("TotaleTable");
+            oTable.setVisible(true);
+            oTable.getItems()[0].getCells()[3].setSelected(false);
+            this.CheckTotaleCausa = 0;
+            this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
+//            }
 
             this.oDialog.open();
         },
@@ -478,9 +495,9 @@ sap.ui.define([
 ////                    }
 ////                }
 //            }
-            if (this.button_fermo.getText() === "00:00") {
-                this.button_fermo.setEnabled(false);
-            }
+//            if (this.button_fermo.getText() === "00:00") {
+//                this.button_fermo.setEnabled(false);
+//            }
             this.getView().byId(id_dialog).close();
             this.oDialog = null;
         },
@@ -494,14 +511,14 @@ sap.ui.define([
                 if (CB.getSelected()) {
                     this.CheckTotaleCausa = 1;
                     for (i = 0; i < this.CheckSingoloCausa.length; i++) {
-                        this.ModelGuastiLinea.getData().NoCause.guasti[i].selected = true;
+                        this.ModelGuastiLinea.getData().fermi[i].selected = true;
                         this.CheckSingoloCausa[i] = 1;
                     }
                     this.ModelGuastiLinea.refresh();
                 } else {
                     this.CheckTotaleCausa = 0;
                     for (i = 0; i < this.CheckSingoloCausa.length; i++) {
-                        this.ModelGuastiLinea.getData().NoCause.guasti[i].selected = false;
+                        this.ModelGuastiLinea.getData().fermi[i].selected = false;
                         this.CheckSingoloCausa[i] = 0;
                     }
                     this.ModelGuastiLinea.refresh();
@@ -576,23 +593,42 @@ sap.ui.define([
         },
         onConfermaFermoCausalizzato: function () {
             var CB = sap.ui.getCore().byId(this.id_split[1]);
-            var i;
-            var data = this.ModelGuasti.getData().GuastiLinee[this.oLinea_index];
-            for (i = 0; i < this.CheckSingoloCausa.length; i++) {
-                if (this.CheckSingoloCausa[i] > 0) {
-                    data.NoCause.guasti[i].causa = CB.getProperty("text");
-                    for (var j in data.All.guasti) {
-                        if (data.NoCause.guasti[i].inizio === data.All.guasti[j].inizio) {
-                            data.All.guasti[j].causa = CB.getProperty("text");
-                            break;
+            var i, obj, link, j;
+            var data = this.ModelGuasti.getData();
+            if (Number(this.ISLOCAL === 1)) {
+                for (i = 0; i < this.CheckSingoloCausa.length; i++) {
+                    if (this.CheckSingoloCausa[i] > 0) {
+                        data.fermi[i].causale = CB.getProperty("text");
+                        for (j in data.fermi) {
+                            if (data.fermi[i].inizio === data.fermi[j].inizio) {
+                                data.fermi[j].causale = CB.getProperty("text");
+                                break;
+                            }
                         }
                     }
                 }
-            }
-            this.ModelGuasti.getData().GuastiLinee[this.oLinea_index] = data;
-            this.getView().setModel(this.ModelGuasti, "guastilinea");
-            this.onCloseDialog();
+                this.ModelGuasti.setData(data);
+//            this.getView().setModel(this.ModelGuasti, "guastilinea");
+                this.onCloseDialog();
 //            this.onCausalizzazioneFermi();
+            } else {
+                for (i = 0; i < this.CheckSingoloCausa.length; i++) {
+                    if (this.CheckSingoloCausa[i] > 0) {
+                        obj = {};
+                        obj.caso = "updateCausale";
+                        obj.logId = data.fermi[i].LogID;
+                        obj.batchId = this.row_binded.batchID; //SERVIREBBE IL BATCH ID SE POSSIBILE
+                        obj.dataFine = "";
+                        obj.dataInizio = "";
+                        obj.causaleId = CB.getProperty("text");
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
+                        Library.SyncAjaxCallerData(link);
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSModificaCausale.bind(this));
+
+                    }
+                }
+            }
         },
 //FUNZIONE PER SPLITTARE L'ID DA XML
         SplitId: function (id, string) {
