@@ -139,6 +139,11 @@ sap.ui.define([
         },
         SUCCESSTurnoApertoInCorso: function (Jdata) {
             for (var i = 0; i < Jdata.linee.length; i++) {
+                if (Number(Jdata.linee[i].avanzamento) >= 100) {
+                    Jdata.linee[i].avanzamento = 100;
+                } else {
+                    Jdata.linee[i].avanzamento = Number(Jdata.linee[i].avanzamento);
+                }
                 Jdata.linee[i].operatori = [];
                 for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
                     Jdata.linee[i].operatori.push({nome: "", cognome: ""});
