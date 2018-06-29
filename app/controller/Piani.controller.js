@@ -156,10 +156,6 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoFuturo: function (Jdata) {
-//            var data = Jdata.linee;
-//            for (var l = 0; l < data.length; l++) {
-//                data[l].batchlist.push(this.AddButtonObject);
-//            }
             for (var i = 0; i < Jdata.linee.length; i++) {
                 Jdata.linee[i].operatori = [];
                 for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {

@@ -19,8 +19,8 @@
                                 </ComboBox>                        
                                 <ComboBox id="cliente_SKU" class="sapUiMediumMarginBottom" loadItems="CaricaDestinazioni" selectionChange="enableSKU">
                                 </ComboBox>
-                                <ComboBox id="SKU" class="sapUiMediumMarginTop" loadItems="CaricaSKU" selectionChange="changeSKU">
-                                </ComboBox>
+<!--                                <ComboBox id="SKU" class="sapUiMediumMarginTop" loadItems="CaricaSKU" selectionChange="changeSKU">
+                                </ComboBox>-->
                             </VBox>
                             <VBox width="80%">
                                 <wt:CustomTreeTable

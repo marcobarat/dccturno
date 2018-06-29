@@ -836,3 +836,83 @@
 .sapMTextArea > .sapMInputBaseReadonlyInner.sapMTextAreaInner{
     border: 1px solid #003A6B !important;   
 }
+
+
+/*CLASSI PULSANTE SETTINGS DEL BATCH*/
+.BatchInMacchina .sapMBtnInner {
+    background: #003A6B;
+}
+.BatchInMacchina .sapMBtnIcon {
+    color: #FFD300;
+}
+
+.BatchInAttesa .sapMBtnInner {
+    background: #f2f2f2;
+}
+.BatchInAttesa .sapMBtnIcon {
+    color: #003A6B;
+}
+
+.BatchTrasferito .sapMBtnInner {
+    background: #A71930;
+}
+.BatchTrasferito .sapMBtnIcon {
+    color: #FFD300;
+}
+
+.StileX .sapMBtnIcon {
+    color: #A71930;
+}
+.StileV .sapMBtnIcon {
+    color: #7CA295;
+}
+
+/*CLASSI PULSANTE LINEA*/
+
+.LineaDispo .sapMBtnInner{
+    border: solid 2px #7CA295;
+}
+.LineaNonDispo .sapMBtnInner{
+    border: solid 2px #A71930;
+}
+
+.LineaVuota .sapMBtnInner{
+    background: white;
+    color: #003A6B;
+}
+.LineaVuota:hover> .sapMBtnInner:hover{
+    background: white;
+    color: #003A6B;
+}
+.LineaAttrezzaggio .sapMBtnInner{
+    background: #FFD300;
+    color: #003A6B;
+}
+.LineaAttrezzaggio:hover> .sapMBtnInner:hover{
+    background: #FFD300;
+    color: #003A6B;
+}
+.LineaLavorazione .sapMBtnInner{
+    background: #7CA295;
+    color: #003A6B;
+}
+.LineaLavorazione:hover> .sapMBtnInner:hover{
+    background: #7CA295;
+    color: #003A6B;
+}
+.LineaFermo .sapMBtnInner{
+    background: #A71930;
+    color: white;
+}
+.LineaFermo:hover> .sapMBtnInner:hover{
+    background: #A71930;
+    color: white;
+}
+.LineaSvuotamento .sapMBtnInner{
+    background: #5E3032;
+    color: white;
+}
+.LineaSvuotamento:hover> .sapMBtnInner:hover{
+    background: #5E3032;
+    color: white;
+}

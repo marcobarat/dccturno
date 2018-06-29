@@ -217,7 +217,8 @@ sap.ui.define([
             } else {
                 parameters += '<batchId/>';
             }
-            parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';
+//            parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';
+            parameters += '<SKUCodiceInterno></SKUCodiceInterno>';
             parameters += '<formatoProduttivo>' + obj.formatoProduttivo + '</formatoProduttivo>' +
                     '<grammatura>' + obj.grammatura + '</grammatura>' +
                     '<sequenza>' + obj.sequenza + '</sequenza>' +
@@ -233,7 +234,8 @@ sap.ui.define([
             var top = '<root><pianoDiConfezionamentoId/>';
             var bottom = '<sequenza/> <qliTeo/><cartoniTeo/><oreTeo/></root>';
             var parameters = '<lineaId>' + obj.lineaID + '</lineaId>';
-            parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';
+//            parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';
+            parameters += '<SKUCodiceInterno></SKUCodiceInterno>';
             parameters += '<formatoProduttivo>' + obj.formatoProduttivo + '</formatoProduttivo>' +
                     '<grammatura>' + obj.grammatura + '</grammatura>' +
                     '<tipologia>' + obj.tipologia + '</tipologia>';

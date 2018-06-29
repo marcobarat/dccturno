@@ -50,6 +50,7 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
         },
+
         URLChangeCheck: function (oEvent) {
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
             this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
@@ -74,16 +75,15 @@ sap.ui.define([
             oTitle.setText(this.piano.data + "    -    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
             this.getView().setModel(this.ModelLinea, 'linea');
-            if (this.ISLOCAL !== 1 && this.STOP === 0) {
-                this.RefreshFunction();
-            }
-            this.manageSPCButton();
-// MI SERVE PER LO STATO LINEA                
+//            this.manageSPCButton();
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
+            if (this.ISLOCAL !== 1 && this.STOP === 0) {
+                this.RefreshFunction(100);
+            }
         },
-        RefreshFunction: function () {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), 5000);
+        RefreshFunction: function (msec) {
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
@@ -105,29 +105,96 @@ sap.ui.define([
                     this.ModelLinea.refresh(true);
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
+                    this.SettingsButtonColor();
+                    this.LineButtonStyle();
                 }
             }
-            this.URLChangeCheck();
+            this.RefreshFunction(5000);
+        },
+        LineButtonStyle: function () {
+            var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
+            var data = this.ModelLinea.getData();
+            var button;
+            var state;
+            for (var i = 0; i < data.linee.length; i++) {
+                button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
+                for (var k = 0; k < classes.length; k++) {
+                    button.removeStyleClass(classes[k]);
+                }
+                state = data.linee[i].statolinea.split(".");
+                switch (state[0]) {
+                    case 'Disponibile':
+                        button.addStyleClass("LineaDispo");
+                        break;
+                    case 'Nondisponibile':
+                        button.addStyleClass("LineaNonDispo");
+                        break;
+                }
+                switch (state[1]) {
+                    case "Vuota":
+                        button.addStyleClass("LineaVuota");
+                        break;
+                    case "Attrezzaggio":
+                        button.addStyleClass("LineaAttrezzaggio");
+                        break;
+                    case "Lavorazione":
+                        button.addStyleClass("LineaLavorazione");
+                        break;
+                    case "Fermo":
+                        button.addStyleClass("LineaFermo");
+                        break;
+                    case "Svuotamento":
+                        button.addStyleClass("LineaSvuotamento");
+                        break;
+                }
+            }
+        },
+        SettingsButtonColor: function () {
+            var classes = ["BatchInMacchina", "BatchInAttesa", "BatchTrasferito"];
+            var data = this.ModelLinea.getData();
+            var button;
+            for (var i = 0; i < data.linee.length; i++) {
+                for (var j = 0; j < data.linee[i].batchlist.length; j++) {
+                    button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0].getItems()[j].getCells()[7].getItems()[0].getItems()[0].getItems()[0];
+                    for (var k = 0; k < classes.length; k++) {
+                        button.removeStyleClass(classes[k]);
+                    }
+                    switch (data.linee[i].batchlist[j].statoBatch) {
+                        case 'In lavorazione':
+                        case 'Attrezzaggio':
+                            button.addStyleClass("BatchInMacchina");
+                            break;
+                        case 'Attesa presa in carico':
+                            button.addStyleClass("BatchTrasferito");
+                            break;
+                        default:
+                            button.addStyleClass("BatchInAttesa");
+                            break;
+                    }
+                }
+            }
         },
         BarColorCT: function (data) {
             var progressBar;
-            for (var i = 0; i < data.linee.length; i++) {
-                if (Number(data.linee[i].avanzamento) >= 100) {
-                    data.linee[i].avanzamento = 100;
-                } else {
-                    data.linee[i].avanzamento = Number(data.linee[i].avanzamento);
-                }
-                progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
-                switch (data.linee[i].barColor) {
-                    case "yellow":
-                        progressBar.setState("Warning");
-                        break;
-                    case "green":
-                        progressBar.setState("Success");
-                        break;
-                    case "orange":
-                        progressBar.setState("Error");
-                        break;
+            if (data.linee.length > 0) {
+                for (var i = 0; i < data.linee.length; i++) {
+                    if (Number(data.linee[i].avanzamento) >= 100) {
+                        data.linee[i].avanzamento = 100;
+                    } else {
+                        data.linee[i].avanzamento = Number(data.linee[i].avanzamento);
+                    }
+                    progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
+                    switch (data.linee[i].barColor) {
+                        case "yellow":
+                            progressBar.setState("Warning");
+                            break;
+                        case "green":
+                            progressBar.setState("Success");
+                            break;
+                        case "orange":
+                            progressBar.setState("Error");
+                            break;
+                    }
                 }
             }
             return data;
@@ -135,47 +202,51 @@ sap.ui.define([
         SPCColorCT: function (data) {
             var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent"];
             var SPCButton;
-            for (var i = 0; i < data.linee.length; i++) {
-                for (var j = 0; j < data.linee[i].SPC.length; j++) {
-                    SPCButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[j + 1].getItems()[0];
-                    if (data.linee[i].SPC[j].fase !== "") {
-                        SPCButton.setEnabled(true);
-                    }
-                    for (var k = 0; k < CSS_classesButton.length; k++) {
-                        SPCButton.removeStyleClass(CSS_classesButton[k]);
-                    }
-                    switch (data.linee[i].SPC[j].fase) {
-                        case "1":
-                            SPCButton.setIcon("img/triangolo_buco.png");
-                            SPCButton.setText(data.linee[i].SPC[j].numeroCampionamenti);
-                            SPCButton.addStyleClass("SPCButtonPhase1");
+            if (data.linee.length > 0) {
+                for (var i = 0; i < data.linee.length; i++) {
+                    for (var j = 0; j < data.linee[i].SPC.length; j++) {
+                        SPCButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[j + 1].getItems()[0];
+                        if (data.linee[i].SPC[j].fase !== "") {
+                            SPCButton.setEnabled(true);
+                        } else {
+                            SPCButton.setEnabled(false);
+                        }
+                        for (var k = 0; k < CSS_classesButton.length; k++) {
+                            SPCButton.removeStyleClass(CSS_classesButton[k]);
+                        }
+                        switch (data.linee[i].SPC[j].fase) {
+                            case "1":
+                                SPCButton.setIcon("img/triangolo_buco.png");
+                                SPCButton.setText(data.linee[i].SPC[j].numeroCampionamenti);
+                                SPCButton.addStyleClass("SPCButtonPhase1");
 //                            if (data.length === 1) {
 //                                SPCButton.addStyleClass("SPCButtonContent");
 //                            } else {
 //                                SPCButton.addStyleClass("DualSPCButtonContent");
 //                            }
-                            SPCButton.addStyleClass("SPCButtonColorYellow");
-                            break;
-                        case "2":
-                            SPCButton.setIcon("");
-                            SPCButton.setText("");
-                            if (data.linee[i].SPC[j].allarme === "0") {
-                                SPCButton.addStyleClass("SPCButtonColorGreen");
-                            } else if (data.linee[i].SPC[j].allarme === "1") {
                                 SPCButton.addStyleClass("SPCButtonColorYellow");
-                            }
-                            break;
-                        default:
-                            SPCButton.setIcon("img/triangolo_buco.png");
-                            SPCButton.setText(0);
-                            SPCButton.addStyleClass("SPCButtonPhase1");
+                                break;
+                            case "2":
+                                SPCButton.setIcon("");
+                                SPCButton.setText("");
+                                if (data.linee[i].SPC[j].allarme === "0") {
+                                    SPCButton.addStyleClass("SPCButtonColorGreen");
+                                } else if (data.linee[i].SPC[j].allarme === "1") {
+                                    SPCButton.addStyleClass("SPCButtonColorYellow");
+                                }
+                                break;
+                            default:
+                                SPCButton.setIcon("img/triangolo_buco.png");
+                                SPCButton.setText(0);
+                                SPCButton.addStyleClass("SPCButtonPhase1");
 //                            if (data.length === 1) {
 //                                SPCButton.addStyleClass("SPCButtonContent");
 //                            } else {
 //                                SPCButton.addStyleClass("DualSPCButtonContent");
 //                            }
-                            SPCButton.addStyleClass("SPCButtonColorYellow");
-                            break;
+                                SPCButton.addStyleClass("SPCButtonColorYellow");
+                                break;
+                        }
                     }
                 }
             }
@@ -493,7 +564,8 @@ sap.ui.define([
                 this.row.getCells()[5].setValue("");
                 this.row.getCells()[6].setValue("");
 //                this.row.getCells()[7].setVisible(true);
-                row_binded.SKUCodiceInterno = this.getView().byId("SKU").getValue();
+//                row_binded.SKUCodiceInterno = this.getView().byId("SKU").getValue();
+                row_binded.SKUCodiceInterno = "";
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 120});
             }
@@ -528,7 +600,7 @@ sap.ui.define([
                 Library.AjaxCallerData(link, function (Jdata) {
                     that.ModelLinea.setData(Jdata);
                 });
-                this.getView().setModel(this.ModelLinea, "linee");
+                this.getView().setModel(this.ModelLinea, "linea");
             }
         },
         takeAllCause: function (bck) {
@@ -543,6 +615,11 @@ sap.ui.define([
             return bck;
         },
         onNavBack: function () {
+            var AddButton;
+            for (var i = 0; i < this.ModelLinea.getData().linee.length; i++) {
+                AddButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
+                AddButton.setEnabled(true);
+            }
             this.STOP = 1;
             var oHistory = History.getInstance();
             var sPreviousHash = oHistory.getPreviousHash();
@@ -706,11 +783,12 @@ sap.ui.define([
             } else {
                 obj.batchId = "";
             }
-            if (row_binded.SKUCodiceInterno) {
-                obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
-            } else {
-                obj.SKUCodiceInterno = "";
-            }
+//            if (row_binded.SKUCodiceInterno) {
+//                obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
+//            } else {
+//                obj.SKUCodiceInterno = "";
+//            }
+            obj.SKUCodiceInterno = "";
             obj.pianodiconfezionamento = this.pdcID;
             obj.lineaId = this.linea_id;
             obj.formatoProduttivo = oRow.getCells()[1].getValue();
@@ -726,18 +804,20 @@ sap.ui.define([
                 oRow.getCells()[7].setVisible(false);
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertUpdateBatch&Content-Type=text/json&xml=" + doc_xml + "&OutputParameter=JSON";
-                Library.AjaxCallerData(link, function (Jdata) {
+                Library.SyncAjaxCallerData(link, function (Jdata) {
                     if (Number(Jdata.error) === 0) {
                         that.STOP = 0;
-                        var path = oEvent.getSource().getBindingContext("linea").sPath.split("/");
-                        var index = Number(path[path.indexOf("linee") + 1]);
-                        var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
-                        AddButton.setEnabled(true);
                         that.RefreshCall();
                     } else {
                         MessageToast.show(Jdata.errorMessage, {duration: 120});
                     }
                 });
+                if (this.STOP === 0) {
+                    var path = oEvent.getSource().getBindingContext("linea").sPath.split("/");
+                    var index = Number(path[path.indexOf("linee") + 1]);
+                    var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
+                    AddButton.setEnabled(true);
+                }
             }
         },
 //GESTIONE VISUALIZZA ATTRIBUTI BATCH
@@ -761,6 +841,7 @@ sap.ui.define([
                     Library.AjaxCallerData(link, this.SUCCESSRichiamoBatch.bind(this));
                     break;
                 case "Cancellazione Batch":
+                    this.STOP = 1;
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/CancellazioneBatch&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
                     break;
@@ -768,7 +849,12 @@ sap.ui.define([
 
         },
         visuBatch: function (oEvent) {
-//            this.STOP = 1;
+            this.STOP = 1;
+            this.ModelLinea.getProperty(oEvent.getSource().getBindingContext("linea").getPath()).showButton = 0;
+            this.getView().setModel(this.ModelLinea, "linea");
+//            var oLinea_path = oEvent.getSource().getBindingContext("linea").getPath().split("/");
+//            var obj = {};
+//            var linea = oData[oLinea_path[1]][oLinea_path[2]];
 //            var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
 //            this.linea = this.getView().getModel("linea").getProperty(linea_path);
             var oRow = oEvent.getSource().getParent();
@@ -797,7 +883,7 @@ sap.ui.define([
                 this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
                 this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
                 this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
-                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
+//                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
             } else {
@@ -810,11 +896,12 @@ sap.ui.define([
                 obj.quintali = "";
                 obj.cartoni = "";
                 obj.ore = "";
-                if (row_binded.SKUCodiceInterno) {
-                    obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
-                } else {
-                    obj.SKUCodiceInterno = "";
-                }
+//                if (row_binded.SKUCodiceInterno) {
+//                    obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
+//                } else {
+//                    obj.SKUCodiceInterno = "";
+//                }
+                obj.SKUCodiceInterno = "";
                 obj.formatoProduttivo = row_binded.formatoProduttivo;
                 obj.tipologia = row_binded.confezione;
                 obj.grammatura = row_binded.grammatura;
@@ -832,7 +919,7 @@ sap.ui.define([
                 this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
                 this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
                 this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
-                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
+                //                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
             }
@@ -857,6 +944,7 @@ sap.ui.define([
         },
         SUCCESSCancellazioneBatch: function (Jdata) {
             if (Number(Jdata.error) === 0) {
+                this.STOP = 0;
                 this.RefreshCall();
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 120});
@@ -866,6 +954,7 @@ sap.ui.define([
             this.oDialog.close();
         },
         destroyDialog: function () {
+            this.STOP = 0;
             this.oDialog.destroy();
         },
 // GESTIONE POPUP STATO LINEA
@@ -914,6 +1003,11 @@ sap.ui.define([
         },
 // RITORNARE ALLA VIEW MAIN
         onMenu: function () {
+            var AddButton;
+            for (var i = 0; i < this.ModelLinea.getData().linee.length; i++) {
+                AddButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
+                AddButton.setEnabled(true);
+            }
             this.STOP = 1;
             this.getView().setModel(null, "linea");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -947,9 +1041,10 @@ sap.ui.define([
             this.getView().getModel("linea").refresh();
         },
         enableSKU: function () {
-            this.getView().byId("SKU").destroyItems();
-            this.getView().byId("SKU").setValue("");
-            this.getView().byId("SKU").setEnabled(true);
+//            this.getView().byId("SKU").destroyItems();
+//            this.getView().byId("SKU").setValue("");
+//            this.getView().byId("SKU").setEnabled(true);
+            this.changeSKU();
         },
         changeSKU: function () {
             if (this.ISLOCAL !== 1) {
@@ -963,7 +1058,8 @@ sap.ui.define([
                 obj.quintali = "";
                 obj.cartoni = "";
                 obj.ore = "";
-                obj.SKUCodiceInterno = this.getView().byId("SKU").getValue();
+                obj.SKUCodiceInterno = "";
+//                obj.SKUCodiceInterno = this.getView().byId("SKU").getValue();
                 obj.formatoProduttivo = this.getView().byId("formato_SKU").getValue();
                 obj.tipologia = array_confezione[0];
                 obj.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
@@ -975,9 +1071,9 @@ sap.ui.define([
             this.getView().byId("cliente_SKU").destroyItems();
             this.getView().byId("cliente_SKU").setValue("");
             this.getView().byId("cliente_SKU").setEnabled(true);
-            this.getView().byId("SKU").destroyItems();
-            this.getView().byId("SKU").setValue("");
-            this.getView().byId("SKU").setEnabled(false);
+//            this.getView().byId("SKU").destroyItems();
+//            this.getView().byId("SKU").setValue("");
+//            this.getView().byId("SKU").setEnabled(false);
         },
         confermaModifiche: function () {
             var lineaPath = this.row.getParent().getBindingContext("linea").sPath;
@@ -988,7 +1084,8 @@ sap.ui.define([
                 var array_confezione = this.getView().byId("confezione_SKU").getValue().split(" ");
                 var obj = {};
                 obj.pianodiconfezionamento = "";
-                obj.SKUCodiceInterno = this.getView().byId("SKU").getValue();
+                obj.SKUCodiceInterno = "";
+//                obj.SKUCodiceInterno = this.getView().byId("SKU").getValue();
                 obj.lineaId = linea_binded.lineaID;
                 obj.formatoProduttivo = this.getView().byId("formato_SKU").getValue();
                 obj.tipologia = array_confezione[0];
@@ -999,8 +1096,7 @@ sap.ui.define([
                 obj.cartoni = "";
                 obj.ore = "";
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetInfoNewBatch&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
-                Library.SyncAjaxCallerData(link,
-                        this.SUCCESSQuantita.bind(this));
+                Library.SyncAjaxCallerData(link, this.SUCCESSQuantita.bind(this));
             }
             this.oDialog.destroy();
         },

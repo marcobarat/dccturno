@@ -4,30 +4,11 @@ sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'sap/ui/core/routing/History',
-    'myapp/control/CustomButt',
     'myapp/controller/Library',
     'myapp/model/TimeFormatter'
-], function (MessageToast, jQuery, Controller, JSONModel, History, CustomButt, Library, TimeFormatter) {
+], function (MessageToast, jQuery, Controller, JSONModel, History, Library, TimeFormatter) {
     "       use strict";
     var ManagePianoYellow = Controller.extend("myapp.controller.ManagePianoYellow", {
-        AddButtonObject: {
-            batchID: "#ADD#",
-            sequenza: "#ADD#",
-            statoBatch: "#ADD#",
-            erroreBatch: "#ADD#",
-            formatoProduttivo: "#ADD#",
-            confezione: "#ADD#",
-            grammatura: "#ADD#",
-            destinazione: "#ADD#",
-            qli: "#ADD#",
-            cartoni: "#ADD#",
-            ore: "#ADD#",
-            disponibilita: "#ADD#",
-            produttivita: "#ADD#",
-            qualita: "#ADD#",
-            fermo: "#ADD#",
-            pezziCartone: "#ADD#",
-            secondiPerPezzo: "#ADD#"},
         StabilimentoID: null,
         pdcID: null,
         repartoID: null,
@@ -90,7 +71,7 @@ sap.ui.define([
             this.getView().setModel(this.ModelLinea, 'linea');
             this.getView().byId("managePianoTable").getBinding("items").refresh();
             if (this.ISLOCAL !== 1 && this.STOP === 0) {
-                this.RefreshFunction();
+                this.RefreshFunction(500);
             }
 //            this.getView().setModel(this.ModelLinea, 'linea');
 //            this.getView().byId("managePianoTable").rerender();
@@ -103,10 +84,8 @@ sap.ui.define([
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
         },
-        RefreshFunction: function () {
-            if (1 === 0) {
-                this.TIMER = setTimeout(this.RefreshCall.bind(this), 5000);
-            }
+        RefreshFunction: function (msec) {
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
@@ -126,9 +105,48 @@ sap.ui.define([
                     this.ModelLinea.refresh(true);
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
+                    this.LineButtonStyle();
                 }
             }
-            this.URLChangeCheck();
+            this.RefreshFunction(5000);
+        },
+        LineButtonStyle: function () {
+            var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
+            var data = this.ModelLinea.getData();
+            var button;
+            var state;
+            for (var i = 0; i < data.linee.length; i++) {
+                button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
+                for (var k = 0; k < classes.length; k++) {
+                    button.removeStyleClass(classes[k]);
+                }
+                state = data.linee[i].statolinea.split(".");
+                switch (state[0]) {
+                    case 'Disponibile':
+                        button.addStyleClass("LineaDispo");
+                        break;
+                    case 'Nondisponibile':
+                        button.addStyleClass("LineaNonDispo");
+                        break;
+                }
+                switch (state[1]) {
+                    case "Vuota":
+                        button.addStyleClass("LineaVuota");
+                        break;
+                    case "Attrezzaggio":
+                        button.addStyleClass("LineaAttrezzaggio");
+                        break;
+                    case "Lavorazione":
+                        button.addStyleClass("LineaLavorazione");
+                        break;
+                    case "Fermo":
+                        button.addStyleClass("LineaFermo");
+                        break;
+                    case "Svuotamento":
+                        button.addStyleClass("LineaSvuotamento");
+                        break;
+                }
+            }
         },
         SUCCESSCause: function (Jdata) {
             this.data_json = {};
