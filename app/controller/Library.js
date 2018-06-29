@@ -89,9 +89,9 @@ sap.ui.define([
             return data;
         },
         RemoveCaused: function (data) {
-            for (var i = data.guasti.length - 1; i >= 0; i--) {
-                if (data.guasti[i].causa !== "") {
-                    data.guasti.splice(i, 1);
+            for (var i = data.fermi.length - 1; i >= 0; i--) {
+                if (data.fermi[i].causale !== "") {
+                    data.fermi.splice(i, 1);
                 }
             }
             return data;

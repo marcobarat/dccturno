@@ -42,8 +42,8 @@
                     <ColumnListItem class="mysapMListTblCell mysapMText mysapMCb">
                         <cells>
                             <Text textAlign="Center" text="Totale Complessivo"/>
-                            <Text text="{guastilinea>/NoCause/Totale/tempoGuastoTotale}"/>
-                            <Text text="{guastilinea>/NoCause/Totale/causaleTotale}"/>
+                            <Text text="{guastilinea>/Totale/tempoGuastoTotale}"/>
+                            <Text text="{guastilinea>/Totale/causaleTotale}"/>
                             <CheckBox textAlign="Center" id="CBTotaleCausa" selected="false" select="ChangeCheckedCausa" class="CBTotaleCausaCustom sapUiTinyMarginBegin"/>
                 
                                                                           
@@ -58,7 +58,7 @@
                 visibleRowCount="5"
                 class="alternate-color"
                 selectionMode="None"
-                rows="{guastilinea>/NoCause/guasti}">
+                rows="{guastilinea>/fermi}">
                 <t:columns>
                     <t:Column hAlign="Center" width="15%">
                         <Label text="Inizio"/>
@@ -81,7 +81,7 @@
                     <t:Column hAlign="Center" width="45%">
                         <Label text="Causale"/>
                         <t:template>
-                            <Text text="{guastilinea>causa}"/>
+                            <Text text="{guastilinea>causale}"/>
                         </t:template>
                     </t:Column>
                     <t:Column hAlign="Center" width="10%">
