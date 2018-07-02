@@ -5,10 +5,16 @@ sap.ui.define([
     'sap/ui/model/json/JSONModel',
     'sap/ui/core/routing/History',
     'myapp/controller/Library',
-    'myapp/model/TimeFormatter'
-], function (MessageToast, jQuery, Controller, JSONModel, History, Library, TimeFormatter) {
+    'myapp/model/TimeFormatter',
+    'sap/ui/model/Filter',
+    'sap/ui/model/FilterOperator'
+], function (MessageToast, jQuery, Controller, JSONModel, History, Library, TimeFormatter, Filter, FilterOperator) {
     "use strict";
     var ManagePianoGreen = Controller.extend("myapp.controller.ManagePianoGreen", {
+        checkSingoloCausa: null,
+        checkTotaleCausa: null,
+        ModelGuastiLinea: null,
+        ModelCausali: new JSONModel({}),
         StabilimentoID: null,
         pdcID: null,
         repartoID: null,
@@ -44,13 +50,11 @@ sap.ui.define([
         Avanzamento: null,
         idLinea: null,
         idBatch: null,
-
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
         },
-
         URLChangeCheck: function (oEvent) {
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
             this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
@@ -584,13 +588,158 @@ sap.ui.define([
             if (Number(Jdata.error) === 0) {
                 var oModel = new JSONModel(Jdata);
                 var oItemSelectTemplate = new sap.ui.core.Item({
+                    key: "{operatore>addettoID}",
                     text: "{operatore>cognome} {operatore>nome}"
                 });
                 selectBox.setModel(oModel, "operatore");
                 selectBox.bindAggregation("items", "operatore>/operatori", oItemSelectTemplate);
+                var aFilter = [];
+                var query = selectBox.getPlaceholder();
+                if (query) {
+                    aFilter.push(new Filter("operatore>sezione", FilterOperator.Contains, query));
+                }
+                selectBox.getBinding("items").filter(aFilter);
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 120});
             }
+        },
+        SUCCESSGuasti: function (Jdata) {
+            this.CheckSingoloCausa = [];
+            Jdata = Library.AddTimeGaps(Jdata);
+            this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setData(Jdata);
+            for (var j in Jdata.fermi) {
+                this.CheckSingoloCausa.push(0);
+                Jdata.fermi[j].selected = false;
+            }
+            this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setData(Jdata);
+            var oView = this.getView();
+            oView.setModel(this.ModelGuastiLinea, "guastilinea");
+            this.oDialog = oView.byId("CausalizzazioneFermo");
+            if (!this.oDialog) {
+                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermo", this);
+                oView.addDependent(this.oDialog);
+            }
+            var oTable = this.getView().byId("TotaleTable");
+            oTable.setVisible(true);
+            oTable.getItems()[0].getCells()[3].setSelected(false);
+            this.CheckTotaleCausa = 0;
+            this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
+            this.oDialog.open();
+        },
+        SUCCESSFermo: function (Jdata) {
+            this.ModelCausali.setData(Jdata);
+            this.getView().setModel(this.ModelCausali, "CausaliFermo");
+            var oView = this.getView();
+            this.onCloseDialog();
+            //PULIZIA DELLA PAGINA -DESELEZIONO UN'EVENTUALE CASELLA SELEZIONATA 
+            var old_id = this.GetActiveCB();
+            if (old_id !== 0) {
+                var old_CB = sap.ui.getCore().byId(old_id);
+                old_CB.setSelected(false);
+                this.CheckFermo[old_id] = 0;
+            }
+
+            var dialog = oView.byId("CausalizzazioneFermoPanel");
+            if (!dialog) {
+                dialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);
+                oView.addDependent(dialog);
+            }
+            this.oDialog = dialog;
+//            dialog.open();
+            var data = this.ModelCausali.getData().gerarchie;
+            var num_gerarchie = data.length;
+            var ID, CB;
+            var cols = 2;
+            var rows = Math.ceil(num_gerarchie / cols);
+            var outerVBox = this.getView().byId("CausalizzazioneFermoPanelBox");
+            if (outerVBox.getItems().length > 0) {
+                outerVBox.destroyItems();
+            }
+            var vvbb1 = new sap.m.VBox({height: "90%", width: "100%"});
+            var vvbb3 = new sap.m.VBox({height: "10%", width: "100%"});
+            vvbb3.addStyleClass("sapUiMediumMarginTop");
+            var hbox = new sap.m.HBox({height: "100%"});
+            var vb1 = new sap.m.VBox({width: "15%"});
+            var VB1 = new sap.m.VBox({width: "85%"});
+            var L1_vbox, L2_hbox, L3_vbox, title, subdata;
+            var L3_width = String(Math.round(100 / cols)) + "%";
+            var index = 0;
+            this.CheckFermo = [];
+            for (var i = 0; i < rows; i++) {
+                L2_hbox = new sap.m.HBox();
+                L2_hbox.addStyleClass("sapUiSmallMarginBottom");
+                for (var j = 0; j < cols; j++) {
+                    title = new sap.m.Text({text: data[index].gerarchia});
+                    title.addStyleClass("customText");
+                    L3_vbox = new sap.m.VBox({width: L3_width});
+                    L3_vbox.addItem(title);
+                    subdata = data[index].attributi;
+                    for (var k = 0; k < subdata.length; k++) {
+                        ID = "CBFermo" + subdata[k].id;
+                        this.CheckFermo[ID] = 0;
+                        CB = new sap.m.CheckBox({
+                            id: ID,
+                            text: subdata[k].fermo,
+                            select: this.ChangeCheckedFermo.bind(this),
+                            selected: false});
+                        L3_vbox.addItem(CB);
+                    }
+                    L2_hbox.addItem(L3_vbox);
+                    index++;
+                    if (index === data.length) {
+                        break;
+                    }
+                }
+                L1_vbox = new sap.m.VBox({});
+                L1_vbox.addItem(L2_hbox);
+                VB1.addItem(L1_vbox);
+            }
+            hbox.addItem(vb1);
+            hbox.addItem(VB1);
+            vvbb1.addItem(hbox);
+            outerVBox.addItem(vvbb1);
+            var hbox1 = new sap.m.HBox({});
+            var vb0 = new sap.m.VBox({width: "10%"});
+            var vb01 = new sap.m.VBox({width: "37%"});
+            var vb2 = new sap.m.VBox({width: "6%"});
+            var vb3 = new sap.m.VBox({width: "37%"});
+            var vb4 = new sap.m.VBox({width: "10%"});
+            var bt1 = new sap.m.Button({
+                id: "AnnullaFermo",
+                text: "ANNULLA",
+                width: "100%",
+                enabled: true,
+                press: this.onCloseDialog.bind(this)});
+            bt1.addStyleClass("annullaButton");
+            var bt2 = new sap.m.Button({
+                id: "ConfermaFermo",
+                text: "CONFERMA",
+                width: "100%",
+                enabled: false,
+                press: this.onConfermaFermoCausalizzato.bind(this)});
+            bt2.addStyleClass("confermaButton");
+            vb3.addItem(bt2);
+            vb01.addItem(bt1);
+            vb0.addItem(new sap.m.Text({}));
+            vb2.addItem(new sap.m.Text({}));
+            vb4.addItem(new sap.m.Text({}));
+            hbox1.addItem(vb0);
+            hbox1.addItem(vb01);
+            hbox1.addItem(vb2);
+            hbox1.addItem(vb3);
+            hbox1.addItem(vb4);
+            vvbb3.addItem(hbox1);
+            outerVBox.addItem(vvbb3);
+            dialog.open();
+        },
+        SUCCESSModificaCausale: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            this.getView().setModel(this.ModelLinea, "linea");
+            this.ModelLinea.refresh(true);
+            this.onCloseDialog();
         },
         changeReparto: function (oEvent) {
             var link;
@@ -647,7 +796,7 @@ sap.ui.define([
             var indexLinea = Number(PathArray[PathArray.indexOf("linee") + 1]);
             this.linea_id = this.ModelLinea.getData().linee[indexLinea].lineaID;
             this.batch_id = this.ModelLinea.getProperty(Path).batchID;
-            this.row = oEvent.getSource().getParent();
+            this.row = oEvent.getSource().getParent().getParent().getParent().getParent();
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/prova.json";
@@ -855,90 +1004,97 @@ sap.ui.define([
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/CancellazioneBatch&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
                     break;
+                case "Gestione Intervalli di Fermo":
+                    break;
+                case "Causalizzazione Fermi Automatici":
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
+                    break;
             }
 
         },
         visuBatch: function (oEvent) {
-            this.STOP = 1;
-            this.ModelLinea.getProperty(oEvent.getSource().getBindingContext("linea").getPath()).showButton = 0;
-            this.getView().setModel(this.ModelLinea, "linea");
+            if (oEvent) {
+                this.STOP = 1;
+                this.ModelLinea.getProperty(oEvent.getSource().getBindingContext("linea").getPath()).showButton = 0;
+                this.getView().setModel(this.ModelLinea, "linea");
 //            var oLinea_path = oEvent.getSource().getBindingContext("linea").getPath().split("/");
 //            var obj = {};
 //            var linea = oData[oLinea_path[1]][oLinea_path[2]];
 //            var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
 //            this.linea = this.getView().getModel("linea").getProperty(linea_path);
-            var oRow = oEvent.getSource().getParent();
-            if (!oRow.getCells) {
-                oRow = this.row;
-            }
-            var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
-            this.linea = this.getView().getModel("linea").getProperty(linea_path);
-            this.row = oRow;
-            var oView;
-            var rowPath = this.row.getBindingContext("linea").sPath;
-            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
-            if (this.ISLOCAL === 1) {
-                oView = this.getView();
-                var std = this.getView().getModel("SKUstd").getData();
-                var bck = this.getView().getModel("SKU").getData();
-                bck = Library.RecursiveJSONComparison(std, bck, "attributi");
-                bck = Library.RecursiveParentExpansion(bck);
-                this.ModelSKU.setData(bck);
-                this.getView().setModel(this.ModelSKU, "SKU");
-                this.oDialog = oView.byId("modificaAttributi");
-                if (!this.oDialog) {
-                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
-                    oView.addDependent(this.oDialog);
+                var oRow = oEvent.getSource().getParent();
+                if (!oRow.getCells) {
+                    oRow = this.row;
                 }
-                this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
-                this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
-                this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
+                var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
+                this.linea = this.getView().getModel("linea").getProperty(linea_path);
+                this.row = oRow;
+                var oView;
+                var rowPath = this.row.getBindingContext("linea").sPath;
+                var row_binded = this.getView().getModel("linea").getProperty(rowPath);
+                if (this.ISLOCAL === 1) {
+                    oView = this.getView();
+                    var std = this.getView().getModel("SKUstd").getData();
+                    var bck = this.getView().getModel("SKU").getData();
+                    bck = Library.RecursiveJSONComparison(std, bck, "attributi");
+                    bck = Library.RecursiveParentExpansion(bck);
+                    this.ModelSKU.setData(bck);
+                    this.getView().setModel(this.ModelSKU, "SKU");
+                    this.oDialog = oView.byId("modificaAttributi");
+                    if (!this.oDialog) {
+                        this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
+                        oView.addDependent(this.oDialog);
+                    }
+                    this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
+                    this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
+                    this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
 //                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
-                Library.RemoveClosingButtons.bind(this)("attributiContainer");
-                this.oDialog.open();
-            } else {
-                oView = this.getView();
-                var obj = {};
-                obj.pianodiconfezionamento = "";
-                obj.lineaId = "";
-                obj.batchId = "";
-                obj.sequenza = "";
-                obj.quintali = "";
-                obj.cartoni = "";
-                obj.ore = "";
+                    Library.RemoveClosingButtons.bind(this)("attributiContainer");
+                    this.oDialog.open();
+                } else {
+                    oView = this.getView();
+                    var obj = {};
+                    obj.pianodiconfezionamento = "";
+                    obj.lineaId = "";
+                    obj.batchId = "";
+                    obj.sequenza = "";
+                    obj.quintali = "";
+                    obj.cartoni = "";
+                    obj.ore = "";
 //                if (row_binded.SKUCodiceInterno) {
 //                    obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
 //                } else {
 //                    obj.SKUCodiceInterno = "";
 //                }
-                obj.SKUCodiceInterno = "";
-                obj.formatoProduttivo = row_binded.formatoProduttivo;
-                obj.tipologia = row_binded.confezione;
-                obj.grammatura = row_binded.grammatura;
-                obj.destinazione = row_binded.destinazione;
-                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
+                    obj.SKUCodiceInterno = "";
+                    obj.formatoProduttivo = row_binded.formatoProduttivo;
+                    obj.tipologia = row_binded.confezione;
+                    obj.grammatura = row_binded.grammatura;
+                    obj.destinazione = row_binded.destinazione;
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
 //                Library.SyncAjaxCallerData(link, this.SUCCESSSKU());
-                Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this), function (error) {
-                    console.log(error);
-                });
-                this.oDialog = oView.byId("modificaAttributi");
-                if (!this.oDialog) {
-                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
-                    oView.addDependent(this.oDialog);
+                    Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this), function (error) {
+                        console.log(error);
+                    });
+                    this.oDialog = oView.byId("modificaAttributi");
+                    if (!this.oDialog) {
+                        this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
+                        oView.addDependent(this.oDialog);
+                    }
+                    this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
+                    this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
+                    this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
+                    //                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
+                    Library.RemoveClosingButtons.bind(this)("attributiContainer");
+                    this.oDialog.open();
                 }
-                this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
-                this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
-                this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
-                //                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
-                Library.RemoveClosingButtons.bind(this)("attributiContainer");
-                this.oDialog.open();
             }
         },
         SUCCESSTrasferimentoBatch: function (Jdata) {
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
-
         },
         SUCCESSTrasferimentoBatchAttrezzaggio: function (Jdata) {
             this.ModelLinea.setData(Jdata);
@@ -1275,6 +1431,129 @@ sap.ui.define([
                     break;
                 }
             }
+        },
+// GESTIONE FERMI AUTOMATICI
+//GESTIONE DELLE CHECKBOX DEL DIALOG CAUSALIZZAZIONE FERMO    
+        ChangeCheckedCausa: function (event) {
+            var id = event.getSource().getId();
+            var CB = this.getView().byId(id);
+            var root_name_totale = "CBTotaleCausa";
+            var i, temp_id;
+            if (id.indexOf(root_name_totale) > -1) {
+                if (CB.getSelected()) {
+                    this.CheckTotaleCausa = 1;
+                    for (i = 0; i < this.CheckSingoloCausa.length; i++) {
+                        this.ModelGuastiLinea.getData().fermi[i].selected = true;
+                        this.CheckSingoloCausa[i] = 1;
+                    }
+                    this.ModelGuastiLinea.refresh();
+                } else {
+                    this.CheckTotaleCausa = 0;
+                    for (i = 0; i < this.CheckSingoloCausa.length; i++) {
+                        this.ModelGuastiLinea.getData().fermi[i].selected = false;
+                        this.CheckSingoloCausa[i] = 0;
+                    }
+                    this.ModelGuastiLinea.refresh();
+                }
+
+
+            } else {
+                var discr_id = event.getSource().getParent().getId();
+                for (i = 0; i < this.CheckSingoloCausa.length; i++) {
+                    temp_id = event.getSource().getParent().getParent().getAggregation("rows")[i].getId();
+                    if (discr_id === temp_id) {
+                        break;
+                    }
+                }
+                if (CB.getSelected()) {
+                    this.CheckSingoloCausa[i] = 1;
+                } else {
+                    this.CheckSingoloCausa[i] = 0;
+                }
+            }
+            temp_id = 0;
+            for (i = 0; i < this.CheckSingoloCausa.length; i++) {
+                temp_id += this.CheckSingoloCausa[i];
+            }
+            if (temp_id > 0) {
+                this.oDialog.getAggregation("content")[0].getAggregation("items")[3].getAggregation("items")[0].setEnabled(true);
+            } else {
+                this.oDialog.getAggregation("content")[0].getAggregation("items")[3].getAggregation("items")[0].setEnabled(false);
+            }
+        },
+//CHIUDO IL DIALOG CAUSALIZZAZIONE FERMO E APRO IL CAUSALIZZAZIONE FERMO PANEL                        
+        onCausalizzaButton: function () {
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_FermoTestiNew.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermo&Content-Type=text/json&OutputParameter=JSON&IsManuale=0";
+            }
+            Library.AjaxCallerData(link, this.SUCCESSFermo.bind(this));
+        },
+// GESTISCO LA SELEZIONE E LA CONFERMA DELLE CAUSE NEL CAUSALIZZAZIONEFERMOPANEL
+        ChangeCheckedFermo: function (event) {
+            var id = event.getSource().getId();
+            var root_name = "CBFermo";
+            this.id_split = this.SplitId(id, root_name);
+            var old_id = this.GetActiveCB();
+            if (typeof old_id === "string") {
+                var old_CB = sap.ui.getCore().byId(old_id);
+                old_CB.setSelected(false);
+                this.CheckFermo[old_id] = 0;
+            }
+            if (old_id !== this.id_split[1]) {
+                this.CheckFermo[this.id_split[1]] = 1;
+            }
+            var selected_index = this.GetActiveCB();
+            var button = sap.ui.getCore().byId("ConfermaFermo");
+            if (typeof selected_index === "string") {
+                button.setEnabled(true);
+            } else {
+                button.setEnabled(false);
+            }
+        },
+        GetActiveCB: function () {
+            var res = 0;
+            for (var key in this.CheckFermo) {
+                if (this.CheckFermo[key] === 1) {
+                    res = key;
+                    break;
+                }
+            }
+            return res;
+        },
+        onConfermaFermoCausalizzato: function () {
+            var i, link;
+            var data = this.ModelGuastiLinea.getData();
+            var list_log = "";
+            for (i = 0; i < this.CheckSingoloCausa.length; i++) {
+                if (this.CheckSingoloCausa[i] > 0) {
+                    if (list_log === "") {
+                        list_log += data.fermi[i].LogID;
+                    } else {
+                        list_log = list_log + "#" + data.fermi[i].LogID;
+                    }
+                }
+            }
+            link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogCausale&Content-Type=text/json&ListLogID=" + list_log + "&CausaleID=" + this.id_split[2];
+            Library.SyncAjaxCallerVoid(link);
+            link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSModificaCausale.bind(this));
+        },
+//FUNZIONE PER SPLITTARE L'ID DA XML
+        SplitId: function (id, string) {
+            var splitter = id.indexOf(string);
+            var root = id.substring(0, splitter);
+            var real_id = id.substring(splitter, id.length);
+            var index = id.substring(splitter + string.length, id.length);
+            return [root, real_id, index];
+        },
+        //CHIUDO IL DIALOG (SIA CAUSALIZZAZIONE FERMO CHE CAUSALIZZAZIONE FERMO PANEL)	
+        onCloseDialog: function () {
+            var id_dialog = this.oDialog.getId().split("--")[1];
+            this.getView().byId(id_dialog).close();
+            this.oDialog = null;
         },
 // FUNZIONI LOCALI
         LOCALTakeLineaById: function (id, obj) {

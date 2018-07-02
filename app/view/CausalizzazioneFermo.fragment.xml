@@ -27,15 +27,15 @@
                 id="TotaleTable"
             >
                 <columns>
-                    <Column width="29.5%" hAlign="Center">
+                    <Column width="30%" hAlign="Center">
                     </Column>
                     <Column width="15%" hAlign="Center">
                         <Text text="Tempo"/>                                                       
                     </Column>
-                    <Column width="44.5%" hAlign="Center">
+                    <Column width="45%" hAlign="Center">
                         <Text text="Causale"/>
                     </Column>
-                    <Column width="11%" hAlign="Center">
+                    <Column width="10%" hAlign="Center">
                     </Column>
                 </columns>
                 <items>
@@ -86,7 +86,7 @@
                     </t:Column>
                     <t:Column hAlign="Center" width="10%">
                         <t:template>
-                            <CheckBox id="CBSingoloCausa" class="sapUiSmallMarginBegin" selected="{guastilinea>selected}" select="ChangeCheckedCausa"/>
+                            <CheckBox id="CBSingoloCausa" selected="{guastilinea>selected}" select="ChangeCheckedCausa"/>
                         </t:template>
                     </t:Column>
                 </t:columns>

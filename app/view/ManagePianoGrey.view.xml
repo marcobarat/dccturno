@@ -37,7 +37,7 @@
                             <HBox width="100%" justifyContent="End">
                                 <Button text="Conferma chiusura piano"
                                         id="chiusuraPiano"
-                                        press="onChiusuraPiano"
+                                        press="onConfermaChiusuraPiano"
                                         enabled="false"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                         class="noFocus larghezzaButtonLeft shiftButtonRight">
@@ -91,16 +91,16 @@
                                                             </VBox>
                                                             <HBox width="30%" class="FermoButton">
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>OEE}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>OEE}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" width="100%" class="textArea"/>
                                                                 </VBox>
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>disponibilita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>disponibilita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" class="textArea"/>
                                                                 </VBox>
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>produttivita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>produttivita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" class="textArea"/>
                                                                 </VBox>
                                                                 <VBox alignItems="Center" width="16.5%">
-                                                                    <TextArea visible="false" value="{linea>qualita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center"/>
+                                                                    <TextArea visible="false" value="{linea>qualita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" class="textArea"/>
                                                                 </VBox>
                                                                 <VBox width="33%">
                                                                     <Button visible="false" width="100%" text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='onCausalizzazioneFermi'/>
@@ -128,10 +128,10 @@
                                                                             <Text text="Formato" />
                                                                         </Column>
                                                                         <Column
-                                                                            width="10%"
+                                                                            width="9%"
                                                                             vAlign="Middle"
                                                                             hAlign="Center">
-                                                                            <Text text="Confezionamento" />
+                                                                            <Text text="Confez." />
                                                                         </Column>
                                                                         <Column width="25%">
                                                                             <Text text="" />
@@ -146,10 +146,10 @@
                                                                             width="5%"
                                                                             vAlign="Middle"
                                                                             hAlign="Center">
-                                                                            <Text text="Cartoni" />
+                                                                            <Text text="Cart." />
                                                                         </Column>
                                                                         <Column
-                                                                            width="5%"
+                                                                            width="6%"
                                                                             vAlign="Middle"
                                                                             hAlign="Center">
                                                                             <Text text="Ore" />
@@ -209,7 +209,7 @@
                                                                                 hAlign="Center">
                                                                             </Column>
                                                                             <Column
-                                                                                width="10%"
+                                                                                width="9%"
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
                                                                             </Column>
@@ -226,7 +226,7 @@
                                                                                 hAlign="Center">
                                                                             </Column>
                                                                             <Column
-                                                                                width="5%"
+                                                                                width="6%"
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
                                                                             </Column>

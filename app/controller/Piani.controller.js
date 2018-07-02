@@ -144,10 +144,10 @@ sap.ui.define([
                 } else {
                     Jdata.linee[i].avanzamento = Number(Jdata.linee[i].avanzamento);
                 }
-                Jdata.linee[i].operatori = [];
-                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
-                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
-                }
+//                Jdata.linee[i].operatori = [];
+//                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
+//                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
+//                }
             }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
@@ -156,12 +156,12 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoFuturo: function (Jdata) {
-            for (var i = 0; i < Jdata.linee.length; i++) {
-                Jdata.linee[i].operatori = [];
-                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
-                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
-                }
-            }
+//            for (var i = 0; i < Jdata.linee.length; i++) {
+//                Jdata.linee[i].operatori = [];
+//                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
+//                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
+//                }
+//            }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);

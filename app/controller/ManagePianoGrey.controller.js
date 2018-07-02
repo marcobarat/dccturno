@@ -119,6 +119,9 @@ sap.ui.define([
             }
             Library.AjaxCallerData(link, function (Jdata) {
                 that.ModelLinea.setData(Jdata);
+                if (that.getView().byId("reportButton").getEnabled()) {
+                    that.rendiInformazioniVisibili();
+                }
             });
             this.getView().setModel(this.ModelLinea, "linee");
         },
@@ -245,7 +248,6 @@ sap.ui.define([
             hbox1.addItem(vb4);
             vvbb3.addItem(hbox1);
             outerVBox.addItem(vvbb3);
-
             dialog.open();
         },
 //SI ATTIVA QUANDO PREMO CREA REPORT OEE
@@ -258,6 +260,12 @@ sap.ui.define([
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcPassato_GetReportOEE&Content-Type=text/json&stabilimentoID=" + this.ModelPianoParameters.stabilimento + "&pdcID=" + this.ModelPianoParameters.pdc + "&repartoID=" + this.ModelPianoParameters.reparto + "&OutputParameter=JSON";
                 }
                 Library.AjaxCallerData(link, this.SUCCESSReportCreated.bind(this));
+            }
+        },
+        SUCCESSModifica: function (Jdata) {
+            if (Number(Jdata.error) === 0){
+            } else {
+                console.log(Jdata.errorMessage);
             }
         },
         SUCCESSModificaCausale: function (Jdata) {
@@ -278,29 +286,7 @@ sap.ui.define([
             }
             sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
             this.getView().setModel(this.ModelOEE, "ReportOEE");
-            this.getView().byId("chiusuraPiano").setEnabled(true);
-            this.getView().byId("reportButton").setEnabled(true);
-            var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
-            for (var i = 0; i < oItems.length; i++) {
-                var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
-                var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
-                oTable.getColumns()[7].setVisible(true);
-                oTable.getColumns()[8].setVisible(true);
-                oTable.getColumns()[9].setVisible(true);
-                oTable.getColumns()[10].setVisible(true);
-                oTable.getColumns()[11].setVisible(true);
-                oTable_Header.getColumns()[7].setVisible(true);
-                oTable_Header.getColumns()[8].setVisible(true);
-                oTable_Header.getColumns()[9].setVisible(true);
-                oTable_Header.getColumns()[10].setVisible(true);
-                oTable_Header.getColumns()[11].setVisible(true);
-                var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
-                oLinea.getItems()[0].getItems()[0].setVisible(true);
-                oLinea.getItems()[1].getItems()[0].setVisible(true);
-                oLinea.getItems()[2].getItems()[0].setVisible(true);
-                oLinea.getItems()[3].getItems()[0].setVisible(true);
-                oLinea.getItems()[4].getItems()[0].setVisible(true);
-            }
+            this.rendiInformazioniVisibili();
 //                var oLinea = oItems[i].getAggregation("cells")[0].getAggregation("items")[0].getAggregation("items")[1];
 //                this.oContent = new sap.m.TextArea({value: "{linea>disponibilita}", editable: false, growing: true, rows: 1, cols: 3, textAlign: "Center"});
 //                oLinea.getItems()[0].addItem(this.oContent);
@@ -344,6 +330,31 @@ sap.ui.define([
 //                    }
 //                }
 //            }
+        },
+        rendiInformazioniVisibili: function () {
+            this.getView().byId("chiusuraPiano").setEnabled(true);
+            this.getView().byId("reportButton").setEnabled(true);
+            var oItems = this.getView().byId("ManagePianoTableGrey").getAggregation("items");
+            for (var i = 0; i < oItems.length; i++) {
+                var oTable = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[1].getContent()[0];
+                var oTable_Header = oItems[i].getCells()[0].getItems()[1].getItems()[0].getItems()[0];
+                oTable.getColumns()[7].setVisible(true);
+                oTable.getColumns()[8].setVisible(true);
+                oTable.getColumns()[9].setVisible(true);
+                oTable.getColumns()[10].setVisible(true);
+                oTable.getColumns()[11].setVisible(true);
+                oTable_Header.getColumns()[7].setVisible(true);
+                oTable_Header.getColumns()[8].setVisible(true);
+                oTable_Header.getColumns()[9].setVisible(true);
+                oTable_Header.getColumns()[10].setVisible(true);
+                oTable_Header.getColumns()[11].setVisible(true);
+                var oLinea = oItems[i].getCells()[0].getItems()[0].getItems()[1];
+                oLinea.getItems()[0].getItems()[0].setVisible(true);
+                oLinea.getItems()[1].getItems()[0].setVisible(true);
+                oLinea.getItems()[2].getItems()[0].setVisible(true);
+                oLinea.getItems()[3].getItems()[0].setVisible(true);
+                oLinea.getItems()[4].getItems()[0].setVisible(true);
+            }
         },
         removeReport: function () {
             this.getView().byId("chiusuraPiano").setEnabled(false);
@@ -414,7 +425,7 @@ sap.ui.define([
                 link = "model/guasti_new.json";
             } else {
                 if (batchId === undefined) {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromLineaID&Content-Type=text/json&LineaID=" + this.linea.lineaID + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromLineaIDandPdcID&Content-Type=text/json&LineaID=" + this.linea.lineaID + "&PdcID=" + this.PdcID + "&OutputParameter=JSON";
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
                 }
@@ -594,7 +605,7 @@ sap.ui.define([
         onConfermaFermoCausalizzato: function () {
             var CB = sap.ui.getCore().byId(this.id_split[1]);
             var i, obj, link, j;
-            var data = this.ModelGuasti.getData();
+            var data = this.ModelGuastiLinea.getData();
             if (Number(this.ISLOCAL === 1)) {
                 for (i = 0; i < this.CheckSingoloCausa.length; i++) {
                     if (this.CheckSingoloCausa[i] > 0) {
@@ -607,28 +618,27 @@ sap.ui.define([
                         }
                     }
                 }
-                this.ModelGuasti.setData(data);
+                this.ModelGuastiLinea.setData(data);
 //            this.getView().setModel(this.ModelGuasti, "guastilinea");
                 this.onCloseDialog();
 //            this.onCausalizzazioneFermi();
             } else {
+                var list_log = "";
                 for (i = 0; i < this.CheckSingoloCausa.length; i++) {
                     if (this.CheckSingoloCausa[i] > 0) {
-                        obj = {};
-                        obj.caso = "updateCausale";
-                        obj.logId = data.fermi[i].LogID;
-                        obj.batchId = this.row_binded.batchID; //SERVIREBBE IL BATCH ID SE POSSIBILE
-                        obj.dataFine = "";
-                        obj.dataInizio = "";
-                        obj.causaleId = CB.getProperty("text");
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermi_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
-                        Library.SyncAjaxCallerData(link);
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                        Library.AjaxCallerData(link, this.SUCCESSModificaCausale.bind(this));
-
+                        if (list_log === "") {
+                            list_log += data.fermi[i].LogID;
+                        } else {
+                            list_log = list_log + "#" + data.fermi[i].LogID;
+                        }
                     }
                 }
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdateLogCausale&Content-Type=text/json&ListLogID=" + list_log + "&CausaleID=" + this.id_split[2];
+                Library.SyncAjaxCallerVoid(link);
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                Library.AjaxCallerData(link, this.SUCCESSModificaCausale.bind(this));
             }
+
         },
 //FUNZIONE PER SPLITTARE L'ID DA XML
         SplitId: function (id, string) {
@@ -637,18 +647,6 @@ sap.ui.define([
             var real_id = id.substring(splitter, id.length);
             var index = id.substring(splitter + string.length, id.length);
             return [root, real_id, index];
-        },
-        ControlloCausalizzazioneGuasti: function (data) {
-            var check = false;
-            data = data.NoCause.guasti;
-            var i;
-            for (i in data) {
-                if (data[i].causa === "") {
-                    check = true;
-                    break;
-                }
-            }
-            return check;
         },
         onReportView: function () {
             var that = this;
