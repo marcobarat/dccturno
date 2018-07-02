@@ -843,6 +843,7 @@ sap.ui.define([
                 this.STOP = 0;
                 this.oDialog.destroy();
             }
+            this.oDialog.destroy();
         },
         CaricaSKU: function () {
             var link;

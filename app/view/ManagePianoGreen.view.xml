@@ -98,8 +98,8 @@
                                                             <VBox width="80%" height="100%">
                                                                 <VBox height="20%" width="100%">
                                                                     <HBox>
-                                                                        <VBox width="3%" height="100%"/>
-                                                                        <VBox width="70%" height="100%" class="bordoBluR bordoBluT bordoBluL">
+                                                                        <!--<VBox width="3%" height="100%"/>-->
+                                                                        <VBox width="70%" height="100%" class="bordoBluR bordoBluT">
                                                                             <ProgressIndicator
                                                                                 percentValue="{linea>avanzamento}"
                                                                                 displayValue="{linea>perc_avanzamento}"
@@ -109,14 +109,14 @@
                                                                                 class="ProgressBarFix"
                                                                                 barColor="{linee>barColor}"/>
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT">
+                                                                        <VBox width="10%" height="100%" class="bordoBluR bordoBluT">
                                                                             <Button enabled="false" width="100%" class="SPCButtonsDimensions" press="SPCGraph" app:mydata="0"/>
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT">
+                                                                        <VBox width="10%" height="100%" class="bordoBluT">
                                                                             <Button enabled="false" width="100%" class="SPCButtonsDimensions" press="SPCGraph" app:mydata="1"/>
                                                                         </VBox>
-                                                                        <VBox width="3%" height="100%"/>
-                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT bordoBluL">
+                                                                        <!--<VBox width="3%" height="100%"/>-->
+                                                                        <VBox width="10%" height="100%" class="bordoBluR bordoBluT bordoBluL">
                                                                             <Button icon="sap-icon://add" press="onAddItem" width="100%" class="AddButton"/>
                                                                         </VBox>
                                                                     </HBox>

@@ -7,9 +7,9 @@
     xmlns:t="sap.ui.table">
     <Dialog contentWidth="1200px" contentHeight="600px" horizontalScrolling="false" verticalScrolling="true" showHeader="false" class="colorPage"  id="modificaAttributi">
         <TabContainer
-            id="attributiContainer" class="sapUiMediumMarginBottom">
+            id="attributiContainer" class="sapUiMediumMarginBottom" itemSelect="TabSelection">
             <items>    
-                <TabContainerItem name="attributi">
+                <TabContainerItem name="Attributi">
                     <content>             
                         <HBox>
                             <VBox width="20%" class="sapUiMediumMargin">
@@ -19,7 +19,7 @@
                                 </ComboBox>                        
                                 <ComboBox id="cliente_SKU" class="sapUiMediumMarginBottom" loadItems="CaricaDestinazioni" selectionChange="enableSKU">
                                 </ComboBox>
-<!--                                <ComboBox id="SKU" class="sapUiMediumMarginTop" loadItems="CaricaSKU" selectionChange="changeSKU">
+                                <!--                                <ComboBox id="SKU" class="sapUiMediumMarginTop" loadItems="CaricaSKU" selectionChange="changeSKU">
                                 </ComboBox>-->
                             </VBox>
                             <VBox width="80%">
@@ -51,18 +51,73 @@
                         </HBox>
                     </content>
                 </TabContainerItem>
-                <TabContainerItem name="parametri">                    
-                    
+                <TabContainerItem name="Parametri">
+                    <content>                 
+<!--                        <wt:CustomTreeTable
+                            id="TreeTable_CT"
+                            rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
+                            selectionMode="None"
+                            ariaLabelledBy="title"
+                            visibleRowCount="10"
+                            cellClick="TreeTableRowClickExpander"
+                            app:mydata="TreeTable_CT">
+                            <wt:toolbar>
+                                <Toolbar>
+                                    <Button text="Ripristina valori" press="RestoreDefault" class="TTButton"/>
+                                    <ToolbarSpacer/>
+                                    <Button text="Collassa" press="CollapseAll" app:mydata="TreeTable_CT" class="TTButton"/>
+                                    <Button text="Espandi" press="ExpandAll" app:mydata="TreeTable_CT" class="TTButton"/>
+                                    <Button text="Da confermare" press="ShowRelevant" app:mydata="TreeTable_CT" class="TTButton"/>
+                                </Toolbar>
+                            </wt:toolbar>
+                            <wt:columns>
+                                <t:Column width="15rem" resizable="false">
+                                    <Label text="ATTRIBUTI"/>
+                                    <t:template>
+                                        <Text text="{GeneralModel>name}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column width="5rem" resizable="false">
+                                    <Label text="VALORE"/>
+                                    <t:template>
+                                        <Text text="{GeneralModel>value}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column width="5rem" resizable="false">
+                                    <Label text="SIGLE"/>
+                                    <t:template>
+                                        <Text text="{GeneralModel>codeValue}" visible="{= ${GeneralModel>code} === 1}" />
+                                    </t:template>
+                                </t:Column>
+                                <t:Column width="5rem" resizable="false">
+                                    <Label text="MODIFICA VALORE"/>
+                                    <t:template>
+                                        <Input value="{GeneralModel>valueModify}" editable="{= ${GeneralModel>modify} === 1}" visible="{= ${GeneralModel>modify} === 1}" class="diffStandard"/>
+                                    </t:template>
+                                </t:Column>
+                                <t:Column width="5rem" resizable="false">
+                                    <Label text="MODIFICA SIGLE"/>
+                                    <t:template>
+                                        <Input value="{GeneralModel>codeValueModify}" placeholder="{GeneralModel>codePlaceholder}" editable="{= ${GeneralModel>code} === 1}" class="diffStandard"/>
+                                    </t:template>
+                                </t:Column>
+                            </wt:columns>
+                        </wt:CustomTreeTable>-->
+                    </content>
                 </TabContainerItem>                
             </items>
         </TabContainer> 
         <HBox>
             <VBox width="40%">
+<<<<<<< HEAD
             <Button text="Annulla" width="100%" class="annullaButton" press="annullaModifiche"></Button>
+=======
+                <Button text="Annulla" width="100%" class="annullaButton" press="destroyDialog"></Button>
+>>>>>>> add91b992386fded0479b615365133ac861ac933
             </VBox>
             <VBox width="20%"/>
             <VBox width="40%">
-            <Button text="Conferma" width="100%" class="confermaButton" press="confermaModifiche"></Button>
+                <Button text="Conferma" width="100%" class="confermaButton" press="confermaModifiche"></Button>
             </VBox>
         </HBox>   
     </Dialog>

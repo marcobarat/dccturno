@@ -5,7 +5,7 @@
     xmlns:core="sap.ui.core"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1600px" contentHeight="1200px" id="SPCWindow" showHeader="false">
+    <Dialog contentWidth="1600px" contentHeight="1200px" id="SPCWindow" showHeader="false" class="sfondobianco">
         <VBox height="100%" width="100%">
             <VBox height="2%" width="100%" class="colorPage"/>
             <VBox height="8%" width="100%" class="colorPage">
@@ -26,7 +26,7 @@
                     </VBox>
                 </HBox>
             </VBox>
-            <VBox id="plotBox" height="72%" width="100%" class="colorPage"/>
+            <VBox id="plotBox" height="790px" width="100%" class="colorPage"/>
             <VBox height="3%" width="100%" class="colorPage"/>
             <VBox height="7%" width="100%" class="colorPage">
                 <HBox>
