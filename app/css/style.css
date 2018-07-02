@@ -448,8 +448,8 @@
 }
 
 .buttonDimension .sapMBtnInner .sapMBtnContent{
-    padding-top: 0.24rem;
-    font-size: 1rem;
+    /*padding-top: 0.24rem;*/
+    font-size: 20pt;
 }
 .progressBarFix {
     height: 3.1rem;
@@ -644,15 +644,19 @@
 }
 .sapMPIBarPositive {
     background: #7CA295;
+    border-right: 1.5px solid #003A6B;
 }
 .sapMPIBarNegative{
     background: #d47600;
+    border-right: 1.5px solid #003A6B;
 }
 .sapMPIBarCritical {
     background: #FFD300;
+    border-right: 1.5px solid #003A6B;
 }
 .sapMPIBarNeutral {
     background: white;
+    border-right: 1.5px solid #003A6B;
 }
 
 /* STILE DEL RIEPILOGO LINEE */ 
@@ -912,4 +916,16 @@
 }
 .AddButton .sapMBtnContent {
     top: 0.2rem;
+}
+.ProgressBarFix {
+    height: 3rem;
+    border: none;
+    padding: 0px;
+    margin: 0.1px;
+}
+.ProgressBarFix .sapMPIText {
+    font-size: 20pt;
+    color : #003A6B;
+    font-family: Arial;
+    font-weight: normal;
 }

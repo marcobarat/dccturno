@@ -105,6 +105,8 @@
                                                                                 displayValue="{linea>perc_avanzamento}"
                                                                                 showValue="true"
                                                                                 width="100%"
+                                                                                height="2.95rem"
+                                                                                class="ProgressBarFix"
                                                                                 barColor="{linee>barColor}"/>
                                                                         </VBox>
                                                                         <VBox width="8%" height="100%" class="bordoBluR bordoBluT">

@@ -195,6 +195,9 @@ sap.ui.define([
                             progressBar.setState("Error");
                             break;
                     }
+                    if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                        progressBar.setState("None");
+                    }
                 }
             }
             return data;
