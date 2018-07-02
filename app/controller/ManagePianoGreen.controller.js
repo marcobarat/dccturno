@@ -75,7 +75,6 @@ sap.ui.define([
             oTitle.setText(this.piano.data + "    -    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
             this.getView().setModel(this.ModelLinea, 'linea');
-//            this.manageSPCButton();
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
             if (this.ISLOCAL !== 1 && this.STOP === 0) {
@@ -240,7 +239,7 @@ sap.ui.define([
                                 break;
                             default:
                                 SPCButton.setIcon("img/triangolo_buco.png");
-                                SPCButton.setText(0);
+                                SPCButton.setText("0");
                                 SPCButton.addStyleClass("SPCButtonPhase1");
 //                            if (data.length === 1) {
 //                                SPCButton.addStyleClass("SPCButtonContent");
@@ -249,6 +248,13 @@ sap.ui.define([
 //                            }
                                 SPCButton.addStyleClass("SPCButtonColorYellow");
                                 break;
+                        }
+                        if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                            SPCButton.setText("0");
+                            SPCButton.addStyleClass("SPCButtonPhase1");
+                            SPCButton.addStyleClass("SPCButtonColorYellow");
+                            SPCButton.setIcon("img/triangolo_buco.png");
+                            SPCButton.setEnabled(false);
                         }
                     }
                 }
@@ -397,6 +403,7 @@ sap.ui.define([
             dataPlot = [valori, limSup, limInf];
             layout = {
                 showlegend: false,
+                autosize: true,
                 xaxis: {
                     showgrid: true,
                     zeroline: false
@@ -590,7 +597,7 @@ sap.ui.define([
             var that = this;
             var area = this.piano.area;
             this.repartoID = oEvent.getParameters().key;
-            if (this.ISLOCAL === 0) {
+            if (this.ISLOCAL !== 1) {
                 if (area === "0") {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                 } else if (area === "1") {
