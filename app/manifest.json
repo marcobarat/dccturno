@@ -132,10 +132,10 @@
                     "viewName": "view.managePiano"
                 },
                 "managePianoGreen": {
-                    "viewName": "view.managePianoGreen"
+                    "viewName": "view.ManagePianoGreen"
                 },
                 "managePianoYellow": {
-                    "viewName": "view.managePianoYellow"
+                    "viewName": "view.ManagePianoYellow"
                 },
                 "managePianoGrey": {
                     "viewName": "view.ManagePianoGrey"

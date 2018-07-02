@@ -11,7 +11,7 @@
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Esci" press="onNavBack" width="100%" class="noFocus" />
+                            <!--<Button text="Conferma" press="onMenu" width="100%" class="noFocus"/>-->
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="50%">
@@ -21,7 +21,7 @@
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Conferma" press="onMenu" width="100%" class="noFocus"/>
+                            <Button text="Esci" press="onNavBack" width="100%" class="noFocus" />
                         </VBox>
                         <VBox height="100%" width="6.2%"/>
                     </HBox>
@@ -55,16 +55,10 @@
                                                         <HBox>
                                                             <VBox width="20%" height="100%" class="positionVBox">
                                                                 <VBox>
-                                                                    <VBox width="100%" height="20%">
-                                                                        <cus:CustomButt text="{linea>linea}"
-                                                                                        press="onOpenStatoLinea"
-                                                                                        width="100%"
-                                                                                        class="noFocus buttonDimension"
-                                                                                        state="{linea>statolinea}"
-                                                                                        customType="linea">
-                                                                        </cus:CustomButt>
+                                                                    <VBox width="100%" height="20%" class="bordoBluL bordoBluR bordoBluT bordoBluB">
+                                                                        <Button text="{linea>linea}" class="noFocus buttonDimension" press="onOpenStatoLinea" width="100%"/>
                                                                     </VBox >
-                                                                    <VBox width="100%" height="80%" class="bordoBluL bordoBluB bordoBluR styleVBoxLeftbottom">
+                                                                    <VBox width="100%" height="80%" class="bordoBluL bordoBluB bordoBluR">
                                                                         <VBox width="100%" height="30%">
                                                                             <Table 
                                                                                 showNoData="false"
@@ -104,45 +98,30 @@
                                                             <VBox width="80%" height="100%">
                                                                 <VBox height="20%" width="100%">
                                                                     <HBox>
-                                                                        <VBox width="76%" height="100%" class="progressBarVBox">
+                                                                        <VBox width="3%" height="100%"/>
+                                                                        <VBox width="70%" height="100%" class="bordoBluR bordoBluT bordoBluL">
                                                                             <ProgressIndicator
-                                                                                class="progressBarFix bordoBluR bordoBluT bordoBluB bordoBluL"
                                                                                 percentValue="{linea>avanzamento}"
                                                                                 displayValue="{linea>perc_avanzamento}"
                                                                                 showValue="true"
                                                                                 width="100%"
+                                                                                height="2.95rem"
+                                                                                class="ProgressBarFix"
                                                                                 barColor="{linee>barColor}"/>
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="SPCVBox">
-<!--                                                                            <cus:CustomButt icon="img/triangoloprova.png"
-                                                                                            text="4"
-                                                                                            press="onPress"
-                                                                                            ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                                                                            customType="graficoSPC"
-                                                                                            state="1"
-                                                                                            width="100%"
-                                                                                            class="monobuttonSPC noFocus">
-                                                                            </cus:CustomButt>-->
-                                                                            <Button enabled="false" width="100%" class="SPCButtonsDimensionsL" press="SPCGraph" app:mydata="0"/>
+                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT">
+                                                                            <Button enabled="false" width="100%" class="SPCButtonsDimensions" press="SPCGraph" app:mydata="0"/>
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="SPCVBox">
+                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT">
                                                                             <Button enabled="false" width="100%" class="SPCButtonsDimensions" press="SPCGraph" app:mydata="1"/>
-<!--                                                                            <cus:CustomButt icon="img/triangoloprova.png"
-                                                                                            text="4"
-                                                                                            press="onPress"
-                                                                                            ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                                                                            customType="graficoSPC"
-                                                                                            state="1"
-                                                                                            width="100%"
-                                                                                            class="monobuttonSPC noFocus">
-                                                                            </cus:CustomButt>-->
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="SPCVBox">
-                                                                            <Button icon="sap-icon://add" press="onAddItem" width="100%" class="SPCButtonsDimensions"/>
+                                                                        <VBox width="3%" height="100%"/>
+                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT bordoBluL">
+                                                                            <Button icon="sap-icon://add" press="onAddItem" width="100%" class="AddButton"/>
                                                                         </VBox>
                                                                     </HBox>
                                                                 </VBox>
-                                                                <VBox height="80%" width="100%" class="bordoBluR bordoBluB styleVBoxRightbottom">
+                                                                <VBox height="80%" width="100%" class="bordoBluR bordoBluB bordoBluT">
                                                                     <Table
                                                                         showNoData="false"
                                                                         inset="false"
@@ -207,10 +186,10 @@
                                                                                                     <Button icon="sap-icon://action-settings" press="handlePressOpenMenu" width="100%" visible="{= ${linea>showButton} === 0 ? false : true}"/>
                                                                                                     <HBox>
                                                                                                         <VBox height="100%" width="50%">
-                                                                                                            <Button icon="sap-icon://accept" press="InsertNewBatch" width="50%" visible="{= ${linea>showButton} === 0 ? true : false}"/>
+                                                                                                            <Button icon="sap-icon://accept" class="StileV" press="InsertNewBatch" width="50%" visible="{= ${linea>showButton} === 0 ? true : false}"/>
                                                                                                         </VBox>
                                                                                                         <VBox height="100%" width="50%">
-                                                                                                            <Button icon="sap-icon://decline" press="UndoBatchCreation" width="50%" visible="{= ${linea>showButton} === 0 ? true : false}"/>
+                                                                                                            <Button icon="sap-icon://decline" class="StileX" press="UndoBatchCreation" width="50%" visible="{= ${linea>showButton} === 0 ? true : false}"/>
                                                                                                         </VBox>
                                                                                                     </HBox>
                                                                                                 </VBox>
