@@ -37,7 +37,7 @@
                             <HBox width="100%" justifyContent="End">
                                 <Button text="Conferma chiusura piano"
                                         id="chiusuraPiano"
-                                        press="onChiusuraPiano"
+                                        press="onConfermaChiusuraPiano"
                                         enabled="false"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                         class="noFocus larghezzaButtonLeft shiftButtonRight">

@@ -648,18 +648,6 @@ sap.ui.define([
             var index = id.substring(splitter + string.length, id.length);
             return [root, real_id, index];
         },
-        ControlloCausalizzazioneGuasti: function (data) {
-            var check = false;
-            data = data.NoCause.guasti;
-            var i;
-            for (i in data) {
-                if (data[i].causa === "") {
-                    check = true;
-                    break;
-                }
-            }
-            return check;
-        },
         onReportView: function () {
             var that = this;
             this.getOwnerComponent().getRouter().navTo("Report", {turnoPath: that.turnoPath, pianoPath: that.pianoPath});

@@ -85,7 +85,7 @@
                                                                                     <items>
                                                                                         <ColumnListItem class="noDelimitator sapMListTblCell_b sapMListTblCell_op">
                                                                                             <cells>
-                                                                                                <ComboBox width="90%" value="{linea>nome} {linea>cognome}" loadItems="loadOperatori" selectionChange="checkOperatore"></ComboBox>
+                                                                                                <ComboBox width="90%" placeholder="{linea>sezione}" loadItems="loadOperatori" selectionChange="checkOperatore"></ComboBox>
                                                                                             </cells>
                                                                                         </ColumnListItem>
                                                                                     </items>
