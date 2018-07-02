@@ -5,7 +5,7 @@
     xmlns:wt="myapp.control" 
     controllerName="myapp.controller.MenuItemEventing"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1000px" contentHeight="600px" horizontalScrolling="false" verticalScrolling="true" showHeader="false" class="colorPage"  id="modificaAttributi">
+    <Dialog contentWidth="1200px" contentHeight="600px" horizontalScrolling="false" verticalScrolling="true" showHeader="false" class="colorPage"  id="modificaAttributi">
         <TabContainer
             id="attributiContainer" class="sapUiMediumMarginBottom">
             <items>    

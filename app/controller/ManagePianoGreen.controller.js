@@ -497,7 +497,7 @@ sap.ui.define([
                 selectBox.setModel(oModel, "formati");
                 selectBox.bindAggregation("items", "formati>/formati", oItemSelectTemplate);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 180});
             }
         },
         SUCCESSListaSKU: function (Jdata) {
@@ -511,7 +511,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "SKUCodiciInterni>/SKUCodiciInterni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 180});
             }
         },
         SUCCESSConfezionamenti: function (Jdata, selectBox) {
@@ -525,7 +525,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "confezionamenti>/confezioni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 180});
             }
         },
         SUCCESSDestinazione: function (Jdata, oRow, row_binded) {
@@ -541,7 +541,7 @@ sap.ui.define([
                 row_binded.pezziCartone = Number(Jdata.pezziCartone);
                 row_binded.secondiPerPezzo = Number(Jdata.secondiPerPezzo);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 180});
             }
         },
         SUCCESSDestinazioni: function (Jdata, selectBox) {
@@ -554,7 +554,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "destinazioni>/destinazioni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 180});
             }
         },
         SUCCESSQuantita: function (Jdata) {
@@ -574,7 +574,7 @@ sap.ui.define([
 //                row_binded.SKUCodiceInterno = this.getView().byId("SKU").getValue();
                 row_binded.SKUCodiceInterno = "";
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 180});
             }
         },
         SUCCESSOperatori: function (Jdata, selectBox) {
@@ -589,11 +589,11 @@ sap.ui.define([
                 var aFilter = [];
                 var query = selectBox.getPlaceholder();
                 if (query) {
-                    aFilter.push(new Filter("operatore>sezione", FilterOperator.Contains, query));
+                    aFilter.push(new Filter("sezione", FilterOperator.Contains, query));
                 }
                 selectBox.getBinding("items").filter(aFilter);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 180});
             }
         },
         SUCCESSGuasti: function (Jdata) {
@@ -961,7 +961,7 @@ sap.ui.define([
                         that.STOP = 0;
                         that.RefreshCall();
                     } else {
-                        MessageToast.show(Jdata.errorMessage, {duration: 120});
+                        MessageToast.show(Jdata.errorMessage, {duration: 180});
                     }
                 });
                 if (this.STOP === 0) {
@@ -1007,6 +1007,7 @@ sap.ui.define([
 
         },
         visuBatch: function (oEvent) {
+            var oRow;
             if (oEvent) {
                 this.STOP = 1;
                 this.ModelLinea.getProperty(oEvent.getSource().getBindingContext("linea").getPath()).showButton = 0;
@@ -1016,72 +1017,77 @@ sap.ui.define([
 //            var linea = oData[oLinea_path[1]][oLinea_path[2]];
 //            var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
 //            this.linea = this.getView().getModel("linea").getProperty(linea_path);
-                var oRow = oEvent.getSource().getParent();
-                if (!oRow.getCells) {
-                    oRow = this.row;
+                oRow = oEvent.getSource().getParent();
+            }
+            if (!oRow) {
+                oRow = this.row;
+            }
+            var linea_path = oRow.getParent().getBindingContext("linea").sPath;
+            this.linea = this.getView().getModel("linea").getProperty(linea_path);
+            this.row = oRow;
+            var oView;
+            var rowPath = this.row.getBindingContext("linea").sPath;
+            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
+            if (this.ISLOCAL === 1) {
+                oView = this.getView();
+                var std = this.getView().getModel("SKUstd").getData();
+                var bck = this.getView().getModel("SKU").getData();
+                bck = Library.RecursiveJSONComparison(std, bck, "attributi");
+                bck = Library.RecursiveParentExpansion(bck);
+                this.ModelSKU.setData(bck);
+                this.getView().setModel(this.ModelSKU, "SKU");
+                this.oDialog = oView.byId("modificaAttributi");
+                if (!this.oDialog) {
+                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
+                    oView.addDependent(this.oDialog);
                 }
-                var linea_path = oEvent.getSource().getParent().getParent().getBindingContext("linea").sPath;
-                this.linea = this.getView().getModel("linea").getProperty(linea_path);
-                this.row = oRow;
-                var oView;
-                var rowPath = this.row.getBindingContext("linea").sPath;
-                var row_binded = this.getView().getModel("linea").getProperty(rowPath);
-                if (this.ISLOCAL === 1) {
-                    oView = this.getView();
-                    var std = this.getView().getModel("SKUstd").getData();
-                    var bck = this.getView().getModel("SKU").getData();
-                    bck = Library.RecursiveJSONComparison(std, bck, "attributi");
-                    bck = Library.RecursiveParentExpansion(bck);
-                    this.ModelSKU.setData(bck);
-                    this.getView().setModel(this.ModelSKU, "SKU");
-                    this.oDialog = oView.byId("modificaAttributi");
-                    if (!this.oDialog) {
-                        this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
-                        oView.addDependent(this.oDialog);
-                    }
-                    this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
-                    this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
-                    this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
+                this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
+                this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
+                this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
 //                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
-                    Library.RemoveClosingButtons.bind(this)("attributiContainer");
-                    this.oDialog.open();
-                } else {
-                    oView = this.getView();
-                    var obj = {};
-                    obj.pianodiconfezionamento = "";
-                    obj.lineaId = "";
-                    obj.batchId = "";
-                    obj.sequenza = "";
-                    obj.quintali = "";
-                    obj.cartoni = "";
-                    obj.ore = "";
+                Library.RemoveClosingButtons.bind(this)("attributiContainer");
+                this.oDialog.open();
+            } else {
+                oView = this.getView();
+                var obj = {};
+                obj.pianodiconfezionamento = "";
+                obj.lineaId = "";
+                obj.batchId = "";
+                obj.sequenza = "";
+                obj.quintali = "";
+                obj.cartoni = "";
+                obj.ore = "";
 //                if (row_binded.SKUCodiceInterno) {
 //                    obj.SKUCodiceInterno = row_binded.SKUCodiceInterno;
 //                } else {
 //                    obj.SKUCodiceInterno = "";
 //                }
-                    obj.SKUCodiceInterno = "";
-                    obj.formatoProduttivo = row_binded.formatoProduttivo;
-                    obj.tipologia = row_binded.confezione;
-                    obj.grammatura = row_binded.grammatura;
-                    obj.destinazione = row_binded.destinazione;
-                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
+                obj.SKUCodiceInterno = "";
+                obj.formatoProduttivo = row_binded.formatoProduttivo;
+                obj.tipologia = row_binded.confezione;
+                obj.grammatura = row_binded.grammatura;
+                obj.destinazione = row_binded.destinazione;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
 //                Library.SyncAjaxCallerData(link, this.SUCCESSSKU());
-                    Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this), function (error) {
-                        console.log(error);
-                    });
-                    this.oDialog = oView.byId("modificaAttributi");
-                    if (!this.oDialog) {
-                        this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
-                        oView.addDependent(this.oDialog);
-                    }
-                    this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
-                    this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
-                    this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
-                    //                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
-                    Library.RemoveClosingButtons.bind(this)("attributiContainer");
-                    this.oDialog.open();
+                Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this), function (error) {
+                    console.log(error);
+                });
+                this.oDialog = oView.byId("modificaAttributi");
+                if (!this.oDialog) {
+                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaAttributi", this);
+                    oView.addDependent(this.oDialog);
                 }
+                this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
+                this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
+                this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
+                if (!oEvent) {
+                    this.getView().byId("formato_SKU").setEnabled(false);
+                    this.getView().byId("confezione_SKU").setEnabled(false);
+                    this.getView().byId("cliente_SKU").setEnabled(false);
+                }
+                //                this.getView().byId("SKU").setValue(row_binded.SKUCodiceInterno);
+                Library.RemoveClosingButtons.bind(this)("attributiContainer");
+                this.oDialog.open();
             }
         },
         SUCCESSTrasferimentoBatch: function (Jdata) {
@@ -1407,6 +1413,7 @@ sap.ui.define([
             });
         },
         checkOperatore: function (oEvent) {
+            var that = this;
             var check = 0;
             var selectBoxValue = oEvent.getSource().getValue();
             var oTables = this.getView().byId("managePianoTable").getItems();
@@ -1424,6 +1431,14 @@ sap.ui.define([
                     break;
                 }
             }
+            var addetto_ID = oEvent.getParameter("selectedItem").getKey();
+            var posizione_ID = this.getView().getModel("linea").getProperty(oEvent.getSource().getBindingContext("linea").sPath).posizioneId;
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdatePosizioneAddetto&Content-Type=text/json&AddettoID=" + addetto_ID + "&PosizioneAddettoID=" + posizione_ID + "&OutputParameter=JSON";
+            Library.AjaxCallerVoid(link, function () {
+                that.refreshCall.bind(that);
+            }, function (error) {
+                console.log(error);
+            });
         },
 // GESTIONE FERMI AUTOMATICI
 //GESTIONE DELLE CHECKBOX DEL DIALOG CAUSALIZZAZIONE FERMO    

@@ -232,7 +232,7 @@
                                         <Table 
                                             width="100%"
                                             class="tableTextSize noBorder"
-                                            items="{path: 'turni>/pianidiconfezionamento/conclusi', sorter: {path: 'data', descending: false}}">
+                                            items="{path: 'turni>/pianidiconfezionamento/conclusi'}">
                                             <columns>
                                                 <Column hAlign="Center">
                                                 </Column>
@@ -331,7 +331,7 @@
                                     <ScrollContainer id="scrollTurniProgrammati" height="187px" horizontal="false" vertical="true" class="scrollingbar">
                                         <Table 
                                             width="100%"
-                                            items="{path: 'turni>/pianidiconfezionamento/programmati', sorter: {path: 'data',descending: false}}"
+                                            items="{path: 'turni>/pianidiconfezionamento/programmati'}"
                                             class="tableTextSize noBorder">
                                             <columns>
                                                 <Column hAlign="Center">

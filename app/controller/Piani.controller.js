@@ -75,6 +75,11 @@ sap.ui.define([
         setScrollHeight: function (oScroll) {
             var items_num = this.ModelTurni.getProperty(oScroll.getContent()[0].getBindingInfo("items").path).length;
             switch (items_num) {
+                case 0:
+                    oScroll.setHeight("61.67px");
+                    oScroll.removeStyleClass("scrollingbar");
+                    oScroll.addStyleClass("scrollingbarTransparent");
+                    break;
                 case 1:
                     oScroll.setHeight("61.67px");
                     oScroll.removeStyleClass("scrollingbar");
