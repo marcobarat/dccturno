@@ -73,11 +73,11 @@
                                                                         <VBox width="100%" height="70%">
                                                                             <ScrollContainer vertical='true' height="155px">  
                                                                                 <Table 
-                                                                                    items="{path: 'operatore>/Operator'}"
+                                                                                    items="{path: 'linea>operatori'}"
                                                                                     inset="false"
                                                                                     growing="true"
                                                                                     fixedLayout="false"
-                                                                                    class="sapUiSmallMarginEnd mysapMListTblNoBorders">
+                                                                                    class="sapUiSmallMarginEnd mysapMListTblNoBorders ">
                                                                                     <columns>
                                                                                         <Column  hAlign="Center">
                                                                                         </Column>
@@ -85,13 +85,11 @@
                                                                                     <items>
                                                                                         <ColumnListItem class="noDelimitator sapMListTblCell_b sapMListTblCell_op">
                                                                                             <cells>
-                                                                                                <ComboBox items="{operatore>Operator}" width="90%">
-                                                                                                    <core:Item key="{operatore>nome}" text="{operatore>nome} {operatore>cognome}" />
-                                                                                                </ComboBox>
+                                                                                                <ComboBox width="90%" value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{= ${linea>nome} === '---' ? ${linea>sezione}: ''}" loadItems="loadOperatori" selectionChange="checkOperatore"></ComboBox>
                                                                                             </cells>
                                                                                         </ColumnListItem>
                                                                                     </items>
-                                                                                </Table>    
+                                                                                </Table>      
                                                                             </ScrollContainer> 
                                                                         </VBox>
                                                                     </VBox>
@@ -164,7 +162,7 @@
                                                                                         <cells>
                                                                                             <Input textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"  enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
-                                                                                            <ComboBox value="{linea>confezione} {linea>grammatura}gr" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                            <ComboBox value="{linea>confezioneCodiceInterno}" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <Button width="90%" text="{linea>destinazione}" press="visuBatch" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
