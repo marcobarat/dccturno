@@ -50,6 +50,8 @@ sap.ui.define([
         Avanzamento: null,
         idLinea: null,
         idBatch: null,
+        indexSPC: null,
+        pathlinea: null,
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -265,15 +267,12 @@ sap.ui.define([
             }
         },
         SPCGraph: function (event) {
-            var pathLinea = event.getSource().getBindingContext("linea").sPath;
-            var indexSPC = Number(event.getSource().data("mydata"));
-            this.idBatch = this.ModelLinea.getProperty(pathLinea).SPC[indexSPC].IDbatchAttivo;
-            this.idLinea = this.ModelLinea.getProperty(pathLinea).lineaID;
-            this.Allarme = this.ModelLinea.getProperty(pathLinea).SPC[indexSPC].allarme;
-            this.Fase = this.ModelLinea.getProperty(pathLinea).SPC[indexSPC].fase;
-            this.Avanzamento = this.ModelLinea.getProperty(pathLinea).SPC[indexSPC].avanzamento;
-            this.ParametroID = this.ModelLinea.getProperty(pathLinea).SPC[indexSPC].parametroId;
-            this.DescrizioneParametro = this.ModelLinea.getProperty(pathLinea).SPC[indexSPC].descrizioneParametro;
+            this.pathLinea = event.getSource().getBindingContext("linea").sPath;
+            this.indexSPC = Number(event.getSource().data("mydata"));
+            this.idBatch = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].IDbatchAttivo;
+            this.idLinea = this.ModelLinea.getProperty(this.pathLinea).lineaID;
+            this.ParametroID = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].parametroId;
+            this.DescrizioneParametro = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].descrizioneParametro;
             this.SPCDialog = this.getView().byId("SPCWindow");
             if (!this.SPCDialog) {
                 this.SPCDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
@@ -299,6 +298,9 @@ sap.ui.define([
         },
         SUCCESSSPCDataLoad: function (Jdata) {
             var isEmpty;
+            this.Allarme = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
+            this.Fase = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
             if (Jdata.valori === "") {
                 isEmpty = 1;
             } else {
@@ -310,7 +312,7 @@ sap.ui.define([
                 this.ModelSPCData.setProperty("/", Jdata);
             }
             this.SPCDialogFiller(isEmpty);
-            setTimeout(this.SPCDataCaller.bind(this), 5000);
+            setTimeout(this.SPCDataCaller.bind(this), 1000);
         },
         SPCDialogFiller: function (discr) {
             var textHeader = this.getView().byId("headerSPCWindow");
@@ -333,10 +335,12 @@ sap.ui.define([
                     alarmButton.removeStyleClass("allarmeButton");
                     alarmButton.addStyleClass("chiudiButton");
                 }
-                var data = this.ModelSPCData.getData();
-                var result = this.PrepareDataToPlot(data, this.Fase);
-                var ID = jQuery.sap.byId(plotBox.getId()).get(0);
-                Plotly.newPlot(ID, result.dataPlot, result.layout);
+                if (!((Number(this.Fase) === 1) && (this.ModelSPCData.getData().valori.length < 50))) {
+                    var data = this.ModelSPCData.getData();
+                    var result = this.PrepareDataToPlot(data, this.Fase);
+                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
+                    Plotly.newPlot(ID, result.dataPlot, result.layout);
+                }
             }
         },
         ParseSPCData: function (data, char) {
