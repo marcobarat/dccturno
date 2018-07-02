@@ -55,10 +55,10 @@
                                                         <HBox>
                                                             <VBox width="20%" height="100%" class="positionVBox">
                                                                 <VBox>
-                                                                    <VBox width="100%" height="20%">
+                                                                    <VBox width="100%" height="20%" class="bordoBluL bordoBluR bordoBluT bordoBluB">
                                                                         <Button text="{linea>linea}" class="noFocus buttonDimension" press="onOpenStatoLinea" width="100%"/>
                                                                     </VBox >
-                                                                    <VBox width="100%" height="80%" class="bordoBluL bordoBluB bordoBluR styleVBoxLeftbottom">
+                                                                    <VBox width="100%" height="80%" class="bordoBluL bordoBluB bordoBluR">
                                                                         <VBox width="100%" height="30%">
                                                                             <Table 
                                                                                 showNoData="false"
@@ -98,27 +98,28 @@
                                                             <VBox width="80%" height="100%">
                                                                 <VBox height="20%" width="100%">
                                                                     <HBox>
-                                                                        <VBox width="76%" height="100%" class="progressBarVBox">
+                                                                        <VBox width="3%" height="100%"/>
+                                                                        <VBox width="70%" height="100%" class="bordoBluR bordoBluT bordoBluL">
                                                                             <ProgressIndicator
-                                                                                class="progressBarFix bordoBluR bordoBluT bordoBluB bordoBluL"
                                                                                 percentValue="{linea>avanzamento}"
                                                                                 displayValue="{linea>perc_avanzamento}"
                                                                                 showValue="true"
                                                                                 width="100%"
                                                                                 barColor="{linee>barColor}"/>
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="SPCVBox">
-                                                                            <Button enabled="false" width="100%" class="SPCButtonsDimensionsL" press="SPCGraph" app:mydata="0"/>
+                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT">
+                                                                            <Button enabled="false" width="100%" class="SPCButtonsDimensions" press="SPCGraph" app:mydata="0"/>
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="SPCVBox">
+                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT">
                                                                             <Button enabled="false" width="100%" class="SPCButtonsDimensions" press="SPCGraph" app:mydata="1"/>
                                                                         </VBox>
-                                                                        <VBox width="8%" height="100%" class="SPCVBox">
-                                                                            <Button icon="sap-icon://add" press="onAddItem" width="100%" class="SPCButtonsDimensions"/>
+                                                                        <VBox width="3%" height="100%"/>
+                                                                        <VBox width="8%" height="100%" class="bordoBluR bordoBluT bordoBluL">
+                                                                            <Button icon="sap-icon://add" press="onAddItem" width="100%" class="AddButton"/>
                                                                         </VBox>
                                                                     </HBox>
                                                                 </VBox>
-                                                                <VBox height="80%" width="100%" class="bordoBluR bordoBluB styleVBoxRightbottom">
+                                                                <VBox height="80%" width="100%" class="bordoBluR bordoBluB bordoBluT">
                                                                     <Table
                                                                         showNoData="false"
                                                                         inset="false"

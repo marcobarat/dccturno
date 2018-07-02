@@ -442,11 +442,9 @@
     color: white;
 }
 .buttonDimension .sapMBtnInner {
-    bottom: 0.35rem;
-    right: 0.02rem;
-    height: 3.1rem;
-    width: 16.88rem;
-    border-radius: 0px;
+    bottom: 0.2rem;
+    position: relative;
+    height: 2.95rem;
 }
 
 .buttonDimension .sapMBtnInner .sapMBtnContent{
@@ -455,7 +453,6 @@
 }
 .progressBarFix {
     height: 3.1rem;
-    width: 50.85rem;
     margin: 0rem;
 }
 .progressBarFix .sapMPIText{
@@ -548,20 +545,6 @@
     border-radius: 0px;
     height: 3.1rem;
     bottom: 0.24rem;
-    border-top: 1.5px solid #003A6B;
-    border-bottom: 1.5px solid #003A6B;
-    border-right: 1.5px solid #003A6B;
-}
-.SPCButtonsDimensionsL .sapMBtnInner {
-    position: relative;
-    border: 0px;
-    border-radius: 0px;
-    height: 3.1rem;
-    bottom: 0.24rem;
-    border-top: 1.5px solid #003A6B;
-    border-bottom: 1.5px solid #003A6B;
-    border-right: 1.5px solid #003A6B;
-    border-left: 1.5px solid #003A6B;
 }
 .SPCButtonColorGreen .sapMBtnInner {
     background: #7CA295; 
@@ -572,11 +555,11 @@
 .DualSPCButtonTextPadding .sapMBtnInner {
     background: #FFD300;
 }
-.SPCButtonContent .sapMBtnContent {
+.SPCButtonsDimensions .sapMBtnContent {
     position: absolute;
-    left: 41%;
-    top: 36%;
-    font-size: 24pt;
+    left: 39%;
+    top: 15%;
+    font-size: 13pt;
 }
 .DualSPCButtonContent .sapMBtnContent {
     position: absolute;
@@ -870,10 +853,12 @@
 /*CLASSI PULSANTE LINEA*/
 
 .LineaDispo .sapMBtnInner{
-    border: solid 2px #7CA295;
+    border: solid 5px #7CA295;
+    border-radius: 0%;
 }
 .LineaNonDispo .sapMBtnInner{
-    border: solid 2px #A71930;
+    border: solid 5px #A71930;
+    border-radius: 0%;
 }
 
 .LineaVuota .sapMBtnInner{
@@ -915,4 +900,16 @@
 .LineaSvuotamento:hover> .sapMBtnInner:hover{
     background: #5E3032;
     color: white;
+}
+
+.AddButton .sapMBtnInner {
+    height: 2.95rem;
+    bottom: 0.2rem;
+    border-radius: 0px;
+}
+.AddButton .sapMBtnIcon {
+    color: #003A6B;
+}
+.AddButton .sapMBtnContent {
+    top: 0.2rem;
 }
