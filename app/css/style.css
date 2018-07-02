@@ -714,6 +714,10 @@
 
 /*TABELLA*/
 
+.sapMLIBShowSeparator > td {
+    border-top: 0px;
+}
+
 .sapMListTblCell_b .sapMListTblCell{
     padding: 0.1rem !important;
 }
@@ -835,4 +839,11 @@
 /* TEXT AREAS */
 .sapMTextArea > .sapMInputBaseReadonlyInner.sapMTextAreaInner{
     border: 1px solid #003A6B !important;   
+}
+
+.textArea .sapMTextAreaInner{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-right: 0.6rem;
+    margin-left: 0rem; 
 }
