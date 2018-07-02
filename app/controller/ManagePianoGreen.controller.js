@@ -186,7 +186,7 @@ sap.ui.define([
                     } else {
                         data.linee[i].avanzamento = Number(data.linee[i].avanzamento);
                     }
-                    progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
+                    progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
                     switch (data.linee[i].barColor) {
                         case "yellow":
                             progressBar.setState("Warning");
@@ -211,7 +211,7 @@ sap.ui.define([
             if (data.linee.length > 0) {
                 for (var i = 0; i < data.linee.length; i++) {
                     for (var j = 0; j < data.linee[i].SPC.length; j++) {
-                        SPCButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[j + 2].getItems()[0];
+                        SPCButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[j + 1].getItems()[0];
                         if (data.linee[i].SPC[j].fase !== "") {
                             SPCButton.setEnabled(true);
                         } else {
@@ -776,7 +776,7 @@ sap.ui.define([
         onNavBack: function () {
             var AddButton;
             for (var i = 0; i < this.ModelLinea.getData().linee.length; i++) {
-                AddButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[5].getItems()[0];
+                AddButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
                 AddButton.setEnabled(true);
             }
             this.STOP = 1;
@@ -808,7 +808,7 @@ sap.ui.define([
         UndoBatchCreation: function (oEvent) {
             var path = oEvent.getSource().getBindingContext("linea").sPath.split("/");
             var index = Number(path[path.indexOf("linee") + 1]);
-            var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[5].getItems()[0];
+            var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
             AddButton.setEnabled(true);
             this.STOP = 0;
             this.RefreshCall();
@@ -904,7 +904,7 @@ sap.ui.define([
         onAddItem: function (oEvent) {
             var path = oEvent.getSource().getBindingContext("linea").sPath.split("/");
             var index = Number(path[path.indexOf("linee") + 1]);
-            var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[5].getItems()[0];
+            var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
             AddButton.setEnabled(false);
             this.STOP = 1;
             var Model = this.getView().getModel("linea");
@@ -974,7 +974,7 @@ sap.ui.define([
                 if (this.STOP === 0) {
                     var path = oEvent.getSource().getBindingContext("linea").sPath.split("/");
                     var index = Number(path[path.indexOf("linee") + 1]);
-                    var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[5].getItems()[0];
+                    var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
                     AddButton.setEnabled(true);
                 }
             }
@@ -1120,8 +1120,17 @@ sap.ui.define([
             this.oDialog.close();
         },
         destroyDialog: function () {
-            this.STOP = 0;
             this.oDialog.destroy();
+        },
+        TabSelection: function (event) {
+            var tabName = event.getParameters().item.getProperty("name");
+            if (tabName === "Parametri") {
+                var link;
+                Library.AjaxCallerData(link, this.SUCCESSGetParametri.bind(this));
+            }
+        },
+        SUCCESSGetParametri: function(Jdata) {
+            
         },
 // GESTIONE POPUP STATO LINEA
         onOpenStatoLinea: function () {
@@ -1171,7 +1180,7 @@ sap.ui.define([
         onMenu: function () {
             var AddButton;
             for (var i = 0; i < this.ModelLinea.getData().linee.length; i++) {
-                AddButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[5].getItems()[0];
+                AddButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
                 AddButton.setEnabled(true);
             }
             this.STOP = 1;
