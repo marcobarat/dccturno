@@ -1122,16 +1122,16 @@ sap.ui.define([
         destroyDialog: function () {
             this.oDialog.destroy();
         },
-        TabSelection: function (event) {
-            var tabName = event.getParameters().item.getProperty("name");
-            if (tabName === "Parametri") {
-                var link;
-                Library.AjaxCallerData(link, this.SUCCESSGetParametri.bind(this));
-            }
-        },
-        SUCCESSGetParametri: function(Jdata) {
-            
-        },
+//        TabSelection: function (event) {
+//            var tabName = event.getParameters().item.getProperty("name");
+//            if (tabName === "Parametri") {
+//                var link;
+//                Library.AjaxCallerData(link, this.SUCCESSGetParametri.bind(this));
+//            }
+//        },
+//        SUCCESSGetParametri: function(Jdata) {
+//            
+//        },
 // GESTIONE POPUP STATO LINEA
         onOpenStatoLinea: function () {
             var oView = this.getView();

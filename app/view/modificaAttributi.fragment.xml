@@ -53,7 +53,7 @@
                 </TabContainerItem>
                 <TabContainerItem name="Parametri">
                     <content>                 
-                        <wt:CustomTreeTable
+<!--                        <wt:CustomTreeTable
                             id="TreeTable_CT"
                             rows="{path:'GeneralModel>/SetupLinea/Modify', parameters: {arrayNames:['attributi']}}"
                             selectionMode="None"
@@ -102,7 +102,7 @@
                                     </t:template>
                                 </t:Column>
                             </wt:columns>
-                        </wt:CustomTreeTable>
+                        </wt:CustomTreeTable>-->
                     </content>
                 </TabContainerItem>                
             </items>
