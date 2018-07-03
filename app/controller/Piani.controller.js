@@ -8,24 +8,6 @@ sap.ui.define([
     "use strict";
 
     var PianiController = Controller.extend("myapp.controller.Piani", {
-        AddButtonObject: {
-            batchID: "#ADD#",
-            sequenza: "#ADD#",
-            statoBatch: "#ADD#",
-            erroreBatch: "#ADD#",
-            formatoProduttivo: "#ADD#",
-            confezione: "#ADD#",
-            grammatura: "#ADD#",
-            destinazione: "#ADD#",
-            qli: "#ADD#",
-            cartoni: "#ADD#",
-            ore: "#ADD#",
-            disponibilita: "#ADD#",
-            produttivita: "#ADD#",
-            qualita: "#ADD#",
-            fermo: "#ADD#",
-            pezziCartone: "#ADD#",
-            secondiPerPezzo: "#ADD#"},
         data_json: {},
         ModelLinea: new JSONModel(),
         ModelTurni: new JSONModel(),
@@ -33,6 +15,7 @@ sap.ui.define([
         StabilimentoID: 1,
         paths: null,
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
+        STOP: 0,
 
         onInit: function () {
             var oModel = new JSONModel({StabilimentoID: this.StabilimentoID});
@@ -62,11 +45,12 @@ sap.ui.define([
             this.setScrollHeight(oScroll);
             oScroll = this.getView().byId("scrollTurniProgrammati");
             this.setScrollHeight(oScroll);
-            if (this.ISLOCAL !== 1) {
+            if (this.ISLOCAL !== 1 && this.STOP === 0) {
                 this.RefreshFunction();
             }
         },
         URLChangeCheck: function (oEvent) {
+            this.STOP = 0;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.getView().setModel(this.ModelLinea, 'linea');
@@ -136,6 +120,7 @@ sap.ui.define([
             }
         },
         SUCCESSTurnoChiuso: function (Jdata) {
+            this.STOP = 1;
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -143,6 +128,7 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoInCorso: function (Jdata) {
+            this.STOP = 1;
             for (var i = 0; i < Jdata.linee.length; i++) {
                 if (Number(Jdata.linee[i].avanzamento) >= 100) {
                     Jdata.linee[i].avanzamento = 100;
@@ -161,6 +147,7 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoFuturo: function (Jdata) {
+            this.STOP = 1;
 //            for (var i = 0; i < Jdata.linee.length; i++) {
 //                Jdata.linee[i].operatori = [];
 //                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
@@ -174,6 +161,7 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         GoToHome: function () {
+            this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("Main");
         },
         onCloseApp: function () {
