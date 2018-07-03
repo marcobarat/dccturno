@@ -109,11 +109,7 @@
         </TabContainer> 
         <HBox>
             <VBox width="40%">
-<<<<<<< HEAD
             <Button text="Annulla" width="100%" class="annullaButton" press="annullaModifiche"></Button>
-=======
-                <Button text="Annulla" width="100%" class="annullaButton" press="destroyDialog"></Button>
->>>>>>> add91b992386fded0479b615365133ac861ac933
             </VBox>
             <VBox width="20%"/>
             <VBox width="40%">
