@@ -263,7 +263,7 @@ sap.ui.define([
             }
         },
         SUCCESSModifica: function (Jdata) {
-            if (Number(Jdata.error) === 0){
+            if (Number(Jdata.error) === 0) {
             } else {
                 console.log(Jdata.errorMessage);
             }
@@ -650,6 +650,7 @@ sap.ui.define([
         },
         onReportView: function () {
             var that = this;
+            this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             this.getOwnerComponent().getRouter().navTo("Report", {turnoPath: that.turnoPath, pianoPath: that.pianoPath});
         },
 // quando chiudo il piano ritorno alla pagina iniziale e: 1) creo PDF tree table 2) salvo dati (quindi il file json) 3) archivio dati (backend??)        
@@ -671,11 +672,13 @@ sap.ui.define([
             }
         },
         SUCCESSConfermaChiusura: function (Jdata) {
+            this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("piani");
         },
 //BUTTON NAVBACK        
         onNavBack: function () {
+            this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("piani", true);
             this.getView().byId("chiusuraPiano").setEnabled(false);
