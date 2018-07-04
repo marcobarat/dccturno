@@ -20,13 +20,12 @@ sap.ui.define([
         onInit: function () {
             var oModel = new JSONModel({StabilimentoID: this.StabilimentoID});
             sap.ui.getCore().setModel(oModel, "stabilimento");
-            var params = jQuery.sap.getUriParameters(window.location.href);
             sap.ui.getCore().setModel(this.ModelTurni, "turni");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("piani").attachPatternMatched(this.URLChangeCheck, this);
         },
         RefreshFunction: function () {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), 5000);
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), 10000);
         },
         RefreshCall: function () {
             var link;

@@ -13,11 +13,9 @@ sap.ui.define([
         ISLOCAL: null,
 
         onInit: function () {
-//            this.getSplitAppObj().toDetail(this.createId("Home"));
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
-            this.onToPianiPage();
         },
         getSplitAppObj: function () {
             var result = this.byId("SplitAppDemo");

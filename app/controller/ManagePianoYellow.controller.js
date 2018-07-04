@@ -74,35 +74,26 @@ sap.ui.define([
             this.getView().setModel(this.ModelLinea, 'linea');
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
-            if (this.ISLOCAL !== 1 && this.STOP === 0) {
-                this.RefreshFunction(100);
-            }
+            this.RefreshFunction(100);
         },
         RefreshFunction: function (msec) {
             this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
             Library.SyncAjaxCallerData(link, this.RefreshDataSet.bind(this));
         },
         RefreshDataSet: function (Jdata) {
-            if (this.ISLOCAL === 1) {
-                Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
-                this.getView().setModel(this.ModelOperatori, 'operatore');
-                Library.AjaxCallerData("model/SKU_standard.json", this.SUCCESSSKUstd.bind(this));
-                this.getView().setModel(this.ModelSKUstd, 'SKUstd');
-                Library.AjaxCallerData("model/SKU_backend.json", this.SUCCESSSKU.bind(this));
-                this.getView().setModel(this.ModelSKU, 'SKU');
-            } else {
+            if (this.ISLOCAL !== 1) {
                 if (this.STOP === 0) {
                     this.ModelLinea.setData(Jdata);
                     this.ModelLinea.refresh(true);
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
                     this.LineButtonStyle();
+                    this.RefreshFunction(10000);
                 }
             }
-            this.RefreshFunction(5000);
         },
         LineButtonStyle: function () {
             var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];

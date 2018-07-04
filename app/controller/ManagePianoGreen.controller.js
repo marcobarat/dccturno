@@ -60,6 +60,7 @@ sap.ui.define([
             oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (oEvent) {
+            this.STOP = 0;
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
             this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
             this.repartoID = sap.ui.getCore().getModel("ParametriPiano").getData().reparto;
@@ -75,7 +76,6 @@ sap.ui.define([
                 this.getView().setModel(this.ModelSKU, 'SKU');
             }
             if (typeof oEvent !== "undefined") {
-                this.STOP = 0;
                 this.turnoPath = oEvent.getParameter("arguments").turnoPath;
                 this.pianoPath = oEvent.getParameter("arguments").pianoPath;
                 this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
@@ -86,9 +86,7 @@ sap.ui.define([
             this.getView().setModel(this.ModelLinea, 'linea');
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
-            if (this.ISLOCAL !== 1 && this.STOP === 0) {
-                this.RefreshFunction(100);
-            }
+            this.RefreshFunction(100);
         },
         RefreshFunction: function (msec) {
             this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
@@ -98,14 +96,7 @@ sap.ui.define([
             Library.SyncAjaxCallerData(link, this.RefreshDataSet.bind(this));
         },
         RefreshDataSet: function (Jdata) {
-            if (this.ISLOCAL === 1) {
-                Library.AjaxCallerData("model/operators.json", this.SUCCESSDatiOperatore.bind(this));
-                this.getView().setModel(this.ModelOperatori, 'operatore');
-                Library.AjaxCallerData("model/SKU_standard.json", this.SUCCESSSKUstd.bind(this));
-                this.getView().setModel(this.ModelSKUstd, 'SKUstd');
-                Library.AjaxCallerData("model/SKU_backend.json", this.SUCCESSSKU.bind(this));
-                this.getView().setModel(this.ModelSKU, 'SKU');
-            } else {
+            if (this.ISLOCAL !== 1) {
                 if (this.STOP === 0) {
                     Jdata = this.BarColorCT(Jdata);
                     this.SPCColorCT(Jdata);
@@ -115,9 +106,9 @@ sap.ui.define([
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
                     this.SettingsButtonColor();
                     this.LineButtonStyle();
+                    this.RefreshFunction(10000);
                 }
             }
-            this.RefreshFunction(5000);
         },
         LineButtonStyle: function () {
             var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
