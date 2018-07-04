@@ -947,7 +947,7 @@
     color: #003A6B;
     border-radius: 10px;
     padding: 2.5%;
-    height: 150%;
+    height: 100%;
 }
 .allarmeButton .sapMBtnInner {
     font-family: Arial;
@@ -956,5 +956,5 @@
     color: #003A6B;
     border-radius: 10px;
     padding: 2.5%;
-    height: 150%;
+    height: 100%;
 }
