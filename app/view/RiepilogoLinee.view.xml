@@ -73,7 +73,7 @@
                                                                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                                                                         customType="graficoSPC"
                                                                                         state="1"
-                                                                                        class="sapUiSmallMarginBegin monobuttonSPC noFocus">
+                                                                                        class="sapUiSmallMarginBegin monobuttonSPC noFocus monobuttonSPCBordoBluL">
                                                                         </cus:CustomButt>
                                                                     </VBox>
                                                                 </HBox>
@@ -144,7 +144,7 @@
                                                                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                                                                         customType="graficoSPC"
                                                                                         state="1"
-                                                                                        class="sapUiSmallMarginBegin monobuttonSPC noFocus">
+                                                                                        class="sapUiSmallMarginBegin monobuttonSPC noFocus monobuttonSPCBordoBluL">
                                                                         </cus:CustomButt>
                                                                     </VBox>
                                                                 </HBox>

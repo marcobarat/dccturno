@@ -626,6 +626,7 @@
 /*PROGRESS INDICATOR PER RIEPILOGO LINEE*/
 .LineeMPI.sapMPI {
     position: relative;
+    border: 1.5px solid #003A6B; 
 }
 
 .LineeMPI.sapMPI .sapMPIBar .sapMPIText {
@@ -659,6 +660,9 @@
     border-right: 1.5px solid #003A6B;
 }
 
+.monobuttonSPCBordoBluL .sapMBtnInner {
+   border-left: 1.5px solid #003A6B;
+}
 /* STILE DEL RIEPILOGO LINEE */ 
 
 .RiepilogoLineaElement{
