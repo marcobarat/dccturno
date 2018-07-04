@@ -603,7 +603,8 @@ sap.ui.define([
                 selectBox.setModel(oModel, "operatore");
                 selectBox.bindAggregation("items", "operatore>/operatori", oItemSelectTemplate);
                 var aFilter = [];
-                var query = selectBox.getPlaceholder();
+//                var query = selectBox.getPlaceholder();
+                var query = this.getView().getModel("linea").getProperty(selectBox.getBindingContext("linea").sPath).sezione;
                 if (query) {
                     aFilter.push(new Filter("sezione", FilterOperator.Contains, query));
                 }
@@ -943,25 +944,29 @@ sap.ui.define([
             obj.quintali = oRow.getCells()[4].getValue();
             obj.cartoni = oRow.getCells()[5].getValue();
             obj.ore = oRow.getCells()[6].getValue();
-            var doc_xml = Library.createXMLBatch(obj);
-            if (Number(this.ISLOCAL) === 1) {
-                oRow.getCells()[7].setVisible(false);
-            } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertUpdateBatch&Content-Type=text/json&xml=" + doc_xml + "&OutputParameter=JSON";
-                Library.SyncAjaxCallerData(link, function (Jdata) {
-                    if (Number(Jdata.error) === 0) {
-                        that.STOP = 0;
-                        that.RefreshCall();
-                    } else {
-                        MessageToast.show(Jdata.errorMessage, {duration: 180});
+            if (((Number(obj.quintali) !== 0) && (Number(obj.cartoni) !== 0))) {
+                var doc_xml = Library.createXMLBatch(obj);
+                if (Number(this.ISLOCAL) === 1) {
+                    oRow.getCells()[7].setVisible(false);
+                } else {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertUpdateBatch&Content-Type=text/json&xml=" + doc_xml + "&OutputParameter=JSON";
+                    Library.SyncAjaxCallerData(link, function (Jdata) {
+                        if (Number(Jdata.error) === 0) {
+                            that.STOP = 0;
+                            that.RefreshCall();
+                        } else {
+                            MessageToast.show(Jdata.errorMessage, {duration: 2000});
+                        }
+                    });
+                    if (this.STOP === 0) {
+                        var path = oEvent.getSource().getBindingContext("linea").sPath.split("/");
+                        var index = Number(path[path.indexOf("linee") + 1]);
+                        var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
+                        AddButton.setEnabled(true);
                     }
-                });
-                if (this.STOP === 0) {
-                    var path = oEvent.getSource().getBindingContext("linea").sPath.split("/");
-                    var index = Number(path[path.indexOf("linee") + 1]);
-                    var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
-                    AddButton.setEnabled(true);
                 }
+            } else {
+                MessageToast.show("Non si possono inserire batch con zero quintali", {duration: 2000});
             }
         },
 //GESTIONE VISUALIZZA ATTRIBUTI BATCH

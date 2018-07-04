@@ -425,7 +425,7 @@ sap.ui.define([
                 link = "model/guasti_new.json";
             } else {
                 if (batchId === undefined) {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromLineaIDandPdcID&Content-Type=text/json&LineaID=" + this.linea.lineaID + "&PdcID=" + this.PdcID + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromLineaIDandPdcID&Content-Type=text/json&LineaID=" + this.linea.lineaID + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiAutoSenzaCausaFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
                 }
