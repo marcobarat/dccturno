@@ -603,7 +603,8 @@ sap.ui.define([
                 selectBox.setModel(oModel, "operatore");
                 selectBox.bindAggregation("items", "operatore>/operatori", oItemSelectTemplate);
                 var aFilter = [];
-                var query = selectBox.getPlaceholder();
+                var query = this.getView().getModel("linea").getProperty(selectBox.getBindingContext("linea").sPath).sezione;
+//                var query = selectBox.getPlaceholder();
                 if (query) {
                     aFilter.push(new Filter("sezione", FilterOperator.Contains, query));
                 }
@@ -1294,10 +1295,11 @@ sap.ui.define([
         annullaModifiche: function () {
             var rowPath = this.row.getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
-            if (Number(row_binded.showButton) === 0) {
+            if (!row_binded.batchID) {
                 this.oDialog.destroy();
             } else {
                 this.STOP = 0;
+                this.RefreshCall();
                 this.oDialog.destroy();
             }
         },

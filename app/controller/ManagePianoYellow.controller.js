@@ -683,6 +683,7 @@ sap.ui.define([
         },
         SUCCESSCancellazioneBatch: function (Jdata) {
             if (Number(Jdata.error) === 0) {
+                this.STOP = 0; 
                 this.RefreshCall();
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 30});
