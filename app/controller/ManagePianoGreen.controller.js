@@ -110,351 +110,6 @@ sap.ui.define([
                 }
             }
         },
-        LineButtonStyle: function () {
-            var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
-            var data = this.ModelLinea.getData();
-            var button;
-            var state;
-            for (var i = 0; i < data.linee.length; i++) {
-                button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
-                for (var k = 0; k < classes.length; k++) {
-                    button.removeStyleClass(classes[k]);
-                }
-                state = data.linee[i].statolinea.split(".");
-                switch (state[0]) {
-                    case 'Disponibile':
-                        button.addStyleClass("LineaDispo");
-                        break;
-                    case 'Nondisponibile':
-                        button.addStyleClass("LineaNonDispo");
-                        break;
-                }
-                switch (state[1]) {
-                    case "Vuota":
-                        button.addStyleClass("LineaVuota");
-                        break;
-                    case "Attrezzaggio":
-                        button.addStyleClass("LineaAttrezzaggio");
-                        break;
-                    case "Lavorazione":
-                        button.addStyleClass("LineaLavorazione");
-                        break;
-                    case "Fermo":
-                        button.addStyleClass("LineaFermo");
-                        break;
-                    case "Svuotamento":
-                        button.addStyleClass("LineaSvuotamento");
-                        break;
-                }
-            }
-        },
-        SettingsButtonColor: function () {
-            var classes = ["BatchInMacchina", "BatchInAttesa", "BatchTrasferito"];
-            var data = this.ModelLinea.getData();
-            var button;
-            for (var i = 0; i < data.linee.length; i++) {
-                for (var j = 0; j < data.linee[i].batchlist.length; j++) {
-                    button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0].getItems()[j].getCells()[7].getItems()[0].getItems()[0].getItems()[0];
-                    for (var k = 0; k < classes.length; k++) {
-                        button.removeStyleClass(classes[k]);
-                    }
-                    switch (data.linee[i].batchlist[j].statoBatch) {
-                        case 'In lavorazione':
-                        case 'Attrezzaggio':
-                            button.addStyleClass("BatchInMacchina");
-                            break;
-                        case 'Attesa presa in carico':
-                            button.addStyleClass("BatchTrasferito");
-                            break;
-                        default:
-                            button.addStyleClass("BatchInAttesa");
-                            break;
-                    }
-                }
-            }
-        },
-        BarColorCT: function (data) {
-            var progressBar;
-            if (data.linee.length > 0) {
-                for (var i = 0; i < data.linee.length; i++) {
-                    if (Number(data.linee[i].avanzamento) >= 100) {
-                        data.linee[i].avanzamento = 100;
-                    } else {
-                        data.linee[i].avanzamento = Number(data.linee[i].avanzamento);
-                    }
-                    progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
-                    switch (data.linee[i].barColor) {
-                        case "yellow":
-                            progressBar.setState("Warning");
-                            break;
-                        case "green":
-                            progressBar.setState("Success");
-                            break;
-                        case "orange":
-                            progressBar.setState("Error");
-                            break;
-                    }
-                    if (data.linee[i].statolinea === "Disponibile.Fermo") {
-                        progressBar.setState("None");
-                    }
-                }
-            }
-            return data;
-        },
-        SPCColorCT: function (data) {
-            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent"];
-            var SPCButton;
-            if (data.linee.length > 0) {
-                for (var i = 0; i < data.linee.length; i++) {
-                    for (var j = 0; j < data.linee[i].SPC.length; j++) {
-                        SPCButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[j + 1].getItems()[0];
-                        if (data.linee[i].SPC[j].fase !== "") {
-                            SPCButton.setEnabled(true);
-                        } else {
-                            SPCButton.setEnabled(false);
-                        }
-                        for (var k = 0; k < CSS_classesButton.length; k++) {
-                            SPCButton.removeStyleClass(CSS_classesButton[k]);
-                        }
-                        switch (data.linee[i].SPC[j].fase) {
-                            case "1":
-                                SPCButton.setIcon("img/triangolo_buco.png");
-                                SPCButton.setText(data.linee[i].SPC[j].numeroCampionamenti);
-                                SPCButton.addStyleClass("SPCButtonPhase1");
-//                            if (data.length === 1) {
-//                                SPCButton.addStyleClass("SPCButtonContent");
-//                            } else {
-//                                SPCButton.addStyleClass("DualSPCButtonContent");
-//                            }
-                                SPCButton.addStyleClass("SPCButtonColorYellow");
-                                break;
-                            case "2":
-                                SPCButton.setIcon("");
-                                SPCButton.setText("");
-                                if (data.linee[i].SPC[j].allarme === "0") {
-                                    SPCButton.addStyleClass("SPCButtonColorGreen");
-                                } else if (data.linee[i].SPC[j].allarme === "1") {
-                                    SPCButton.addStyleClass("SPCButtonColorYellow");
-                                }
-                                break;
-                            default:
-                                SPCButton.setIcon("img/triangolo_buco.png");
-                                SPCButton.setText("0");
-                                SPCButton.addStyleClass("SPCButtonPhase1");
-//                            if (data.length === 1) {
-//                                SPCButton.addStyleClass("SPCButtonContent");
-//                            } else {
-//                                SPCButton.addStyleClass("DualSPCButtonContent");
-//                            }
-                                SPCButton.addStyleClass("SPCButtonColorYellow");
-                                break;
-                        }
-                        if (data.linee[i].statolinea === "Disponibile.Fermo") {
-                            SPCButton.setText("0");
-                            SPCButton.addStyleClass("SPCButtonPhase1");
-                            SPCButton.addStyleClass("SPCButtonColorYellow");
-                            SPCButton.setIcon("img/triangolo_buco.png");
-                            SPCButton.setEnabled(false);
-                        }
-                    }
-                }
-            }
-        },
-        SPCGraph: function (event) {
-            this.pathLinea = event.getSource().getBindingContext("linea").sPath;
-            this.indexSPC = Number(event.getSource().data("mydata"));
-            this.idBatch = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].IDbatchAttivo;
-            this.idLinea = this.ModelLinea.getProperty(this.pathLinea).lineaID;
-            this.ParametroID = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].parametroId;
-            this.DescrizioneParametro = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].descrizioneParametro;
-            this.SPCDialog = this.getView().byId("SPCWindow");
-            if (!this.SPCDialog) {
-                this.SPCDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
-                this.getView().addDependent(this.SPCDialog);
-            }
-            this.SPCDialog.open();
-            this.SPCDataCaller();
-        },
-        SPCDataCaller: function () {
-            if (this.SPCDialog) {
-                if (this.SPCDialog.isOpen()) {
-                    var link;
-                    if (this.ISLOCAL === 1) {
-                        link = "model/JSON_SPCData.json";
-                    } else {
-                        if (typeof this.ParametroID !== "undefined") {
-                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.idLinea + "&ParametroID=" + this.ParametroID;
-                        }
-                    }
-                    Library.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
-                }
-            }
-        },
-        SUCCESSSPCDataLoad: function (Jdata) {
-            var isEmpty;
-            this.Allarme = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
-            this.Fase = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
-            this.Avanzamento = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
-            if (Jdata.valori === "") {
-                isEmpty = 1;
-            } else {
-                isEmpty = 0;
-                Jdata = this.ParseSPCData(Jdata, "#");
-                if (this.Fase === "1") {
-                    Jdata = this.Phase1(Jdata);
-                }
-                this.ModelSPCData.setProperty("/", Jdata);
-            }
-            this.SPCDialogFiller(isEmpty);
-            setTimeout(this.SPCDataCaller.bind(this), 1000);
-        },
-        SPCDialogFiller: function (discr) {
-            var textHeader = this.getView().byId("headerSPCWindow");
-            textHeader.setText(String(this.DescrizioneParametro));
-            var samplingHeader = this.getView().byId("samplingSPC");
-            if (Number(this.Fase) === 1) {
-                samplingHeader.setText("Campionamento in corso: " + String(this.Avanzamento) + "/50");
-            } else {
-                samplingHeader.setText("");
-            }
-            if (discr !== 1) {
-                var plotBox = this.getView().byId("plotBox");
-                var alarmButton = this.getView().byId("alarmButton");
-                if (Number(this.Fase) === 2 && Number(this.Allarme) === 1) {
-                    alarmButton.setEnabled(true);
-                    alarmButton.removeStyleClass("chiudiButton");
-                    alarmButton.addStyleClass("allarmeButton");
-                } else {
-                    alarmButton.setEnabled(false);
-                    alarmButton.removeStyleClass("allarmeButton");
-                    alarmButton.addStyleClass("chiudiButton");
-                }
-                if (!((Number(this.Fase) === 1) && (this.ModelSPCData.getData().valori.length < 50))) {
-                    var data = this.ModelSPCData.getData();
-                    var result = this.PrepareDataToPlot(data, this.Fase);
-                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
-                    Plotly.newPlot(ID, result.dataPlot, result.layout);
-                }
-            }
-        },
-        ParseSPCData: function (data, char) {
-            for (var key in data) {
-                data[key] = data[key].split(char);
-                for (var i = data[key].length - 1; i >= 0; i--) {
-                    if (data[key][i] === "") {
-                        data[key].splice(i, 1);
-                    } else {
-                        if (key !== "time") {
-                            data[key][i] = Number(data[key][i]);
-                        }
-                    }
-                }
-            }
-            return data;
-        },
-        Phase1: function (data) {
-            data.MR = [];
-            var avg = 0;
-            var i, temp;
-            data.MR.push(0);
-            for (i = 0; i < data.valori.length - 1; i++) {
-                temp = Math.abs(data.valori[i + 1] - data.valori[i]);
-                data.MR.push(temp);
-                avg += temp;
-            }
-            avg /= (data.MR.length);
-            data.MRBound = [];
-            for (i = 0; i < data.MR.length; i++) {
-                data.MRBound.push(3.267 * avg);
-            }
-            data.MRTime = JSON.parse(JSON.stringify(data.time));
-            return data;
-        },
-        RemoveAlarm: function () {
-            var alarmButton = this.getView().byId("alarmButton");
-            alarmButton.setEnabled(false);
-            alarmButton.removeStyleClass("allarmeButton");
-            alarmButton.addStyleClass("chiudiButton");
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.idBatch + "&ParametroID=" + this.ParametroID;
-            Library.AjaxCallerVoid(link, this.RefreshCall.bind(this));
-            this.CloseSPCDialog();
-        },
-        CloseSPCDialog: function () {
-            this.SPCDialog.close();
-        },
-        PrepareDataToPlot: function (Jdata, fase) {
-            var dataPlot, layout;
-            var valori = {
-                x: Jdata.time,
-                y: Jdata.valori,
-                type: 'scatter',
-                line: {color: 'rgb(0,58,107)', width: 1}
-            };
-            var limSup = {
-                x: Jdata.time,
-                y: Jdata.limSup,
-                type: 'scatter',
-                line: {color: 'rgb(167,25,48)', width: 1}
-            };
-            var limInf = {
-                x: Jdata.time,
-                y: Jdata.limInf,
-                type: 'scatter',
-                line: {color: 'rgb(167,25,48)', width: 1}
-            };
-            dataPlot = [valori, limSup, limInf];
-            layout = {
-                showlegend: false,
-                autosize: true,
-                xaxis: {
-                    showgrid: true,
-                    zeroline: false
-                },
-                yaxis: {
-                    showgrid: true,
-                    zeroline: false
-//                    showline: false
-                }
-            };
-            if (fase === "1") {
-                var MR = {
-                    x: Jdata.MRTime,
-                    y: Jdata.MR,
-                    xaxis: 'x2',
-                    yaxis: 'y2',
-                    type: 'scatter',
-                    line: {color: 'rgb(0,58,107)', width: 1}
-                };
-                var MRBound = {
-                    x: Jdata.MRTime,
-                    y: Jdata.MRBound,
-                    xaxis: 'x2',
-                    yaxis: 'y2',
-                    type: 'scatter',
-                    line: {color: 'rgb(167,25,48)', width: 1}
-                };
-                dataPlot.push(MR);
-                dataPlot.push(MRBound);
-                layout.yaxis.domain = [0.6, 1];
-                layout.xaxis2 = {};
-                layout.yaxis2 = {};
-                layout.xaxis2.anchor = "y2";
-                layout.yaxis2.domain = [0, 0.4];
-            } else {
-                if (Number(this.Allarme) === 0) {
-                    layout.xaxis.linecolor = "rgb(124,162,149)";
-                    layout.yaxis.linecolor = "rgb(124,162,149)";
-                } else {
-                    layout.xaxis.linecolor = "rgb(255,211,0)";
-                    layout.yaxis.linecolor = "rgb(255,211,0)";
-                }
-                layout.xaxis.linewidth = 4;
-                layout.xaxis.mirror = true;
-                layout.yaxis.linewidth = 4;
-                layout.yaxis.mirror = true;
-            }
-            return {dataPlot: dataPlot, layout: layout};
-        },
         SUCCESSCause: function (Jdata) {
             this.data_json = {};
             this.data_json.cause = [];
@@ -762,6 +417,351 @@ sap.ui.define([
                 });
                 this.getView().setModel(this.ModelLinea, "linea");
             }
+        },
+        LineButtonStyle: function () {
+            var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
+            var data = this.ModelLinea.getData();
+            var button;
+            var state;
+            for (var i = 0; i < data.linee.length; i++) {
+                button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
+                for (var k = 0; k < classes.length; k++) {
+                    button.removeStyleClass(classes[k]);
+                }
+                state = data.linee[i].statolinea.split(".");
+                switch (state[0]) {
+                    case 'Disponibile':
+                        button.addStyleClass("LineaDispo");
+                        break;
+                    case 'Nondisponibile':
+                        button.addStyleClass("LineaNonDispo");
+                        break;
+                }
+                switch (state[1]) {
+                    case "Vuota":
+                        button.addStyleClass("LineaVuota");
+                        break;
+                    case "Attrezzaggio":
+                        button.addStyleClass("LineaAttrezzaggio");
+                        break;
+                    case "Lavorazione":
+                        button.addStyleClass("LineaLavorazione");
+                        break;
+                    case "Fermo":
+                        button.addStyleClass("LineaFermo");
+                        break;
+                    case "Svuotamento":
+                        button.addStyleClass("LineaSvuotamento");
+                        break;
+                }
+            }
+        },
+        SettingsButtonColor: function () {
+            var classes = ["BatchInMacchina", "BatchInAttesa", "BatchTrasferito"];
+            var data = this.ModelLinea.getData();
+            var button;
+            for (var i = 0; i < data.linee.length; i++) {
+                for (var j = 0; j < data.linee[i].batchlist.length; j++) {
+                    button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0].getItems()[j].getCells()[7].getItems()[0].getItems()[0].getItems()[0];
+                    for (var k = 0; k < classes.length; k++) {
+                        button.removeStyleClass(classes[k]);
+                    }
+                    switch (data.linee[i].batchlist[j].statoBatch) {
+                        case 'In lavorazione':
+                        case 'Attrezzaggio':
+                            button.addStyleClass("BatchInMacchina");
+                            break;
+                        case 'Attesa presa in carico':
+                            button.addStyleClass("BatchTrasferito");
+                            break;
+                        default:
+                            button.addStyleClass("BatchInAttesa");
+                            break;
+                    }
+                }
+            }
+        },
+        BarColorCT: function (data) {
+            var progressBar;
+            if (data.linee.length > 0) {
+                for (var i = 0; i < data.linee.length; i++) {
+                    if (Number(data.linee[i].avanzamento) >= 100) {
+                        data.linee[i].avanzamento = 100;
+                    } else {
+                        data.linee[i].avanzamento = Number(data.linee[i].avanzamento);
+                    }
+                    progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
+                    switch (data.linee[i].barColor) {
+                        case "yellow":
+                            progressBar.setState("Warning");
+                            break;
+                        case "green":
+                            progressBar.setState("Success");
+                            break;
+                        case "orange":
+                            progressBar.setState("Error");
+                            break;
+                    }
+                    if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                        progressBar.setState("None");
+                    }
+                }
+            }
+            return data;
+        },
+        SPCColorCT: function (data) {
+            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent"];
+            var SPCButton;
+            if (data.linee.length > 0) {
+                for (var i = 0; i < data.linee.length; i++) {
+                    for (var j = 0; j < data.linee[i].SPC.length; j++) {
+                        SPCButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[j + 1].getItems()[0];
+                        if (data.linee[i].SPC[j].fase !== "") {
+                            SPCButton.setEnabled(true);
+                        } else {
+                            SPCButton.setEnabled(false);
+                        }
+                        for (var k = 0; k < CSS_classesButton.length; k++) {
+                            SPCButton.removeStyleClass(CSS_classesButton[k]);
+                        }
+                        switch (data.linee[i].SPC[j].fase) {
+                            case "1":
+                                SPCButton.setIcon("img/triangolo_buco.png");
+                                SPCButton.setText(data.linee[i].SPC[j].numeroCampionamenti);
+                                SPCButton.addStyleClass("SPCButtonPhase1");
+//                            if (data.length === 1) {
+//                                SPCButton.addStyleClass("SPCButtonContent");
+//                            } else {
+//                                SPCButton.addStyleClass("DualSPCButtonContent");
+//                            }
+                                SPCButton.addStyleClass("SPCButtonColorYellow");
+                                break;
+                            case "2":
+                                SPCButton.setIcon("");
+                                SPCButton.setText("");
+                                if (data.linee[i].SPC[j].allarme === "0") {
+                                    SPCButton.addStyleClass("SPCButtonColorGreen");
+                                } else if (data.linee[i].SPC[j].allarme === "1") {
+                                    SPCButton.addStyleClass("SPCButtonColorYellow");
+                                }
+                                break;
+                            default:
+                                SPCButton.setIcon("img/triangolo_buco.png");
+                                SPCButton.setText("0");
+                                SPCButton.addStyleClass("SPCButtonPhase1");
+//                            if (data.length === 1) {
+//                                SPCButton.addStyleClass("SPCButtonContent");
+//                            } else {
+//                                SPCButton.addStyleClass("DualSPCButtonContent");
+//                            }
+                                SPCButton.addStyleClass("SPCButtonColorYellow");
+                                break;
+                        }
+                        if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                            SPCButton.setText("0");
+                            SPCButton.addStyleClass("SPCButtonPhase1");
+                            SPCButton.addStyleClass("SPCButtonColorYellow");
+                            SPCButton.setIcon("img/triangolo_buco.png");
+                            SPCButton.setEnabled(false);
+                        }
+                    }
+                }
+            }
+        },
+        SPCGraph: function (event) {
+            this.pathLinea = event.getSource().getBindingContext("linea").sPath;
+            this.indexSPC = Number(event.getSource().data("mydata"));
+            this.idBatch = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].IDbatchAttivo;
+            this.idLinea = this.ModelLinea.getProperty(this.pathLinea).lineaID;
+            this.ParametroID = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].parametroId;
+            this.DescrizioneParametro = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].descrizioneParametro;
+            this.SPCDialog = this.getView().byId("SPCWindow");
+            if (!this.SPCDialog) {
+                this.SPCDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
+                this.getView().addDependent(this.SPCDialog);
+            }
+            this.SPCDialog.open();
+            this.SPCDataCaller();
+        },
+        SPCDataCaller: function () {
+            if (this.SPCDialog) {
+                if (this.SPCDialog.isOpen()) {
+                    var link;
+                    if (this.ISLOCAL === 1) {
+                        link = "model/JSON_SPCData.json";
+                    } else {
+                        if (typeof this.ParametroID !== "undefined") {
+                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.idLinea + "&ParametroID=" + this.ParametroID;
+                        }
+                    }
+                    Library.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
+                }
+            }
+        },
+        SUCCESSSPCDataLoad: function (Jdata) {
+            var isEmpty;
+            this.Allarme = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
+            this.Fase = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
+            if (Jdata.valori === "") {
+                isEmpty = 1;
+            } else {
+                isEmpty = 0;
+                Jdata = this.ParseSPCData(Jdata, "#");
+                if (this.Fase === "1") {
+                    Jdata = this.Phase1(Jdata);
+                }
+                this.ModelSPCData.setProperty("/", Jdata);
+            }
+            this.SPCDialogFiller(isEmpty);
+            setTimeout(this.SPCDataCaller.bind(this), 10000);
+        },
+        SPCDialogFiller: function (discr) {
+            var textHeader = this.getView().byId("headerSPCWindow");
+            textHeader.setText(String(this.DescrizioneParametro));
+            var samplingHeader = this.getView().byId("samplingSPC");
+            if (Number(this.Fase) === 1) {
+                samplingHeader.setText("Campionamento in corso: " + String(this.Avanzamento) + "/50");
+            } else {
+                samplingHeader.setText("");
+            }
+            if (discr !== 1) {
+                var plotBox = this.getView().byId("plotBox");
+                var alarmButton = this.getView().byId("alarmButton");
+                if (Number(this.Fase) === 2 && Number(this.Allarme) === 1) {
+                    alarmButton.setEnabled(true);
+                    alarmButton.removeStyleClass("chiudiButton");
+                    alarmButton.addStyleClass("allarmeButton");
+                } else {
+                    alarmButton.setEnabled(false);
+                    alarmButton.removeStyleClass("allarmeButton");
+                    alarmButton.addStyleClass("chiudiButton");
+                }
+                if (!((Number(this.Fase) === 1) && (this.ModelSPCData.getData().valori.length < 50))) {
+                    var data = this.ModelSPCData.getData();
+                    var result = this.PrepareDataToPlot(data, this.Fase);
+                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
+                    Plotly.newPlot(ID, result.dataPlot, result.layout);
+                }
+            }
+        },
+        ParseSPCData: function (data, char) {
+            for (var key in data) {
+                data[key] = data[key].split(char);
+                for (var i = data[key].length - 1; i >= 0; i--) {
+                    if (data[key][i] === "") {
+                        data[key].splice(i, 1);
+                    } else {
+                        if (key !== "time") {
+                            data[key][i] = Number(data[key][i]);
+                        }
+                    }
+                }
+            }
+            return data;
+        },
+        Phase1: function (data) {
+            data.MR = [];
+            var avg = 0;
+            var i, temp;
+            data.MR.push(0);
+            for (i = 0; i < data.valori.length - 1; i++) {
+                temp = Math.abs(data.valori[i + 1] - data.valori[i]);
+                data.MR.push(temp);
+                avg += temp;
+            }
+            avg /= (data.MR.length);
+            data.MRBound = [];
+            for (i = 0; i < data.MR.length; i++) {
+                data.MRBound.push(3.267 * avg);
+            }
+            data.MRTime = JSON.parse(JSON.stringify(data.time));
+            return data;
+        },
+        RemoveAlarm: function () {
+            var alarmButton = this.getView().byId("alarmButton");
+            alarmButton.setEnabled(false);
+            alarmButton.removeStyleClass("allarmeButton");
+            alarmButton.addStyleClass("chiudiButton");
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.idBatch + "&ParametroID=" + this.ParametroID;
+            Library.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+            this.CloseSPCDialog();
+        },
+        CloseSPCDialog: function () {
+            this.SPCDialog.close();
+        },
+        PrepareDataToPlot: function (Jdata, fase) {
+            var dataPlot, layout;
+            var valori = {
+                x: Jdata.time,
+                y: Jdata.valori,
+                type: 'scatter',
+                line: {color: 'rgb(0,58,107)', width: 1}
+            };
+            var limSup = {
+                x: Jdata.time,
+                y: Jdata.limSup,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            var limInf = {
+                x: Jdata.time,
+                y: Jdata.limInf,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            dataPlot = [valori, limSup, limInf];
+            layout = {
+                showlegend: false,
+                autosize: true,
+                xaxis: {
+                    showgrid: true,
+                    zeroline: false
+                },
+                yaxis: {
+                    showgrid: true,
+                    zeroline: false
+//                    showline: false
+                }
+            };
+            if (fase === "1") {
+                var MR = {
+                    x: Jdata.MRTime,
+                    y: Jdata.MR,
+                    xaxis: 'x2',
+                    yaxis: 'y2',
+                    type: 'scatter',
+                    line: {color: 'rgb(0,58,107)', width: 1}
+                };
+                var MRBound = {
+                    x: Jdata.MRTime,
+                    y: Jdata.MRBound,
+                    xaxis: 'x2',
+                    yaxis: 'y2',
+                    type: 'scatter',
+                    line: {color: 'rgb(167,25,48)', width: 1}
+                };
+                dataPlot.push(MR);
+                dataPlot.push(MRBound);
+                layout.yaxis.domain = [0.6, 1];
+                layout.xaxis2 = {};
+                layout.yaxis2 = {};
+                layout.xaxis2.anchor = "y2";
+                layout.yaxis2.domain = [0, 0.4];
+            } else {
+                if (Number(this.Allarme) === 0) {
+                    layout.xaxis.linecolor = "rgb(124,162,149)";
+                    layout.yaxis.linecolor = "rgb(124,162,149)";
+                } else {
+                    layout.xaxis.linecolor = "rgb(255,211,0)";
+                    layout.yaxis.linecolor = "rgb(255,211,0)";
+                }
+                layout.xaxis.linewidth = 4;
+                layout.xaxis.mirror = true;
+                layout.yaxis.linewidth = 4;
+                layout.yaxis.mirror = true;
+            }
+            return {dataPlot: dataPlot, layout: layout};
         },
         takeAllCause: function (bck) {
             for (var key in bck) {
