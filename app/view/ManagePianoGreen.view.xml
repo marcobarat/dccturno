@@ -10,9 +10,7 @@
                 <VBox height="6%" width="100%">
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
-                        <VBox height="100%" width="13.8%">
-                            <!--<Button text="Conferma" press="onMenu" width="100%" class="noFocus"/>-->
-                        </VBox>
+                        <VBox height="100%" width="13.8%"/>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="50%">
                             <VBox alignItems="Center" height="50%" width="100%">
@@ -21,7 +19,7 @@
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Esci" press="onNavBack" width="100%" class="noFocus" />
+                            <Button text="Esci" press="BackToPiani" width="100%" class="noFocus" />
                         </VBox>
                         <VBox height="100%" width="6.2%"/>
                     </HBox>
@@ -32,7 +30,7 @@
                         <VBox height="100%" width="90%">
                             <IconTabBar
                                 id="ManageIconTabBar"
-                                select="changeReparto"
+                                select="ChangeReparto"
                                 applyContentPadding="true"
                                 expandable="false"
                                 items="{reparti>/ListaReparti}"
@@ -56,7 +54,7 @@
                                                             <VBox width="20%" height="100%" class="positionVBox">
                                                                 <VBox>
                                                                     <VBox width="100%" height="20%" class="bordoBluL bordoBluR bordoBluT bordoBluB">
-                                                                        <Button text="{linea>linea}" class="noFocus buttonDimension" press="onOpenStatoLinea" width="100%"/>
+                                                                        <Button text="{linea>linea}" class="noFocus buttonDimension" press="ShowStatoLinea" width="100%"/>
                                                                     </VBox >
                                                                     <VBox width="100%" height="80%" class="bordoBluL bordoBluB bordoBluR">
                                                                         <VBox width="100%" height="30%">
@@ -85,7 +83,7 @@
                                                                                     <items>
                                                                                         <ColumnListItem class="noDelimitator sapMListTblCell_b sapMListTblCell_op">
                                                                                             <cells>
-                                                                                                <ComboBox width="90%" value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{= ${linea>nome} === '---' ? ${linea>sezione}: ''}" loadItems="loadOperatori" selectionChange="checkOperatore"></ComboBox>
+                                                                                                <ComboBox width="90%" value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{= ${linea>nome} === '---' ? ${linea>sezione}: ''}" loadItems="LoadOperatori" selectionChange="CheckOperatore"/>
                                                                                             </cells>
                                                                                         </ColumnListItem>
                                                                                     </items>
@@ -98,7 +96,6 @@
                                                             <VBox width="80%" height="100%">
                                                                 <VBox height="20%" width="100%">
                                                                     <HBox>
-                                                                        <!--<VBox width="3%" height="100%"/>-->
                                                                         <VBox width="70%" height="100%" class="bordoBluR bordoBluT">
                                                                             <ProgressIndicator
                                                                                 percentValue="{linea>avanzamento}"
@@ -115,9 +112,8 @@
                                                                         <VBox width="10%" height="100%" class="bordoBluT">
                                                                             <Button enabled="false" width="100%" class="SPCButtonsDimensions" press="SPCGraph" app:mydata="1"/>
                                                                         </VBox>
-                                                                        <!--<VBox width="3%" height="100%"/>-->
                                                                         <VBox width="10%" height="100%" class="bordoBluR bordoBluT bordoBluL">
-                                                                            <Button icon="sap-icon://add" press="onAddItem" width="100%" class="AddButton"/>
+                                                                            <Button icon="sap-icon://add" press="AddBatch" width="100%" class="AddButton"/>
                                                                         </VBox>
                                                                     </HBox>
                                                                 </VBox>
@@ -173,17 +169,17 @@
                                                                             <items>
                                                                                 <ColumnListItem class="noDelimitator sapMListTblCell_b" height="90%">
                                                                                     <cells>
-                                                                                        <Input textAlign="Center" value="{linea>sequenza}" liveChange="showUpdateButton" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <Input textAlign="Center" value="{linea>sequenza}" liveChange="ShowUpdateButton" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                         <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"  enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
-                                                                                        <ComboBox value="{linea>confezioneCodiceInterno}" loadItems="CaricaConfezionamenti" selectionChange="loadDestinazione" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
-                                                                                        <Button width="90%" text="{linea>destinazione}" press="visuBatch" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <ComboBox value="{linea>confezioneCodiceInterno}" loadItems="CaricaConfezionamenti" selectionChange="LoadDestinazione" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <Button width="90%" text="{linea>destinazione}" press="ShowBatchDetails" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                         <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                         <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                         <TimePicker class="TimesapMInputBase" value="{linea>ore}" maskMode="Off" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                         <VBox height="100%" width="100%">
                                                                                             <HBox height="100%" width="100%">
                                                                                                 <VBox height="100%" width="100%">
-                                                                                                    <Button icon="sap-icon://action-settings" press="handlePressOpenMenu" width="100%" visible="{= ${linea>showButton} === 0 ? false : true}"/>
+                                                                                                    <Button icon="sap-icon://action-settings" press="BatchSettings" width="100%" visible="{= ${linea>showButton} === 0 ? false : true}"/>
                                                                                                     <HBox>
                                                                                                         <VBox height="100%" width="50%">
                                                                                                             <Button icon="sap-icon://accept" class="StileV" press="InsertNewBatch" width="50%" visible="{= ${linea>showButton} === 0 ? true : false}"/>

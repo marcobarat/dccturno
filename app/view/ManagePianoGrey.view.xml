@@ -13,7 +13,7 @@
                         <HBox height="100%" width="20%">
                             <HBox>
                                 <Button text="Creazione report OEE"
-                                        press="onReport"
+                                        press="CreateReport"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                         class="noFocus paddingleft larghezzaButtonLeft">
                                 </Button>
@@ -23,7 +23,7 @@
                                     text="Report"
                                     visible="true"
                                     enabled="false"
-                                    press="onReportView"
+                                    press="ShowReport"
                                     ariaDescribedBy="defaultButtonDescription genericButtonDescription">
                                 </Button>  
                             </HBox>    
@@ -37,12 +37,12 @@
                             <HBox width="100%" justifyContent="End">
                                 <Button text="Conferma chiusura piano"
                                         id="chiusuraPiano"
-                                        press="onConfermaChiusuraPiano"
+                                        press="ConfermaChiusuraPiano"
                                         enabled="false"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                         class="noFocus larghezzaButtonLeft shiftButtonRight">
                                 </Button>
-                                <Button text="Esci" press="onNavBack" class="noFocus paddingright larghezzaButtonRight"/>
+                                <Button text="Esci" press="BackToPiani" class="noFocus paddingright larghezzaButtonRight"/>
                             </HBox> 
                         </HBox> 
                         <VBox height="100%" width="5%"/>
@@ -54,7 +54,7 @@
                         <VBox height="100%" width="90%">
                             <IconTabBar
                                 id="ManageIconTabBar"
-                                select="changeReparto"
+                                select="ChangeReparto"
                                 applyContentPadding="true"
                                 expandable="false"
                                 items="{reparti>/ListaReparti}"
@@ -103,7 +103,7 @@
                                                                     <TextArea visible="false" value="{linea>qualita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" class="textArea"/>
                                                                 </VBox>
                                                                 <VBox width="33%">
-                                                                    <Button visible="false" width="100%" text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='onCausalizzazioneFermi'/>
+                                                                    <Button visible="false" width="100%" text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='CausalizzazioneFermi'/>
                                                                 </VBox>
                                                             </HBox>
                                                         </HBox>
@@ -278,7 +278,7 @@
                                                                                     <Text text="{linea>disponibilita}"/>
                                                                                     <Text text="{linea>produttivita}"/>
                                                                                     <Text text="{linea>qualita}"/>
-                                                                                    <Button text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='onCausalizzazioneFermi'/>
+                                                                                    <Button text="{linea>fermo}" enabled="{= !(${linea>fermo} === '0:00:00' || ${linea>fermo} === '')}" press='CausalizzazioneFermi'/>
                                                                                 </cells>
                                                                             </ColumnListItem>
                                                                         </items>

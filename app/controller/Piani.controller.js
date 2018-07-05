@@ -1,10 +1,8 @@
 sap.ui.define([
-    'jquery.sap.global',
-    './Formatter',
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'myapp/controller/Library'
-], function (jQuery, Formatter, Controller, JSONModel, Library) {
+], function (Controller, JSONModel, Library) {
     "use strict";
 
     var PianiController = Controller.extend("myapp.controller.Piani", {
@@ -24,8 +22,15 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("piani").attachPatternMatched(this.URLChangeCheck, this);
         },
-        RefreshFunction: function () {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), 10000);
+        URLChangeCheck: function (oEvent) {
+            this.STOP = 0;
+            this.turnoPath = oEvent.getParameter("arguments").turnoPath;
+            this.pianoPath = oEvent.getParameter("arguments").pianoPath;
+            this.getView().setModel(this.ModelLinea, 'linea');
+            this.RefreshCall();
+        },
+        RefreshFunction: function (msec) {
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
             var link;
@@ -45,15 +50,8 @@ sap.ui.define([
             oScroll = this.getView().byId("scrollTurniProgrammati");
             this.setScrollHeight(oScroll);
             if (this.ISLOCAL !== 1 && this.STOP === 0) {
-                this.RefreshFunction();
+                this.RefreshFunction(10000);
             }
-        },
-        URLChangeCheck: function (oEvent) {
-            this.STOP = 0;
-            this.turnoPath = oEvent.getParameter("arguments").turnoPath;
-            this.pianoPath = oEvent.getParameter("arguments").pianoPath;
-            this.getView().setModel(this.ModelLinea, 'linea');
-            this.RefreshCall();
         },
         setScrollHeight: function (oScroll) {
             var items_num = this.ModelTurni.getProperty(oScroll.getContent()[0].getBindingInfo("items").path).length;
@@ -84,7 +82,7 @@ sap.ui.define([
                     oScroll.removeStyleClass("scrollingbarTransparent");
             }
         },
-        managePiano: function (oEvent) {
+        SwitcherTurni: function (oEvent) {
             var oTable = oEvent.getSource().getParent().getBindingContext("turni");
             var Row = oTable.getModel().getProperty(oTable.sPath);
             var area = Row.area;
@@ -134,10 +132,6 @@ sap.ui.define([
                 } else {
                     Jdata.linee[i].avanzamento = Number(Jdata.linee[i].avanzamento);
                 }
-//                Jdata.linee[i].operatori = [];
-//                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
-//                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
-//                }
             }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
@@ -147,28 +141,16 @@ sap.ui.define([
         },
         SUCCESSTurnoApertoFuturo: function (Jdata) {
             this.STOP = 1;
-//            for (var i = 0; i < Jdata.linee.length; i++) {
-//                Jdata.linee[i].operatori = [];
-//                for (var j = 0; j < Jdata.linee[i].nOperatori; j++) {
-//                    Jdata.linee[i].operatori.push({nome: "", cognome: ""});
-//                }
-//            }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoYellow", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
             this.ModelLinea.refresh(true);
         },
-        GoToHome: function () {
+        BackToMain: function () {
             this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("Main");
-        },
-        onCloseApp: function () {
-            window.close();
         }
-
     });
-
     return PianiController;
-
 });

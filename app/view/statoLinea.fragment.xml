@@ -1,5 +1,4 @@
 <core:FragmentDefinition
-    
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
@@ -10,15 +9,13 @@
                 <VBox class="sapUiMediumMarginBegin sapUiMediumMarginTop">
                     <CheckBox
                         id="disponibile"
-                        select="onGestioneStato"
+                        select="GestioneStato"
                         text="Disponibile per la produzione"
-                        class="sapUiSmallMarginBottom"
-                    />
+                        class="sapUiSmallMarginBottom"/>
                     <CheckBox
                         id="nondisponibile"
-                        select="onGestioneStato"
-                        text="Non disponibile per la produzione"
-                    />
+                        select="GestioneStato"
+                        text="Non disponibile per la produzione"/>
                 </VBox>
             </VBox>
         
@@ -37,12 +34,10 @@
                         <core:Item key="{cause>id}" text="{cause>fermo}" />
                     </Select>
                 </VBox>
-
             </VBox>
-        
             <HBox height="5%">
                 <VBox class="sapUiSmallMargin" width="45%">
-                    <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="closeDialog"/>
+                    <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="CloseDialog"/>
                 </VBox>
                 <VBox width="10%"/>
                 <VBox class="sapUiSmallMargin" width="45%">

@@ -24,8 +24,7 @@
             <TextArea id="NoFermiDaCausalizzare" width="100%" value="Non esistono fermi automatici da causalizzare" textAlign="Center" editable="false" visible="false"></TextArea>
             <Table
                 class="mysapMTable"
-                id="TotaleTable"
-            >
+                id="TotaleTable">
                 <columns>
                     <Column width="30%" hAlign="Center">
                     </Column>
@@ -45,8 +44,6 @@
                             <Text text="{guastilinea>/Totale/tempoGuastoTotale}"/>
                             <Text text="{guastilinea>/Totale/causaleTotale}"/>
                             <CheckBox textAlign="Center" id="CBTotaleCausa" selected="false" select="ChangeCheckedCausa" class="CBTotaleCausaCustom sapUiTinyMarginBegin"/>
-                
-                                                                          
                         </cells>
                     </ColumnListItem>
                 </items>

@@ -17,13 +17,6 @@ sap.ui.define([
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
         },
-        getSplitAppObj: function () {
-            var result = this.byId("SplitAppDemo");
-            if (!result) {
-                jQuery.sap.log.info("SplitApp object can't be found");
-            }
-            return result;
-        },
         onToPianiPage: function () {
             var link;
             if (this.ISLOCAL === 1) {
