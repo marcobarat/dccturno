@@ -626,7 +626,9 @@
 /*PROGRESS INDICATOR PER RIEPILOGO LINEE*/
 .LineeMPI.sapMPI {
     position: relative;
-    border: 1.5px solid #003A6B; 
+    border: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
 }
 
 .LineeMPI.sapMPI .sapMPIBar .sapMPIText {
@@ -645,47 +647,76 @@
 }
 .sapMPIBarPositive {
     background: #7CA295;
-    border-right: 1.5px solid #003A6B;
+    border-right: 2px solid #003A6B;
 }
 .sapMPIBarNegative{
     background: #d47600;
-    border-right: 1.5px solid #003A6B;
+    border-right: 2px solid #003A6B;
 }
 .sapMPIBarCritical {
     background: #FFD300;
-    border-right: 1.5px solid #003A6B;
+    border-right: 2px solid #003A6B;
 }
 .sapMPIBarNeutral {
     background: white;
-    border-right: 1.5px solid #003A6B;
+    border-right: 2px solid #003A6B;
 }
 
 .monobuttonSPCBordoBluL .sapMBtnInner {
-   border-left: 1.5px solid #003A6B;
+    border-left: 2px solid #003A6B;
+}
+
+.sapMBtnLinea.sapMBtnBase {
+    height: 100%; 
+    padding: 0pt !important;
+    margin: 0pt !important;  
+}
+
+.sapMBtnLinea .sapMBtnText .sapMBtnContent {
+    line-height: 1.8rem; 
 }
 /* STILE DEL RIEPILOGO LINEE */ 
 
 .RiepilogoLineaElement{
-    border: 1.5px solid #003A6B; 
+    border: 2px solid #003A6B; 
 }
 
 .BorderTopRight {
-    border-right: 1.5px solid #003A6B; 
-    border-top: 1.5px solid #003A6B;
+    border-right: 2px solid #003A6B; 
+    border-top: 2px solid #003A6B;
 }
 
 .BorderTop {
-    border-top: 1.5px solid #003A6B; 
+    border-top: 2px solid #003A6B; 
+}
+.BorderRight {
+    border-right: 2px solid #003A6B; 
+}
+
+.BorderLeftBottomRight {
+    border-bottom: 2px solid #003A6B; 
+    border-left: 2px solid #003A6B; 
+    border-right: 2px solid #003A6B; 
 }
 
 .BorderLeftTopRight {
-    border-right: 1.5px solid #003A6B; 
-    border-top: 1.5px solid #003A6B;
-    border-left: 1.5px solid #003A6B;
+    border-right: 2px solid #003A6B; 
+    border-top: 2px solid #003A6B;
+    border-left: 2px solid #003A6B;
+}
+
+.BorderBottomRightTop {
+    border-right: 2px solid #003A6B; 
+    border-top: 2px solid #003A6B;
+    border-bottom: 2px solid #003A6B;    
+}
+.BorderBottomRight {
+    border-right: 2px solid #003A6B; 
+    border-bottom: 2px solid #003A6B;    
 }
 
 .paddingVBox {
-    padding: 5px;
+    padding: 3px;
 }
 
 .textVBox .sapMFlexItem {

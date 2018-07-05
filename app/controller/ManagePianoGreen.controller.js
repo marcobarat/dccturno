@@ -64,7 +64,7 @@ sap.ui.define([
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
             this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
             this.repartoID = sap.ui.getCore().getModel("ParametriPiano").getData().reparto;
-            this.getView().setModel("ParametriPiano");
+            this.getView().setModel(sap.ui.getCore().getModel("ParametriPiano"), "ParametriPiano");
             this.ModelLinea = sap.ui.getCore().getModel("linee");
             this.ModelTurni = sap.ui.getCore().getModel("turni");
             if (Number(this.ISLOCAL) === 1) {
