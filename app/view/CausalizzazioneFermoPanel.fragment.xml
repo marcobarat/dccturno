@@ -6,8 +6,7 @@
     <Dialog
         class="colorPage"
         contentWidth="1200px"
-        id="CausalizzazioneFermoPanel"
-        >
+        id="CausalizzazioneFermoPanel">
         <VBox id="CausalizzazioneFermoPanelBox" class="sapUiSmallMarginTop sapUiSmallMarginBottom"></VBox>
     </Dialog>
 </core:FragmentDefinition>
