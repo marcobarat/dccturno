@@ -86,6 +86,7 @@ sap.ui.define([
             bck = Library.RecursiveParentExpansion(bck);
             this.ModelSKU.setData(bck);
             this.getView().setModel(this.ModelSKU, "SKU");
+            setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
         },
 //        FUNZIONI DI REFRESH
         RefreshFunction: function (msec) {
@@ -706,13 +707,9 @@ sap.ui.define([
             selectBox.destroyItems();
             selectBox.setValue("");
             var destinazione = this.getView().byId("cliente_SKU");
-            var SKU = this.getView().byId("SKU");
             destinazione.destroyItems();
             destinazione.setValue("");
             destinazione.setEnabled(false);
-            SKU.destroyItems();
-            SKU.setValue("");
-            SKU.setEnabled(false);
         },
         CaricaDestinazioni: function () {
             var link;
@@ -787,6 +784,49 @@ sap.ui.define([
             } else {
                 this.STOP = 0;
                 this.oDialog.destroy();
+            }
+        },
+//      FUNZIONI PER TREETABLE
+        CollapseAll: function (event) {
+            var View = this.getView().byId(event.getSource().data("mydata"));
+            View.collapseAll();
+        },
+        ExpandAll: function (event) {
+            var View = this.getView().byId(event.getSource().data("mydata"));
+            View.expandToLevel(20);
+        },
+        ShowRelevant: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = this.getView().byId(TT);
+            }
+            View.expandToLevel(20);
+            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [View]), 50);
+        },
+        CollapseNotRelevant: function (Views) {
+            var total, temp;
+            for (var i = 0; i < Views.length; i++) {
+                total = Views[i]._iBindingLength;
+                for (var j = total - 1; j >= 0; j--) {
+                    temp = Views[i].getContextByIndex(j).getObject();
+                    if (temp.expand === 0) {
+                        Views[i].collapse(j);
+                    }
+                }
+            }
+        },
+        TreeTableRowClickExpander: function (event) {
+            var View = this.getView().byId(event.getSource().data("mydata"));
+            var clicked_row = event.getParameters().rowIndex;
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_column === "0") {
+                if (!View.isExpanded(clicked_row)) {
+                    View.expand(clicked_row);
+                } else {
+                    View.collapse(clicked_row);
+                }
             }
         },
 

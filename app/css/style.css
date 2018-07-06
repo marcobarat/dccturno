@@ -958,3 +958,11 @@
     padding: 2.5%;
     height: 100%;
 }
+.TTButton .sapMBtnInner {
+    font-size: 15pt;
+    font-family: Arial;
+    color: #003A6B;
+    background: #FFD300;
+    width: 10em;
+    border-radius: 10px;
+}
