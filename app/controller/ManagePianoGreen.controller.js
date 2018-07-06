@@ -35,6 +35,7 @@ sap.ui.define([
         ModelLinea: null,
         ModelOperatori: new JSONModel({}),
         ModelSKU: new JSONModel({}),
+        ModelParametri: new JSONModel({}),
         ModelSPCData: new JSONModel({}),
         ModelTurni: null,
         ModelSKUstd: new JSONModel({}),
@@ -99,6 +100,7 @@ sap.ui.define([
             bck = Library.RecursiveParentExpansion(bck);
             this.ModelSKU.setData(bck);
             this.getView().setModel(this.ModelSKU, "SKU");
+            setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
         },
 //        FUNZIONI DI REFRESH
         RefreshFunction: function (msec) {
@@ -996,6 +998,46 @@ sap.ui.define([
 //        
 //      **************** POPUP MODIFICA ATTRIBUTI BATCH ****************
 
+        TabSelection: function (event) {
+            var tabName = event.getParameters().item.getProperty("name");
+            if (tabName === "Parametri") {
+                var formatoSKU = this.getView().byId("formato_SKU");
+                var confezioneSKU = this.getView().byId("confezione_SKU");
+                var clienteSKU = this.getView().byId("cliente_SKU");
+                if (formatoSKU.getValue() !== null && confezioneSKU.getValue() !== null && clienteSKU.getValue() !== null) {
+                    var rowPath = this.row.getBindingContext("linea").sPath;
+                    var row_binded = this.ModelLinea.getProperty(rowPath);
+                    var obj = {};
+                    if (row_binded.batchID) {
+                        obj.batchID = row_binded.batchID;
+                    } else {
+                        obj.batchID = "";
+                    }
+                    obj.formatoProduttivo = formatoSKU.getValue();
+                    obj.tipologia = this.confezione;
+                    obj.grammatura = this.grammatura;
+                    obj.destinazione = clienteSKU.getValue();
+                    obj.pianodiconfezionamento = this.pdcID;
+                    obj.lineaId = this.linea_id;
+                    obj.sequenza = row_binded.sequenza;
+                    obj.quintali = "";
+                    obj.cartoni = "";
+                    obj.ore = "";
+                    obj.SKUCodiceInterno = "";
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboAttributiParametri&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSComboParametri.bind(this));
+                } else {
+                    MessageToast.show("Selezionare prima tutti i parametri.", {duration: 3000});
+                }
+            }
+        },
+        SUCCESSComboParametri: function (Jdata) {
+            var rowPath = this.row.getBindingContext("linea").sPath;
+            var row_binded = this.ModelLinea.getProperty(rowPath);
+            row_binded.batchID = Jdata.batchId;
+            this.ModelParametri.setData(Jdata.segmentoBatch);
+            this.getView().setModel(this.ModelParametri, "ModelParametri");
+        },
         ChangeSKU: function () {
             var array_confezione;
             if (this.ISLOCAL !== 1) {
@@ -1037,13 +1079,9 @@ sap.ui.define([
             selectBox.destroyItems();
             selectBox.setValue("");
             var destinazione = this.getView().byId("cliente_SKU");
-            var SKU = this.getView().byId("SKU");
             destinazione.destroyItems();
             destinazione.setValue("");
             destinazione.setEnabled(false);
-            SKU.destroyItems();
-            SKU.setValue("");
-            SKU.setEnabled(false);
         },
         CaricaDestinazioni: function () {
             var link;
@@ -1119,6 +1157,49 @@ sap.ui.define([
                 this.STOP = 0;
                 this.RefreshCall();
                 this.oDialog.destroy();
+            }
+        },
+//      FUNZIONI PER TREETABLE
+        CollapseAll: function (event) {
+            var View = this.getView().byId(event.getSource().data("mydata"));
+            View.collapseAll();
+        },
+        ExpandAll: function (event) {
+            var View = this.getView().byId(event.getSource().data("mydata"));
+            View.expandToLevel(20);
+        },
+        ShowRelevant: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = this.getView().byId(TT);
+            }
+            View.expandToLevel(20);
+            setTimeout(jQuery.proxy(this.CollapseNotRelevant, this, [View]), 50);
+        },
+        CollapseNotRelevant: function (Views) {
+            var total, temp;
+            for (var i = 0; i < Views.length; i++) {
+                total = Views[i]._iBindingLength;
+                for (var j = total - 1; j >= 0; j--) {
+                    temp = Views[i].getContextByIndex(j).getObject();
+                    if (temp.expand === 0) {
+                        Views[i].collapse(j);
+                    }
+                }
+            }
+        },
+        TreeTableRowClickExpander: function (event) {
+            var View = this.getView().byId(event.getSource().data("mydata"));
+            var clicked_row = event.getParameters().rowIndex;
+            var clicked_column = event.getParameters().columnIndex;
+            if (clicked_column === "0") {
+                if (!View.isExpanded(clicked_row)) {
+                    View.expand(clicked_row);
+                } else {
+                    View.collapse(clicked_row);
+                }
             }
         },
 
