@@ -4,26 +4,60 @@ sap.ui.define([
     'myapp/controller/Library'
 ], function (Controller, JSONModel, Library) {
     "use strict";
-
     return Controller.extend("myapp.controller.RiepilogoLinee", {
         ModelLinee: new JSONModel(),
         ModelElencoLinee: new JSONModel(),
         ModelSinotticoLinea: new JSONModel(),
+//        FUNZIONI D'INIZIALIZZAZIONE        
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("RiepilogoLinee").attachPatternMatched(this.URLChangeCheck, this);
         },
-        URLChangeCheck: function (oEvent) {
-            var that = this;
-            Library.AjaxCallerData("model/linee_riepilogo.json", function (Jdata) {
-                that.ModelLinee.setData(Jdata);
-                that.LineButtonStyle("PastaCorta");
-                that.LineButtonStyle("PastaLunga");
-                Jdata = that.BarColorCT(Jdata, "PastaLunga");
-                that.ModelLinee.setData(Jdata);
-            });
+        URLChangeCheck: function (event) {
+            Library.AjaxCallerData("model/linee_riepilogo.json", this.SUCCESSModelLinee.bind(this));
             this.getView().setModel(this.ModelLinee, "linee");
         },
+        SUCCESSModelLinee: function (Jdata) {
+            this.ModelLinee.setData(Jdata);
+            this.LineButtonStyle("PastaCorta");
+            this.LineButtonStyle("PastaLunga");
+            Jdata = this.BarColorCT(Jdata, "PastaLunga");
+            Jdata = this.BarColorCT(Jdata, "PastaCorta");
+            this.ModelLinee.setData(Jdata);
+        },
+
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        
+//        >>>>>>>> FUNZIONI CHIAMATE AL CLICK <<<<<<<<
+//        
+//        ************************ INTESTAZIONE ************************
+//              
+        GoToHome: function () {
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("main", true);
+        },
+        GoToSinotticoLinea: function (oEvent) {
+            var oLinea = oEvent.getSource().getBindingContext("linee").sPath;
+            var lineaID = this.getView().getModel("linee").getProperty(oLinea).lineaID;
+            var oModel = new JSONModel({lineaID: lineaID});
+            sap.ui.getCore().setModel(oModel, "LineaCliccata");
+            Library.AjaxCallerData("model/elencolinee.json", this.SUCCESSElencoLinee.bind(this));
+            sap.ui.getCore().setModel(this.ModelElencoLinee, "elencolinee");
+// NEL BACKEND PASSERO' COME PARAMETRO LA VARIABLE OLINEA
+            Library.AjaxCallerData("model/sinotticodilinea.json", this.SUCCESSLineaSinottico.bind(this));
+            sap.ui.getCore().setModel(this.ModelSinotticoLinea, "sinotticodilinea");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("sinotticoLinea");
+        },
+        SUCCESSElencoLinee: function (Jdata) {
+            this.ModelElencoLinee.setData(Jdata);
+        },
+        SUCCESSLineaSinottico: function (Jdata) {
+            this.ModelSinotticoLinea.setData(Jdata);
+        },
+//      GESTIONE STILE PULSANTE LINEA        
         LineButtonStyle: function (nome_table) {
             var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
             var data = this.ModelLinee.getData();
@@ -62,6 +96,7 @@ sap.ui.define([
                 }
             }
         },
+//      GESTIONE STILE PROGRESS INDICATOR        
         BarColorCT: function (data, nome_table) {
             var progressBar;
             if (data.linee[nome_table].length > 0) {
@@ -89,40 +124,7 @@ sap.ui.define([
                 }
             }
             return data;
-        },
-        GoToHome: function () {
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("main", true);
-        },
-        GoToSinotticoLinea: function (oEvent) {
-            var oLinea = oEvent.getSource().getBindingContext("linee").sPath;
-            var lineaID = this.getView().getModel("linee").getProperty(oLinea).lineaID;
-            var oModel = new JSONModel({lineaID: lineaID});
-            sap.ui.getCore().setModel(oModel, "LineaCliccata");
-
-            Library.AjaxCallerData("model/elencolinee.json", this.SUCCESSElencoLinee.bind(this));
-            sap.ui.getCore().setModel(this.ModelElencoLinee, "elencolinee");
-
-// NEL BACKEND PASSERO' COME PARAMETRO LA VARIABLE OLINEA
-            Library.AjaxCallerData("model/sinotticodilinea.json", this.SUCCESSLineaSinottico.bind(this));
-            sap.ui.getCore().setModel(this.ModelSinotticoLinea, "sinotticodilinea");
-
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("sinotticoLinea");
-
-
-
-        },
-        SUCCESSElencoLinee: function (Jdata) {
-            this.ModelElencoLinee.setData(Jdata);
-        },
-        SUCCESSLineaSinottico: function (Jdata) {
-            this.ModelSinotticoLinea.setData(Jdata);
         }
-
-
-
-
 
     });
 });

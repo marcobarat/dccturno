@@ -38,95 +38,49 @@
                                                                     <Button
                                                                         width="100%"
                                                                         text="{linee>linea}"
-                                                                        class="sapMBtnLinea"
+                                                                        class="sapMBtnLinea lessOmbra"
                                                                         press="GoToSinotticoLinea">
                                                                     </Button>
                                                                 </VBox>
                                                                 <VBox width="55%" class="BorderRight">
                                                                     <ProgressIndicator
-                                                                                class="LineeMPI"
-                                                                                width="100%"
-                                                                                displayValue="{linee>oreRimanenti}"
-                                                                                percentValue="{= Number(${linee>avanzamento})}"
-                                                                                showValue="true"
-                                                                                barColor="{linee>barColor}">
+                                                                        class="LineeMPI"
+                                                                        width="100%"
+                                                                        displayValue="{linee>oreRimanenti}"
+                                                                        percentValue="{= Number(${linee>avanzamento})}"
+                                                                        showValue="true"
+                                                                        barColor="{linee>barColor}">
                                                                     </ProgressIndicator>
                                                                 </VBox>
                                                                 <VBox width="15%">
-                                                                        <Button width="100%"
+                                                                    <Button width="100%"
                                                                                 height= "100%"
                                                                                 icon="img/triangoloprova.png"
                                                                                 text="4"
                                                                                 press="onPress"
                                                                                 ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                                                                class="sapMBtnLinea"
-                                                                        >
-                                                                        </Button>
-                                                                </VBox>
-                                                            </HBox>
-                                                            <HBox height="40%" width="100%">
-                                                                    <VBox width="15%" class="paddingVBox textVBox BorderRight"> 
-                                                                        <Text text="{linee>disponibilita}"/>
-                                                                    </VBox>
-                                                                    <VBox width="15%" class="paddingVBox textVBox">
-                                                                        <Text text="{linee>efficienza}"/>
-                                                                    </VBox>
-                                                            </HBox>
-<!--                                                            <VBox width="30%" height="100%">
-                                                                <VBox height="30%" width="100%" class="RiepilogoLineaElement">
-                                                                    <Button
-                                                                        text="{linee>linea}"
-                                                                        class="noFocus sapMBtnLinea"
-                                                                        press="GoToSinotticoLinea">
-                                                                
+                                                                                class="sapMBtnLinea monoButtonSPCLinea"
+                                                                    >
                                                                     </Button>
                                                                 </VBox>
-                                                                <HBox height="" class="BorderLeftBottomRight">
-                                                                    <VBox width="50%" class="paddingVBox textVBox BorderRight"> 
-                                                                        <Text text="{linee>disponibilita}"/>
-                                                                    </VBox>
-                                                                    <VBox width="50%" class="paddingVBox textVBox">
-                                                                        <Text text="{linee>efficienza}"/>
-                                                                    </VBox>
-                                                                </HBox>
-                                                            </VBox>
-                                                            <VBox width="70%" height="100%">
-                                                                <HBox height="30%" width="100%">
-                                                                    <VBox width="80%" class="BorderBottomRightTop" renderType="Bare">
-                                                                        <items>
-                                                                            <ProgressIndicator
-                                                                                class="LineeMPI"
-                                                                                width="100%"
-                                                                                displayValue="{linee>oreRimanenti}"
-                                                                                percentValue="{= Number(${linee>avanzamento})}"
-                                                                            >
-                                                                            </ProgressIndicator>
-                                                                        </items>
-                                                                    </VBox>
-                                                                    <VBox  width="20%">
-                                                                        <Button width="100%"
-                                                                                height= "100%"
-                                                                                icon="img/triangoloprova.png"
-                                                                                text="4"
-                                                                                press="onPress"
-                                                                                ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                                                                class="sapMBtnLinea"
-                                                                        >
-                                                                        </Button>
-                                                                    </VBox>
-                                                                </HBox>
-                                                                <HBox height="">
-                                                                    <VBox width="20%" height="100%" class="BorderBottomRight paddingVBox textVBox">
-                                                                        <Text text="{linee>cniconf}"/>
-                                                                    </VBox>
-                                                                    <VBox width="60%" class="BorderBottomRight paddingVBox textVBox">
-                                                                        <Text text="{linee>batchLavorazione}"/>
-                                                                    </VBox>
-                                                                    <VBox width="20%" class="BorderBottomRight paddingVBox textVBox">
-                                                                        <Text text="{linee>cniresidui}"></Text>
-                                                                    </VBox>
-                                                                </HBox>
-                                                            </VBox> -->
+                                                            </HBox>
+                                                            <HBox height="40%" width="100%" class="BorderLeftBottomRight">
+                                                                <VBox width="15%" class="paddingVBox textVBox BorderRight"> 
+                                                                    <Text text="{linee>disponibilita}"/>
+                                                                </VBox>
+                                                                <VBox width="15%" class="paddingVBox textVBox BorderRight">
+                                                                    <Text text="{linee>efficienza}"/>
+                                                                </VBox>
+                                                                <VBox width="15%" height="100%" class="paddingVBox textVBox BorderRight">
+                                                                    <Text text="{linee>cniconf}"/>
+                                                                </VBox>
+                                                                <VBox width="40%" class="paddingVBox textVBox BorderRight">
+                                                                    <Text text="{linee>batchLavorazione}"/>
+                                                                </VBox>
+                                                                <VBox width="15%" class="paddingVBox textVBox">
+                                                                    <Text text="{linee>cniresidui}"></Text>
+                                                                </VBox>
+                                                            </HBox>
                                                         </VBox>
                                                     </cells>
                                                 </ColumnListItem>
@@ -134,72 +88,63 @@
                                         </Table>
                                     </VBox>
                                     <VBox width="50%">
-                                        <Table items="{linee>/linee/PastaCorta}" width="100%" id="PastaCorta">
+                                        <Table items="{linee>/linee/PastaCorta}" id="PastaCorta" width="100%">
                                             <columns>
                                                 <Column/>
                                             </columns>
                                             <items>
                                                 <ColumnListItem class="noDelimitator">
                                                     <cells>
-                                                        <HBox class="sapUiTinyMargin RiepilogoLineaElement">
-                                                            <VBox width="30%" height="100%">
-                                                                <VBox height="30%" width="100%" >
-                                                                    <Button 
-                                                                        height="100%"
-                                                                        class="noFocus sapMBtnLinea"
+                                                        <VBox class="sapUiTinyMargin">
+                                                            <HBox width="100%" height="44px" class="RiepilogoLineaElement">
+                                                                <VBox width="30%" height="100%" class="BorderRight">
+                                                                    <Button
+                                                                        width="100%"
                                                                         text="{linee>linea}"
+                                                                        class="sapMBtnLinea lessOmbra"
                                                                         press="GoToSinotticoLinea">
-                                                                
                                                                     </Button>
                                                                 </VBox>
-                                                                <HBox height="">
-                                                                    <VBox width="50%" class="BorderTopRight paddingVBox textVBox"> 
-                                                                        <Text text="{linee>disponibilita}"/>
-                                                                    </VBox>
-                                                                    <VBox width="50%" class="BorderTop paddingVBox textVBox">
-                                                                        <Text text="{linee>efficienza}"/>
-                                                                    </VBox>
-                                                                </HBox>
-                                                            </VBox>
-                                                            <VBox width="70%" height="100%">
-                                                                <HBox height="30%" width="100%">
-                                                                    <VBox height="30%" width="80%">
-                                                                        <ProgressIndicator
-                                                                            class="LineeMPI"
-                                                                            width="100%"
-                                                                            displayValue="{linee>oreRimanenti}"
-                                                                            percentValue="{= Number(${linee>avanzamento})}"
-                                                                            barColor="{linee>barColor}"
-                                                                        >
-                                                                        </ProgressIndicator>
-                                                                    </VBox>
-                                                                    <VBox  width="20%">
-                                                                        <cus:CustomButt width="100%"
-                                                                                        height="100%"
-                                                                                        icon="img/triangoloprova.png"
-                                                                                        text="4"
-                                                                                        press="onPress"
-                                                                                        ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                                                                        customType="graficoSPC"
-                                                                                        state="1"
-                                                                                        class="sapMBtnLinea"
-                                                                        >
-                                                                        </cus:CustomButt>
-                                                                    </VBox>
-                                                                </HBox>
-                                                                <HBox height="70%">
-                                                                    <VBox width="20%" height="100%" class="BorderLeftTopRight paddingVBox textVBox">
-                                                                        <Text text="{linee>cniconf}"/>
-                                                                    </VBox>
-                                                                    <VBox width="60%" class="BorderTopRight paddingVBox textVBox">
-                                                                        <Text text="{linee>batchLavorazione}"/>
-                                                                    </VBox>
-                                                                    <VBox width="20%" class="BorderTop paddingVBox textVBox">
-                                                                        <Text text="{linee>cniresidui}"></Text>
-                                                                    </VBox>
-                                                                </HBox>
-                                                            </VBox> 
-                                                        </HBox>
+                                                                <VBox width="55%" class="BorderRight">
+                                                                    <ProgressIndicator
+                                                                        class="LineeMPI"
+                                                                        width="100%"
+                                                                        displayValue="{linee>oreRimanenti}"
+                                                                        percentValue="{= Number(${linee>avanzamento})}"
+                                                                        showValue="true"
+                                                                        barColor="{linee>barColor}">
+                                                                    </ProgressIndicator>
+                                                                </VBox>
+                                                                <VBox width="15%">
+                                                                    <Button width="100%"
+                                                                                height= "100%"
+                                                                                icon="img/triangoloprova.png"
+                                                                                text="4"
+                                                                                press="onPress"
+                                                                                ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                                                                class="sapMBtnLinea monoButtonSPCLinea"
+                                                                    >
+                                                                    </Button>
+                                                                </VBox>
+                                                            </HBox>
+                                                            <HBox height="40%" width="100%" class="BorderLeftBottomRight">
+                                                                <VBox width="15%" class="paddingVBox textVBox BorderRight"> 
+                                                                    <Text text="{linee>disponibilita}"/>
+                                                                </VBox>
+                                                                <VBox width="15%" class="paddingVBox textVBox BorderRight">
+                                                                    <Text text="{linee>efficienza}"/>
+                                                                </VBox>
+                                                                <VBox width="15%" height="100%" class="paddingVBox textVBox BorderRight">
+                                                                    <Text text="{linee>cniconf}"/>
+                                                                </VBox>
+                                                                <VBox width="40%" class="paddingVBox textVBox BorderRight">
+                                                                    <Text text="{linee>batchLavorazione}"/>
+                                                                </VBox>
+                                                                <VBox width="15%" class="paddingVBox textVBox">
+                                                                    <Text text="{linee>cniresidui}"></Text>
+                                                                </VBox>
+                                                            </HBox>
+                                                        </VBox>
                                                     </cells>
                                                 </ColumnListItem>
                                             </items>

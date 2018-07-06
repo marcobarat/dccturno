@@ -364,7 +364,7 @@ sap.ui.define([
             }
         },
         ResetConfezionamenti: function (event) {
-            this.showUpdateButton(event);
+            this.ShowUpdateButton(event);
             var oRow = event.getSource().getParent();
             var selectBox = oRow.getCells()[2];
             selectBox.destroyItems();
@@ -415,7 +415,7 @@ sap.ui.define([
             }
         },
         LoadDestinazione: function (event) {
-            this.showUpdateButton(event);
+            this.ShowUpdateButton(event);
             var that = this;
             var PathLinea = event.getSource().getParent().getParent().getBindingContext("linea").sPath;
             this.linea_id = this.getView().getModel("linea").getProperty(PathLinea).lineaID;
@@ -550,7 +550,7 @@ sap.ui.define([
         },
 //              - INPUT QLI, CARTONI E ORE
         ChangeValues: function (event) {
-            this.showUpdateButton(event);
+            this.ShowUpdateButton(event);
             var row_path = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(row_path);
             this.pezzi_cartone = row_binded.pezziCartone;

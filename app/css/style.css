@@ -662,8 +662,25 @@
     border-right: 2px solid #003A6B;
 }
 
-.monobuttonSPCBordoBluL .sapMBtnInner {
-    border-left: 2px solid #003A6B;
+.monoButtonSPCLinea .sapMBtnInner {
+    border: 0px;
+    border-radius: 0px; 
+}
+
+.monoButtonSPCLinea .sapMBtnIcon {
+    position: absolute;
+    left: 30%;
+    max-width: 3.5rem;
+    max-height: 3.5rem;
+    width: 2.4rem;
+    height: 2.5rem;
+}
+
+.monoButtonSPCLinea .sapMBtnContent {
+    position: absolute;
+    left: 40%;
+    top: 15%;
+    background-color: transparent !important;
 }
 
 .sapMBtnLinea.sapMBtnBase {
@@ -675,6 +692,7 @@
 .sapMBtnLinea .sapMBtnText .sapMBtnContent {
     line-height: 1.8rem; 
 }
+
 /* STILE DEL RIEPILOGO LINEE */ 
 
 .RiepilogoLineaElement{
@@ -691,6 +709,7 @@
 }
 .BorderRight {
     border-right: 2px solid #003A6B; 
+    min-height: 23px; 
 }
 
 .BorderLeftBottomRight {
