@@ -151,6 +151,34 @@
                                                                                     <Text/>
                                                                                 </Column>
                                                                             </columns>
+                                                                            <items>
+                                                                                <ColumnListItem class="noDelimitator sapMListTblCell_b" height="90%">
+                                                                                    <cells>
+                                                                                        <Input textAlign="Center" value="{linea>sequenza}" liveChange="ShowUpdateButton" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"  enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <ComboBox value="{linea>confezioneCodiceInterno}" loadItems="CaricaConfezionamenti" selectionChange="LoadDestinazione" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <Button width="90%" text="{linea>destinazione}" press="ShowBatchDetails" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <TimePicker class="TimesapMInputBase" value="{linea>ore}" maskMode="Off" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                        <VBox height="100%" width="100%">
+                                                                                            <HBox height="100%" width="100%">
+                                                                                                <VBox height="100%" width="100%">
+                                                                                                    <Button icon="sap-icon://action-settings" press="BatchSettings" width="100%" visible="{= ${linea>modifyBatch} === 1 ? false : true}"/>
+                                                                                                    <HBox>
+                                                                                                        <VBox height="100%" width="50%">
+                                                                                                            <Button icon="sap-icon://accept" class="StileV" press="InsertNewBatch" width="50%" visible="{= ${linea>modifyBatch} === 1 ? true : false}"/>
+                                                                                                        </VBox>
+                                                                                                        <VBox height="100%" width="50%">
+                                                                                                            <Button icon="sap-icon://decline" class="StileX" press="UndoBatchCreation" width="50%" visible="{= ${linea>modifyBatch} === 1 ? true : false}"/>
+                                                                                                        </VBox>
+                                                                                                    </HBox>
+                                                                                                </VBox>
+                                                                                            </HBox>
+                                                                                        </VBox>
+                                                                                    </cells>
+                                                                                </ColumnListItem>
+                                                                            </items>                                                                                                                                
                                                                         </Table>
                                                                         <ScrollContainer vertical='true' height="155px" class="scrollingbar">
                                                                             <Table class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" 
