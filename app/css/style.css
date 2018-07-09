@@ -1012,6 +1012,24 @@
     padding: 2.5%;
     height: 100%;
 }
+.annullaButton .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #A71930;
+    color: white;
+    border-radius: 10px;
+    padding: 1.5%;
+    height: 150%;
+}
+.confermaButton .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #7CA295;
+    color: white;
+    border-radius: 10px;
+    padding: 1.5%;
+    height: 150%;
+}
 .TTButton .sapMBtnInner {
     font-size: 15pt;
     font-family: Arial;
@@ -1019,4 +1037,7 @@
     background: #FFD300;
     width: 10em;
     border-radius: 10px;
+}
+.NoBorder {
+    border: none;
 }

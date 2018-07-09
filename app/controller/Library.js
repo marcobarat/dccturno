@@ -156,6 +156,20 @@ sap.ui.define([
             }
             return bck;
         },
+        RecursiveLinkRemoval: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveLinkRemoval(json[key]);
+                } else {
+                    if (key === "expand") {
+                        if (json[key] === 3) {
+                            json[key] = 0;
+                        }
+                    }
+                }
+            }
+            return json;
+        },
         RecursiveParentExpansion: function (json) {
             for (var key in json) {
                 if (typeof json[key] === "object") {
@@ -168,6 +182,40 @@ sap.ui.define([
                 }
             }
             return json;
+        },
+        RecursiveModifyExpansion: function (json) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursiveModifyExpansion(json[key]);
+                } else {
+                    if (key === "modify" || key === "code") {
+                        if (json[key] === 1) {
+                            json.expand = 1;
+                        }
+                    }
+                }
+            }
+            return json;
+        },
+        RecursivePropertyAdder: function (json, prop_name) {
+            for (var key in json) {
+                if (typeof json[key] === "object") {
+                    json[key] = this.RecursivePropertyAdder(json[key], prop_name);
+                } else {
+                    json[prop_name] = "";
+                }
+            }
+            return json;
+        },
+        RecursivePropertyCopy: function (data, P1, P2) {
+            for (var key in data) {
+                if (typeof data[key] === "object") {
+                    data[key] = this.RecursivePropertyCopy(data[key], P1, P2);
+                } else {
+                    data[P1] = data[P2];
+                }
+            }
+            return data;
         },
         RecursiveJSONTimeConversion: function (json) {
             for (var key in json) {
@@ -194,6 +242,35 @@ sap.ui.define([
                 }
             }
             return json;
+        },
+        RecursiveJSONChangesFinder: function (setup) {
+            var temp = {};
+            for (var key in setup) {
+                if (typeof setup[key] === "object") {
+                    setup[key] = this.RecursiveJSONChangesFinder(setup[key]);
+                } else {
+                    if (typeof setup.code !== "undefined") {
+                        if (setup.code === 1 || setup.modify === 1) {
+                            if (setup.code === 1) {
+                                if (setup.codePlaceholder === "Lotto") {
+                                    temp.Type = "l";
+                                } else if (setup.codePlaceholder === "Matricola") {
+                                    temp.Type = "m";
+                                }
+                            } else if (setup.modify === 1) {
+                                temp.Type = "v";
+                            }
+                            temp.IDParametro = setup.IDParametro;
+                            temp.ValueML = setup.codeValue;
+                            temp.Value = setup.value;
+                            if (temp !== this.dataXML[this.dataXML.length - 1]) {
+                                this.dataXML.push(temp);
+                            }
+                        }
+                    }
+                }
+            }
+            return setup;
         },
 //CREAZIONE DEI FILE XML PER LA PARTE DI BACKEND
         createXMLFermo: function (obj) {
@@ -240,7 +317,43 @@ sap.ui.define([
                     '<grammatura>' + obj.grammatura + '</grammatura>' +
                     '<tipologia>' + obj.tipologia + '</tipologia>';
             return top + parameters + bottom;
+        },
+        XMLSetupUpdates: function (setup, idLinea, idSKU) {
+            var heading = "<Parameters>" +
+                    "<LineaID>" + idLinea + "</LineaID>" +
+                    "<SKUID>" + idSKU + "</SKUID>" +
+                    "<ParameterList>";
+            var bottom = "</ParameterList>" +
+                    "</Parameters>";
+            this.dataXML = [];
+            setup = this.RecursiveJSONChangesFinder(setup);
+            var body = "";
+            for (var i in this.dataXML) {
+                body += "<Parameter>";
+                for (var key in this.dataXML[i]) {
+                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
+                }
+                body += "</Parameter>";
+            }
+            return (heading + body + bottom);
+        },
+        XMLSetupUpdatesCT: function (setup, idBatch) {
+            var heading = "<Parameters>" +
+                    "<BatchID>" + idBatch + "</BatchID>" +
+                    "<ParameterList>";
+            var bottom = "</ParameterList>" +
+                    "</Parameters>";
+            this.dataXML = [];
+            setup = this.RecursiveJSONChangesFinder(setup);
+            var body = "";
+            for (var i in this.dataXML) {
+                body += "<Parameter>";
+                for (var key in this.dataXML[i]) {
+                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
+                }
+                body += "</Parameter>";
+            }
+            return (heading + body + bottom);
         }
-
     };
 });
