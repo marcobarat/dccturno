@@ -8,22 +8,47 @@ sap.ui.define([
         ModelLinee: new JSONModel(),
         ModelElencoLinee: new JSONModel(),
         ModelSinotticoLinea: new JSONModel(),
-//        FUNZIONI D'INIZIALIZZAZIONE        
+        STOP: null,
+        ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
+//  FUNZIONI D'INIZIALIZZAZIONE        
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("RiepilogoLinee").attachPatternMatched(this.URLChangeCheck, this);
         },
-        URLChangeCheck: function (event) {
-            Library.AjaxCallerData("model/linee_riepilogo.json", this.SUCCESSModelLinee.bind(this));
+        URLChangeCheck: function () {
+            this.STOP = 0;
+            this.ModelLinee = sap.ui.getCore().getModel("linee");
             this.getView().setModel(this.ModelLinee, "linee");
-        },
-        SUCCESSModelLinee: function (Jdata) {
-            this.ModelLinee.setData(Jdata);
             this.LineButtonStyle("PastaCorta");
             this.LineButtonStyle("PastaLunga");
-            Jdata = this.BarColorCT(Jdata, "PastaLunga");
-            Jdata = this.BarColorCT(Jdata, "PastaCorta");
-            this.ModelLinee.setData(Jdata);
+            this.BarColorCT(this.ModelLinee.getData(), "PastaLunga");
+            this.BarColorCT(this.ModelLinee.getData(), "PastaCorta");
+            this.RefreshFunction(10000);
+        },
+//  FUNZIONI DI REFRESH
+        RefreshFunction: function (msec) {
+            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
+        },
+        RefreshCall: function () {
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/linee_riepilogo.json";
+            } else {
+
+            }
+            Library.SyncAjaxCallerData(link, this.RefreshModelLinee.bind(this));
+        },
+        RefreshModelLinee: function (Jdata) {
+            if (this.STOP === 0) {
+                this.ModelLinee.setData(Jdata);
+                this.ModelLinee.refresh(true);
+                this.getView().setModel(this.ModelLinee, "linee");
+                this.LineButtonStyle("PastaCorta");
+                this.LineButtonStyle("PastaLunga");
+                this.BarColorCT(this.ModelLinee.getData(), "PastaLunga");
+                this.BarColorCT(this.ModelLinee.getData(), "PastaCorta");
+                this.RefreshFunction(10000);
+            }
         },
 
 //        -------------------------------------------------
@@ -35,17 +60,19 @@ sap.ui.define([
 //        ************************ INTESTAZIONE ************************
 //              
         GoToHome: function () {
+            this.STOP = 1;
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("main", true);
         },
+//        ************************ BOTTONE DI LINEA ************************        
         GoToSinotticoLinea: function (oEvent) {
+            this.STOP = 1;
             var oLinea = oEvent.getSource().getBindingContext("linee").sPath;
             var lineaID = this.getView().getModel("linee").getProperty(oLinea).lineaID;
             var oModel = new JSONModel({lineaID: lineaID});
             sap.ui.getCore().setModel(oModel, "LineaCliccata");
             Library.AjaxCallerData("model/elencolinee.json", this.SUCCESSElencoLinee.bind(this));
             sap.ui.getCore().setModel(this.ModelElencoLinee, "elencolinee");
-// NEL BACKEND PASSERO' COME PARAMETRO LA VARIABLE OLINEA
             Library.AjaxCallerData("model/sinotticodilinea.json", this.SUCCESSLineaSinottico.bind(this));
             sap.ui.getCore().setModel(this.ModelSinotticoLinea, "sinotticodilinea");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -57,7 +84,13 @@ sap.ui.define([
         SUCCESSLineaSinottico: function (Jdata) {
             this.ModelSinotticoLinea.setData(Jdata);
         },
-//      GESTIONE STILE PULSANTE LINEA        
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        
+//        >>>>>>>> GESTIONE STILE <<<<<<<<
+//  
+//        ************************ GESTIONE STILE PULSANTE DI LINEA ************************    
         LineButtonStyle: function (nome_table) {
             var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
             var data = this.ModelLinee.getData();
@@ -96,7 +129,7 @@ sap.ui.define([
                 }
             }
         },
-//      GESTIONE STILE PROGRESS INDICATOR        
+//        ************************ GESTIONE STILE PROGRESS INDICATOR ************************     
         BarColorCT: function (data, nome_table) {
             var progressBar;
             if (data.linee[nome_table].length > 0) {
