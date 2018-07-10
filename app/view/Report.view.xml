@@ -61,7 +61,7 @@
                                             <Text text="{ReportOEE>Descrizione}"/>
                                         </t:template>                    
                                     </t:Column>
-                                    <t:Column class="reportHeaderCell" resizable="false">
+                                    <t:Column resizable="false">
                                         <Label text="OEE" textAlign="Center"/>
                                         <t:template>
                                             <wt:TextHierarchyTable text="{ReportOEE>OEE}" red="{ReportOEE>red/OEE}" hierarchy="{ReportOEE>hierarchy}"/>

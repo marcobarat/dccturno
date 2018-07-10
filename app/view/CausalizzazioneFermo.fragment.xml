@@ -23,7 +23,7 @@
         <VBox id="vbox_table" height="40%">
             <TextArea id="NoFermiDaCausalizzare" width="100%" value="Non esistono fermi automatici da causalizzare" textAlign="Center" editable="false" visible="false"></TextArea>
             <Table
-                class="mysapMTable"
+                class="totaliTable"
                 id="TotaleTable">
                 <columns>
                     <Column width="30%" hAlign="Center">
@@ -38,7 +38,7 @@
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem class="mysapMListTblCell mysapMText mysapMCb">
+                    <ColumnListItem class="paddingTotaliCelle TotaliText TotaliCB">
                         <cells>
                             <Text textAlign="Center" text="Totale Complessivo"/>
                             <Text text="{guastilinea>/Totale/tempoGuastoTotale}"/>

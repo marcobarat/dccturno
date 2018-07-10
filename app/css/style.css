@@ -173,10 +173,189 @@
 .noOpacity.sapMInputBaseDisabled {
     opacity: 1;
 }
+/*CSS NEI DIALOG DI CAUSALIZZAZIONE DI FERMI AUTOMATICI */
+.totaliTable {
+    border-top : 1px solid #dddddd;
+    border-right : 1px solid #dddddd;
+}
+
+.paddingTotaliCelle .sapMListTblCell {
+    padding-left:0.5rem;
+}
+
+.TotaliText .sapMText {
+    padding-top: 0.75rem;
+}
+.TotaliCB .sapMCb {
+    left: 0.375rem;
+}
+
+.CBTotaleCausaCustom {
+    padding: 0 0 0 3.7rem;
+}
+
+.alternate-color .sapUiTableRowOdd {
+    background-color: #efeff5;
+}
+
+.alternate-color .sapUiTableRowOdd input {
+    color: #fff;
+}
+
+.alternate-color .sapUiTableRowOdd:hover td {
+    background-color: #efeff5 !important;
+}
+
+.alternate-color .sapUiTableRowOdd:hover  input {
+    color: #fff;
+}
+
+/* CSS NEL MODIFICA ATTRIBUTI */
+.TTButton .sapMBtnInner {
+    font-size: 15pt;
+    font-family: Arial;
+    color: #003A6B;
+    background: #FFD300;
+    width: 10em;
+    border-radius: 10px;
+}
+
+.diffStandard input {
+    color : red;
+}
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
+    /* VIEW REPORT */
+.noBorderRight .sapUiTableCol{
+    border-right: 0px !important;
+}
+.mysapUiTableCol.sapUiTableTd{
+    border-right: 0px !important;
+}
+.righeOverOut * {
+    background-color: white !important;
+}
+.Background0 * {
+    background-color: #d9d9d9 !important;
+}
+.Background1 * {
+    background-color: #e6e6e6 !important;
+}
+.Background2 * {
+    background-color: #f2f2f2 !important;
+}
+.Lv1 * {
+    padding-left: 5% !important;
+}
+.Lv2 * {
+    padding-left: 10% !important;
+}
+.Lv3 * {
+    padding-left: 30% !important;
+}
+.mysapMTB.sapMTB {
+    border-bottom: 0px;
+    background-color: #f7f7f7;
+    padding-bottom: 0px;
+}
+.mysapUiTableExt .sapUiTableExt {
+    border-bottom: 0px;
+}
+.reportSapLabel.sapMLabel {
+    font-size: 0.67rem !important;
+}
+.reportSapLabel.sapMLabel:hover{
+    cursor: default;
+}
+.sapLabelNoHover.sapMLabel{
+    background-color: #f7f7f7;
+}
+.mysapMTBar.sapMTB .sapMBarChild {
+    margin: 0px;
+}
+.mysapUiTableColCell .sapUiTableColCell {
+    text-align: center !important; 
+}
+.mysapUiTableTr .sapUiTableTr *{
+    border-bottom: 0px;
+}
+.handPointer *{
+    cursor: pointer;
+}    
+/*----------------------------------------
+----------------------------------------
+----------------------------------------*/
+    /* VIEW RIEPILOGO LINEE */
+.RiepilogoLineaElement{
+    border: 2px solid #003A6B; 
+}   
+.BorderRight {
+    border-right: 2px solid #003A6B; 
+    min-height: 23px; 
+}
+.sapMBtnLinea.sapMBtnBase {
+    height: 100%; 
+    padding: 0pt !important;
+    margin: 0pt !important;  
+}
+.sapMBtnLinea .sapMBtnText .sapMBtnContent {
+    line-height: 1.8rem; 
+}
+.LineeMPI.sapMPI {
+    position: relative;
+    border: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+.LineeMPI.sapMPI .sapMPIBar .sapMPIText {
+    color: #003A6B; 
+    background-color: transparent !important;
+    position: absolute !important;
+    right: 0px; 
+}
 
+.LineeMPI.sapMPI .sapMPIText {
+    color: #003A6B; 
+    background-color: transparent !important;
+    position: absolute !important;
+    right: 0px; 
+    padding-right: 0.5rem;
+}
+.monoButtonSPCLinea .sapMBtnInner {
+    border: 0px;
+    border-radius: 0px; 
+}
+
+.monoButtonSPCLinea .sapMBtnIcon {
+    position: absolute;
+    left: 30%;
+    max-width: 3.5rem;
+    max-height: 3.5rem;
+    width: 2.4rem;
+    height: 2.5rem;
+}
+
+.monoButtonSPCLinea .sapMBtnContent {
+    position: absolute;
+    left: 40%;
+    top: 15%;
+    background-color: transparent !important;
+}
+.BorderLeftBottomRight {
+    border-bottom: 2px solid #003A6B; 
+    border-left: 2px solid #003A6B; 
+    border-right: 2px solid #003A6B; 
+}
+.paddingVBox {
+    padding: 3px;
+}
+.textVBox .sapMFlexItem {
+    text-align: center; 
+}
+/*----------------------------------------
+----------------------------------------
+----------------------------------------*/
 /*CLASSI CONDIVISE DA PIU' VIEW*/
 /* NO FOCUS DEI PULSANTI*/
 .textTop {
@@ -403,425 +582,39 @@
 .BatchSchedulato .sapMBtnIcon {
     color: #003A6B;
 }
-
-
-.textNotEnabled {
-    opacity: 0.5;
-}
-
-
-/* BOTTONI */ 
-.sapMBtnDisabled {
-    opacity: 0.3 !important;
-}
-
-.lessOmbra .sapMBtnInner {
-    text-shadow: 0 0 0 #ffffff;
-}
-
-
-
-.tileLayout {
-    float: left;
-}
-.myButton
-{
-    background-color: red;
-}
-
-.middleImg {
-    text-align: center;
-}
-
-.diffStandard input {
-    color : red;
-}
-.borderb {
-    border-right: black solid 1px;
-}
-.verderde *
-{
-    background-image: none !important;
-    background-color: green !important;
-}
-.bianconco *
-{
-    background-image: none !important;
-    background-color: white !important;
-}
-.rossorso *
-{
-    background-image: none !important;
-    background-color: red !important;
-    color: white;
-}
-.neroreno .sapMBtnInner
-{
-    background: black;    
-}
-.giallogallo *
-{
-    background-image: none !important;
-    background-color: yellow !important;
-}
-.diffRed {
-    color : red;
-    font-weight: bold;
-}
-.fix_b {
-    margin-bottom: 0px;
-}
-.centrati * {
-    width: 100% !important;
-    height: 100% !important;
-    background-color: green !important;
-    margin: 0 auto !important;  
-}
-.largo {
-    width:100% !important;
-    margin-bottom: 0px !important;
-}
-.size2 {
-    font-size : 2.5rem;
-}
-.size3 {
-    font-size : 5rem;
-}
-.size5 {
-    font-size : 10rem;
-}
-.rosso {
-    background-color: red;
-    margin-top: 5%;
-    margin-bottom: 5%;
-    opacity:0.8;
-
-}
-.verde {
-    background-color: green !important;
-    opacity:0.5;
-
-}
-
-.diffLink * {
-    color : blue;
-    text-decoration: underline;
-    font-weight: bold;
-}
-.sfondoRed{
-    background-color: red;
-}
-.testo-grande *{
-    font-size: 150% !important;
-    text-align: center;
-    font-weight: bold;
-
-}
-.sapMStdTileTitle {
-    font-size: 200% !important;
-    text-align: center;
-    font-weight: bold;
-}
-.sapMStdTileTopRow{
-    height: 5rem !important;
-}
-
-
-
-.customTextFermo {
-    font-size: 15pt;
-    font-weight: bold;
-    text-align: center;
-}
-
-.mysapMTable {
-    border-top : 1px solid #dddddd;
-    border-right : 1px solid #dddddd;
-}
-
-.CBTotaleCausaCustom {
-    padding: 0 0 0 3.7rem;
-}
-
-
-
-
-
-/*CSS PER LA TREETABLE*/
-
-.noBorderRight .sapUiTableCol{
-    border-right: 0px !important;
-}
-
-.mysapUiTableCol.sapUiTableTd{
-    border-right: 0px !important;
-}
-
-.righeOverOut * {
-    background-color: white !important;
-}
-
-.Background0 * {
-    background-color: #d9d9d9 !important;
-}
-
-.Background1 * {
-    background-color: #e6e6e6 !important;
-}
-
-.Background2 * {
-    background-color: #f2f2f2 !important;
-}
-
-.Lv1 * {
-    padding-left: 5% !important;
-}
-
-.Lv2 * {
-    padding-left: 10% !important;
-}
-
-.Lv3 * {
-    padding-left: 30% !important;
-}
-
-.mysapMTB.sapMTB {
-    border-bottom: 0px;
-    background-color: #f7f7f7;
-    padding-bottom: 0px;
-}
-
-.mysapUiTableExt .sapUiTableExt {
-    border-bottom: 0px;
-}
-
-/*.headerReportBox {
-    border-right: 1px solid black; 
-}*/
-
-.reportSapLabel.sapMLabel {
-    font-size: 0.67rem !important;
-}
-
-.reportSapLabel.sapMLabel:hover{
-    cursor: default;
-}
-
-.sapLabelNoHover.sapMLabel{
-    background-color: #f7f7f7;
-}
-
-.mysapMTBar.sapMTB .sapMBarChild {
-    margin: 0px;
-    /*    border-right: 1px solid black;*/
-    /*    padding-bottom: 7px;
-        padding-top: 2px;*/
-}
-
-.mysapUiTableColCell .sapUiTableColCell {
-    text-align: center !important; 
-}
-
-.mysapUiTableTr .sapUiTableTr *{
-    border-bottom: 0px;
-}
-
-/*.mysapUiTableColCell:hover .sapUiTableColCell {
-    text-align: center !important; 
-}*/
-
-/*.myCursor:hover{
-    cursor: pointer; 
-}*/
-
-.handPointer *{
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-
-.borderButton .sapMBtnInner{
-    border: 1px solid #737373;
-}
-
-/*CSS NELLA CREAZIONE DEL TURNO*/
-
-.startLineaButtonOutside *{
-    background-image: none !important;
-    background-color: #d9d9d9 !important;
-    color: black;
-}
-
-
-.startLineaButtonVerde *
-{
-    background-image: none !important;
-    background-color: #7CA295 !important;
-    color: white !important;
-    /*    border: 1px solid green !important;*/
-}
-
-
-/* TABELLA GUASTI PER LINEA/GRUPPO */
-
+/*CSS PER LA TABELLA DI GESTIONE DEI FERMI */
 .alternateRowColors tbody tr:nth-child(even) {
-    background: #f5f5f5;
+    background: #efeff5;
 }
-
 .guastiFixedHeader .sapMListTblHeader{
     position: -webkit-sticky;
     top: 0;
 }
-
-
-
-.borderMiddleTable .sapMListTbl th {
-    border: solid 1px;
-    color: #003A6B;
+/* ICONTABBAR */
+.sapMITBFilterDefault{
+    color: #003A6B !important;
+}
+.sapMITBContent {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
-
-
-
-
-
-.blackBoxTable {
-    border: 2px solid black;
+.sapMITBText{
+    color: #003A6B !important;
 }
 
-.paddingTitle {
-    padding-top: 10px;
-    padding-bottom: 10px;
+.sapMITBSelected > .sapMITBContentArrow {
+    border-bottom-color: #003A6B !important;
 }
-
-/*GESTIONE DEL BUTTON LINEA*/
-
-.bordoLineaGreen .sapMBtnInner{
-    border: 3px solid #7CA295 !important;
+/* TEXT AREAS */
+.sapMTextArea > .sapMInputBaseReadonlyInner.sapMTextAreaInner{
+    border: 1px solid #003A6B !important;   
 }
-
-.bordoLineaGrey .sapMBtnText{
-    border: 3px solid #bfbfbf !important;
+/*TABELLA*/
+.sapMLIBShowSeparator > td {
+    border-top: 0px;
 }
-
-.internoLineaWhite .sapMBtnInner{
-    background: white ;
-    color: #003A6B; 
-}
-
-.internoLineaYellow .sapMBtnInner{
-    background: #FFD300 ;
-    color: #003A6B;
-}
-
-.internoLineaYellow:hover>.sapMBtnInner:hover{
-    background: #ffe14d ;
-    color: #003A6B;
-}
-
-.internoLineaGreen .sapMBtnInner{
-    background: #7CA295 ;
-    color: white;
-}
-
-.internoLineaGreen:hover>.sapMBtnInner:hover{
-    background: #55776b ;
-    color: white;
-}
-
-.internoLineaRed> .sapMBtnInner{
-    background: #A71930 ;
-    color: white;
-}
-
-.internoLineaRed:hover>.sapMBtnInner:hover{
-    background: #c81e3a ;
-    color: white;
-}
-
-.internoLineaBordeaux>.sapMBtnInner{
-    background: #5E3032 ;
-    color: white;
-}
-
-.internoLineaBordeaux:hover>.sapMBtnInner:hover{
-    background: #974e52 ;
-    color: white;
-}
-.RightVBox {
-    bottom: 0.4rem;
-}
-.SPCVBox {
-    width: 8% !important;
-    bottom: 0.1rem;
-    height: 3.2rem !important;
-}
-.styleVBoxLeftbottom {
-    bottom: 0rem;
-}
-.styleVBoxRightbottom {
-    bottom: 0.2rem;
-}
-
-.progressBarButtonEmpty * {
-    background-color: white !important;
-    background-image: none !important;
-    /*border: solid;*/
-}
-
-/*CSS MANAGEPIANO*/
-
-
-
-.bordoBlu3 {
-    border: 3px solid #003A6B;
-}
-
-.borderBoxRight {
-    border-right: 1.5px solid #003A6B;
-}
-
-/* CSS DELLA TAB CONTAINER */
-.customsapMTabStrip .sapMTabStrip {
-    width: 97.5%;
-    margin-left: 15px; 
-}
-
-
-
-
-/* CSS PER MONOBOTTONE e BIBOTTONE SPC  -COMMENTATI CI SONO I CASI IN CUI DECIDO DI CAMBIARE IL SETTAGGIO DELLE DIMENSIONI*/ 
-
-
-/*PROGRESS INDICATOR PER RIEPILOGO LINEE*/
-.LineeMPI.sapMPI {
-    position: relative;
-    border: 0px !important;
-    padding: 0px !important;
-    margin: 0px !important;
-}
-
-.LineeMPI.sapMPI .sapMPIBar .sapMPIText {
-    color: #003A6B; 
-    background-color: transparent !important;
-    position: absolute !important;
-    right: 0px; 
-}
-
-.LineeMPI.sapMPI .sapMPIText {
-    color: #003A6B; 
-    background-color: transparent !important;
-    position: absolute !important;
-    right: 0px; 
-    padding-right: 0.5rem;
-}
+/* PROGRESS INDICATOR COLOR OVERWRITE */
 .sapMPIBarPositive {
     background: #7CA295;
     border-right: 2px solid #003A6B;
@@ -839,157 +632,89 @@
     border-right: 2px solid #003A6B;
 }
 
-.monoButtonSPCLinea .sapMBtnInner {
-    border: 0px;
-    border-radius: 0px; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*DA CONTROLLARE*/
+.lessOmbra .sapMBtnInner {
+    text-shadow: 0 0 0 #ffffff;
 }
-
-.monoButtonSPCLinea .sapMBtnIcon {
-    position: absolute;
-    left: 30%;
-    max-width: 3.5rem;
-    max-height: 3.5rem;
-    width: 2.4rem;
-    height: 2.5rem;
+.tileLayout {
+    float: left;
 }
-
-.monoButtonSPCLinea .sapMBtnContent {
-    position: absolute;
-    left: 40%;
-    top: 15%;
-    background-color: transparent !important;
+.fix_b {
+    margin-bottom: 0px;
 }
-
-.sapMBtnLinea.sapMBtnBase {
-    height: 100%; 
-    padding: 0pt !important;
-    margin: 0pt !important;  
+.centrati * {
+    width: 100% !important;
+    height: 100% !important;
+    background-color: green !important;
+    margin: 0 auto !important;  
 }
-
-.sapMBtnLinea .sapMBtnText .sapMBtnContent {
-    line-height: 1.8rem; 
+.diffLink * {
+    color : blue;
+    text-decoration: underline;
+    font-weight: bold;
 }
+.testo-grande *{
+    font-size: 150% !important;
+    text-align: center;
+    font-weight: bold;
 
-/* STILE DEL RIEPILOGO LINEE */ 
-
-.RiepilogoLineaElement{
-    border: 2px solid #003A6B; 
 }
-
-.BorderTopRight {
-    border-right: 2px solid #003A6B; 
-    border-top: 2px solid #003A6B;
+.sapMStdTileTitle {
+    font-size: 200% !important;
+    text-align: center;
+    font-weight: bold;
 }
-
-.BorderTop {
-    border-top: 2px solid #003A6B; 
+.sapMStdTileTopRow{
+    height: 5rem !important;
 }
-.BorderRight {
-    border-right: 2px solid #003A6B; 
-    min-height: 23px; 
-}
-
-.BorderLeftBottomRight {
-    border-bottom: 2px solid #003A6B; 
-    border-left: 2px solid #003A6B; 
-    border-right: 2px solid #003A6B; 
-}
-
-.BorderLeftTopRight {
-    border-right: 2px solid #003A6B; 
-    border-top: 2px solid #003A6B;
-    border-left: 2px solid #003A6B;
-}
-
-.BorderBottomRightTop {
-    border-right: 2px solid #003A6B; 
-    border-top: 2px solid #003A6B;
-    border-bottom: 2px solid #003A6B;    
-}
-.BorderBottomRight {
-    border-right: 2px solid #003A6B; 
-    border-bottom: 2px solid #003A6B;    
-}
-
-.paddingVBox {
-    padding: 3px;
-}
-
-.textVBox .sapMFlexItem {
-    text-align: center; 
-}
-
-/*ICONTABBAR*/
-
-.sapMITBContent {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-
-
-/*TABELLA*/
-
-.sapMLIBShowSeparator > td {
-    border-top: 0px;
-}
-
-
-.nomarg * {
-    margin-right: 0px !important;
-    margin-left: 0px !important;
-}
-
-
-.unpodimargin {
-    margin-left: 2%;
-}
-
-
-
-
-
-
-.prova {
-    margin-bottom: 0.35%;
-}
-
-/*BOTTONI MANAGEPIANOGREY*/
-
-
-
-
-/* ICONTABFILTER */
-.sapMITBFilterDefault{
-    color: #003A6B !important;
-}
-
-.sapMITBText{
-    color: #003A6B !important;
-}
-
-.sapMITBSelected > .sapMITBContentArrow {
-    border-bottom-color: #003A6B !important;
-}
-
-/* TEXT AREAS */
-.sapMTextArea > .sapMInputBaseReadonlyInner.sapMTextAreaInner{
-    border: 1px solid #003A6B !important;   
-}
-
-
-
-
-
-
-.TTButton .sapMBtnInner {
+.customTextFermo {
     font-size: 15pt;
-    font-family: Arial;
+    font-weight: bold;
+    text-align: center;
+}
+.borderButton .sapMBtnInner{
+    border: 1px solid #737373;
+}
+.borderMiddleTable .sapMListTbl th {
+    border: solid 1px;
     color: #003A6B;
-    background: #FFD300;
-    width: 10em;
-    border-radius: 10px;
 }
-.NoBorder {
-    border: none;
+.RightVBox {
+    bottom: 0.4rem;
 }
-
+.SPCVBox {
+    width: 8% !important;
+    bottom: 0.1rem;
+    height: 3.2rem !important;
+}
+.styleVBoxLeftbottom {
+    bottom: 0rem;
+}
+.styleVBoxRightbottom {
+    bottom: 0.2rem;
+}
+.borderBoxRight {
+    border-right: 1.5px solid #003A6B;
+}
