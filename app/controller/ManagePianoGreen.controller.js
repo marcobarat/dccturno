@@ -129,6 +129,9 @@ sap.ui.define([
         },
         RefreshDataSet: function (Jdata) {
             if (this.ISLOCAL !== 1) {
+                if (Jdata.area !== "1") {
+                    this.BackToPiani();
+                }
                 if (this.STOP === 0) {
                     Jdata = this.BarColorCT(Jdata);
                     this.SPCColorCT(Jdata);
@@ -138,7 +141,6 @@ sap.ui.define([
                     } else {
                         this.ModelLinea.getData().linee = this.ModelPartialUpdate(Jdata.linee, temp.linee, ["batchlist", "operatori", "lastbatch"]);
                     }
-//                    this.ModelLinea.refresh(true);
                     this.ModelLinea.setData(this.ModelLinea.getData());
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");

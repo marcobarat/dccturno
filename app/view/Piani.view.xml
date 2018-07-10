@@ -67,7 +67,7 @@
                                     </Table>
                                 </VBox>
                                 <VBox height="5%" width="100%"/>
-                                <VBox height="30%" width="100%" class="border grey">
+                                <VBox height="30%" width="100%" class="bordoBlu grey">
                                     <ScrollContainer id="scrollTurniConclusi" height="187px" horizontal="false" vertical="true" class="scrollingbar">
                                         <Table 
                                             width="100%"
@@ -94,7 +94,7 @@
                                                     <cells>
                                                         <core:Icon
                                                             src="{turni>icon}"
-                                                            class="size4"
+                                                            class="iconSize"
                                                             press="SwitcherTurni"
                                                             color="black" >
                                                         </core:Icon>
@@ -119,7 +119,7 @@
                                 <VBox height="5%" width="100%">
                                     <Text/>
                                 </VBox>
-                                <VBox height="10%" width="100%" class="border green  scrollingbarTransparent">
+                                <VBox height="10%" width="100%" class="border green scrollingbarTransparent">
                                     <Table height="100%" width="100%" items='{turni>/pianidiconfezionamento/incorso}' class="tableTextSize">
                                         <columns>
                                             <Column hAlign="Center">
@@ -142,7 +142,7 @@
                                                 <cells>
                                                     <core:Icon
                                                         src="{turni>icon}"
-                                                        class="size4"
+                                                        class="iconSize"
                                                         press="SwitcherTurni"
                                                         color="black" >
                                                     </core:Icon>
@@ -194,7 +194,7 @@
                                                     <cells>
                                                         <core:Icon
                                                             src="{turni>icon}"
-                                                            class="size4"
+                                                            class="iconSize"
                                                             press="SwitcherTurni"
                                                             color="black" >
                                                         </core:Icon>
@@ -219,7 +219,7 @@
                                 
                                 
                                 <VBox height="5%" width="100%">
-                                    <Table width="100%" items="{turni>/pianidiconfezionamento/dacreare}" class="noBorder sapUiMediumMarginTop tableTextSize  scrollingbarTransparent"> 
+                                    <Table width="100%" items="{turni>/pianidiconfezionamento/dacreare}" class="noBorder tableTextSize scrollingbarTransparent"> 
                                         <columns>
                                             <Column hAlign="Center">
                                             </Column>
@@ -241,7 +241,7 @@
                                                 <cells>
                                                     <core:Icon
                                                         src="sap-icon://feeder-arrow"
-                                                        class="size4 noFocus"
+                                                        class="iconSize noFocus"
                                                         press="SwitcherTurni"
                                                         color="black" >
                                                     </core:Icon>

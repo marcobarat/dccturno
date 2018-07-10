@@ -51,7 +51,7 @@
                                         <items>
                                             <ColumnListItem class="noDelimitator">
                                                 <cells>
-                                                    <VBox width="100%" height="100%" class="sfondobianco">
+                                                    <VBox width="100%" height="100%" class="colorPage">
                                                         <HBox>
                                                             <VBox width="20%" height="100%">
                                                                 <VBox>
@@ -62,7 +62,7 @@
                                                                         <VBox width="100%" height="30%">
                                                                             <Table 
                                                                                 showNoData="false"
-                                                                                class="mysapMListTblNoBorders sapMListTblHeader_b">
+                                                                                class="headerTabella paddingHeaderTabella">
                                                                                 <columns>
                                                                                     <Column  hAlign="Center">
                                                                                         <Text text="Operatori"/>
@@ -77,13 +77,13 @@
                                                                                     inset="false"
                                                                                     growing="true"
                                                                                     fixedLayout="false"
-                                                                                    class="sapUiSmallMarginEnd mysapMListTblNoBorders ">
+                                                                                    class="headerTabella">
                                                                                     <columns>
                                                                                         <Column  hAlign="Center">
                                                                                         </Column>
                                                                                     </columns>
                                                                                     <items>
-                                                                                        <ColumnListItem class="noDelimitator sapMListTblCell_b sapMListTblCell_op">
+                                                                                        <ColumnListItem class="noDelimitator cellePiani paddingOperatori">
                                                                                             <cells>
                                                                                                 <ComboBox width="90%" value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{= ${linea>nome} === '---' ? ${linea>sezione}: ''}" loadItems="LoadOperatori" selectionChange="CheckOperatore"/>
                                                                                             </cells>
@@ -105,46 +105,43 @@
                                                                             </VBox>
                                                                         </HBox>
                                                                     </VBox>
-                                                                    <VBox height="80%" width="100%" class="bordoBluR bordoBluB bordoBluT styleVBoxbottom">
+                                                                    <VBox height="80%" width="100%" class="bordoBluR bordoBluB bordoBluT">
                                                                         <Table
                                                                             showNoData="false"
                                                                             inset="false"
                                                                             growing="true"
                                                                             fixedLayout="false"
                                                                             growingThreshold="2"
-                                                                            class="sapUiSmallMarginEnd mysapMListTblNoBorders sapMListTblHeader_b scrollingbar">
+                                                                            class="headerTabella paddingHeaderTabella  scrollingbar">
                                                                             <columns>
-                                                                                <Column width="5%" hAlign="Center">
-                                                                                    <Text text="" />
+                                                                                <Column width="6%" hAlign="Center" vAlign="Middle">
+                                                                                    <Text text="Seq." />
                                                                                 </Column>
-                                                                                <Column width="10%" hAlign="Center">
-                                                                                    <Text text="Sequenza" />
-                                                                                </Column>
-                                                                                <Column width="20%" hAlign="Center">
+                                                                                <Column width="20%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Formato" />
                                                                                 </Column>
-                                                                                <Column width="15%" hAlign="Center">
+                                                                                <Column width="14%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Confezionamento" />
                                                                                 </Column>
-                                                                                <Column width="15%">
-                                                                                    <Text text="" />
+                                                                                <Column width="28%" hAlign="Center" vAlign="Middle">
+                                                                                    <Text text="Destinazione" />
                                                                                 </Column>
-                                                                                <Column width="10%" hAlign="Center">
-                                                                                    <Text text="Qli" />
+                                                                                <Column width="7%" hAlign="Center" vAlign="Middle">
+                                                                                    <Text text="Quintali" />
                                                                                 </Column>
-                                                                                <Column width="10%" hAlign="Center">
+                                                                                <Column width="7%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Cartoni" />
                                                                                 </Column>
-                                                                                <Column hAlign="Center">
+                                                                                <Column width="9%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Ore" />
                                                                                 </Column>
-                                                                                <Column width="5%" hAlign="Center">
+                                                                                <Column width="8%" hAlign="Center" vAlign="Middle">
                                                                                     <Text/>
                                                                                 </Column>
                                                                             </columns>
                                                                         </Table>
                                                                         <ScrollContainer vertical='true' height="155px" class="scrollingbar">
-                                                                            <Table class="mysapMLIBShowSeparator mysapMListNoBorders1 mysapMListNoBorders2" 
+                                                                            <Table class="removeBorders1 removeBorders2" 
                                                                                    width="100%" 
                                                                                    items="{path: 'linea>batchlist', templateShareable:false}">
                                                                                 <columns>
@@ -158,7 +155,7 @@
                                                                                     <Column width="8%" vAlign="Middle" hAlign="Center"/>
                                                                                 </columns>
                                                                                 <items>
-                                                                                    <ColumnListItem class="noDelimitator sapMListTblCell_b" height="90%">
+                                                                                    <ColumnListItem class="noDelimitator cellePiani" height="90%">
                                                                                         <cells>
                                                                                             <Input textAlign="Center" value="{linea>sequenza}" liveChange="ShowUpdateButton" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <ComboBox value="{linea>formatoProduttivo}" width="100%" loadItems="CaricaFormati" selectionChange="ResetConfezionamenti" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}"  enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
@@ -166,7 +163,7 @@
                                                                                             <Button width="90%" text="{linea>destinazione}" press="ShowBatchDetails" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <Input textAlign="Center" value="{linea>qli}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <Input textAlign="Center" value="{linea>cartoni}" liveChange="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
-                                                                                            <TimePicker class="TimesapMInputBase" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
+                                                                                            <TimePicker class="TimePickerDimensions" value="{linea>ore}" valueFormat="HH:mm" displayFormat="HH:mm" change="ChangeValues" visible="{= ${linea>statoBatch} === '#ADD#' ? false : true}" enabled="{= ${linea>statoBatch} === 'In lavorazione' ? false : true}"/>
                                                                                             <VBox height="100%" width="100%">
                                                                                                 <HBox height="100%" width="100%">
                                                                                                     <VBox height="100%" width="100%">

@@ -69,7 +69,6 @@
                                     <Table 
                                         inset="false" 
                                         items="{path: 'linea>/linee'}" 
-                                        class="sapUiSmallMarginEnd"
                                         id="ManagePianoTableGrey">
                                         <headerToolbar>
                                         </headerToolbar>
@@ -81,12 +80,12 @@
                                         <items>
                                             <ColumnListItem class="noDelimitator noFocus">
                                                 <cells>
-                                                    <VBox width="100%" height="100%" class="sfondobianco bordoBlu">
+                                                    <VBox width="100%" height="100%" class="colorPage bordoBlu">
                                                         <HBox width="100%" height="35%" class="scrollingbarTransparent">
                                                             <VBox width="70%">
                                                                 <Text text="{linea>linea}"
                                                                       width="50%"
-                                                                      class="fix_linea">
+                                                                      class="fixTestoInLinea">
                                                                 </Text>                                        
                                                             </VBox>
                                                             <HBox width="30%" class="FermoButton">
@@ -113,8 +112,8 @@
                                                                     showNoData="false"
                                                                     inset="false"
                                                                     fixedLayout="false"
-                                                                    class="sapUiSmallMarginEnd scrollingbar">
-                                                                    <columns class="mysapMListTbl">
+                                                                    class="scrollingbar">
+                                                                    <columns class="colorPage">
                                                                         <Column
                                                                             width="5%"
                                                                             vAlign="Middle"
@@ -195,9 +194,8 @@
                                                                     <Table 
                                                                         items="{linea>batchlist}"
                                                                         inset="false"
-                                                                        fixedLayout="false"
-                                                                        class="sapUiSmallMarginEnd">
-                                                                        <columns class="mysapMListTbl">
+                                                                        fixedLayout="false">
+                                                                        <columns class="colorPage">
                                                                             <Column
                                                                                 width="5%"
                                                                                 vAlign="Middle"
@@ -262,7 +260,7 @@
                                                                             </Column>
                                                                         </columns>
                                                                         <items>
-                                                                            <ColumnListItem class="sapMListTblCell_b">
+                                                                            <ColumnListItem class="cellePiani">
                                                                                 <cells>
                                                                                     <Text text="{linea>sequenza}" />
                                                                                     <Text text="{linea>formatoProduttivo}" />
