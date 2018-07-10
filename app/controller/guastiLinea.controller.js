@@ -71,10 +71,7 @@ sap.ui.define([
             Library.AjaxCallerData(link, this.SUCCESSCausali.bind(this));
         },
         SUCCESSCausali: function (Jdata) {
-            this.menuJSON = {};
-            this.menuJSON.cause = Jdata;
-//            this.takeAllCause(Jdata);
-            this.ModelCausali.setData(this.menuJSON);
+            this.ModelCausali.setData(Jdata);
             this.getView().setModel(this.ModelCausali, "cause");
             if (!this._menu) {
                 this._menu = sap.ui.xmlfragment(
@@ -95,7 +92,7 @@ sap.ui.define([
                 this.getView().setModel(this.ModelGuasti, "guasti");
                 this.oDialog.destroy();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
         SUCCESSModificaOEE: function (Jdata) {
@@ -106,7 +103,7 @@ sap.ui.define([
             oRouter.navTo("Report", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
         },
 //GESTIONE DEL MENU DI MODIFICA GUASTI
-        modificaGuasti: function (oEvent) {
+        ModificaGuasti: function (oEvent) {
             var oText = oEvent.getParameter("item").getText();
             switch (oText) {
                 case "Modifica Causale Fermo":
@@ -126,7 +123,7 @@ sap.ui.define([
             }
 
         },
-        onConfermaCambio: function (oEvent) {
+        ConfermaCambio: function (oEvent) {
             var oText = this.getView().byId("title").getText();
             var obj, link;
             switch (oText) {
@@ -214,7 +211,7 @@ sap.ui.define([
                     break;
             }
         },
-        onClose: function () {
+        DestroyDialog: function () {
             var id_dialog = this.oDialog.getId();
             sap.ui.getCore().byId(id_dialog).destroy();
         },
@@ -252,7 +249,7 @@ sap.ui.define([
                 text: "{cause>fermo}"
             });
             selectMenu.setModel(this.getView().getModel("cause"));
-            selectMenu.bindAggregation("items", "cause>/cause", oItemSelectTemplate);
+            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
             selectMenu.addStyleClass("myListItemRed");
             bText1.addStyleClass("red");
             topBox.addStyleClass("blackBorder");
@@ -438,7 +435,7 @@ sap.ui.define([
                 text: "{cause>fermo}"
             });
             selectMenu.setModel(this.getView().getModel("cause"));
-            selectMenu.bindAggregation("items", "cause>/cause", oItemSelectTemplate);
+            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
             selectMenu.addStyleClass("myListItemRed");
             oText1.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
             oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
@@ -569,7 +566,7 @@ sap.ui.define([
                 text: "{cause>fermo}"
             });
             selectMenu.setModel(this.getView().getModel("cause"));
-            selectMenu.bindAggregation("items", "cause>/cause", oItemSelectTemplate);
+            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
             selectMenu.addStyleClass("myListItemRed");
             oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
             oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
