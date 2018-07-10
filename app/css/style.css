@@ -549,6 +549,9 @@
 .SPCButtonColorGreen .sapMBtnInner {
     background: #7CA295; 
 }
+.SPCButtonEmpty .sapMBtnInner {
+    background: white; 
+}
 .SPCButtonColorYellow .sapMBtnInner {
     background: #FFD300;
 }

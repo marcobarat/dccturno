@@ -12,7 +12,7 @@
                         <VBox height="100%" width="5%"/>
                         <HBox height="100%" width="20%">
                             <HBox>
-                                <Button text="Creazione report OEE"
+                                <Button text="Calcolo consuntivi"
                                         press="CreateReport"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                         class="noFocus paddingleft larghezzaButtonLeft">
@@ -20,7 +20,7 @@
                                 <Button 
                                     id="reportButton"
                                     class="noFocus larghezzaButtonRight shiftButtonLeft" 
-                                    text="Report"
+                                    text="Report OEE"
                                     visible="true"
                                     enabled="false"
                                     press="ShowReport"
@@ -299,7 +299,5 @@
                 </VBox>
             </VBox>
         </content>
-        
-        
     </Page>
 </mvc:View>

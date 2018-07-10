@@ -64,7 +64,6 @@ sap.ui.define([
         Counter: null,
         STOPCompleta: 0,
         rowBinded: null,
-
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -150,12 +149,32 @@ sap.ui.define([
             }
         },
         ModelFullUpdate: function (newData, oldData) {
+            var oldIDs, newIDs, allIDs, j1, j2;
             for (var i = 0; i < newData.length; i++) {
                 for (var key in newData[i]) {
                     if (key === "batchlist") {
-                        for (var j = 0; j < newData[i][key].length; j++) {
-                            if (typeof oldData[i][key][j].modifyBatch === "undefined" || oldData[i][key][j].modifyBatch !== 1) {
-                                oldData[i][key][j] = newData[i][key][j];
+                        oldIDs = this.GetBatchIDs(oldData[i][key]);
+                        newIDs = this.GetBatchIDs(newData[i][key]);
+                        allIDs = oldIDs.concat(newIDs);
+                        allIDs = allIDs.filter(this.OnlyUnique.bind(this));
+                        for (var j = 0; j < allIDs.length; j++) {
+                            if (oldIDs.indexOf(allIDs[j]) !== -1 && newIDs.indexOf(allIDs[j]) !== -1) {
+                                j1 = this.GetIndex(oldData[i][key], allIDs[j]);
+                                j2 = this.GetIndex(newData[i][key], allIDs[j]);
+                                if (typeof oldData[i][key][j1].modifyBatch === "undefined" || oldData[i][key][j1].modifyBatch !== 1) {
+                                    oldData[i][key][j1] = newData[i][key][j2];
+                                }
+                            } else if (oldIDs.indexOf(allIDs[j]) !== -1 && newIDs.indexOf(allIDs[j]) === -1) {
+                                j1 = this.GetIndex(oldData[i][key], allIDs[j]);
+                                if (typeof oldData[i][key][j1].modifyBatch === "undefined" || oldData[i][key][j1].modifyBatch !== 1) {
+                                    oldData[i][key].splice(j1, 1);
+                                }
+
+                            } else if (oldIDs.indexOf(allIDs[j]) === -1 && newIDs.indexOf(allIDs[j]) !== -1) {
+                                j2 = this.GetIndex(newData[i][key], allIDs[j]);
+                                oldData[i][key].push(newData[i][key][j2]);
+                            } else {
+                                console.log("Duuuude that's weird :/");
                             }
                         }
                     } else {
@@ -174,6 +193,26 @@ sap.ui.define([
                 }
             }
             return oldData;
+        },
+        GetBatchIDs: function (batchlist) {
+            var IDs = [];
+            for (var i = 0; i < batchlist.length; i++) {
+                IDs.push(batchlist[i].batchID);
+            }
+            return IDs;
+        },
+        GetIndex: function (batchlist, ID) {
+            var index;
+            for (var i = 0; i < batchlist.length; i++) {
+                if (batchlist[i].batchID === ID) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        },
+        OnlyUnique: function (value, index, self) {
+            return self.indexOf(value) === index;
         },
 
 //        -------------------------------------------------
@@ -249,7 +288,6 @@ sap.ui.define([
             this.RecursiveTakeAllCause(Jdata);
             this.ModelCause.setData(this.data_json);
         },
-
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
             var that = this;
@@ -306,7 +344,6 @@ sap.ui.define([
                 console.log(error);
             });
         },
-
 //       ************************ TABELLA 80% DI DESTRA ************************
 //        
 //         -> PULSANTI SPC CON REFRESH
@@ -358,7 +395,6 @@ sap.ui.define([
             this.SPCDialogFiller(isEmpty);
             setTimeout(this.SPCDataCaller.bind(this), 10000);
         },
-
 //         -> PULSANTE AGGIUNTA BATCH
         AddBatch: function (event) {
             var path = event.getSource().getBindingContext("linea").sPath.split("/");
@@ -744,7 +780,6 @@ sap.ui.define([
                 this.RefreshCall("0");
             }
         },
-
 //        >>>>>>>>>>>>>>>>>> FUNZIONI DI SUPPORTO <<<<<<<<<<<<<<<<<<
 
 //       ************************ TABELLA 20% DI SINISTRA ************************
@@ -798,7 +833,6 @@ sap.ui.define([
                 }
             }
         },
-
 //       ************************ TABELLA 80% DI DESTRA ************************
         SplitId: function (id, string) {
             var splitter = id.indexOf(string);
@@ -966,7 +1000,6 @@ sap.ui.define([
             }
             return {dataPlot: dataPlot, layout: layout};
         },
-
 //      GESTIONE STILE PROGRESS BAR        
         BarColorCT: function (data) {
             var progressBar;
@@ -998,7 +1031,7 @@ sap.ui.define([
         },
 //      GESTIONE STILE SPC
         SPCColorCT: function (data) {
-            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent"];
+            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent", "SPCButtonEmpty"];
             var SPCButton;
             if (data.linee.length > 0) {
                 for (var i = 0; i < data.linee.length; i++) {
@@ -1029,13 +1062,18 @@ sap.ui.define([
                                 }
                                 break;
                             default:
-                                SPCButton.setIcon("img/triangolo_buco.png");
-                                SPCButton.setText("0");
-                                SPCButton.addStyleClass("SPCButtonPhase1");
-                                SPCButton.addStyleClass("SPCButtonColorYellow");
+//                                SPCButton.setIcon("img/triangolo_buco.png");
+//                                SPCButton.setText("0");
+//                                SPCButton.addStyleClass("SPCButtonPhase1");
+//                                SPCButton.addStyleClass("SPCButtonColorYellow");
+
+                                SPCButton.setText("");
+                                SPCButton.addStyleClass("SPCButtonEmpty");
+                                SPCButton.setIcon("");
+                                SPCButton.setEnabled(false);
                                 break;
                         }
-                        if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                        if (data.linee[i].statolinea === "Disponibile.Fermo" || data.linee[i].statolinea === "Disponibile.Svuotamento") {
                             SPCButton.setText("0");
                             SPCButton.addStyleClass("SPCButtonPhase1");
                             SPCButton.addStyleClass("SPCButtonColorYellow");
@@ -1072,7 +1110,6 @@ sap.ui.define([
                 }
             }
         },
-
 //        -------------------------------------------------
 //        -------------------------------------------------
 //        -------------------------------------------------
@@ -1294,7 +1331,6 @@ sap.ui.define([
                 }
             }
         },
-
 //        -------------------------------------------------
 //        -------------------------------------------------
 //        -------------------------------------------------
@@ -1303,18 +1339,32 @@ sap.ui.define([
 
         AzioneBatch: function (event) {
             var oText = event.getParameter("item").getText();
-            var link;
+            var link, qli, cartoni, Path;
             switch (oText) {
                 case "Visualizza Attributi Batch":
                     this.ShowBatchDetails();
                     break;
                 case "Trasferimento Batch a Linea":
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimento&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatch.bind(this));
+                    Path = this.oButton.getBindingContext("linea").sPath;
+                    qli = this.ModelLinea.getProperty(Path).qli;
+                    cartoni = this.ModelLinea.getProperty(Path).cartoni;
+                    if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimento&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatch.bind(this));
+                    } else {
+                        MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
+                    }
                     break;
                 case "Trasferimento Batch a Linea (solo attrezzaggio)":
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoPredisposizione&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                    Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatchAttrezzaggio.bind(this));
+                    Path = this.oButton.getBindingContext("linea").sPath;
+                    qli = this.ModelLinea.getProperty(Path).qli;
+                    cartoni = this.ModelLinea.getProperty(Path).cartoni;
+                    if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoPredisposizione&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatchAttrezzaggio.bind(this));
+                    } else {
+                        MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
+                    }
                     break;
                 case "Richiamo Batch":
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchRichiamo&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
@@ -1447,8 +1497,8 @@ sap.ui.define([
                     this
                     );
             var items = this._menu.getItems();
-            for (var i=0; i< items.length; i++){
-                if (this.row.isAttivo === "1" && i!==1 && i!==3){
+            for (var i = 0; i < items.length; i++) {
+                if (this.row.isAttivo === "1" && i !== 1 && i !== 3) {
                     items[i].setEnabled(false);
                 } else {
                     items[i].setEnabled(true);
@@ -2176,12 +2226,11 @@ sap.ui.define([
             var id_dialog = this.oDialog.getId().split("--")[1];
             this.getView().byId(id_dialog).close();
             this.oDialog = null;
-            if (id_dialog === "GestioneIntervalliFermo"){
+            if (id_dialog === "GestioneIntervalliFermo") {
                 this.STOP = 0;
                 this.RefreshCall("1");
             }
         },
-
 //        -------------------------------------------------
 //        -------------------------------------------------
 //        -------------------------------------------------

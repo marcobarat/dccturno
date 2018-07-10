@@ -33,6 +33,7 @@ sap.ui.define([
         ModelMenu: new JSONModel({}),
         ModelLinea: null,
         ModelOperatori: new JSONModel({}),
+        ModelParametri: new JSONModel({}),
         ModelSKU: new JSONModel({}),
         ModelTurni: null,
         ModelSKUstd: new JSONModel({}),
