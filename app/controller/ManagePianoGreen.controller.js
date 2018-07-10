@@ -1031,7 +1031,7 @@ sap.ui.define([
         },
 //      GESTIONE STILE SPC
         SPCColorCT: function (data) {
-            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent"];
+            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent", "SPCButtonEmpty"];
             var SPCButton;
             if (data.linee.length > 0) {
                 for (var i = 0; i < data.linee.length; i++) {
@@ -1062,13 +1062,18 @@ sap.ui.define([
                                 }
                                 break;
                             default:
-                                SPCButton.setIcon("img/triangolo_buco.png");
-                                SPCButton.setText("0");
-                                SPCButton.addStyleClass("SPCButtonPhase1");
-                                SPCButton.addStyleClass("SPCButtonColorYellow");
+//                                SPCButton.setIcon("img/triangolo_buco.png");
+//                                SPCButton.setText("0");
+//                                SPCButton.addStyleClass("SPCButtonPhase1");
+//                                SPCButton.addStyleClass("SPCButtonColorYellow");
+
+                                SPCButton.setText("");
+                                SPCButton.addStyleClass("SPCButtonEmpty");
+                                SPCButton.setIcon("");
+                                SPCButton.setEnabled(false);
                                 break;
                         }
-                        if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                        if (data.linee[i].statolinea === "Disponibile.Fermo" || data.linee[i].statolinea === "Disponibile.Svuotamento") {
                             SPCButton.setText("0");
                             SPCButton.addStyleClass("SPCButtonPhase1");
                             SPCButton.addStyleClass("SPCButtonColorYellow");
@@ -1492,8 +1497,8 @@ sap.ui.define([
                     this
                     );
             var items = this._menu.getItems();
-            for (var i=0; i< items.length; i++){
-                if (this.row.isAttivo === "1" && i!==1 && i!==3){
+            for (var i = 0; i < items.length; i++) {
+                if (this.row.isAttivo === "1" && i !== 1 && i !== 3) {
                     items[i].setEnabled(false);
                 } else {
                     items[i].setEnabled(true);
@@ -2220,7 +2225,7 @@ sap.ui.define([
             var id_dialog = this.oDialog.getId().split("--")[1];
             this.getView().byId(id_dialog).close();
             this.oDialog = null;
-            if (id_dialog === "GestioneIntervalliFermo"){
+            if (id_dialog === "GestioneIntervalliFermo") {
                 this.STOP = 0;
                 this.RefreshCall("1");
             }

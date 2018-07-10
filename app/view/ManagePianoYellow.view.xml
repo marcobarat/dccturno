@@ -11,7 +11,7 @@
                     <HBox>
                         <VBox height="100%" width="6.2%"/>
                         <VBox height="100%" width="13.8%">
-                            <Button text="Refresh Batch" press="RefreshCall" width="100%" class="noFocus" />
+                            <Button text="Aggiorna" press="RefreshCall" width="100%" class="noFocus" />
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="40%">
@@ -99,7 +99,7 @@
                                                                 <VBox>
                                                                     <VBox height="20%" width="100%">
                                                                         <HBox>
-                                                                            <VBox height="100%" width="92%"/>
+                                                                            <VBox height="100%" width="92%" class="bordoBluT"/>
                                                                             <VBox height="100%" width="8%" class="bordoBluL bordoBluR bordoBluT">
                                                                                 <Button icon="sap-icon://add" press="AddBatch" width="100%" class="AddButton"/>
                                                                             </VBox>
