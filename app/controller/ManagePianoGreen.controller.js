@@ -206,10 +206,16 @@ sap.ui.define([
             var that = this;
             this.repartoID = event.getParameters().key;
             if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                Library.AjaxCallerData(link, function (Jdata) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDattuale&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&IsRidotta=0&OutputParameter=JSON";
+                Library.SyncAjaxCallerData(link, function (Jdata) {
                     that.ModelLinea.setData(Jdata);
                 });
+                var data = this.ModelLinea.getData();
+                data = this.BarColorCT(data);
+                this.SPCColorCT(data);
+                this.ModelLinea.setData(data);
+                this.SettingsButtonColor();
+                this.LineButtonStyle();
                 this.getView().setModel(this.ModelLinea, "linea");
             }
         },
@@ -525,7 +531,6 @@ sap.ui.define([
         ShowBatchDetails: function (event) {
             var oRow;
             if (event) {
-                this.STOPCompleta = 1;
                 this.ModelLinea.getProperty(event.getSource().getBindingContext("linea").getPath()).modifyBatch = 1;
                 this.getView().setModel(this.ModelLinea, "linea");
                 oRow = event.getSource().getParent();
@@ -697,8 +702,6 @@ sap.ui.define([
                     Library.SyncAjaxCallerData(link, function (Jdata) {
                         if (Number(Jdata.error) === 0) {
                             that.rowBinded.modifyBatch = 0;
-                            this.STOPCompleta = 0;
-//                            that.CheckModificheInCorso();
                             that.RefreshCall("0");
                         } else {
                             MessageToast.show(Jdata.errorMessage, {duration: 2000});
@@ -735,8 +738,6 @@ sap.ui.define([
                     this.ModelLinea.getData().linee[indexLinea].batchlist.pop();
                     AddButton.setEnabled(true);
                 }
-//                this.getView().setModel(this.ModelLinea, "linea");
-//                this.CheckModificheInCorso();
                 this.RefreshCall("0");
             }
         },
@@ -1217,15 +1218,6 @@ sap.ui.define([
         },
         AnnullaModifiche: function () {
             this.oDialog.destroy();
-//            var rowPath = this.row.getBindingContext("linea").sPath;
-//            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
-//            if (!row_binded.batchID) {
-//                this.oDialog.destroy();
-//            } else {
-////                this.STOP = 0;
-////                this.RefreshCall();
-//                this.oDialog.destroy();
-//            }
         },
         BuildXMLForInsertBatch: function () {
             var formatoSKU = this.getView().byId("formato_SKU");

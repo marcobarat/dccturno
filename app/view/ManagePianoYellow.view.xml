@@ -168,13 +168,13 @@
                                                                                             <VBox height="100%" width="100%">
                                                                                                 <HBox height="100%" width="100%">
                                                                                                     <VBox height="100%" width="100%">
-                                                                                                        <Button icon="sap-icon://action-settings" press="BatchSettings" width="100%" visible="{= ${linea>showButton} === 0 ? false : true}"/>
+                                                                                                        <Button icon="sap-icon://action-settings" press="BatchSettings" width="100%" visible="{= ${linea>modifyBatch} === 1 ? false : true}"/>
                                                                                                         <HBox>
                                                                                                             <VBox height="100%" width="50%">
-                                                                                                                <Button icon="sap-icon://accept" class="StileV" press="InsertNewBatch" width="50%" visible="{= ${linea>showButton} === 0 ? true : false}"/>
+                                                                                                                <Button icon="sap-icon://accept" class="StileV" press="InsertNewBatch" width="50%" visible="{= ${linea>modifyBatch} === 1 ? true : false}"/>
                                                                                                             </VBox>
                                                                                                             <VBox height="100%" width="50%">
-                                                                                                                <Button icon="sap-icon://decline" class="StileX" press="UndoBatchCreation" width="50%" visible="{= ${linea>showButton} === 0 ? true : false}"/>
+                                                                                                                <Button icon="sap-icon://decline" class="StileX" press="UndoBatchCreation" width="50%" visible="{= ${linea>modifyBatch} === 1 ? true : false}"/>
                                                                                                             </VBox>
                                                                                                         </HBox>
                                                                                                     </VBox>
