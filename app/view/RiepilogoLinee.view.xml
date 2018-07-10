@@ -5,7 +5,7 @@
     <Page class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-                <VBox height="5%" width="100%">
+<!--                <VBox height="5%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="10%">
@@ -17,7 +17,31 @@
                         </VBox>
                     </HBox>
                 </VBox>
-                <VBox height="5%" width="100%"/>
+                <VBox height="5%" width="100%"/>-->
+                <VBox height="4%" width="100%"/>
+                <VBox height="6%" width="100%" class="sapUiSmallMarginBottom">
+                    <HBox>
+                        <VBox height="100%" width="5%"/>
+                        <VBox height="100%" width="70%">
+                            <VBox height="50%" width="100%" alignItems="Center">
+                                <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
+                            </VBox> 
+                        </VBox>
+                        <HBox height="100%" width="20%">
+                            <HBox width="100%" justifyContent="Start">
+                                <VBox width="100%" height="100%">
+                                    <Button text="Esci"
+                                            width="80%"
+                                            press="GoToHome"
+                                            ariaDescribedBy="defaultButtonDescription genericButtonDescription"
+                                            class="noFocus">
+                                    </Button>
+                                </VBox>
+                            </HBox> 
+                        </HBox>
+                        <VBox height="100%" width="5%"/>
+                    </HBox>
+                </VBox>
                 <VBox height="90%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
@@ -48,8 +72,7 @@
                                                                         width="100%"
                                                                         displayValue="{linee>oreRimanenti}"
                                                                         percentValue="{= Number(${linee>avanzamento})}"
-                                                                        showValue="true"
-                                                                        barColor="{linee>barColor}">
+                                                                        >
                                                                     </ProgressIndicator>
                                                                 </VBox>
                                                                 <VBox width="15%">
@@ -111,8 +134,7 @@
                                                                         width="100%"
                                                                         displayValue="{linee>oreRimanenti}"
                                                                         percentValue="{= Number(${linee>avanzamento})}"
-                                                                        showValue="true"
-                                                                        barColor="{linee>barColor}">
+                                                                        >
                                                                     </ProgressIndicator>
                                                                 </VBox>
                                                                 <VBox width="15%">

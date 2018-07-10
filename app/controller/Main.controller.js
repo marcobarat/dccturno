@@ -11,6 +11,7 @@ sap.ui.define([
         ISLOCALModel: new JSONModel({}),
         ModelReparti: new JSONModel({}),
         ISLOCAL: null,
+        ModelLinee: new JSONModel({}),
 
         onInit: function () {
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
@@ -32,6 +33,17 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo("piani");
         },
         onSinotticiPage: function () {
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "model/linee_riepilogo.json";
+            } else {
+
+            }
+            Library.AjaxCallerData(link, this.SUCCESSModelLinee.bind(this));
+            sap.ui.getCore().setModel(this.ModelLinee, "linee");
+        },
+        SUCCESSModelLinee: function (Jdata) {
+            this.ModelLinee.setData(Jdata);
             this.getOwnerComponent().getRouter().navTo("RiepilogoLinee");
         }
     });

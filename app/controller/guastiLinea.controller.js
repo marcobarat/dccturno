@@ -24,63 +24,28 @@ sap.ui.define([
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("guastidilinea").attachPatternMatched(this._onObjectMatched, this);
-//            this.menuJSON.cause = [];
-//            var model = new JSONModel();
-//            if (this.ISLOCAL === 1) {
-//                Library.AjaxCallerData("model/JSON_FermoTestiNew.json", function (Jdata) {
-//                    that.SUCCESSCausali.bind(that)(Jdata, model);
-//                });
-//            }
-//            this.getView().setModel(model, "cause");
         },
         _onObjectMatched: function (oEvent) {
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.linea = oEvent.getParameter("arguments").guastiPath;
-//            var oModel = new JSONModel();
-//            var that = this;
-//            if (this.ISLOCAL === 1) {
-//                Library.AjaxCallerData("model/guasti_linee.json", function (Jdata) {
-//                    that.SUCCESSGuasti.bind(that)(Jdata, oModel);
-//                });
-//            }
             this.getView().setModel(this.ModelGuasti, "guasti");
-//            this.ModelTurni = this.getOwnerComponent().getModel("turni");
-//            if (!this.ModelTurni) {
-//                Library.SyncAjaxCallerData("model/pianidiconf_new.json", Library.SUCCESSDatiTurni.bind(this));
-//                this.getOwnerComponent().setModel(this.ModelTurni, "turni");
-//            }
             var oTitle = this.getView().byId("turno");
             this.piano = this.ModelTurni.getData().pianidiconfezionamento[this.turnoPath][this.pianoPath];
             oTitle.setText(this.piano.data + "    -    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
         },
-//        SUCCESSCausali: function (Jdata, model) {
-//            this.takeAllCause(Jdata);
-//            model.setData(this.menuJSON);
-//        },
-//        SUCCESSGuasti: function (Jdata, oModel) {
-//            //da rimpiazzare con parametrizzazione ajax (o comunque in base a come sarà la transazione)
-//            for (var i = 0; i < Jdata.GuastiLinee.length; i++) {
-//                if (Jdata.GuastiLinee[i].nome === this.linea) {
-//                    this.guasti = Jdata.GuastiLinee[i];
-//                    break;
+//        takeAllCause: function (bck) {
+//            for (var key in bck) {
+//                if (typeof bck[key] === "object") {
+//                    bck[key] = this.takeAllCause(bck[key]);
 //                }
 //            }
-//            this.guasti = Library.AddTimeGaps(this.guasti);
-//            oModel.setData(this.guasti);
+//            if (bck.fermo !== undefined) {
+//                this.menuJSON.cause.push(bck);
+//            }
+//            return bck;
 //        },
-        takeAllCause: function (bck) {
-            for (var key in bck) {
-                if (typeof bck[key] === "object") {
-                    bck[key] = this.takeAllCause(bck[key]);
-                }
-            }
-            if (bck.fermo !== undefined) {
-                this.menuJSON.cause.push(bck);
-            }
-            return bck;
-        },
         onReturnToReport: function () {
             var link;
             if (this.ISLOCAL === 1) {
@@ -92,7 +57,7 @@ sap.ui.define([
 
         },
 //GESTIONE DEL TASTO CHE VIENE PREMUTO -> GENERO IL MENU CON LE VOCI PER LA MODIFICA/GESTIONE DEI GUASTI
-        handlePressOpenMenuCausalizzazione: function (oEvent) {
+        OpenMenuCausalizzazione: function (oEvent) {
             this.Button = oEvent.getSource();
             var link;
             var row_id = this.Button.getParent().getId();
@@ -107,8 +72,8 @@ sap.ui.define([
         },
         SUCCESSCausali: function (Jdata) {
             this.menuJSON = {};
-            this.menuJSON.cause = [];
-            this.takeAllCause(Jdata);
+            this.menuJSON.cause = Jdata;
+//            this.takeAllCause(Jdata);
             this.ModelCausali.setData(this.menuJSON);
             this.getView().setModel(this.ModelCausali, "cause");
             if (!this._menu) {
@@ -673,14 +638,6 @@ sap.ui.define([
         fromStringToSeconds: function (stringa) {
             var array_stringa = stringa.split(":");
             return  parseInt(array_stringa[0], 10) * 60 * 60 + parseInt(array_stringa[1], 10) * 60 + parseInt(array_stringa[2], 10);
-        },
-        takeIdByBindedCausa: function (causa) {
-            for (var i in this.menuJSON.cause) {
-                if (this.menuJSON.cause[i].fermo === causa) {
-                    return this.menuJSON.cause[i].id;
-                }
-            }
-            return -1;
         },
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////// FUNZIONI LOCALI (QUANDO IL BACKEND NON E' PRESENTE)
 
