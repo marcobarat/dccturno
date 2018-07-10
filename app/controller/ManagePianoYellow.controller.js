@@ -110,6 +110,9 @@ sap.ui.define([
         },
         RefreshDataSet: function (Jdata) {
             if (this.ISLOCAL !== 1) {
+                if (Jdata.area !== "2") {
+                    this.BackToPiani();
+                }
                 if (this.STOP === 0) {
                     var temp = JSON.parse(JSON.stringify(this.ModelLinea.getData()));
                     if (Jdata.isRidotta === "0") {
@@ -120,6 +123,7 @@ sap.ui.define([
                     this.ModelLinea.setData(this.ModelLinea.getData());
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
+                    this.SettingsButtonColor();
                     this.LineButtonStyle();
                     this.RefreshFunction(10000);
                 }
@@ -188,6 +192,7 @@ sap.ui.define([
                 Library.SyncAjaxCallerData(link, function (Jdata) {
                     that.ModelLinea.setData(Jdata);
                 });
+                this.SettingsButtonColor();
                 this.LineButtonStyle();
                 this.getView().setModel(this.ModelLinea, "linea");
             }
@@ -734,6 +739,29 @@ sap.ui.define([
             }
         },
 
+        //      GESTIONE STILE PULSANTE IMPOSTAZIONI BATCH
+        SettingsButtonColor: function () {
+            var classes = ["BatchSchedulato", "BatchInAttesa"];
+            var data = this.ModelLinea.getData();
+            var button;
+            for (var i = 0; i < data.linee.length; i++) {
+                for (var j = 0; j < data.linee[i].batchlist.length; j++) {
+                    button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[1].getItems()[1].getContent()[0].getItems()[j].getCells()[7].getItems()[0].getItems()[0].getItems()[0];
+                    for (var k = 0; k < classes.length; k++) {
+                        button.removeStyleClass(classes[k]);
+                    }
+                    switch (data.linee[i].batchlist[j].statoBatch) {
+                        case 'Schedulato':
+                            button.addStyleClass("BatchSchedulato");
+                            break;
+                        default:
+                            button.addStyleClass("BatchInAttesa");
+                            break;
+                    }
+                }
+            }
+        },
+
 //        -------------------------------------------------
 //        -------------------------------------------------
 //        -------------------------------------------------
@@ -968,12 +996,30 @@ sap.ui.define([
                 case "Visualizza Attributi Batch":
                     this.ShowBatchDetails();
                     break;
+                case "Trasferimento schedulato":
+                    var Path = this.oButton.getBindingContext("linea").sPath;
+                    var qli = this.ModelLinea.getProperty(Path).qli;
+                    var cartoni = this.ModelLinea.getProperty(Path).cartoni;
+                    if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchSchedulato&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSTrasferimentoSchedulato.bind(this));
+                    } else {
+                        MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
+                    }
+                    break;
                 case "Cancellazione Batch":
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/CancellazioneBatch&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
                     break;
             }
 
+        },
+        SUCCESSTrasferimentoSchedulato: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                this.RefreshCall("0");
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 3000});
+            }
         },
         SUCCESSCancellazioneBatch: function (Jdata) {
             if (Number(Jdata.error) === 0) {
