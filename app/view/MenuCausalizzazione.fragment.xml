@@ -3,13 +3,12 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
-    <u:Menu itemSelect="modificaGuasti">
+    <u:Menu itemSelect="ModificaGuasti">
         <u:MenuItem
             text="Inserisci Fermo"
             startsSection= "false"
             enabled= "true"
             />
-<!--            select="modificaCausale"-->
         <u:MenuItem
             text="Modifica Causale Fermo"
             startsSection= "true"
