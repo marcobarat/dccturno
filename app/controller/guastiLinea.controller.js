@@ -21,11 +21,12 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
+//        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.getRoute("guastidilinea").attachPatternMatched(this._onObjectMatched, this);
+            oRouter.getRoute("guastidilinea").attachPatternMatched(this.URLChangeCheck, this);
         },
-        _onObjectMatched: function (oEvent) {
+        URLChangeCheck: function (oEvent) {
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.linea = oEvent.getParameter("arguments").guastiPath;
@@ -35,18 +36,16 @@ sap.ui.define([
             oTitle.setText(this.piano.data + "    -    " + this.piano.turno);
             oTitle.addStyleClass("customTextTitle");
         },
-//        takeAllCause: function (bck) {
-//            for (var key in bck) {
-//                if (typeof bck[key] === "object") {
-//                    bck[key] = this.takeAllCause(bck[key]);
-//                }
-//            }
-//            if (bck.fermo !== undefined) {
-//                this.menuJSON.cause.push(bck);
-//            }
-//            return bck;
-//        },
-        onReturnToReport: function () {
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        
+//        >>>>>>>> FUNZIONI CHIAMATE AL CLICK <<<<<<<<
+//        
+//        ************************ INTESTAZIONE ************************
+//        
+//      -> PULSANTE D'USCITA        
+        ReturnToReport: function () {
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/OEE_update.json";
@@ -56,7 +55,16 @@ sap.ui.define([
             Library.AjaxCallerData(link, this.SUCCESSModificaOEE.bind(this));
 
         },
-//GESTIONE DEL TASTO CHE VIENE PREMUTO -> GENERO IL MENU CON LE VOCI PER LA MODIFICA/GESTIONE DEI GUASTI
+        SUCCESSModificaOEE: function (Jdata) {
+            var ModelOEE = sap.ui.getCore().getModel("ReportOEE");
+            ModelOEE.setData(Jdata);
+            sap.ui.getCore().setModel(ModelOEE, "ReportOEE");
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("Report", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
+        },
+//        ************************ TABELLA ************************
+//    
+//      -> CREAZIONE MENU PER LA GESTIONE DEI GUASTI
         OpenMenuCausalizzazione: function (oEvent) {
             this.Button = oEvent.getSource();
             var link;
@@ -83,45 +91,407 @@ sap.ui.define([
             var eDock = sap.ui.core.Popup.Dock;
             this._menu.open(this._bKeyboard, this.Button, eDock.EndTop, eDock.BeginBottom, this.Button);
         },
-        SUCCESSGuastoModificato: function (Jdata) {
-            if (Number(Jdata.error) === 0) {
-                this.guasti = Jdata.AllFermi;
-                this.guasti = Library.AddTimeGaps(this.guasti);
-                this.ModelGuasti.setData(this.guasti);
-                sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
-                this.getView().setModel(this.ModelGuasti, "guasti");
-                this.oDialog.destroy();
-            } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 2000});
-            }
-        },
-        SUCCESSModificaOEE: function (Jdata) {
-            var ModelOEE = sap.ui.getCore().getModel("ReportOEE");
-            ModelOEE.setData(Jdata);
-            sap.ui.getCore().setModel(ModelOEE, "ReportOEE");
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("Report", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
-        },
-//GESTIONE DEL MENU DI MODIFICA GUASTI
+
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        
+//        >>>>>>>> GESTIONE GUASTI <<<<<<<<
+//        
+//       
         ModificaGuasti: function (oEvent) {
             var oText = oEvent.getParameter("item").getText();
             switch (oText) {
                 case "Modifica Causale Fermo":
-                    this.creaFinestraModificaCausale(oText);
+                    this.CreaFinestraModificaCausale(oText);
                     break;
                 case "Modifica Inizio/Fine del Fermo":
-                    this.creaFinestraModificaTempi(oText);
+                    this.CreaFinestraModificaTempi(oText);
                     break;
                 case "Fraziona Causale di Fermo":
-                    this.creaFinestraFrazionamento(oText);
+                    this.CreaFinestraFrazionamento(oText);
                     break;
                 case "Elimina Fermo":
-                    this.creaFinestraEliminazione(oText);
+                    this.CreaFinestraEliminazione(oText);
                     break;
                 case "Inserisci Fermo":
-                    this.creaFinestraInserimento(oText);
+                    this.CreaFinestraInserimento(oText);
             }
 
+        },
+        DestroyDialog: function () {
+            var id_dialog = this.oDialog.getId();
+            sap.ui.getCore().byId(id_dialog).destroy();
+        },
+//    
+//      -> CREAZIONE DIALOG PER MODIFICA CAUSALIZZAZIONE
+        CreaFinestraModificaCausale: function (text) {
+            var oView = this.getView();
+            this.oDialog = oView.byId("modificaGuasti");
+            if (!this.oDialog) {
+                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
+                oView.addDependent(this.oDialog);
+            }
+            var oTitle = oView.byId("title");
+            oTitle.setText(text);
+            var topBox = oView.byId("topBox");
+            var oVBox1 = topBox.getItems()[0];
+            var oVBox2 = topBox.getItems()[1];
+            var oText1 = new sap.m.Text({
+                text: "Valore Corrente"
+            });
+            var oText2 = new sap.m.Text({
+                text: this.row_binded.causale
+            });
+            var bottomBox = oView.byId("bottomBox");
+            var bBox1 = bottomBox.getItems()[0];
+            var bBox2 = bottomBox.getItems()[1];
+            var bText1 = new sap.m.Text({
+                text: "Nuovo Valore"
+            });
+            var selectMenu = new sap.m.Select({
+                autoAdjustWidth: true,
+                id: "selectionMenu"
+            });
+            var oItemSelectTemplate = new sap.ui.core.Item({
+                key: "{cause>id}",
+                text: "{cause>fermo}"
+            });
+            selectMenu.setModel(this.getView().getModel("cause"));
+            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
+            selectMenu.addStyleClass("myListItemRed");
+            bText1.addStyleClass("red");
+            topBox.addStyleClass("blackBorder");
+            oText2.addStyleClass("size1");
+            oVBox1.addItem(oText1);
+            oVBox2.addItem(oText2);
+            bBox1.addItem(bText1);
+            bBox2.addItem(selectMenu);
+            this.oDialog.open();
+        },
+//    
+//      -> CREAZIONE DIALOG PER MODIFICA INIZIO/FINE
+        CreaFinestraModificaTempi: function (text) {
+            var oView = this.getView();
+            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
+            oView.addDependent(this.oDialog);
+            var oTitle = oView.byId("title");
+            oTitle.setText(text);
+            var topBox = oView.byId("topBox");
+            var oVBox1 = topBox.getItems()[0];
+            var oVBox2 = topBox.getItems()[1];
+            var oText1 = new sap.m.Text({
+                text: "Valore Corrente"
+            });
+            oVBox1.addItem(oText1);
+            var oHBoxTop = new sap.m.HBox({
+                width: "100%"
+            });
+            var oHBox1 = new sap.m.HBox({
+                width: "50%"
+            });
+            var oHBox2 = new sap.m.HBox({
+                width: "50%"
+            });
+            var oText2 = new sap.m.Text({
+                text: "inizio"
+            });
+            var oText3 = new sap.m.Text({
+                text: "fine"
+            });
+            var oTextFine = new sap.m.Text({
+                text: this.row_binded.fine
+            });
+            var oTextInizio = new sap.m.Text({
+                text: this.row_binded.inizio
+            });
+            oText2.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
+            oText3.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
+            oTextInizio.addStyleClass("size1 tempoBox");
+            oTextFine.addStyleClass("size1 tempoBox");
+            oHBox1.addItem(oText2);
+            oHBox1.addItem(oTextInizio);
+            oHBox2.addItem(oText3);
+            oHBox2.addItem(oTextFine);
+            oHBoxTop.addItem(oHBox1);
+            oHBoxTop.addItem(oHBox2);
+            oVBox2.addItem(oHBoxTop);
+            topBox.addStyleClass("blackBorder");
+            var bottomBox = oView.byId("bottomBox");
+            oVBox1 = bottomBox.getItems()[0];
+            oVBox2 = bottomBox.getItems()[1];
+            var oText = new sap.m.Text({
+                text: "Nuovi Valori"
+            });
+            oText.addStyleClass("red");
+            oVBox1.addItem(oText);
+            var oHBoxBottom = new sap.m.HBox({
+                width: "100%"
+            });
+            oHBox1 = new sap.m.HBox({
+                width: "50%"
+            });
+            oHBox2 = new sap.m.HBox({
+                width: "50%"
+            });
+            oText1 = new sap.m.Text({
+                text: "inizio"
+            });
+            oText2 = new sap.m.Text({
+                text: "fine"
+            });
+            oTextFine = new sap.m.TimePicker({
+                value: this.row_binded.fine,
+                id: "Fine"
+            });
+            oTextInizio = new sap.m.TimePicker({
+                value: this.row_binded.inizio,
+                id: "Inizio"
+            });
+            oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
+            oText2.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
+            oTextInizio.addStyleClass("myRedTempoBox");
+            oTextFine.addStyleClass("myRedTempoBox");
+            oHBox1.addItem(oText1);
+            oHBox1.addItem(oTextInizio);
+            oHBox2.addItem(oText2);
+            oHBox2.addItem(oTextFine);
+            oHBoxBottom.addItem(oHBox1);
+            oHBoxBottom.addItem(oHBox2);
+            oVBox2.addItem(oHBoxBottom);
+            this.oDialog.open();
+        },
+//    
+//      -> CREAZIONE DIALOG PER FRAZIONAMENTO
+        CreaFinestraFrazionamento: function (text) {
+            var oView = this.getView();
+            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
+            oView.addDependent(this.oDialog);
+            //title e top box
+            var oTitle = oView.byId("title");
+            oTitle.setText(text);
+            var topBox = oView.byId("topBox");
+            var oVBox = topBox.getItems()[1];
+            var oHBoxTop = new sap.m.HBox({
+                width: "100%"
+            });
+            var oText1 = new sap.m.Text({
+                text: "inizio"
+            });
+            var oTextInizio = new sap.m.Text({
+                text: this.row_binded.inizio
+            });
+            oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
+            oTextInizio.addStyleClass("size1 tempoBox");
+            oHBoxTop.addItem(oText1);
+            oHBoxTop.addItem(oTextInizio);
+            oVBox.addItem(oHBoxTop);
+            topBox.addStyleClass("blackBorder");
+            //bottom box
+            var bottomBox = oView.byId("bottomBox");
+            oVBox = bottomBox.getItems()[1];
+            var oHBoxBottom = new sap.m.HBox({
+                width: "100%"
+            });
+            oText1 = new sap.m.Text({
+                text: "fine"
+            });
+            var oTextFine = new sap.m.Text({
+                text: this.row_binded.fine
+            });
+            oText1.addStyleClass("size1 sapUiMediumMarginEnd sapUiTinyMarginTop");
+            oTextFine.addStyleClass("size1 tempoBox");
+            oHBoxBottom.addItem(oText1);
+            oHBoxBottom.addItem(oTextFine);
+            oVBox.addItem(oHBoxBottom);
+            //central box
+            var centralBox = oView.byId("centralBox");
+            oHBoxTop = new sap.m.HBox({
+                width: "100%"
+            });
+            oHBoxBottom = new sap.m.HBox({
+                width: "100%"
+            });
+            var oHBoxCentral = new sap.m.HBox({
+                width: "100%"
+            });
+            oText1 = new sap.m.Text({
+                text: "inizio"
+            });
+            oTextInizio = new sap.m.TimePicker({
+                value: this.row_binded.inizio,
+                id: "Inizio"
+            });
+            oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
+            oTextInizio.addStyleClass("myRedTempoBox");
+            oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxTop.addItem(oText1);
+            oHBoxTop.addItem(oTextInizio);
+            centralBox.addItem(oHBoxTop);
+            oText1 = new sap.m.Text({
+                text: "causale"
+            });
+            var selectMenu = new sap.m.Select({
+                autoAdjustWidth: true,
+                id: "selectionMenu"
+            });
+            var oItemSelectTemplate = new sap.ui.core.Item({
+                key: "{cause>id}",
+                text: "{cause>fermo}"
+            });
+            selectMenu.setModel(this.getView().getModel("cause"));
+            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
+            selectMenu.addStyleClass("myListItemRed");
+            oText1.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+            oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxCentral.addItem(oText1);
+            oHBoxCentral.addItem(selectMenu);
+            centralBox.addItem(oHBoxCentral);
+            oText1 = new sap.m.Text({
+                text: "fine"
+            });
+            oTextFine = new sap.m.TimePicker({
+                value: this.row_binded.fine,
+                id: "Fine"
+            });
+            oText1.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+            oTextFine.addStyleClass("myRedTempoBox");
+            oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxBottom.addItem(oText1);
+            oHBoxBottom.addItem(oTextFine);
+            centralBox.addStyleClass("blackBorder sapUiSmallMargin");
+            centralBox.addItem(oHBoxBottom);
+            this.oDialog.open();
+        },
+//    
+//      -> CREAZIONE DIALOG PER MODIFICA ELIMINAZIONE
+        CreaFinestraEliminazione: function (text) {
+            var oView = this.getView();
+            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
+            oView.addDependent(this.oDialog);
+            var oTitle = oView.byId("title");
+            oTitle.setText(text);
+            var centralBox = oView.byId("centralBox");
+            var oHBoxTop = new sap.m.HBox({
+                width: "100%"
+            });
+            var oHBoxBottom = new sap.m.HBox({
+                width: "100%"
+            });
+            var oHBoxCentral = new sap.m.HBox({
+                width: "100%"
+            });
+            var oText = new sap.m.Text({
+                text: "inizio"
+            });
+            var oTextInizio = new sap.m.TimePicker({
+                value: this.row_binded.inizio,
+                id: "Inizio",
+                enabled: false
+            });
+            oText.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
+            oTextInizio.addStyleClass("myRedTempoBox noOpacity");
+            oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxTop.addItem(oText);
+            oHBoxTop.addItem(oTextInizio);
+            centralBox.addItem(oHBoxTop);
+            oText = new sap.m.Text({
+                text: "causale"
+            });
+            var Causale = new sap.m.Text({
+                id: "Causale",
+                text: this.row_binded.causale
+            });
+            if (this.row_binded.causale === "") {
+                Causale.setVisible(false);
+            } else {
+                Causale.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop red tempoBox");
+            }
+            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+            oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxCentral.addItem(oText);
+            oHBoxCentral.addItem(Causale);
+            centralBox.addItem(oHBoxCentral);
+            oText = new sap.m.Text({
+                text: "fine"
+            });
+            var oTextFine = new sap.m.TimePicker({
+                value: this.row_binded.fine,
+                id: "Fine",
+                enabled: false
+            });
+            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+            oTextFine.addStyleClass("myRedTempoBox noOpacity");
+            oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxBottom.addItem(oText);
+            oHBoxBottom.addItem(oTextFine);
+            centralBox.addItem(oHBoxBottom);
+            this.oDialog.open();
+        },
+// INSERIMENTO DIALOG
+        CreaFinestraInserimento: function (text) {
+            var oView = this.getView();
+            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
+            oView.addDependent(this.oDialog);
+            var oTitle = oView.byId("title");
+            oTitle.setText(text);
+            var centralBox = oView.byId("centralBox");
+            var oHBoxTop = new sap.m.HBox({
+                width: "100%"
+            });
+            var oHBoxBottom = new sap.m.HBox({
+                width: "100%"
+            });
+            var oHBoxCentral = new sap.m.HBox({
+                width: "100%"
+            });
+            var oText = new sap.m.Text({
+                text: "inizio"
+            });
+            var oTextInizio = new sap.m.TimePicker({
+                value: "00:00:00",
+                id: "Inizio"
+            });
+            oText.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
+            oTextInizio.addStyleClass("myRedTempoBox");
+            oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxTop.addItem(oText);
+            oHBoxTop.addItem(oTextInizio);
+            centralBox.addItem(oHBoxTop);
+            oText = new sap.m.Text({
+                text: "causale"
+            });
+            var selectMenu = new sap.m.Select({
+                autoAdjustWidth: true,
+                id: "selectionMenu"
+            });
+            var oItemSelectTemplate = new sap.ui.core.Item({
+                key: "{cause>id}",
+                text: "{cause>fermo}"
+            });
+            selectMenu.setModel(this.getView().getModel("cause"));
+            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
+            selectMenu.addStyleClass("myListItemRed");
+            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+            oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxCentral.addItem(oText);
+            oHBoxCentral.addItem(selectMenu);
+            centralBox.addItem(oHBoxCentral);
+            oText = new sap.m.Text({
+                text: "fine"
+            });
+            var oTextFine = new sap.m.TimePicker({
+                value: "00:00:00",
+                id: "Fine"
+            });
+            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
+            oTextFine.addStyleClass("myRedTempoBox");
+            oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
+            oHBoxBottom.addItem(oText);
+            oHBoxBottom.addItem(oTextFine);
+            centralBox.addStyleClass("sapUiSmallMargin");
+            centralBox.addItem(oHBoxBottom);
+            this.oDialog.open();
         },
         ConfermaCambio: function (oEvent) {
             var oText = this.getView().byId("title").getText();
@@ -211,430 +581,17 @@ sap.ui.define([
                     break;
             }
         },
-        DestroyDialog: function () {
-            var id_dialog = this.oDialog.getId();
-            sap.ui.getCore().byId(id_dialog).destroy();
-        },
-//MODIFICA CAUSALE DIALOG
-        creaFinestraModificaCausale: function (text) {
-            var oView = this.getView();
-            this.oDialog = oView.byId("modificaGuasti");
-            if (!this.oDialog) {
-                this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
-                oView.addDependent(this.oDialog);
-            }
-            var oTitle = oView.byId("title");
-            oTitle.setText(text);
-            var topBox = oView.byId("topBox");
-            var oVBox1 = topBox.getItems()[0];
-            var oVBox2 = topBox.getItems()[1];
-            var oText1 = new sap.m.Text({
-                text: "Valore Corrente"
-            });
-            var oText2 = new sap.m.Text({
-                text: this.row_binded.causale
-            });
-            var bottomBox = oView.byId("bottomBox");
-            var bBox1 = bottomBox.getItems()[0];
-            var bBox2 = bottomBox.getItems()[1];
-            var bText1 = new sap.m.Text({
-                text: "Nuovo Valore"
-            });
-            var selectMenu = new sap.m.Select({
-                autoAdjustWidth: true,
-                id: "selectionMenu"
-            });
-            var oItemSelectTemplate = new sap.ui.core.Item({
-                key: "{cause>id}",
-                text: "{cause>fermo}"
-            });
-            selectMenu.setModel(this.getView().getModel("cause"));
-            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
-            selectMenu.addStyleClass("myListItemRed");
-            bText1.addStyleClass("red");
-            topBox.addStyleClass("blackBorder");
-            oText2.addStyleClass("size1");
-            oVBox1.addItem(oText1);
-            oVBox2.addItem(oText2);
-            bBox1.addItem(bText1);
-            bBox2.addItem(selectMenu);
-            this.oDialog.open();
-        },
-//MODIFICA TEMPI DIALOG
-        creaFinestraModificaTempi: function (text) {
-            var oView = this.getView();
-            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
-            oView.addDependent(this.oDialog);
-            var oTitle = oView.byId("title");
-            oTitle.setText(text);
-            var topBox = oView.byId("topBox");
-            var oVBox1 = topBox.getItems()[0];
-            var oVBox2 = topBox.getItems()[1];
-            var oText1 = new sap.m.Text({
-                text: "Valore Corrente"
-            });
-            oVBox1.addItem(oText1);
-            var oHBoxTop = new sap.m.HBox({
-                width: "100%"
-            });
-            var oHBox1 = new sap.m.HBox({
-                width: "50%"
-            });
-            var oHBox2 = new sap.m.HBox({
-                width: "50%"
-            });
-            var oText2 = new sap.m.Text({
-                text: "inizio"
-            });
-            var oText3 = new sap.m.Text({
-                text: "fine"
-            });
-            var oTextFine = new sap.m.Text({
-                text: this.row_binded.fine
-            });
-            var oTextInizio = new sap.m.Text({
-                text: this.row_binded.inizio
-            });
-            oText2.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
-            oText3.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
-            oTextInizio.addStyleClass("size1 tempoBox");
-            oTextFine.addStyleClass("size1 tempoBox");
-            oHBox1.addItem(oText2);
-            oHBox1.addItem(oTextInizio);
-            oHBox2.addItem(oText3);
-            oHBox2.addItem(oTextFine);
-            oHBoxTop.addItem(oHBox1);
-            oHBoxTop.addItem(oHBox2);
-            oVBox2.addItem(oHBoxTop);
-            topBox.addStyleClass("blackBorder");
-            var bottomBox = oView.byId("bottomBox");
-            oVBox1 = bottomBox.getItems()[0];
-            oVBox2 = bottomBox.getItems()[1];
-            var oText = new sap.m.Text({
-                text: "Nuovi Valori"
-            });
-            oText.addStyleClass("red");
-            oVBox1.addItem(oText);
-            var oHBoxBottom = new sap.m.HBox({
-                width: "100%"
-            });
-            oHBox1 = new sap.m.HBox({
-                width: "50%"
-            });
-            oHBox2 = new sap.m.HBox({
-                width: "50%"
-            });
-            oText1 = new sap.m.Text({
-                text: "inizio"
-            });
-            oText2 = new sap.m.Text({
-                text: "fine"
-            });
-            oTextFine = new sap.m.TimePicker({
-                value: this.row_binded.fine,
-                id: "Fine",
-                change: this.onCheckValiditySimple.bind(this)
-            });
-            oTextInizio = new sap.m.TimePicker({
-                value: this.row_binded.inizio,
-                id: "Inizio",
-                change: this.onCheckValiditySimple.bind(this)
-            });
-            oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
-            oText2.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
-            oTextInizio.addStyleClass("myRedTempoBox");
-            oTextFine.addStyleClass("myRedTempoBox");
-            oHBox1.addItem(oText1);
-            oHBox1.addItem(oTextInizio);
-            oHBox2.addItem(oText2);
-            oHBox2.addItem(oTextFine);
-            oHBoxBottom.addItem(oHBox1);
-            oHBoxBottom.addItem(oHBox2);
-            oVBox2.addItem(oHBoxBottom);
-            this.oDialog.open();
-        },
-//CREA FRAZIONAMENTO DIALOG
-        creaFinestraFrazionamento: function (text) {
-            var oView = this.getView();
-            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
-            oView.addDependent(this.oDialog);
-            //title e top box
-            var oTitle = oView.byId("title");
-            oTitle.setText(text);
-            var oButton = oView.byId("confermaModificheButton");
-            oButton.setEnabled(false);
-            oButton.removeStyleClass("confermaButtonhover");
-            var topBox = oView.byId("topBox");
-            var oVBox = topBox.getItems()[1];
-            var oHBoxTop = new sap.m.HBox({
-                width: "100%"
-            });
-            var oText1 = new sap.m.Text({
-                text: "inizio"
-            });
-            var oTextInizio = new sap.m.Text({
-                text: this.row_binded.inizio
-            });
-            oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop");
-            oTextInizio.addStyleClass("size1 tempoBox");
-            oHBoxTop.addItem(oText1);
-            oHBoxTop.addItem(oTextInizio);
-            oVBox.addItem(oHBoxTop);
-            topBox.addStyleClass("blackBorder");
-            //bottom box
-            var bottomBox = oView.byId("bottomBox");
-            oVBox = bottomBox.getItems()[1];
-            var oHBoxBottom = new sap.m.HBox({
-                width: "100%"
-            });
-            oText1 = new sap.m.Text({
-                text: "fine"
-            });
-            var oTextFine = new sap.m.Text({
-                text: this.row_binded.fine
-            });
-            oText1.addStyleClass("size1 sapUiMediumMarginEnd sapUiTinyMarginTop");
-            oTextFine.addStyleClass("size1 tempoBox");
-            oHBoxBottom.addItem(oText1);
-            oHBoxBottom.addItem(oTextFine);
-            oVBox.addItem(oHBoxBottom);
-            //central box
-            var centralBox = oView.byId("centralBox");
-            oHBoxTop = new sap.m.HBox({
-                width: "100%"
-            });
-            oHBoxBottom = new sap.m.HBox({
-                width: "100%"
-            });
-            var oHBoxCentral = new sap.m.HBox({
-                width: "100%"
-            });
-            oText1 = new sap.m.Text({
-                text: "inizio"
-            });
-            oTextInizio = new sap.m.TimePicker({
-                value: this.row_binded.inizio,
-                change: this.onCheckValidity.bind(this),
-                id: "Inizio"
-            });
-            oText1.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
-            oTextInizio.addStyleClass("myRedTempoBox");
-            oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxTop.addItem(oText1);
-            oHBoxTop.addItem(oTextInizio);
-            centralBox.addItem(oHBoxTop);
-            oText1 = new sap.m.Text({
-                text: "causale"
-            });
-            var selectMenu = new sap.m.Select({
-                autoAdjustWidth: true,
-                id: "selectionMenu"
-            });
-            var oItemSelectTemplate = new sap.ui.core.Item({
-                key: "{cause>id}",
-                text: "{cause>fermo}"
-            });
-            selectMenu.setModel(this.getView().getModel("cause"));
-            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
-            selectMenu.addStyleClass("myListItemRed");
-            oText1.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
-            oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxCentral.addItem(oText1);
-            oHBoxCentral.addItem(selectMenu);
-            centralBox.addItem(oHBoxCentral);
-            oText1 = new sap.m.Text({
-                text: "fine"
-            });
-            oTextFine = new sap.m.TimePicker({
-                value: this.row_binded.fine,
-                change: this.onCheckValidity.bind(this),
-                id: "Fine"
-            });
-            oText1.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
-            oTextFine.addStyleClass("myRedTempoBox");
-            oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxBottom.addItem(oText1);
-            oHBoxBottom.addItem(oTextFine);
-            centralBox.addStyleClass("blackBorder sapUiSmallMargin");
-            centralBox.addItem(oHBoxBottom);
-            this.oDialog.open();
-        },
-//ELIMINAZIONE DIALOG 
-        creaFinestraEliminazione: function (text) {
-            var oView = this.getView();
-            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
-            oView.addDependent(this.oDialog);
-            var oTitle = oView.byId("title");
-            oTitle.setText(text);
-            var centralBox = oView.byId("centralBox");
-            var oHBoxTop = new sap.m.HBox({
-                width: "100%"
-            });
-            var oHBoxBottom = new sap.m.HBox({
-                width: "100%"
-            });
-            var oHBoxCentral = new sap.m.HBox({
-                width: "100%"
-            });
-            var oText = new sap.m.Text({
-                text: "inizio"
-            });
-            var oTextInizio = new sap.m.TimePicker({
-                value: this.row_binded.inizio,
-                id: "Inizio",
-                enabled: false
-            });
-            oText.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
-            oTextInizio.addStyleClass("myRedTempoBox noOpacity");
-            oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxTop.addItem(oText);
-            oHBoxTop.addItem(oTextInizio);
-            centralBox.addItem(oHBoxTop);
-            oText = new sap.m.Text({
-                text: "causale"
-            });
-            var Causale = new sap.m.Text({
-                id: "Causale",
-                text: this.row_binded.causale
-            });
-            if (this.row_binded.causale === "") {
-                Causale.setVisible(false);
+        SUCCESSGuastoModificato: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                this.guasti = Jdata.AllFermi;
+                this.guasti = Library.AddTimeGaps(this.guasti);
+                this.ModelGuasti.setData(this.guasti);
+                sap.ui.getCore().setModel(this.ModelGuasti, "guasti");
+                this.getView().setModel(this.ModelGuasti, "guasti");
+                this.oDialog.destroy();
             } else {
-                Causale.addStyleClass("size1 sapUiSmallMarginEnd sapUiTinyMarginTop red tempoBox");
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
-            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
-            oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxCentral.addItem(oText);
-            oHBoxCentral.addItem(Causale);
-            centralBox.addItem(oHBoxCentral);
-            oText = new sap.m.Text({
-                text: "fine"
-            });
-            var oTextFine = new sap.m.TimePicker({
-                value: this.row_binded.fine,
-                id: "Fine",
-                enabled: false
-            });
-            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
-            oTextFine.addStyleClass("myRedTempoBox noOpacity");
-            oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxBottom.addItem(oText);
-            oHBoxBottom.addItem(oTextFine);
-            centralBox.addItem(oHBoxBottom);
-            this.oDialog.open();
-        },
-// INSERIMENTO DIALOG
-        creaFinestraInserimento: function (text) {
-            var oView = this.getView();
-            this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.modificaGuasti", this);
-            oView.addDependent(this.oDialog);
-            var oTitle = oView.byId("title");
-            oTitle.setText(text);
-            var centralBox = oView.byId("centralBox");
-            var oHBoxTop = new sap.m.HBox({
-                width: "100%"
-            });
-            var oHBoxBottom = new sap.m.HBox({
-                width: "100%"
-            });
-            var oHBoxCentral = new sap.m.HBox({
-                width: "100%"
-            });
-            var oText = new sap.m.Text({
-                text: "inizio"
-            });
-            var oTextInizio = new sap.m.TimePicker({
-                value: "00:00:00",
-                change: this.onCheckValiditySimple.bind(this),
-                id: "Inizio"
-            });
-            oText.addStyleClass("size1 sapUiSmallMarginEnd sapUiSmallMarginTop red");
-            oTextInizio.addStyleClass("myRedTempoBox");
-            oHBoxTop.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxTop.addItem(oText);
-            oHBoxTop.addItem(oTextInizio);
-            centralBox.addItem(oHBoxTop);
-            oText = new sap.m.Text({
-                text: "causale"
-            });
-            var selectMenu = new sap.m.Select({
-                autoAdjustWidth: true,
-                id: "selectionMenu"
-            });
-            var oItemSelectTemplate = new sap.ui.core.Item({
-                key: "{cause>id}",
-                text: "{cause>fermo}"
-            });
-            selectMenu.setModel(this.getView().getModel("cause"));
-            selectMenu.bindAggregation("items", "cause>/causali", oItemSelectTemplate);
-            selectMenu.addStyleClass("myListItemRed");
-            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
-            oHBoxCentral.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxCentral.addItem(oText);
-            oHBoxCentral.addItem(selectMenu);
-            centralBox.addItem(oHBoxCentral);
-            oText = new sap.m.Text({
-                text: "fine"
-            });
-            var oTextFine = new sap.m.TimePicker({
-                value: "00:00:00",
-                change: this.onCheckValiditySimple.bind(this),
-                id: "Fine"
-            });
-            oText.addStyleClass("size1 sapUiMediumMarginEnd sapUiSmallMarginTop red");
-            oTextFine.addStyleClass("myRedTempoBox");
-            oHBoxBottom.addStyleClass("sapUiLargeMarginBegin sapUiSmallMarginBottom");
-            oHBoxBottom.addItem(oText);
-            oHBoxBottom.addItem(oTextFine);
-            centralBox.addStyleClass("sapUiSmallMargin");
-            centralBox.addItem(oHBoxBottom);
-            this.oDialog.open();
-        },
-// FUNZIONI USATE            
-        onCheckValidity: function () {
-            var oView = this.getView();
-            var oButton = oView.byId("confermaModificheButton");
-            if (sap.ui.getCore().byId("Inizio").getValue() !== "" && sap.ui.getCore().byId("Fine").getValue() !== "") {
-                var secondi_inizio_row = this.fromStringToSeconds(this.row_binded.inizio);
-                var secondi_fine_row = this.fromStringToSeconds(this.row_binded.fine);
-                var secondi_inizio = this.fromStringToSeconds(sap.ui.getCore().byId("Inizio").getValue());
-                var secondi_fine = this.fromStringToSeconds(sap.ui.getCore().byId("Fine").getValue());
-                var intervallo_inizio = secondi_inizio - secondi_inizio_row;
-                var intervallo_fine = secondi_fine_row - secondi_fine;
-                if ((intervallo_inizio > 0 && intervallo_fine >= 0 && secondi_inizio < secondi_fine) || (intervallo_inizio >= 0 && intervallo_fine > 0 && secondi_inizio < secondi_fine)) {
-                    oButton.setEnabled(true);
-                    oButton.addStyleClass("confermaButtonhover");
-                } else {
-                    oButton.setEnabled(false);
-                    oButton.removeStyleClass("confermaButtonhover");
-                }
-            } else {
-                oButton.setEnabled(false);
-                oButton.removeStyleClass("confermaButtonhover");
-            }
-        },
-        onCheckValiditySimple: function () {
-            var oView = this.getView();
-            var oButton = oView.byId("confermaModificheButton");
-            if (sap.ui.getCore().byId("Inizio").getValue() !== "" && sap.ui.getCore().byId("Fine").getValue() !== "") {
-                var secondi_inizio = this.fromStringToSeconds(sap.ui.getCore().byId("Inizio").getValue());
-                var secondi_fine = this.fromStringToSeconds(sap.ui.getCore().byId("Fine").getValue());
-                var intervallo = secondi_fine - secondi_inizio;
-                if (intervallo > 0) {
-                    oButton.setEnabled(true);
-                    oButton.addStyleClass("confermaButtonhover");
-                } else {
-                    oButton.setEnabled(false);
-                    oButton.removeStyleClass("confermaButtonhover");
-                }
-            } else {
-                oButton.setEnabled(false);
-                oButton.removeStyleClass("confermaButtonhover");
-            }
-        },
-        fromStringToSeconds: function (stringa) {
-            var array_stringa = stringa.split(":");
-            return  parseInt(array_stringa[0], 10) * 60 * 60 + parseInt(array_stringa[1], 10) * 60 + parseInt(array_stringa[2], 10);
         },
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////// FUNZIONI LOCALI (QUANDO IL BACKEND NON E' PRESENTE)
 
@@ -763,6 +720,10 @@ sap.ui.define([
                 }
             }
             return causa;
+        },
+        fromStringToSeconds: function (stringa) {
+            var array_stringa = stringa.split(":");
+            return  parseInt(array_stringa[0], 10) * 60 * 60 + parseInt(array_stringa[1], 10) * 60 + parseInt(array_stringa[2], 10);
         }
     });
 });

@@ -1253,7 +1253,7 @@ sap.ui.define([
                 row_binded.SKUCodiceInterno = "";
                 this.oDialog.destroy();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 180});
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
         AnnullaModifiche: function () {
@@ -1671,9 +1671,6 @@ sap.ui.define([
             //title e top box
             var oTitle = oView.byId("title");
             oTitle.setText(text);
-//            var oButton = oView.byId("confermaModificheButton");
-//            oButton.setEnabled(false);
-//            oButton.removeStyleClass("confermaButtonhover");
             var topBox = oView.byId("topBox");
             var oVBox = topBox.getItems()[1];
             var oHBoxTop = new sap.m.HBox({
