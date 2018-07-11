@@ -399,13 +399,13 @@
 }
 /* SCROLLING CONTAINER */
 .scrollingbar {
-    overflow-y: scroll;
+    overflow-y: scroll !important;
 }
 .scrollingbarTransparent{
     overflow-y: scroll; 
 }
 .scrollingbarTransparent::-webkit-scrollbar{
-    background-color: transparent; 
+    background-color: transparent !important; 
 }
 .scrollingbarTransparent::-webkit-scrollbar-corner{
     background-color: transparent;
@@ -459,6 +459,9 @@
 }
 .buttonDimension .sapMBtnInner .sapMBtnContent{
     font-size: 20pt;
+}
+.cellePiani {
+    height: 50px;
 }
 .cellePiani .sapMListTblCell{
     padding: 0.1rem !important;

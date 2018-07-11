@@ -211,7 +211,9 @@
                                                                                 vAlign="Middle"
                                                                                 hAlign="Center">
                                                                             </Column>
-                                                                            <Column width="25%">
+                                                                            <Column width="25%"
+                                                                                    vAlign="Middle"
+                                                                                    hAlign="Center">
                                                                             </Column>
                                                                             <Column
                                                                                 width="5%"
@@ -265,7 +267,7 @@
                                                                                     <Text text="{linea>sequenza}" />
                                                                                     <Text text="{linea>formatoProduttivo}" />
                                                                                     <Text text="{= ${linea>confezione} + ' ' + ${linea>grammatura} + 'gr'}" />
-                                                                                    <Button text="{linea>destinazione}" enabled="false"/>
+                                                                                    <Text text="{linea>destinazione}"/>
                                                                                     <Text
                                                                                         text="{linea>qli}" />
                                                                                     <Text
