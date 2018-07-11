@@ -36,7 +36,7 @@
                                                     <ToolbarSpacer/>
                                                     <Button text="Collassa" press="CollapseAll" app:mydata="SKU_TT" class="TTButton"/>
                                                     <Button text="Espandi" press="ExpandAll" app:mydata="SKU_TT" class="TTButton"/>
-                                                    <Button text="Da confermare" press="ShowRelevant" app:mydata="SKU_TT" class="TTButton"/>
+                                                    <Button text="Speciali" press="ShowRelevant" app:mydata="SKU_TT" class="TTButton"/>
                                                 </Toolbar>
                                             </wt:toolbar>
                                             <wt:columns>
