@@ -1,9 +1,10 @@
 sap.ui.define([
+    'sap/m/MessageToast',
     'jquery.sap.global',
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'myapp/controller/Library'
-], function (jQuery, Controller, JSONModel, Library) {
+], function (MessageToast, jQuery, Controller, JSONModel, Library) {
     "use strict";
 
     var MainController = Controller.extend("myapp.controller.Main", {
@@ -12,11 +13,17 @@ sap.ui.define([
         ModelReparti: new JSONModel({}),
         ISLOCAL: null,
         ModelLinee: new JSONModel({}),
+        ModelTiles: new JSONModel({}),
 
         onInit: function () {
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
+            var that = this;
+            Library.SyncAjaxCallerData("model/JSON_Main.json", function (Jdata) {
+                that.ModelTiles.setData(Jdata);
+            });
+            this.getView().setModel(this.ModelTiles);
         },
         onToPianiPage: function () {
             var link;
@@ -37,7 +44,7 @@ sap.ui.define([
             if (this.ISLOCAL === 1) {
                 link = "model/linee_riepilogo.json";
             } else {
-
+                MessageToast.show("Non ancora disponibile", {duration: 3000});
             }
             Library.AjaxCallerData(link, this.SUCCESSModelLinee.bind(this));
             sap.ui.getCore().setModel(this.ModelLinee, "linee");
