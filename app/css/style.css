@@ -223,6 +223,13 @@
 .diffStandard input {
     color : red;
 }
+/* CSS NEL MODIFICA ATTRIBUTI */
+.blueLabel {
+    color: #003A6B;
+}
+.blueLabel .sapMLabel{
+    color: #003A6B;
+}
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
