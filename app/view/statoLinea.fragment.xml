@@ -3,44 +3,53 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
-    <Dialog horizontalScrolling="false" verticalScrolling="false" showHeader="false" class="colorPage" id="statoLinea">
-        <VBox>
-            <VBox id="statoLineaBox" height="85%">
-                <VBox class="sapUiMediumMarginBegin sapUiMediumMarginTop">
+    <Dialog horizontalScrolling="true" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
+        <VBox height="100%">
+            <VBox height="40px"/>
+            <HBox id="statoLineaBox" height="30%">
+                <VBox width="10%"/>
+                <VBox width="80%">
                     <CheckBox
                         id="disponibile"
                         select="GestioneStato"
                         text="Disponibile per la produzione"
-                        class="sapUiSmallMarginBottom"/>
+                        class="blueLabel"/>
                     <CheckBox
                         id="nondisponibile"
                         select="GestioneStato"
-                        text="Non disponibile per la produzione"/>
-                </VBox>
-            </VBox>
-        
-            <VBox id="nondisponibileBox" height="10%" class="sapUiLargeMarginBegin sapUiSmallMarginBottom">
-                <VBox>
-                    <Text text="Inizio Turno"/>
-                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
-                </VBox>
-                <VBox>
-                    <Text text="Fine Turno"/>
-                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
-                </VBox>
-                <VBox>
-                    <Text text="Causale"/>
-                    <Select id="causale" items="{cause>/cause}" autoAdjustWidth="true">
-                        <core:Item key="{cause>id}" text="{cause>fermo}" />
-                    </Select>
-                </VBox>
-            </VBox>
-            <HBox height="5%">
-                <VBox class="sapUiSmallMargin" width="45%">
-                    <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="CloseDialog"/>
+                        text="Non disponibile per la produzione"
+                        class="blueLabel"/>
                 </VBox>
                 <VBox width="10%"/>
-                <VBox class="sapUiSmallMargin" width="45%">
+            </HBox>
+            <VBox height="20px"/>
+            <HBox height="300px">
+                <VBox width="10%"/>
+                <VBox width="1rem"/>
+                <VBox id="nondisponibileBox" width="80%" height='' class="bordoBlu paddingleft">
+                    <VBox height="33%" justifyContent="Center">
+                        <Label text="Inizio Turno" class="blueLabel"/>
+                        <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
+                    </VBox>
+                    <VBox height="33%" justifyContent="Center">
+                        <Label text="Fine Turno" class="blueLabel"/>
+                        <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
+                    </VBox>
+                    <VBox height="33%" justifyContent="Center">
+                        <Label text="Causale" class="blueLabel"/>
+                        <Select id="causale" items="{cause>/causali}" autoAdjustWidth="true">
+                            <core:Item key="{cause>id}" text="{cause>fermo}" />
+                        </Select>
+                    </VBox>
+                </VBox>
+                <VBox width="10%"/>
+            </HBox>
+            <HBox height="5%">
+                <VBox class="sapUiSmallMargin" width="48%">
+                    <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="CloseDialog"/>
+                </VBox>
+                <VBox width="4%"/>
+                <VBox class="sapUiSmallMargin" width="48%">
                     <Button class="confermaButton lessOmbra" text="Conferma" width="100%"/>
                 </VBox>
             </HBox>

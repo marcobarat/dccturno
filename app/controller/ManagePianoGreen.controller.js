@@ -270,6 +270,7 @@ sap.ui.define([
 //        
 //         -> PULSANTE DELLA LINEA
         ShowStatoLinea: function () {
+            var link;
             var oView = this.getView();
             this.oDialog = oView.byId("statoLinea");
             if (!this.oDialog) {
@@ -277,19 +278,20 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
             if (Number(this.ISLOCAL) === 1) {
-                Library.AjaxCallerData("model/JSON_FermoTestiNew.json", this.SUCCESSCause.bind(this));
-                this.getView().setModel(this.ModelCause, "cause");
+                link = "model/JSON_FermoTestiNew.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
             }
-            oView.byId("disponibile").setSelected(true);
-            oView.byId("nondisponibile").setSelected(false);
-            this.collapse();
-            this.oDialog.open();
+            Library.AjaxCallerData(link, this.SUCCESSCause.bind(this));
+            this.getView().setModel(this.ModelCause, "cause");
         },
         SUCCESSCause: function (Jdata) {
-            this.data_json = {};
-            this.data_json.cause = [];
-            this.RecursiveTakeAllCause(Jdata);
-            this.ModelCause.setData(this.data_json);
+            this.ModelCause.setData(Jdata);
+            this.getView().byId("disponibile").setSelected(true);
+            this.getView().byId("nondisponibile").setSelected(false);
+            this.oDialog.open();
+            jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").css('display', 'none');
+            jQuery("section.sapMDialogSection").find("div[id*='causale']").css('min-width', '7rem');
         },
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
@@ -1525,11 +1527,11 @@ sap.ui.define([
             if (oText === "Disponibile per la produzione") {
                 this.getView().byId("disponibile").setSelected(true);
                 this.getView().byId("nondisponibile").setSelected(false);
-                this.collapse();
+                jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").slideUp('fast');
             } else {
                 this.getView().byId("nondisponibile").setSelected(true);
                 this.getView().byId("disponibile").setSelected(false);
-                this.expand();
+                jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").slideDown('fast');
             }
         },
         CloseDialog: function () {

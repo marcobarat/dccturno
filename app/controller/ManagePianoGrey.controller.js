@@ -55,7 +55,6 @@ sap.ui.define([
             oTitle.addStyleClass("customTextTitle");
             this.getView().setModel(this.ModelLinea, "linea");
         },
-
 //        -------------------------------------------------
 //        -------------------------------------------------
 //        -------------------------------------------------
