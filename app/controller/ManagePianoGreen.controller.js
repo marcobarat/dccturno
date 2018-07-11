@@ -64,6 +64,7 @@ sap.ui.define([
         Counter: null,
         STOPCompleta: 0,
         rowBinded: null,
+        BusyDialog: new sap.m.BusyDialog(),
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -569,7 +570,7 @@ sap.ui.define([
             }
         },
 //              - BUTTON DESTINAZIONE
-        ShowBatchDetails: function (event) {
+        ModifyBatchDetails: function (event) {
             var oRow;
             if (event) {
                 this.ModelLinea.getProperty(event.getSource().getBindingContext("linea").getPath()).modifyBatch = 1;
@@ -1387,6 +1388,41 @@ sap.ui.define([
                     break;
             }
         },
+        ShowBatchDetails: function () {
+            var Path = this.oButton.getBindingContext("linea").sPath;
+            var pathArray = Path.split("/");
+            var linea_path = "/linee/" + pathArray[pathArray.indexOf("linee") + 1] + "/";
+            this.linea = this.ModelLinea.getProperty(linea_path);
+            this.linea_id = this.linea.lineaID;
+            var row_binded = this.ModelLinea.getProperty(Path);
+            this.confezione = row_binded.confezione;
+            this.grammatura = row_binded.grammatura;
+            if (this.ISLOCAL !== 1) {
+                var oView = this.getView();
+                var obj = {};
+                obj.pianodiconfezionamento = "";
+                obj.lineaId = "";
+                obj.batchId = "";
+                obj.sequenza = "";
+                obj.quintali = "";
+                obj.cartoni = "";
+                obj.ore = "";
+                obj.SKUCodiceInterno = "";
+                obj.formatoProduttivo = row_binded.formatoProduttivo;
+                obj.tipologia = row_binded.confezione;
+                obj.grammatura = row_binded.grammatura;
+                obj.destinazione = row_binded.destinazione;
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
+                Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this));
+                this.oDialog = oView.byId("visualizzaAttributi");
+                if (!this.oDialog) {
+                    this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.visualizzaAttributi", this);
+                    oView.addDependent(this.oDialog);
+                }
+                Library.RemoveClosingButtons.bind(this)("attributiContainer");
+                this.oDialog.open();
+            }
+        },
         SUCCESSTrasferimentoBatch: function (Jdata) {
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
@@ -1451,6 +1487,32 @@ sap.ui.define([
             this.CheckTotaleCausa = 0;
             this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
             this.oDialog.open();
+        },
+
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        -------------------------------------------------
+//        
+//      **************** POPUP VISUALIZZA ATTRIBUTI BATCH ****************
+
+        TabSelectionShow: function (event) {
+            if (event.getParameters().item !== "Attributi") {
+                var tabName = event.getParameters().item.getProperty("name");
+                if (tabName === "Parametri") {
+                    var rowPath = this.row.getBindingContext("linea").sPath;
+                    var row_binded = this.ModelLinea.getProperty(rowPath);
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SegmentoBatchCalcolo&Content-Type=text/json&BatchID=" + row_binded.batchID + "&LineaID=" + this.linea_id + "&OutputParameter=JSON";
+                    this.BusyDialog.open();
+                    Library.AjaxCallerData(link, this.SUCCESSComboParametriShow.bind(this));
+                }
+            }
+        },
+        SUCCESSComboParametriShow: function (Jdata) {
+            var data = Jdata.attributi;
+            data = Library.RecursiveLinkRemoval(data);
+            this.ModelParametri.setData(data);
+            this.getView().setModel(this.ModelParametri, "ModelParametri");
+            this.BusyDialog.close();
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
