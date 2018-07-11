@@ -3,6 +3,11 @@
     width: 250px !important;
     height: 250px !important;
 }
+.Logo {
+    width: 55%;
+    margin-left: 10%;
+    margin-top: 5%;
+}
 
 /*----------------------------------------
 ----------------------------------------
@@ -381,6 +386,9 @@
 }
 .blueText .sapMText {
     color: #003A6B;
+}
+.bordoRosso {
+    border: solid 1.5px #A71930;
 }
 .bordoBlu {
     border: solid 1.5px #003A6B;
