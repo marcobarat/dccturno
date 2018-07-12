@@ -17,11 +17,25 @@ sap.ui.define([
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
-            var that = this;
-            Library.SyncAjaxCallerData("model/JSON_Main.json", function (Jdata) {
-                that.ModelTiles.setData(Jdata);
+//            var that = this;
+//            Library.SyncAjaxCallerData("model/JSON_Main.json", function (Jdata) {
+//                that.ModelTiles.setData(Jdata);
+//            });
+//            this.getView().setModel(this.ModelTiles);
+        },
+        onAfterRendering: function () {
+            $("div.tileBlue").mouseenter(function () {
+                $(this).removeClass("tileTitleHoverBlue");
             });
-            this.getView().setModel(this.ModelTiles);
+            $("div.tileBlue").mouseleave(function () {
+                $(this).addClass("tileTitleHoverBlue");
+            });
+            $("div.tileRed").mouseenter(function () {
+                $(this).removeClass("tileTitleHoverRed");
+            });
+            $("div.tileRed").mouseleave(function () {
+                $(this).addClass("tileTitleHoverRed");
+            });
         },
         onToPianiPage: function () {
             var link;
