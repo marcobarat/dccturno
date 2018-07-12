@@ -6,7 +6,6 @@ sap.ui.define([
     'myapp/controller/Library'
 ], function (MessageToast, jQuery, Controller, JSONModel, Library) {
     "use strict";
-
     var MainController = Controller.extend("myapp.controller.Main", {
 
         ISLOCALModel: new JSONModel({}),
@@ -14,7 +13,6 @@ sap.ui.define([
         ISLOCAL: null,
         ModelLinee: new JSONModel({}),
         ModelTiles: new JSONModel({}),
-
         onInit: function () {
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});

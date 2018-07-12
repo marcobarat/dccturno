@@ -9,6 +9,24 @@
     margin-top: 5%;
 }
 
+.tileBlue:hover {
+    background-color: #003A6B;
+}
+.tileBlue {
+    background-color: white;
+}
+.tileTextBlue *{
+    color: #003A6B; 
+}
+.tileTextBlue:hover *{
+    color: white; 
+}
+.tileTextRed *{
+    color: #A71930;
+}
+.tileTextWhite *{
+    color: white;
+}
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
@@ -238,7 +256,7 @@
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
-    /* VIEW REPORT */
+/* VIEW REPORT */
 .noBorderRight .sapUiTableCol{
     border-right: 0px !important;
 }
@@ -298,7 +316,7 @@
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
-    /* VIEW RIEPILOGO LINEE */
+/* VIEW RIEPILOGO LINEE */
 .RiepilogoLineaElement{
     border: 2px solid #003A6B; 
 }   
@@ -371,8 +389,8 @@
 /*CLASSI CONDIVISE DA PIU' VIEW*/
 /* NO FOCUS DEI PULSANTI*/
 .textTop {
-   font-size: 30pt;
-   color : #003A6B;
+    font-size: 30pt;
+    color : #003A6B;
 }
 .noFocus:focus *{
     outline: none !important;
@@ -384,12 +402,12 @@
     color : #003A6B;
 }
 .customText {
-   font-size: 15pt;
-   font-weight: bold;
-   color : #003A6B;
+    font-size: 15pt;
+    font-weight: bold;
+    color : #003A6B;
 }
 .colorPage {
-   background-color: white;
+    background-color: white;
 }
 .blueText .sapMText {
     color: #003A6B;

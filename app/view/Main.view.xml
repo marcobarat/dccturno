@@ -19,17 +19,14 @@
                 <HBox>
                     <VBox height="100%" width="25%"/>
                     <VBox height="100%" width="30%">
-                        <GenericTile header="Piani di Confezionamento" press="onToPianiPage" class="tileSize bordoBlu">
-<!--                            <content>
-                                <tileContent unit="Unit" footer="Footer Text">
-                                    <content>
-                                    </content>
-                                </tileContent>
-                            </content>-->
+                        <GenericTile header="Piani di Confezionamento" press="onToPianiPage" class="tileSize bordoBlu tileTextBlue tileBlue">
+<!--                            <TileContent>
+                                <ImageContent src="sap-icon://home-share" />
+                            </TileContent>-->
                         </GenericTile>
                     </VBox>
                     <VBox height="100%" width="30%">
-                        <GenericTile header="Sinottici" press="onSinotticiPage" class="tileSize bordoRosso"/>
+                        <GenericTile header="Sinottici" press="onSinotticiPage" class="tileSize bordoRosso tileTextRed"/>
                     </VBox>
                     <VBox height="100%" width="15%"/>
                 </HBox>
