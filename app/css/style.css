@@ -8,6 +8,18 @@
     margin-left: 10%;
     margin-top: 5%;
 }
+.tileTitle .sapMTextLineClamp {
+    font-size: 20pt;
+    font-family: Arial;
+    line-height: 17pt;
+    white-space: normal;
+}
+.red .sapMTextLineClamp {
+    color: #A71930;
+}
+.blue .sapMTextLineClamp {
+    color: #003A6B;
+}
 
 /*----------------------------------------
 ----------------------------------------

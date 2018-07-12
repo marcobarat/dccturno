@@ -19,11 +19,11 @@ sap.ui.define([
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
-            var that = this;
-            Library.SyncAjaxCallerData("model/JSON_Main.json", function (Jdata) {
-                that.ModelTiles.setData(Jdata);
-            });
-            this.getView().setModel(this.ModelTiles);
+//            var that = this;
+//            Library.SyncAjaxCallerData("model/JSON_Main.json", function (Jdata) {
+//                that.ModelTiles.setData(Jdata);
+//            });
+//            this.getView().setModel(this.ModelTiles);
         },
         onToPianiPage: function () {
             var link;

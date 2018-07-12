@@ -19,17 +19,38 @@
                 <HBox>
                     <VBox height="100%" width="25%"/>
                     <VBox height="100%" width="30%">
-                        <GenericTile header="Piani di Confezionamento" press="onToPianiPage" class="tileSize bordoBlu">
-<!--                            <content>
-                                <tileContent unit="Unit" footer="Footer Text">
+                        <!--                        <TileContainer
+                            tiles="{/linee}">
+                            <StandardTile
+                                idz="{idlinea}"
+                                icon="{icon}"
+                                type="{type}"
+                                title="{linea}"
+                                number="{linea_desc}"
+                                info="{info}"
+                                infoState="{infoState}"
+                                press="GoToOperatore"/>
+                        </TileContainer>-->
+                        <GenericTile header="Piani di Confezionamento" press="onToPianiPage" class="tileSize bordoBlu tileTitle blue">
+                            <tileContent>
+                                <TileContent>
                                     <content>
+                                        <ImageContent src="sap-icon://machine" />
                                     </content>
-                                </tileContent>
-                            </content>-->
+                                </TileContent>
+                            </tileContent>
                         </GenericTile>
                     </VBox>
                     <VBox height="100%" width="30%">
-                        <GenericTile header="Sinottici" press="onSinotticiPage" class="tileSize bordoRosso"/>
+                        <GenericTile header="Sinottici" press="onSinotticiPage" class="tileSize bordoRosso tileTitle red">
+                            <tileContent>
+                                <TileContent>
+                                    <content>
+                                        <ImageContent src="sap-icon://org-chart" />
+                                    </content>
+                                </TileContent>
+                            </tileContent>
+                        </GenericTile>
                     </VBox>
                     <VBox height="100%" width="15%"/>
                 </HBox>
