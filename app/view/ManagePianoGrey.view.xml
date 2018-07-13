@@ -112,7 +112,7 @@
                                                                     showNoData="false"
                                                                     inset="false"
                                                                     fixedLayout="false"
-                                                                    class="scrollingbar">
+                                                                    class="scrollingbar headerTabella paddingHeaderTabella">
                                                                     <columns class="colorPage">
                                                                         <Column
                                                                             width="5%"

@@ -6,25 +6,28 @@
     <Page class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-                <VBox height="5%" width="100%"/>
-                <VBox height="10%" width="100%">
+                <VBox height="10pt"/>
+                <!--<VBox height="5%" width="100%"/>-->
+                <VBox height="8%" width="100%">
                     <HBox>
-                        <VBox height="100%" width="24%"/>
-                        <VBox height="100%" width="56%">
+                        <VBox height="100%" width="20%">
+                            <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
+                        </VBox>
+                        <VBox height="100%" alignItems="Center" width="60%">
                             <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
                         </VBox>
-                        <VBox height="100%" width="8.8%"/>
                         <VBox height="100%" width="10%">
-                            <Button text="Esci" width="100%" press="BackToMain"/>
                         </VBox>
-                        <VBox height="100%" width="1.2%"/>
+                        <VBox height="100%" width="10%">
+                            <Button text="Esci" width="98%" press="BackToMain" class="noFocus"/>
+                        </VBox>
                     </HBox>
                 </VBox>
-                <VBox height="85%" width="100%">
-                    <VBox height="100%" width="100%">
+                <VBox height="" width="100%">
+                    <VBox height="100%" width="100%" class="pianiOverviewPosition">
                         <HBox>
-                            <VBox height="100%" width="12%"/>
-                            <VBox height="100%" width="76%">
+                            <VBox height="100%" width="10%"/>
+                            <VBox height="100%" width="80%">
                                 <VBox height="10%" width="100%">
                                     <Table width="100%" showNoData='false' class="totalWhiteTable tableTextSize blueText scrollingbarTransparent">
                                         <columns>
@@ -74,19 +77,19 @@
                                             class="tableTextSize noBorder"
                                             items="{path: 'turni>/pianidiconfezionamento/conclusi'}">
                                             <columns>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column> 
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>                                         
                                             </columns>
                                             <items>
@@ -120,21 +123,21 @@
                                     <Text/>
                                 </VBox>
                                 <VBox height="10%" width="100%" class="bordoBlu green scrollingbarTransparent">
-                                    <Table height="100%" width="100%" items='{turni>/pianidiconfezionamento/incorso}' class="tableTextSize">
+                                    <Table width="100%" items='{turni>/pianidiconfezionamento/incorso}' class="tableTextSize">
                                         <columns>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column> 
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>                                         
                                         </columns>
                                         <items>
@@ -174,19 +177,19 @@
                                             items="{path: 'turni>/pianidiconfezionamento/programmati'}"
                                             class="tableTextSize noBorder">
                                             <columns>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column> 
-                                                <Column hAlign="Center">
+                                                <Column hAlign="Center" vAlign="Middle">
                                                 </Column>                                         
                                             </columns>
                                             <items>
@@ -221,19 +224,19 @@
                                 <VBox height="5%" width="100%">
                                     <Table width="100%" items="{turni>/pianidiconfezionamento/dacreare}" class="noBorder tableTextSize scrollingbarTransparent"> 
                                         <columns>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column> 
-                                            <Column hAlign="Center">
+                                            <Column hAlign="Center" vAlign="Middle">
                                             </Column>                                         
                                         </columns>
                                         <items>
@@ -257,7 +260,7 @@
                                     </Table>
                                 </VBox>
                             </VBox>
-                            <VBox height="100%" width="12%"/>
+                            <VBox height="100%" width="10%"/>
                         </HBox>     
                     </VBox>    
                 </VBox>

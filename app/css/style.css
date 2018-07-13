@@ -60,8 +60,14 @@
 
 
 /*PIANI OVERVIEW*/
+.pianiOverviewPosition{
+    top: 100px; 
+}
+.totalWhiteTable .sapMListTblHeader {
+    background-color: transparent;
+}
 .totalWhiteTable .sapMListTbl th {
-    background-color: white;
+    background-color: transparent;
     border: 0px;
 }
 .tableTextSize .sapMListTbl .sapMText{
@@ -99,7 +105,7 @@
     width: 12rem;
 }
 .larghezzaButtonRight .sapMBtnInner{
-    width: 5rem;
+    width: 7rem;
 }
 .shiftButtonRight .sapMBtnInner{
     right: 0.5rem;
@@ -145,6 +151,9 @@
 }
 .paddingOperatori .sapMListTblCell {
     padding: 0.35rem 0.1rem !important;
+}
+.paddingOperatori .sapMListTblCell .sapMInputBase {
+    margin: 0px; 
 }
 .ProgressBarFix {
     height: 3rem;
@@ -440,22 +449,22 @@
     color: #003A6B;
 }
 .bordoRosso {
-    border: solid 1.5px #A71930;
+    border: solid 2px #A71930;
 }
 .bordoBlu {
-    border: solid 1.5px #003A6B;
+    border: solid 2px #003A6B;
 }
 .bordoBluL {
-    border-left: 1.5px solid #003A6B;
+    border-left: 2px solid #003A6B;
 }
 .bordoBluR {
-    border-right: 1.5px solid #003A6B;
+    border-right: 2px solid #003A6B;
 }
 .bordoBluB {
-    border-bottom: 1.5px solid #003A6B;
+    border-bottom: 2px solid #003A6B;
 }
 .bordoBluT {
-    border-top: 1.5px solid #003A6B;
+    border-top: 2px solid #003A6B;
 }
 /* SCROLLING CONTAINER */
 .scrollingbar {
@@ -613,9 +622,11 @@
     height: 2.95rem;
     bottom: 0.2rem;
     border-radius: 0px;
+    border: 0px; 
 }
 .AddButton .sapMBtnIcon {
     color: #003A6B;
+    padding: 0.3rem 0;
 }
 .AddButton .sapMBtnContent {
     top: 0.2rem;
@@ -718,7 +729,7 @@
 
 
 /*DA CONTROLLARE*/
-.lessOmbra .sapMBtnInner {
+/*.lessOmbra .sapMBtnInner {
     text-shadow: 0 0 0 #ffffff;
 }
 .tileLayout {
@@ -780,4 +791,4 @@
 }
 .borderBoxRight {
     border-right: 1.5px solid #003A6B;
-}
+}*/

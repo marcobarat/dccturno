@@ -5,13 +5,14 @@
           controllerName="myapp.controller.ManagePianoYellow">
     <Page id="managePianoYellow" class="colorPage" showHeader="false">
         <content>
+            <VBox height="10pt" width="100%"/>
             <VBox height="100%" width="100%">
-                <VBox height="4%" width="100%"/>
-                <VBox height="6%" width="100%">
+                <!--<VBox height="4%" width="100%"/>-->
+                <VBox height="10%" width="100%">
                     <HBox>
-                        <VBox height="100%" width="6.2%"/>
-                        <VBox height="100%" width="13.8%">
-                            <Button text="Aggiorna" press="RefreshCall" width="100%" class="noFocus" />
+                        <VBox height="100%" width="5%"/>
+                        <VBox height="100%" width="15%">
+                            <Button text="Aggiorna" press="RefreshCall" width="100%" class="noFocus paddingleft" />
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="40%">
@@ -20,10 +21,10 @@
                             </VBox>
                         </VBox>
                         <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="13.8%">
-                            <Button text="Esci" press="BackToPiani" width="100%" class="noFocus" />
+                        <VBox height="100%" width="15%">
+                            <Button text="Esci" press="BackToPiani" width="100%" class="noFocus paddingright" />
                         </VBox>
-                        <VBox height="100%" width="6.2%"/>
+                        <VBox height="100%" width="5%"/>
                     </HBox>
                 </VBox>
                 <VBox height="90%" width="100%">
@@ -83,9 +84,9 @@
                                                                                         </Column>
                                                                                     </columns>
                                                                                     <items>
-                                                                                        <ColumnListItem class="noDelimitator cellePiani paddingOperatori">
+                                                                                        <ColumnListItem class="noDelimitator paddingOperatori">
                                                                                             <cells>
-                                                                                                <ComboBox width="90%" value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{= ${linea>nome} === '---' ? ${linea>sezione}: ''}" loadItems="LoadOperatori" selectionChange="CheckOperatore"/>
+                                                                                                <ComboBox width="95%" value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{= ${linea>nome} === '---' ? ${linea>sezione}: ''}" loadItems="LoadOperatori" selectionChange="CheckOperatore"/>
                                                                                             </cells>
                                                                                         </ColumnListItem>
                                                                                     </items>
@@ -143,6 +144,7 @@
                                                                         <ScrollContainer vertical='true' height="155px" class="scrollingbar">
                                                                             <Table class="removeBorders1 removeBorders2" 
                                                                                    width="100%" 
+                                                                                   noDataText="Nessun batch programmato"
                                                                                    items="{path: 'linea>batchlist', templateShareable:false}">
                                                                                 <columns>
                                                                                     <Column width="6%" vAlign="Middle" hAlign="Center"/>

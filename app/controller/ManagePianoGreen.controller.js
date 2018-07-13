@@ -1262,7 +1262,17 @@ sap.ui.define([
             }
         },
         AnnullaModifiche: function () {
+            this.RerenderTimePickers();
             this.oDialog.destroy();
+        },
+        RerenderTimePickers: function () {
+            var oTables = this.getView().byId("managePianoTable").getItems();
+            for (var i = 0; i < oTables.length; i++) {
+                var oList = oTables[i].getCells()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[1].getContent()[0].getItems();
+                for (var j = 0; j < oList.length; j++) {
+                    oList[j].getCells()[6].rerender();
+                }
+            }
         },
         BuildXMLForInsertBatch: function () {
             var formatoSKU = this.getView().byId("formato_SKU");
