@@ -7,7 +7,7 @@
     xmlns:cus="myapp.control">
     <Dialog
         showHeader="false"
-        class="colorPage"
+        class="colorPage bordoBlu"
         contentWidth="1600px"
         contentHeight= "1000px"
         id="GestioneIntervalliFermo"
