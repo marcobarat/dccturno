@@ -47,7 +47,6 @@
                         <VBox height="100%" width="20%"/>
                     </HBox>
                 </VBox>
-                <VBox height="10%" width="100%"/>
             </VBox>
         </content>
     </Page>

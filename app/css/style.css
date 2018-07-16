@@ -9,9 +9,15 @@
     right: 0px; 
 }
 .Logo {
-    width: 55%;
+    width: 50%;
     margin-left: 10%;
     margin-top: 5%;
+}
+.mainTitle {
+    font-size: 40pt;
+    color : #003A6B;
+    margin-top: 4rem;
+    margin-left: -3rem;
 }
 .tileTitle .sapMGTHdrContent {
     margin: 0px; 
