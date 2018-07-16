@@ -5,7 +5,6 @@
           controllerName="myapp.controller.Main">
     <Page id="myPage" showHeader="false" class="colorPage" enableScrolling="false">
         <content>
-<<<<<<< HEAD
             <VBox height="40%" width="100%">
                 <HBox>
                     <VBox height="100%" width="25%">

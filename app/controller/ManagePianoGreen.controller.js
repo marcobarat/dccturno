@@ -245,6 +245,12 @@ sap.ui.define([
                 oRouter.navTo("overview", true);
             }
         },
+//         -> PULSANTE AGGIORNA
+        RefreshButton: function () {
+            this.BusyDialog.open();
+            this.RefreshCall("0");
+            this.BusyDialog.close();
+        },
 //         -> CAMBIO REPARTO
         ChangeReparto: function (event) {
             var link;
@@ -1360,6 +1366,7 @@ sap.ui.define([
                     this.ShowBatchDetails();
                     break;
                 case "Trasferimento Batch a Linea":
+                    this.BusyDialog.open();
                     Path = this.oButton.getBindingContext("linea").sPath;
                     qli = this.ModelLinea.getProperty(Path).qli;
                     cartoni = this.ModelLinea.getProperty(Path).cartoni;
@@ -1371,6 +1378,7 @@ sap.ui.define([
                     }
                     break;
                 case "Trasferimento Batch a Linea (solo attrezzaggio)":
+                    this.BusyDialog.open();
                     Path = this.oButton.getBindingContext("linea").sPath;
                     qli = this.ModelLinea.getProperty(Path).qli;
                     cartoni = this.ModelLinea.getProperty(Path).cartoni;
@@ -1382,10 +1390,12 @@ sap.ui.define([
                     }
                     break;
                 case "Richiamo Batch":
+                    this.BusyDialog.open();
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchRichiamo&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSRichiamoBatch.bind(this));
                     break;
                 case "Cancellazione Batch":
+                    this.BusyDialog.open();
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/CancellazioneBatch&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&OutputParameter=JSON";
                     Library.AjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
                     break;
@@ -1436,16 +1446,21 @@ sap.ui.define([
             }
         },
         SUCCESSTrasferimentoBatch: function (Jdata) {
+            this.BusyDialog.close();
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            this.RefreshCall("0");
         },
         SUCCESSTrasferimentoBatchAttrezzaggio: function (Jdata) {
+            this.BusyDialog.close();
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            this.RefreshCall("0");
         },
         SUCCESSRichiamoBatch: function (Jdata) {
+            this.BusyDialog.close();
             if (Number(Jdata.error) === 0) {
                 this.RefreshCall("0");
             } else {
@@ -1453,6 +1468,7 @@ sap.ui.define([
             }
         },
         SUCCESSCancellazioneBatch: function (Jdata) {
+            this.BusyDialog.close();
             if (Number(Jdata.error) === 0) {
                 var Path = this.oButton.getBindingContext("linea").sPath;
                 var PathArray = Path.split("/");

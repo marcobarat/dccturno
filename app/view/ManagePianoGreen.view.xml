@@ -12,7 +12,7 @@
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="15%">
-                            <Button text="Aggiorna" press="RefreshCall" width="100%" class="noFocus paddingleft" />
+                            <Button text="Aggiorna" press="RefreshButton" width="100%" class="noFocus paddingleft" />
                         </VBox>
                         <VBox height="100%" width="60%">
                             <VBox alignItems="Center" height="50%" width="100%">
