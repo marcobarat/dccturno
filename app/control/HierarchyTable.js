@@ -12,6 +12,7 @@ sap.ui.define([
 //                    var col_array = this.getColumns();
 //                    col_html = jQuery.sap.byId(col_array[2].getId());
 //                    col_html.addClass("noBorderRight");
+//                    
                     if (jQuery.sap.byId(this.getRows()[0].getId())[0] !== undefined) {
                         var cell_html;
                         var numero = this.getRows().length;

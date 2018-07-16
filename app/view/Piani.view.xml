@@ -6,24 +6,24 @@
     <Page class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-                <VBox height="10pt"/>
-                <!--<VBox height="5%" width="100%"/>-->
-                <VBox height="8%" width="100%">
-                    <HBox>
+                <VBox height="25%" width="100%">
+                    <HBox alignItems="Center">
                         <VBox height="100%" width="20%">
                             <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
                         </VBox>
-                        <VBox height="100%" alignItems="Center" width="60%">
+                        <VBox height="100%" alignItems="Center" width="60%" fitContainer="true">
                             <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
                         </VBox>
-                        <VBox height="100%" width="10%">
-                        </VBox>
-                        <VBox height="100%" width="10%">
-                            <Button text="Esci" width="98%" press="BackToMain" class="noFocus"/>
-                        </VBox>
+                        <HBox height="100%" width="20%">
+                            <VBox width="23%"/>
+                            <VBox width="55%">
+                                <Button text="Esci" width="100%" press="BackToMain" class="noFocus"/>
+                            </VBox>
+                            <VBox width="22%"/>
+                        </HBox>
                     </HBox>
                 </VBox>
-                <VBox height="" width="100%">
+                <VBox height="75%" width="100%">
                     <VBox height="100%" width="100%" class="pianiOverviewPosition">
                         <HBox>
                             <VBox height="100%" width="10%"/>

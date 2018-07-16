@@ -2296,6 +2296,7 @@ sap.ui.define([
             this.onCloseDialog();
         },
         onCloseDialog: function () {
+            this.RerenderTimePickers();
             var id_dialog = this.oDialog.getId().split("--")[1];
             this.getView().byId(id_dialog).close();
             this.oDialog = null;

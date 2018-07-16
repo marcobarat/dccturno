@@ -6,20 +6,20 @@
     <Page id="myPage" showHeader="false" class="colorPage" enableScrolling="false">
         <content>
             <VBox height="100%" width="100%">
-                <VBox height="10pt"/>
-<!--                <VBox height="4%"/>-->
-                <VBox height="40%" width="100%">
-                    <HBox>
+                <VBox height="25%" width="100%">
+                    <HBox alignItems="Center">
                         <VBox height="100%" width="20%">
                             <Image src="img/dececco_marchio_standard_rgb.png" class="Logo"/>
                         </VBox>
-                        <VBox height="100%" width="60%" alignItems="Center">
-                            <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>   
+                        <VBox height="100%" alignItems="Center" width="60%" fitContainer="true">
+                            <Text text="Fara San Martino - Reparto Confezionamento" class="customTextTitle"/>
                         </VBox>
-                        <VBox height="100%" width="20%"/>
+                        <HBox height="100%" width="20%">
+                        </HBox>
                     </HBox>
                 </VBox>
-                <VBox height="50%" width="100%">
+                <VBox height="15%"/>
+                <VBox height="60%" width="100%">
                     <HBox>
                         <VBox height="100%" width="20%"/>
                         <VBox height="100%" width="30%" alignItems="Center">

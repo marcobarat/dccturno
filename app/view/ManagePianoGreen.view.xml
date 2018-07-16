@@ -5,9 +5,8 @@
           controllerName="myapp.controller.ManagePianoGreen">
     <Page id="managePianoGreen" class="colorPage" showHeader="false">
         <content>
-            <VBox height="10pt" width="100%"/>
             <VBox height="100%" width="100%">
-                <!--<VBox height="4%" width="100%"/>-->
+                <VBox height="5%"/>
                 <VBox height="10%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
@@ -25,7 +24,7 @@
                         <VBox height="100%" width="5%"/>
                     </HBox>
                 </VBox>
-                <VBox height="90%" width="100%">
+                <VBox height="85%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="90%">
