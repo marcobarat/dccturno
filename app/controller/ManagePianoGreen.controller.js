@@ -508,8 +508,8 @@ sap.ui.define([
             if (Number(Jdata.error) === 0) {
                 var oModel = new JSONModel(Jdata);
                 var oItemSelectTemplate = new sap.ui.core.Item({
-                    key: "{confezionamenti>confezione} {confezionamenti>grammatura}gr",
-                    text: "{confezionamenti>confezioneCodiceInterno}"
+                    key: "{confezionamenti>grammatura}",
+                    text: "{confezionamenti>confezione}"
                 });
                 selectBox.setModel(oModel, "confezionamenti");
                 selectBox.bindAggregation("items", "confezionamenti>/confezioni", oItemSelectTemplate);
@@ -527,11 +527,6 @@ sap.ui.define([
             var oRow = event.getSource().getParent();
             var row_path = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(row_path);
-            if (oRow.getCells()[2].getSelectedItem().getKey()) {
-                var array_confezione = oRow.getCells()[2].getSelectedItem().getKey().split(" ");
-                row_binded.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
-                row_binded.confezione = array_confezione[0];
-            }
             var Button = oRow.getCells()[3];
             if (this.ISLOCAL === 1) {
                 row_binded.pezziCartone = 10;
@@ -551,8 +546,8 @@ sap.ui.define([
                 obj.ore = "";
                 obj.lineaId = this.linea_id;
                 obj.formatoProduttivo = oRow.getCells()[1].getValue();
-                obj.grammatura = row_binded.grammatura;
-                obj.tipologia = row_binded.confezione;
+                obj.grammatura = oRow.getCells()[2].getSelectedItem().getKey();
+                obj.tipologia = oRow.getCells()[2].getSelectedItem().getText();
                 var doc_xml = Library.createXMLBatch(obj);
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetInfoNewBatchStandard&Content-Type=text/json&xml=" + doc_xml + "&OutputParameter=JSON";
                 Library.AjaxCallerData(link, function (Jdata) {
@@ -574,7 +569,7 @@ sap.ui.define([
                 row_binded.pezziCartone = Number(Jdata.pezziCartone);
                 row_binded.secondiPerPezzo = Number(Jdata.secondiPerPezzo);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 180});
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
 //              - BUTTON DESTINAZIONE
@@ -756,7 +751,7 @@ sap.ui.define([
                         } else {
                             MessageToast.show(Jdata.errorMessage, {duration: 2000});
                         }
-                    });
+                    }, function(err){console.log(err);});
                     if (obj.batchId === "") {
                         var path = event.getSource().getBindingContext("linea").sPath.split("/");
                         var index = Number(path[path.indexOf("linee") + 1]);
@@ -1165,13 +1160,13 @@ sap.ui.define([
             this.getView().setModel(this.ModelParametri, "ModelParametri");
         },
         ChangeSKU: function () {
-            var array_confezione;
+//            var array_confezione;
             if (this.ISLOCAL !== 1) {
-                if (this.getView().byId("confezione_SKU").getSelectedItem() !== null) {
-                    array_confezione = this.getView().byId("confezione_SKU").getSelectedItem().getKey().split(" ");
-                    this.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
-                    this.confezione = array_confezione[0];
-                }
+//                if (this.getView().byId("confezione_SKU").getSelectedItem() !== null) {
+//                    array_confezione = this.getView().byId("confezione_SKU").getSelectedItem().getKey().split(" ");
+//                    this.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
+//                    this.confezione = array_confezione[0];
+//                }
                 var obj = {};
                 obj.destinazione = this.getView().byId("cliente_SKU").getValue();
                 obj.pianodiconfezionamento = "";
@@ -1190,12 +1185,8 @@ sap.ui.define([
             }
         },
         EnableDestinazioni: function () {
-            var array_confezione;
-            if (this.getView().byId("confezione_SKU").getSelectedItem() !== null) {
-                array_confezione = this.getView().byId("confezione_SKU").getSelectedItem().getKey().split(" ");
-                this.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
-                this.confezione = array_confezione[0];
-            }
+            this.grammatura = this.getView().byId("confezione_SKU").getSelectedItem().getKey();
+            this.confezione = this.getView().byId("confezione_SKU").getSelectedItem().getText();
             this.getView().byId("cliente_SKU").destroyItems();
             this.getView().byId("cliente_SKU").setValue("");
             this.getView().byId("cliente_SKU").setEnabled(true);
@@ -1230,7 +1221,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "destinazioni>/destinazioni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 180});
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
         ConfermaModifiche: function () {
