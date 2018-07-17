@@ -293,10 +293,10 @@ sap.ui.define([
         },
         SUCCESSCause: function (Jdata) {
             this.ModelCause.setData(Jdata);
-            this.getView().byId("disponibile").setSelected(true);
-            this.getView().byId("nondisponibile").setSelected(false);
+//            this.getView().byId("disponibile").setSelected(true);
+//            this.getView().byId("nondisponibile").setSelected(false);
             this.oDialog.open();
-            jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").css('display', 'none');
+//            jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").css('display', 'none');
             jQuery("section.sapMDialogSection").find("div[id*='causale']").css('min-width', '7rem');
         },
 //         -> DROPDOWN OPERATORI
@@ -1562,9 +1562,7 @@ sap.ui.define([
         OpenMenuCausalizzazione: function (oEvent) {
             this.oButton = oEvent.getSource();
             var link;
-            var row_id = this.oButton.getParent().getId();
-            var split_id = row_id.split("-");
-            this.row = this.getView().getModel("guasti").getData().fermi[parseInt(split_id[split_id.length - 1], 10)];
+            this.row = this.Button.getParent().getBindingContext("guasti").getObject();
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {

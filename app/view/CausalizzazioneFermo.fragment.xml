@@ -22,8 +22,8 @@
             <VBox width="5%"/>
         </HBox>
         <VBox id="vbox_table" height="25%">
-            <TextArea id="NoFermiDaCausalizzare" width="100%" value="Non esistono fermi automatici da causalizzare" textAlign="Center" editable="false" visible="false"></TextArea>
             <Table
+                visible="{= ${guastilinea>/Totale/tempoGuastoTotale}==='00:00:00'? false : true}"
                 class="totaliTable"
                 id="TotaleTable">
                 <columns>
@@ -39,7 +39,7 @@
                     </Column>
                 </columns>
                 <items>
-                    <ColumnListItem class="paddingTotaliCelle TotaliText TotaliCB">
+                    <ColumnListItem class="paddingTotaliCelle TotaliText TotaliCB" visible="true">
                         <cells>
                             <Text textAlign="Center" text="Totale Complessivo"/>
                             <Text text="{guastilinea>/Totale/tempoGuastoTotale}"/>
@@ -49,6 +49,7 @@
                     </ColumnListItem>
                 </items>
             </Table>
+            <TextArea id="NoFermiDaCausalizzare" width="100%" value="Non esistono fermi automatici da causalizzare" textAlign="Center" editable="false" visible="{= ${guastilinea>/Totale/tempoGuastoTotale}==='00:00:00'? true : false}"></TextArea>
         </VBox>        
         <VBox height="65%">
             <t:Table

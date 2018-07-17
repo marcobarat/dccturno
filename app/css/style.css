@@ -230,7 +230,7 @@
     height: 2.8rem;
     padding: 0 0.5rem;
     width: 9rem;
-    color: red;
+    color: #A71930;
     font-size: 1.5rem;
     border: 1px solid black;
 }
@@ -672,10 +672,6 @@
 /*CSS PER LA TABELLA DI GESTIONE DEI FERMI */
 .alternateRowColors tbody tr:nth-child(even) {
     background: #efeff5;
-}
-.guastiFixedHeader .sapMListTblHeader{
-    position: -webkit-sticky;
-    top: 0;
 }
 /* ICONTABBAR */
 .sapMITBFilterDefault{

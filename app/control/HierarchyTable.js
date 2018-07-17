@@ -7,12 +7,8 @@ sap.ui.define([
 
                 renderer: {},
                 onAfterRendering: function () {
-                    // CSS DELL'HEADER DELLA TREETABLE
-//                    var col_html;
-//                    var col_array = this.getColumns();
-//                    col_html = jQuery.sap.byId(col_array[2].getId());
-//                    col_html.addClass("noBorderRight");
-//                    
+                    $("div[id*='ComponentiQualita'] label:contains('Qualità')").parent().parent().css('border-right', 'none');
+                    $("div[id*='ComponentiPerdita'] label:contains('Principali componenti di perdita [in minuti]')").parent().parent().css("border-right", "none");
                     if (jQuery.sap.byId(this.getRows()[0].getId())[0] !== undefined) {
                         var cell_html;
                         var numero = this.getRows().length;

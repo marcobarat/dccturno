@@ -267,7 +267,7 @@
                                                                                 <cells>
                                                                                     <Text text="{linea>sequenza}" />
                                                                                     <Text text="{linea>formatoProduttivo}" />
-                                                                                    <Text text="{= ${linea>confezione} + ' ' + ${linea>grammatura} + 'gr'}" />
+                                                                                    <Text text="{linea>confezione}" />
                                                                                     <Text text="{linea>destinazione}"/>
                                                                                     <Text
                                                                                         text="{linea>qli}" />

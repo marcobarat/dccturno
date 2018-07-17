@@ -47,7 +47,6 @@
                         <!--<VBox height="100%" width="5%"/>-->
                         <VBox height="100%" width="100%">
                             <wt:HierarchyTable
-                                height="100%"
                                 rows="{path:'ReportOEE>/', parameters: {arrayNames:['Sottogruppo']}}"
                                 id="TreeTableReport"
                                 selectionMode="None"
