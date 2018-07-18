@@ -14,7 +14,6 @@
         <VBox height="100%">
             <VBox id="vbox_table" height="25%">
                 <Table
-                    visible="{= ${guastilinea>/Totale/tempoGuastoTotale}==='00:00:00'? false : true}"
                     class="totaliTable"
                     id="TotaleTable">
                     <columns>
@@ -40,8 +39,8 @@
                         </ColumnListItem>
                     </items>
                 </Table>
-                <TextArea id="NoFermiDaCausalizzare" width="100%" value="Non esistono fermi automatici da causalizzare" textAlign="Center" editable="false" visible="{= ${guastilinea>/Totale/tempoGuastoTotale}==='00:00:00'? true : false}"></TextArea>
-            </VBox>        
+                <TextArea id="NoFermiDaCausalizzare" width="100%" value="Non esistono fermi automatici da causalizzare" textAlign="Center" editable="false" visible="false"></TextArea>      
+            </VBox>
             <VBox height="60%">
                 <t:Table
                     id="GuastiTable"
@@ -80,6 +79,9 @@
                             </t:template>
                         </t:Column>
                     </t:columns>
+                    <t:noData>
+                        <Text class="sapUiTableCtrlEmptyMsg" text="Non ci sono fermi automatici da causalizzare" textAlign="Center"/>
+                    </t:noData>
                 </t:Table>
             </VBox>
             <HBox width="100%" height="15%" alignItems="Center">

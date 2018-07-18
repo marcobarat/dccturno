@@ -20,7 +20,7 @@
                         </VBox>
                         <HBox height="100%" width="20%">
                             <VBox width="100%">
-                                <Button text="Esci" press="ReturnToReport" class="paddingright" width="100%"/>
+                                <Button text="Esci" press="ReturnToReport" class="chiudiButton paddingright" width="100%"/>
                             </VBox>
                         </HBox> 
                         <VBox height="100%" width="5%"/>
@@ -69,6 +69,9 @@
                                         </t:template>
                                     </t:Column>
                                 </t:columns>
+                                <t:noData>
+                                    <Text class="sapUiTableCtrlEmptyMsg" text="Non ci sono stati fermi durante la lavorazione del batch" textAlign="Center"/>
+                                </t:noData>
                             </t:Table>                              
                         </VBox>
                     </HBox>
