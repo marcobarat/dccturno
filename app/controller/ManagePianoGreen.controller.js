@@ -1600,7 +1600,7 @@ sap.ui.define([
         OpenMenuCausalizzazione: function (oEvent) {
             this.oButton = oEvent.getSource();
             var link;
-            this.row = this.Button.getParent().getBindingContext("guasti").getObject();
+            this.row = this.oButton.getParent().getBindingContext("guasti").getObject();
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {

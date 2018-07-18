@@ -9,7 +9,7 @@
         showHeader="false"
         class="colorPage bordoBlu"
         contentWidth="1600px"
-        contentHeight= "1000px"
+        contentHeight= "700px"
         id="GestioneIntervalliFermo"
     >
         <VBox height="100%" width="100%">
@@ -25,7 +25,7 @@
                     </VBox>
                     <HBox height="100%" width="20%">
                         <VBox width="100%">
-                            <Button text="Esci" press="onCloseDialog" class="paddingright" width="100%"/>
+                            <Button text="Esci" press="onCloseDialog" class="chiudiButton paddingright" width="100%"/>
                         </VBox>
                     </HBox> 
                     <VBox height="100%" width="5%"/>
@@ -39,36 +39,36 @@
                         <t:Table
                             enableColumnReordering="false"
                             selectionMode="None"
-                            visibleRowCount="6"
+                            visibleRowCount="10"
                             class="alternate-color"
                             rows="{guasti>/fermi}"
                             id="GuastiDiLineaTable">
                             <t:columns>
-                                <t:Column hAlign="Center" vAlign="Middle" width="15%">
+                                <t:Column hAlign="Center" width="15%">
                                     <Label text="Inizio"/>
                                     <t:template>
                                         <Text text="{guasti>inizio}"/>
                                     </t:template>
                                 </t:Column>
-                                <t:Column hAlign="Center" vAlign="Middle" width="15%">
+                                <t:Column hAlign="Center" width="15%">
                                     <Label text="Fine"/>
                                     <t:template>
                                         <Text text="{guasti>fine}"/>
                                     </t:template>
                                 </t:Column>
-                                <t:Column hAlign="Center" vAlign="Middle" width="15%">
+                                <t:Column hAlign="Center" width="15%">
                                     <Label text="Tempo"/>
                                     <t:template>
                                         <Text text="{guasti>intervallo}"/>
                                     </t:template>
                                 </t:Column>
-                                <t:Column hAlign="Center" vAlign="Middle" width="45%">
+                                <t:Column hAlign="Center" width="45%">
                                     <Label text="Causale"/>
                                     <t:template>
                                         <Text text="{guasti>causale}"/>
                                     </t:template>
                                 </t:Column>
-                                <t:Column hAlign="Center" vAlign="Middle" width="10%">
+                                <t:Column hAlign="Center" width="10%">
                                     <t:template>
                                         <Button press="OpenMenuCausalizzazione" icon="sap-icon://technical-object"/>
                                     </t:template>

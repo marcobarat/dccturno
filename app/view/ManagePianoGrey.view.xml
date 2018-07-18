@@ -8,18 +8,18 @@
             <VBox height="100%" width="100%">
                 <VBox height="5%" width="100%"/>
                 <VBox height="10%" width="100%">
-                    <HBox>
+                    <HBox height="100%">
                         <VBox height="100%" width="5%"/>
                         <HBox height="100%" width="20%">
-                            <HBox>
+                            <HBox height="100%">
                                 <Button text="Calcolo consuntivi"
                                         press="CreateReport"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        class="chiudiButton noFocus paddingleft larghezzaButtonLeft">
+                                        class="chiudiButton noFocus paddingleft larghezzaButtonLeft pianoGreyButton">
                                 </Button>
                                 <Button 
                                     id="reportButton"
-                                    class="chiudiButton noFocus larghezzaButtonRight shiftButtonLeft" 
+                                    class="chiudiButton noFocus larghezzaButtonRight shiftButtonLeft pianoGreyButton" 
                                     text="Report OEE"
                                     visible="true"
                                     enabled="false"
@@ -35,14 +35,14 @@
                         </VBox>
                         <HBox height="100%" width="20%">
                             <HBox width="100%" justifyContent="End">
-                                <Button text="Conferma chiusura piano"
+                                <Button text="Conferma chiusura"
                                         id="chiusuraPiano"
                                         press="ConfermaChiusuraPiano"
                                         enabled="false"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        class="chiudiButton noFocus larghezzaButtonLeft shiftButtonRight">
+                                        class="chiudiButton noFocus larghezzaButtonLeft shiftButtonRight pianoGreyButton">
                                 </Button>
-                                <Button text="Esci" press="BackToPiani" class="chiudiButton noFocus paddingright larghezzaButtonRight"/>
+                                <Button text="Esci" press="BackToPiani" class="chiudiButton noFocus paddingright larghezzaButtonRight pianoGreyButton paddingtop"/>
                             </HBox> 
                         </HBox> 
                         <VBox height="100%" width="5%"/>

@@ -60,31 +60,31 @@
                 selectionMode="None"
                 rows="{guastilinea>/fermi}">
                 <t:columns>
-                    <t:Column hAlign="Center" width="15%">
+                    <t:Column hAlign="Center" width="15%" resizable="false">
                         <Label text="Inizio"/>
                         <t:template>
                             <Text text="{guastilinea>inizio}"/>
                         </t:template>
                     </t:Column>
-                    <t:Column hAlign="Center" width="15%">
+                    <t:Column hAlign="Center" width="15%" resizable="false">
                         <Label text="Fine"/>
                         <t:template>
                             <Text text="{guastilinea>fine}"/>
                         </t:template>
                     </t:Column>
-                    <t:Column hAlign="Center" width="15%">
+                    <t:Column hAlign="Center" width="15%" resizable="false">
                         <Label text="Tempo"/>
                         <t:template>
                             <Text text="{guastilinea>intervallo}"/>
                         </t:template>
                     </t:Column>
-                    <t:Column hAlign="Center" width="45%">
+                    <t:Column hAlign="Center" width="45%" resizable="false">
                         <Label text="Causale"/>
                         <t:template>
                             <Text text="{guastilinea>causale}"/>
                         </t:template>
                     </t:Column>
-                    <t:Column hAlign="Center" width="10%">
+                    <t:Column hAlign="Center" width="10%" resizable="false">
                         <t:template>
                             <CheckBox id="CBSingoloCausa" selected="{guastilinea>selected}" select="ChangeCheckedCausa"/>
                         </t:template>
