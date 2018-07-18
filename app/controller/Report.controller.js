@@ -15,6 +15,7 @@ sap.ui.define([
         piano: null,
         pianoPath: null,
         turnoPath: null,
+        GlobalBusyDialog: new sap.m.BusyDialog(),
         rowHTML: null,
         onInit: function () {
             this.getView().byId("ComponentiOEE").setHeaderSpan([3, 1, 1]);
@@ -41,9 +42,14 @@ sap.ui.define([
             this.ModelOEE.setData(data_new);
             this.getView().setModel(this.ModelOEE, "ReportOEE");
             sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
-            this.getView().byId("TreeTableReport").onAfterRendering();
+            var that = this;
+            setTimeout(function () {
+                that.getView().byId("TreeTableReport").onAfterRendering();
+                this.GlobalBusyDialog.close();
+            },1000);
         },
         _onObjectMatched: function (oEvent) {
+            this.GlobalBusyDialog.open();
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             var oTitle = this.getView().byId("ReportTitle");

@@ -12,7 +12,7 @@
                         <VBox height="100%" width="5%"/>
                         <HBox height="100%" width="20%">
                             <HBox height="100%">
-                                <Button text="Calcolo consuntivi"
+                                <Button text="Calcolo Consuntivi"
                                         press="CreateReport"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                         class="chiudiButton noFocus paddingleft larghezzaButtonLeft pianoGreyButton">
@@ -35,14 +35,14 @@
                         </VBox>
                         <HBox height="100%" width="20%">
                             <HBox width="100%" justifyContent="End">
-                                <Button text="Conferma chiusura"
+                                <Button text="Conferma Chiusura"
                                         id="chiusuraPiano"
                                         press="ConfermaChiusuraPiano"
                                         enabled="false"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
                                         class="chiudiButton noFocus larghezzaButtonLeft shiftButtonRight pianoGreyButton">
                                 </Button>
-                                <Button text="Esci" press="BackToPiani" class="chiudiButton noFocus paddingright larghezzaButtonRight pianoGreyButton paddingtop"/>
+                                <Button text="Esci" press="BackToPiani" class="chiudiButton noFocus paddingright larghezzaButtonRight pianoGreyButton"/>
                             </HBox> 
                         </HBox> 
                         <VBox height="100%" width="5%"/>
