@@ -672,11 +672,11 @@ sap.ui.define([
                 this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
                 this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
                 this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
-                if (!event) {
-                    this.getView().byId("formato_SKU").setEnabled(false);
-                    this.getView().byId("confezione_SKU").setEnabled(false);
-                    this.getView().byId("cliente_SKU").setEnabled(false);
-                }
+//                if (!event) {
+//                    this.getView().byId("formato_SKU").setEnabled(false);
+//                    this.getView().byId("confezione_SKU").setEnabled(false);
+//                    this.getView().byId("cliente_SKU").setEnabled(false);
+//                }
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
             }
