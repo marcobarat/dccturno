@@ -99,10 +99,11 @@
 /*PIANI PASSATI*/
 
 .pianoGreyButton{
-    height: 5rem;
+    height: 4rem;
 }
 .pianoGreyButton .sapMBtnInner .sapMBtnContent{
     white-space: normal; 
+    line-height: 1.5rem;
 }
 .paddingtop .sapMBtnInner .sapMBtnContent{
     padding-top: 1rem;
@@ -114,13 +115,21 @@
     padding-right: 1rem;
 }
 .larghezzaButtonLeft .sapMBtnInner{
-    width: 12rem;
+    width: 11rem;
+    bottom: 0.6rem;
+}
+.larghezzaButtonLeft .sapMBtnContent{
+    padding-top: 0.2rem;
 }
 .larghezzaButtonRight .sapMBtnInner{
-    width: 7rem;
+    width: 11rem;
+    bottom: 0.6rem;
 }
 .shiftButtonRight .sapMBtnInner{
     right: 0.5rem;
+}
+.larghezzaButtonRight .sapMBtnContent{
+    padding-top: 1rem;
 }
 .shiftButtonLeft .sapMBtnInner{
     left: 0.5rem;
@@ -293,7 +302,7 @@
 }
 
 .diffStandard input {
-    color : red;
+    color : #A71930;
 }
 /* CSS NEL MODIFICA ATTRIBUTI */
 .blueLabel {
@@ -466,6 +475,9 @@
 }
 .blueText .sapMText {
     color: #003A6B;
+}
+.redText {
+    color: #A71930;
 }
 .bordoRosso {
     border: solid 2px #A71930;

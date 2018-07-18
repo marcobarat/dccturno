@@ -7,6 +7,9 @@ sap.ui.define([
 
                 renderer: {},
                 onAfterRendering: function () {
+                    if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
+                        sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
+                    }
                     $("div[id*='ComponentiQualita'] label:contains('Qualità')").parent().parent().css('border-right', 'none');
                     $("div[id*='ComponentiPerdita'] label:contains('Principali componenti di perdita [in minuti]')").parent().parent().css("border-right", "none");
                     if (jQuery.sap.byId(this.getRows()[0].getId())[0] !== undefined) {
@@ -46,8 +49,6 @@ sap.ui.define([
                             }
                         }
                     }
-
-
                     this.expandToLevel(3);
                     var that = this;
                     setTimeout(function () {
@@ -95,7 +96,6 @@ sap.ui.define([
                             }
 
                         }
-
                         for (i = num; i < that.getVisibleRowCount(); i++) {
                             rowhtml = jQuery.sap.byId(that.getRows()[i].getId());
                             rowhtml.addClass("righeOverOut");
@@ -103,53 +103,7 @@ sap.ui.define([
                                 rowhtml.children()[j].classList.add("mysapUiTableCol");
                             }
                         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     }, 0);
-//                        for (var i=0; i<num; i++){
-//                            var row = that.getBinding("rows").getContextByIndex(i).getObject();
-////                            if (row.hierarchy === 0) {}
-////                                case 1:
-////                                    row.addStyleClass("Background1");
-////                                    break;
-////                                default:
-////                                    break;
-//
-//                        
-//                        }
-//                    }, 0);
-                    if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
-                        sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
-                    }
                 }
             });
-//                    var that = this;
-//                    setTimeout(function () {
-//                        var num = that.getBinding("rows").getLength();
-//                        var temp;
-//                        for (var i = num - 1; i >= 0; i--) {
-//                            temp = that.getBinding("rows").getContextByIndex(i).getObject();
-//                            if (typeof temp !== "undefined") {
-//                                if (temp.expand === "0") {
-//                                    that.collapse(i);
-//                                }
-//                            }
-//                        }
-//                    }, 0);
         });
-
-

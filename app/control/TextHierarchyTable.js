@@ -30,9 +30,9 @@ sap.ui.define([
         onAfterRendering: function () {
             if (this.getHierarchy() === 3){
                 if (this.getRed()){
-                    this.addStyleClass("diffRed");
+                    this.addStyleClass("redText");
                 } else {
-                    this.removeStyleClass("diffRed");
+                    this.removeStyleClass("redText");
                 }
                 if (this.colName === "dispFermate" || this.colName === "dispSetup"){
                     this.addStyleClass("myCursor");
@@ -40,7 +40,7 @@ sap.ui.define([
                     this.removeStyleClass("myCursor");
                 }
             } else {
-                this.removeStyleClass("diffRed");
+                this.removeStyleClass("redText");
             }
         
         
