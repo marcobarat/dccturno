@@ -16,9 +16,9 @@
                                 <HBox>
                                     <VBox height="100%" width="1%"/>
                                     <VBox height="100%" width="20%" class="paddingTopComboboxes">
-                                        <ComboBox id="formato_SKU" loadItems="CaricaFormati" selectionChange="ResetConfezionamentiDialog"/>
-                                        <ComboBox id="confezione_SKU" loadItems="CaricaConfezionamenti" selectionChange="EnableDestinazioni"/>
-                                        <ComboBox id="cliente_SKU" loadItems="CaricaDestinazioni" selectionChange="ChangeSKU"/>
+                                        <ComboBox id="formato_SKU" enabled="true" loadItems="CaricaFormati" selectionChange="ResetConfezionamentiDialog"/>
+                                        <ComboBox id="confezione_SKU" enabled="true" loadItems="CaricaConfezionamenti" selectionChange="EnableDestinazioni"/>
+                                        <ComboBox id="cliente_SKU" enabled="true" loadItems="CaricaDestinazioni" selectionChange="ChangeSKU"/>
                                     </VBox>
                                     <VBox height="100%" width="1%"/>
                                     <VBox height="100%" width="78%">

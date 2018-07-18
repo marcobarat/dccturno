@@ -311,7 +311,7 @@
 .blueLabel .sapMLabel{
     color: #003A6B;
 }
-.paddingTopComboboxes .sapMComboBoxTextField {
+.paddingTopComboboxes {
     top: 2.7rem;
 }
 /*----------------------------------------
@@ -598,7 +598,7 @@
 .StileV .sapMBtnIcon {
     color: #7CA295;
 }
-.diffLink * {
+.paddingTopComboboxesLink * {
     color : blue;
     text-decoration: underline;
     font-weight: bold;

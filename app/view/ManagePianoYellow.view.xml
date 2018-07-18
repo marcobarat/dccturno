@@ -108,9 +108,6 @@
                                                                     <VBox height="80%" width="100%" class="bordoBluR bordoBluB bordoBluT">
                                                                         <Table
                                                                             showNoData="false"
-                                                                            inset="false"
-                                                                            growing="true"
-                                                                            fixedLayout="false"
                                                                             growingThreshold="2"
                                                                             class="headerTabella paddingHeaderTabella  scrollingbar">
                                                                             <columns>
@@ -120,7 +117,7 @@
                                                                                 <Column width="20%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Formato" />
                                                                                 </Column>
-                                                                                <Column width="14%" hAlign="Center" vAlign="Middle">
+                                                                                <Column width="15%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Confezionamento" />
                                                                                 </Column>
                                                                                 <Column width="28%" hAlign="Center" vAlign="Middle">
@@ -148,7 +145,7 @@
                                                                                 <columns>
                                                                                     <Column width="6%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="20%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="14%" vAlign="Middle" hAlign="Center"/>
+                                                                                    <Column width="15%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="28%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="7%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="7%" vAlign="Middle" hAlign="Center"/>
