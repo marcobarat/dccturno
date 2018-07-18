@@ -15,11 +15,11 @@
                                 <Button text="Calcolo consuntivi"
                                         press="CreateReport"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        class="noFocus paddingleft larghezzaButtonLeft">
+                                        class="chiudiButton noFocus paddingleft larghezzaButtonLeft">
                                 </Button>
                                 <Button 
                                     id="reportButton"
-                                    class="noFocus larghezzaButtonRight shiftButtonLeft" 
+                                    class="chiudiButton noFocus larghezzaButtonRight shiftButtonLeft" 
                                     text="Report OEE"
                                     visible="true"
                                     enabled="false"
@@ -40,9 +40,9 @@
                                         press="ConfermaChiusuraPiano"
                                         enabled="false"
                                         ariaDescribedBy="defaultButtonDescription genericButtonDescription"
-                                        class="noFocus larghezzaButtonLeft shiftButtonRight">
+                                        class="chiudiButton noFocus larghezzaButtonLeft shiftButtonRight">
                                 </Button>
-                                <Button text="Esci" press="BackToPiani" class="noFocus paddingright larghezzaButtonRight"/>
+                                <Button text="Esci" press="BackToPiani" class="chiudiButton noFocus paddingright larghezzaButtonRight"/>
                             </HBox> 
                         </HBox> 
                         <VBox height="100%" width="5%"/>

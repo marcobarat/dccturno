@@ -12,7 +12,7 @@
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="15%">
-                            <Button text="Aggiorna" press="RefreshCall" width="100%" class="noFocus paddingleft" />
+                            <Button text="Aggiorna" press="RefreshButton" width="100%" class="allarmeButton noFocus paddingleft" />
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="40%">
@@ -22,7 +22,7 @@
                         </VBox>
                         <VBox height="100%" width="10%"/>
                         <VBox height="100%" width="15%">
-                            <Button text="Esci" press="BackToPiani" width="100%" class="noFocus paddingright" />
+                            <Button text="Esci" press="BackToPiani" width="100%" class="chiudiButton noFocus paddingright" />
                         </VBox>
                         <VBox height="100%" width="5%"/>
                     </HBox>

@@ -14,6 +14,8 @@ sap.ui.define([
         paths: null,
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
         STOP: 0,
+        TIMER: null,
+        bckupTimer: null,
 
         onInit: function () {
             var oModel = new JSONModel({StabilimentoID: this.StabilimentoID});
@@ -23,6 +25,8 @@ sap.ui.define([
             oRouter.getRoute("piani").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (oEvent) {
+            this.bckupTimer = null;
+            this.TIMER = 0;
             this.STOP = 0;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
@@ -30,7 +34,10 @@ sap.ui.define([
             this.RefreshCall();
         },
         RefreshFunction: function (msec) {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
+            if (typeof this.bckupTimer === "undefined" || (this.TIMER - this.bckupTimer) >= 9900) {
+                this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
+                this.bckupTimer = this.TIMER;
+            }
         },
         RefreshCall: function () {
             var link;
