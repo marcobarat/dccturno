@@ -3,9 +3,9 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
     controllerName="myapp.controller.guastiLinea">
-    <Dialog horizontalScrolling="true" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
+    <Dialog horizontalScrolling="true" contentHeight="600px" contentWidth="1200px" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
         <VBox height="100%">
-            <VBox height="40px"/>
+            <!--            <VBox height="40px"/>
             <HBox id="statoLineaBox" height="30%">
                 <VBox width="10%"/>
                 <VBox width="80%">
@@ -52,6 +52,87 @@
                 <VBox class="sapUiSmallMargin" width="48%">
                     <Button class="confermaButton lessOmbra" text="Conferma" width="100%"/>
                 </VBox>
+            </HBox>-->
+            <VBox height="30%">
+                <Table showNoData="false">
+                    <columns>
+                        <Column hAlign="Center" width="15%">
+                            <Label text="Inizio"/>
+                        </Column>
+                        <Column hAlign="Center" width="15%">
+                            <Label text="Fine"/>
+                        </Column>
+                        <Column hAlign="Center" width="15%">
+                            <Label text="Tempo"/>
+                        </Column>
+                        <Column hAlign="Center" width="45%">
+                            <Label text="Causale"/>
+                        </Column>
+                        <Column hAlign="Center" width="10%"/>
+                    </columns>
+                </Table>
+                <ScrollContainer height="150px">
+                    <content>
+                        <Table class="alternateRowColors" items="{fermiprogrammati>/fermiprogrammati}">
+                            <columns>
+                                <Column vAlign="Middle" hAlign="Center" width="15%">
+                                </Column>
+                                <Column vAlign="Middle" hAlign="Center" width="15%">
+                                </Column>
+                                <Column vAlign="Middle" hAlign="Center" width="15%">
+                                </Column>
+                                <Column vAlign="Middle" hAlign="Center" width="45%">
+                                </Column>
+                                <Column vAlign="Middle" hAlign="Center" width="10%"/>
+                            </columns>                            
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{fermiprogrammati>inizio}"/>
+                                        <Text text="{fermiprogrammati>fine}"/>
+                                        <Text text="{fermiprogrammati>intervallo}"/>
+                                        <Text text="{fermiprogrammati>causale}"/>
+                                        <Button />
+                                    </cells>
+                                </ColumnListItem> 
+                            </items>   
+                        </Table>  
+                    </content>
+                </ScrollContainer>                    
+            </VBox>
+            <VBox id="nondisponibileBox" height="40%" alignItems="Center">
+                <VBox height="33%" justifyContent="Center" alignItems="Center">
+                    <Label text="Inizio Turno" class="blueLabel"/>
+                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
+                </VBox>
+                <VBox height="33%" justifyContent="Center" alignItems="Center">
+                    <Label text="Fine Turno" class="blueLabel"/>
+                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
+                </VBox>
+                <VBox height="33%" justifyContent="Center" alignItems="Center">
+                    <Label text="Causale" class="blueLabel"/>
+                    <Select id="causale" items="{cause>/causali}" autoAdjustWidth="true">
+                        <core:Item key="{cause>id}" text="{cause>fermo}" />
+                    </Select>
+                </VBox>                
+            </VBox>
+            <HBox height="15%">
+                <VBox width="33%"/>
+                <VBox width="34%" justifyContent="Center">
+                    <Button width="100%" text="Conferma"/>
+                </VBox>
+                <VBox width="33%"/>
+            </HBox>
+            <HBox height="15%">
+                <VBox width="10%"/>
+                <VBox width="35%">
+                    <Button width="100%" text="Riavvio"/>
+                </VBox>
+                <VBox width="10%"/>
+                <VBox width="35%">
+                    <Button width="100%" press="onCloseDialog" text="Esci"/>
+                </VBox>
+                <VBox width="10%"/>
             </HBox>
         </VBox>
     </Dialog>

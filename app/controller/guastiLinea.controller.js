@@ -68,9 +68,7 @@ sap.ui.define([
         OpenMenuCausalizzazione: function (oEvent) {
             this.Button = oEvent.getSource();
             var link;
-            var row_id = this.Button.getParent().getId();
-            var split_id = row_id.split("-");
-            this.row_binded = this.getView().getModel("guasti").getData().fermi[parseInt(split_id[split_id.length - 1], 10)];
+            this.row_binded = this.Button.getParent().getBindingContext("guasti").getObject();
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {

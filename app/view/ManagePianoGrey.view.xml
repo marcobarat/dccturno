@@ -6,8 +6,8 @@
     <Page id="managePianoGrey" class="colorPage" showHeader="false">
         <content>
             <VBox height="100%" width="100%">
-                <VBox height="4%" width="100%"/>
-                <VBox height="6%" width="100%">
+                <VBox height="5%" width="100%"/>
+                <VBox height="10%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <HBox height="100%" width="20%">
@@ -48,7 +48,7 @@
                         <VBox height="100%" width="5%"/>
                     </HBox>
                 </VBox>
-                <VBox height="90%" width="100%">
+                <VBox height="85%" width="100%">
                     <HBox>
                         <VBox height="100%" width="5%"/>
                         <VBox height="100%" width="90%">
@@ -88,17 +88,17 @@
                                                                       class="fixTestoInLinea">
                                                                 </Text>                                        
                                                             </VBox>
-                                                            <HBox width="30%" class="FermoButton">
-                                                                <VBox alignItems="Center" width="16.5%">
+                                                            <HBox width="30%">
+                                                                <VBox justifyContent="Center" alignItems="Center" width="16.5%">
                                                                     <TextArea visible="false" value="{linea>OEE}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" width="100%" class="textArea"/>
                                                                 </VBox>
-                                                                <VBox alignItems="Center" width="16.5%">
+                                                                <VBox justifyContent="Center" alignItems="Center" width="16.5%">
                                                                     <TextArea visible="false" value="{linea>disponibilita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" class="textArea"/>
                                                                 </VBox>
-                                                                <VBox alignItems="Center" width="16.5%">
+                                                                <VBox justifyContent="Center" alignItems="Center" width="16.5%">
                                                                     <TextArea visible="false" value="{linea>produttivita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" class="textArea"/>
                                                                 </VBox>
-                                                                <VBox alignItems="Center" width="16.5%">
+                                                                <VBox justifyContent="Center" alignItems="Center" width="16.5%">
                                                                     <TextArea visible="false" value="{linea>qualita}" editable="false" growing="false" rows="1" cols="4" textAlign="Center" class="textArea"/>
                                                                 </VBox>
                                                                 <VBox width="33%">
@@ -194,6 +194,7 @@
                                                                     <Table 
                                                                         items="{linea>batchlist}"
                                                                         inset="false"
+                                                                        noDataText="Nessun batch lavorato"
                                                                         fixedLayout="false">
                                                                         <columns class="colorPage">
                                                                             <Column
@@ -266,7 +267,7 @@
                                                                                 <cells>
                                                                                     <Text text="{linea>sequenza}" />
                                                                                     <Text text="{linea>formatoProduttivo}" />
-                                                                                    <Text text="{= ${linea>confezione} + ' ' + ${linea>grammatura} + 'gr'}" />
+                                                                                    <Text text="{linea>confezione}" />
                                                                                     <Text text="{linea>destinazione}"/>
                                                                                     <Text
                                                                                         text="{linea>qli}" />
