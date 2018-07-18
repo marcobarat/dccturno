@@ -47,6 +47,8 @@ sap.ui.define([
         oButton: null,
         TTBackup: new JSONModel({}),
         BusyDialog: new sap.m.BusyDialog(),
+        Counter: null,
+        RefreshCounter: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -54,6 +56,8 @@ sap.ui.define([
             oRouter.getRoute("managePianoYellow").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            this.RefreshCounter = 10;
+            this.Counter = 0;
             this.STOP = 0;
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
             this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
@@ -80,6 +84,10 @@ sap.ui.define([
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
             this.RefreshFunction(100, "0");
+            var that = this;
+            setInterval(function () {
+                that.RefreshCounter++;
+            }, 1000);
         },
         SUCCESSSKU: function (Jdata) {
             var bck = Jdata.SKUattuale;
@@ -92,14 +100,22 @@ sap.ui.define([
         },
 //        FUNZIONI DI REFRESH
         RefreshFunction: function (msec, IsRidotta) {
-            this.Counter++;
             if (typeof IsRidotta === "undefined") {
                 IsRidotta = "1";
                 if ((this.Counter % 6) === 0) {
                     IsRidotta = "0";
                 }
             }
-            setTimeout(this.RefreshCall.bind(this), msec, IsRidotta);
+            if (this.RefreshCounter >= 10) {
+                this.Counter++;
+                setTimeout(this.RefreshCall.bind(this), msec, IsRidotta);
+                this.RefreshCounter = 0;
+            } else {
+                setTimeout(this.Void.bind(this), 1000);
+            }
+        },
+        Void: function () {
+            this.RefreshFunction();
         },
         RefreshCall: function (IsRidotta) {
             if (typeof IsRidotta === "undefined") {
@@ -181,6 +197,12 @@ sap.ui.define([
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("overview", true);
             }
+        },
+//         -> PULSANTE AGGIORNA
+        RefreshButton: function () {
+            this.BusyDialog.open();
+            this.RefreshCall("0");
+            this.BusyDialog.close();
         },
 //         -> CAMBIO REPARTO
         ChangeReparto: function (event) {
@@ -766,6 +788,7 @@ sap.ui.define([
                     var confezioneSKU = this.getView().byId("confezione_SKU");
                     var clienteSKU = this.getView().byId("cliente_SKU");
                     if (formatoSKU.getValue() !== "" && confezioneSKU.getValue() !== "" && clienteSKU.getValue() !== "") {
+                        this.BusyDialog.open();
                         var rowPath = this.row.getBindingContext("linea").sPath;
                         var row_binded = this.ModelLinea.getProperty(rowPath);
                         var link;
@@ -794,6 +817,7 @@ sap.ui.define([
             this.TTBackup.setData(data);
             this.ModelParametri.setData(data);
             this.getView().setModel(this.ModelParametri, "ModelParametri");
+            this.BusyDialog.close();
         },
         ChangeSKU: function () {
 //            var array_confezione;

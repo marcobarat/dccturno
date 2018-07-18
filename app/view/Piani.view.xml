@@ -17,7 +17,7 @@
                         <HBox height="100%" width="20%">
                             <VBox width="23%"/>
                             <VBox width="55%">
-                                <Button text="Esci" width="100%" press="BackToMain" class="noFocus"/>
+                                <Button text="Esci" width="100%" press="BackToMain" class="chiudiButton noFocus"/>
                             </VBox>
                             <VBox width="22%"/>
                         </HBox>
