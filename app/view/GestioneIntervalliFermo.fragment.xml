@@ -9,7 +9,7 @@
         showHeader="false"
         class="colorPage bordoBlu"
         contentWidth="1600px"
-        contentHeight= "1000px"
+        contentHeight= "700px"
         id="GestioneIntervalliFermo"
     >
         <VBox height="100%" width="100%">
@@ -25,7 +25,7 @@
                     </VBox>
                     <HBox height="100%" width="20%">
                         <VBox width="100%">
-                            <Button text="Esci" press="onCloseDialog" class="paddingright" width="100%"/>
+                            <Button text="Esci" press="onCloseDialog" class="chiudiButton paddingright" width="100%"/>
                         </VBox>
                     </HBox> 
                     <VBox height="100%" width="5%"/>
@@ -39,7 +39,7 @@
                         <t:Table
                             enableColumnReordering="false"
                             selectionMode="None"
-                            visibleRowCount="12"
+                            visibleRowCount="10"
                             class="alternate-color"
                             rows="{guasti>/fermi}"
                             id="GuastiDiLineaTable">

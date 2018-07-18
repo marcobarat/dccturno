@@ -98,6 +98,15 @@
 
 /*PIANI PASSATI*/
 
+.pianoGreyButton{
+    height: 5rem;
+}
+.pianoGreyButton .sapMBtnInner .sapMBtnContent{
+    white-space: normal; 
+}
+.paddingtop .sapMBtnInner .sapMBtnContent{
+    padding-top: 1rem;
+}
 .paddingleft {
     padding-left: 1rem;
 }
