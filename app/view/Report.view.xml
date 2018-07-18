@@ -15,7 +15,7 @@
                         </VBox>
                         <HBox height="100%" width="20%">
                             <VBox width="100%">
-                                <Button text="Esci" press="onBackNav" class="paddingright" width="100%"/>
+                                <Button text="Esci" press="onBackNav" class="chiudiButton paddingright" width="100%"/>
                             </VBox>
                         </HBox> 
                         <VBox height="100%" width="5%"/>

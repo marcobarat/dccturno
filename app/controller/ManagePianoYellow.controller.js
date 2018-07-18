@@ -49,6 +49,7 @@ sap.ui.define([
         BusyDialog: new sap.m.BusyDialog(),
         Counter: null,
         RefreshCounter: null,
+        TIMER: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -56,6 +57,7 @@ sap.ui.define([
             oRouter.getRoute("managePianoYellow").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            window.clearInterval(this.TIMER);
             this.RefreshCounter = 10;
             this.Counter = 0;
             this.STOP = 0;
@@ -85,7 +87,7 @@ sap.ui.define([
             this.getView().setModel(oModel, "orarioturno");
             this.RefreshFunction(100, "0");
             var that = this;
-            setInterval(function () {
+            this.TIMER = setInterval(function () {
                 that.RefreshCounter++;
             }, 1000);
         },

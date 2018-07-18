@@ -242,7 +242,6 @@
     border-top : 1px solid #dddddd;
     border-right : 1px solid #dddddd;
 }
-
 .paddingTotaliCelle .sapMListTblCell {
     padding-left:0.5rem;
 }
@@ -293,6 +292,9 @@
 }
 .blueLabel .sapMLabel{
     color: #003A6B;
+}
+.paddingTopComboboxes .sapMComboBoxTextField {
+    top: 2.7rem;
 }
 /*----------------------------------------
 ----------------------------------------

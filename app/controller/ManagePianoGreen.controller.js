@@ -66,6 +66,9 @@ sap.ui.define([
         BusyDialog: new sap.m.BusyDialog(),
         Counter: null,
         RefreshCounter: null,
+        TIMER: null,
+        SPCCounter: null,
+        SPCTimer: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -73,6 +76,7 @@ sap.ui.define([
             oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            window.clearInterval(this.TIMER);
             this.RefreshCounter = 10;
             this.Counter = 0;
             this.STOP = 0;
@@ -103,7 +107,7 @@ sap.ui.define([
             this.getView().setModel(oModel, "orarioturno");
             this.RefreshFunction(100, "0");
             var that = this;
-            setInterval(function () {
+            this.TIMER = setInterval(function () {
                 that.RefreshCounter++;
             }, 1000);
         },
@@ -373,6 +377,8 @@ sap.ui.define([
 //        
 //         -> PULSANTI SPC CON REFRESH
         SPCGraph: function (event) {
+            window.clearInterval(this.SPCTimer);
+            this.SPCCounter = 5;
             this.pathLinea = event.getSource().getBindingContext("linea").sPath;
             this.indexSPC = Number(event.getSource().data("mydata"));
             this.idBatch = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].IDbatchAttivo;
@@ -386,6 +392,10 @@ sap.ui.define([
             }
             this.SPCDialog.open();
             this.SPCDataCaller();
+            var that = this;
+            this.SPCTimer = setInterval(function () {
+                that.SPCCounter++;
+            }, 1000);
         },
         SPCDataCaller: function () {
             if (this.SPCDialog) {
@@ -418,7 +428,18 @@ sap.ui.define([
                 this.ModelSPCData.setProperty("/", Jdata);
             }
             this.SPCDialogFiller(isEmpty);
-            setTimeout(this.SPCDataCaller.bind(this), 10000);
+            this.SPCRefresh();
+        },
+        SPCRefresh: function () {
+            if (this.SPCCounter >= 5) {
+                setTimeout(this.SPCDataCaller.bind(this), 5000);
+                this.SPCCounter = 0;
+            } else {
+                setTimeout(this.SPCVoid.bind(this), 1000);
+            }
+        },
+        SPCVoid: function () {
+            this.SPCRefresh();
         },
 //         -> PULSANTE AGGIUNTA BATCH
         AddBatch: function (event) {
@@ -913,6 +934,7 @@ sap.ui.define([
             this.CloseSPCDialog();
         },
         CloseSPCDialog: function () {
+            window.clearInterval(this.SPCTimer);
             this.SPCDialog.close();
         },
         ParseSPCData: function (data, char) {
