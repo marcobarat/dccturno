@@ -293,9 +293,9 @@ sap.ui.define([
                 temp_id += this.CheckSingoloCausa[i];
             }
             if (temp_id > 0) {
-                this.oDialog.getAggregation("content")[0].getAggregation("items")[3].getAggregation("items")[0].setEnabled(true);
+                this.getView().byId("ConfermaFermi").setEnabled(true);
             } else {
-                this.oDialog.getAggregation("content")[0].getAggregation("items")[3].getAggregation("items")[0].setEnabled(false);
+                this.getView().byId("ConfermaFermi").setEnabled(false);
             }
         },
         onCausalizzaButton: function () {

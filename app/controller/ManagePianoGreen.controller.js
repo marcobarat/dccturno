@@ -1531,11 +1531,17 @@ sap.ui.define([
                 this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermo", this);
                 oView.addDependent(this.oDialog);
             }
+            var tempo_totale = Jdata.Totale.tempoGuastoTotale;
             var oTable = this.getView().byId("TotaleTable");
-            oTable.setVisible(true);
+            if (tempo_totale === "00:00:00") {
+//                this.getView().byId("NoFermiDaCausalizzare").setVisible(true);
+                oTable.getItems()[0].getCells()[3].setVisible(false);
+            } else {
+//                this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
+                oTable.getItems()[0].getCells()[3].setVisible(true);                
+            }
             oTable.getItems()[0].getCells()[3].setSelected(false);
             this.CheckTotaleCausa = 0;
-            this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
             this.oDialog.open();
         },
 
@@ -2157,9 +2163,9 @@ sap.ui.define([
                 temp_id += this.CheckSingoloCausa[i];
             }
             if (temp_id > 0) {
-                this.oDialog.getAggregation("content")[0].getAggregation("items")[3].getAggregation("items")[0].setEnabled(true);
+                this.getView().byId("ConfermaFermi").setEnabled(true);
             } else {
-                this.oDialog.getAggregation("content")[0].getAggregation("items")[3].getAggregation("items")[0].setEnabled(false);
+                this.getView().byId("ConfermaFermi").setEnabled(false);
             }
         },
         onCausalizzaButton: function () {
