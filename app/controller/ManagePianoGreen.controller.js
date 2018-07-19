@@ -695,21 +695,21 @@ sap.ui.define([
             grammatura = row_binded.grammatura;
             if (oCellChanged === oRow.getCells()[4]) {
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
-                cartoni = Math.ceil(numero_pezzi / this.pezzi_cartone);
+                cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
                 oRow.getCells()[5].setValue(cartoni);
-                ore = Math.ceil((numero_pezzi * this.tempo_ciclo) / 60);
+                ore = Math.round((numero_pezzi * this.tempo_ciclo) / 60);
                 oRow.getCells()[6].setValue(Library.minutesToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[5]) {
                 numero_pezzi = oValueChanged * this.pezzi_cartone;
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
-                ore = Math.ceil((numero_pezzi * this.tempo_ciclo) / 60);
+                ore = Math.round((numero_pezzi * this.tempo_ciclo) / 60);
                 oRow.getCells()[6].setValue(Library.minutesToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[6]) {
                 numero_pezzi = Library.standardToMinutes(oValueChanged) / (this.tempo_ciclo / 60);
-                cartoni = Math.ceil(numero_pezzi / this.pezzi_cartone);
+                cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
                 oRow.getCells()[5].setValue(cartoni);
@@ -786,13 +786,13 @@ sap.ui.define([
                         } else {
                             MessageToast.show(Jdata.errorMessage, {duration: 2000});
                         }
-                    }, function(err){console.log(err);});
-                    if (obj.batchId === "") {
-                        var path = event.getSource().getBindingContext("linea").sPath.split("/");
-                        var index = Number(path[path.indexOf("linee") + 1]);
-                        var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
-                        AddButton.setEnabled(true);
-                    }
+                    }, function (err) {
+                        console.log(err);
+                    });
+                    var path = event.getSource().getBindingContext("linea").sPath.split("/");
+                    var index = Number(path[path.indexOf("linee") + 1]);
+                    var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[3].getItems()[0];
+                    AddButton.setEnabled(true);
                 }
             } else {
                 MessageToast.show("Non si possono inserire batch con zero quintali", {duration: 2000});
@@ -1089,7 +1089,9 @@ sap.ui.define([
                         }
                         switch (data.linee[i].SPC[j].fase) {
                             case "1":
-                                SPCButton.setIcon("img/triangolo_buco.png");
+                                if (SPCButton.getIcon() !== "img/triangolo_buco.png") {
+                                    SPCButton.setIcon("img/triangolo_buco.png");
+                                }
                                 SPCButton.setText(data.linee[i].SPC[j].numeroCampionamenti);
                                 SPCButton.addStyleClass("SPCButtonPhase1");
                                 SPCButton.addStyleClass("SPCButtonColorYellow");
@@ -1104,11 +1106,6 @@ sap.ui.define([
                                 }
                                 break;
                             default:
-//                                SPCButton.setIcon("img/triangolo_buco.png");
-//                                SPCButton.setText("0");
-//                                SPCButton.addStyleClass("SPCButtonPhase1");
-//                                SPCButton.addStyleClass("SPCButtonColorYellow");
-
                                 SPCButton.setText("");
                                 SPCButton.addStyleClass("SPCButtonEmpty");
                                 SPCButton.setIcon("");
@@ -1198,13 +1195,7 @@ sap.ui.define([
             this.BusyDialog.close();
         },
         ChangeSKU: function () {
-//            var array_confezione;
             if (this.ISLOCAL !== 1) {
-//                if (this.getView().byId("confezione_SKU").getSelectedItem() !== null) {
-//                    array_confezione = this.getView().byId("confezione_SKU").getSelectedItem().getKey().split(" ");
-//                    this.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
-//                    this.confezione = array_confezione[0];
-//                }
                 var obj = {};
                 obj.destinazione = this.getView().byId("cliente_SKU").getValue();
                 obj.pianodiconfezionamento = "";
@@ -1357,9 +1348,11 @@ sap.ui.define([
             for (var i = 0; i < Views.length; i++) {
                 total = Views[i]._iBindingLength;
                 for (var j = total - 1; j > 0; j--) {
-                    temp = Views[i].getContextByIndex(j).getObject();
-                    if (temp.expand === 0) {
-                        Views[i].collapse(j);
+                    if (typeof Views[i].getContextByIndex(j) !== "undefined") {
+                        temp = Views[i].getContextByIndex(j).getObject();
+                        if (temp.expand === 0) {
+                            Views[i].collapse(j);
+                        }
                     }
                 }
             }

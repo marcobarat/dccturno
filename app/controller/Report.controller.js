@@ -45,7 +45,7 @@ sap.ui.define([
             var that = this;
             setTimeout(function () {
                 that.getView().byId("TreeTableReport").onAfterRendering();
-                this.GlobalBusyDialog.close();
+                that.GlobalBusyDialog.close();
             },1000);
         },
         _onObjectMatched: function (oEvent) {
