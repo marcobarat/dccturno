@@ -305,15 +305,16 @@ sap.ui.define([
             if (Number(this.ISLOCAL) === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID" + this.pdcID + "&OutputParameter=JSON";
             }
-            Library.AjaxCallerData(link, this.SUCCESSCause.bind(this));
-            this.getView().setModel(this.ModelCause, "cause");
+            Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
+            this.getView().setModel(this.ModelCause, "fermiprogrammati");
         },
-        SUCCESSCause: function (Jdata) {
-            this.ModelCause.setData(Jdata);
+        SUCCESSFermiProgrammati: function (Jdata) {
+            var data;
+            data = Library.AddTimeGapsFermiProgrammati(Jdata);
+            this.ModelCause.setData(data);
             this.oDialog.open();
-            jQuery("section.sapMDialogSection").find("div[id*='causale']").css('min-width', '7rem');
         },
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
@@ -1600,7 +1601,7 @@ sap.ui.define([
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertNonDisponibilitaLinea&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
                 Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
             } else {
-               MessageToast.show("Il campo causale è vuoto o errato. Inserire una causale e riprovare", {duration: 2000}); 
+                MessageToast.show("Il campo causale è vuoto o errato. Inserire una causale e riprovare", {duration: 2000});
             }
         },
         SUCCESSInserisciFermoProgrammato: function (Jdata) {
@@ -1609,6 +1610,15 @@ sap.ui.define([
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
+        },
+        CancellaFermoProgrammato: function (oEvent) {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertNonDisponibilitaLinea&Content-Type=text/json&LineaID=" + this.linea_id + "&LogSchedulatoID=" + oEvent.getSource().getParent().getBindingContext("fermiprogrammati").getObject().LogSchedulatoID + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSEliminazioneEffettuata.bind(this));
+        },
+        SUCCESSEliminazioneEffettuata: function (Jdata) {
+            var data;
+            data = Library.AddTimeGapsFermiProgrammati(Jdata);
+            this.ModelCause.setData(data);
         },
 //        -------------------------------------------------
 //        -------------------------------------------------

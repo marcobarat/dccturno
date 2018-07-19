@@ -12,7 +12,7 @@
                     visibleRowCount="3"
                     class="alternate-color"
                     selectionMode="None"
-                    rows="{fermiprogrammati>/fermiprogrammati}">
+                    rows="{fermiprogrammati>/nondisponibilita}">
                     <t:columns>
                         <t:Column hAlign="Center" width="15%" resizable="false">
                             <Label text="Inizio"/>
@@ -40,7 +40,7 @@
                         </t:Column>
                         <t:Column hAlign="Center" width="10%" resizable="false">
                             <t:template>
-                                <Button/>
+                                <Button text="Delete" press="CancellaFermoProgrammato" enabled="{= ${fermiprogrammati>isAttivo} === '0' ? true : false}"/>
                             </t:template>
                         </t:Column>
                     </t:columns>
