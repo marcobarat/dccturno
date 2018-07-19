@@ -72,26 +72,30 @@ sap.ui.define([
                                     rowhtml.addClass("righeOverOut");
                                     break;
                             }
-                            for (j = 1; j < that.getColumns().length; j++) {
-                                cellhtml = rowhtml.children()[j].children[0];
-                                switch (row.hierarchy) {
-                                    case 1:
-                                        cellhtml.classList.add("Lv1");
-                                        break;
-                                    case 2:
-                                        cellhtml.classList.add("Lv2");
-                                        break;
-                                    case 3:
-                                        cellhtml.classList.add("Lv3");
-                                        if (j === 5 || j === 6 || j === 7) {
-                                            cellhtml.parentElement.classList.add("handPointer");
-                                        }
-                                        break;
-                                    default:
-                                        break;
+                            for (j = 0; j < that.getColumns().length; j++) {
+                                if (j !== 0) {
+                                    cellhtml = rowhtml.children()[j].children[0];
+                                    switch (row.hierarchy) {
+                                        case 1:
+                                            cellhtml.classList.add("Lv1");
+                                            break;
+                                        case 2:
+                                            cellhtml.classList.add("Lv2");
+                                            break;
+                                        case 3:
+                                            cellhtml.classList.add("Lv3");
+                                            if (j === 5 || j === 6 || j === 7) {
+                                                cellhtml.parentElement.classList.add("handPointer");
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
                                 if (j === 2 || j === 3 || j === 5 || j === 6 || j === 8 || j === 9 || j === 11 || j === 12 || j === 13) {
                                     rowhtml.children()[j].classList.add("mysapUiTableCol");
+                                } else {
+                                    rowhtml.children()[j].classList.remove("mysapUiTableCol");
                                 }
                             }
 

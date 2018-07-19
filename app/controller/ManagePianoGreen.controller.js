@@ -311,10 +311,7 @@ sap.ui.define([
         },
         SUCCESSCause: function (Jdata) {
             this.ModelCause.setData(Jdata);
-//            this.getView().byId("disponibile").setSelected(true);
-//            this.getView().byId("nondisponibile").setSelected(false);
             this.oDialog.open();
-//            jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").css('display', 'none');
             jQuery("section.sapMDialogSection").find("div[id*='causale']").css('min-width', '7rem');
         },
 //         -> DROPDOWN OPERATORI

@@ -2,6 +2,7 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
+    xmlns:t="sap.ui.table"
     controllerName="myapp.controller.guastiLinea">
     <Dialog horizontalScrolling="true" contentHeight="600px" contentWidth="1200px" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
         <VBox height="100%">
@@ -53,52 +54,48 @@
                     <Button class="confermaButton lessOmbra" text="Conferma" width="100%"/>
                 </VBox>
             </HBox>-->
-            <VBox height="30%">
-                <Table showNoData="false">
-                    <columns>
-                        <Column hAlign="Center" width="15%">
+            <VBox height="35%">
+                <t:Table
+                    id="GuastiTable"
+                    visibleRowCount="3"
+                    class="alternate-color"
+                    selectionMode="None"
+                    rows="{fermiprogrammati>/fermiprogrammati}">
+                    <t:columns>
+                        <t:Column hAlign="Center" width="15%" resizable="false">
                             <Label text="Inizio"/>
-                        </Column>
-                        <Column hAlign="Center" width="15%">
+                            <t:template>
+                                <Text text="{fermiprogrammati>inizio}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column hAlign="Center" width="15%" resizable="false">
                             <Label text="Fine"/>
-                        </Column>
-                        <Column hAlign="Center" width="15%">
+                            <t:template>
+                                <Text text="{fermiprogrammati>fine}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column hAlign="Center" width="15%" resizable="false">
                             <Label text="Tempo"/>
-                        </Column>
-                        <Column hAlign="Center" width="45%">
+                            <t:template>
+                                <Text text="{fermiprogrammati>intervallo}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column hAlign="Center" width="45%" resizable="false">
                             <Label text="Causale"/>
-                        </Column>
-                        <Column hAlign="Center" width="10%"/>
-                    </columns>
-                </Table>
-                <ScrollContainer height="150px">
-                    <content>
-                        <Table class="alternateRowColors" items="{fermiprogrammati>/fermiprogrammati}">
-                            <columns>
-                                <Column vAlign="Middle" hAlign="Center" width="15%">
-                                </Column>
-                                <Column vAlign="Middle" hAlign="Center" width="15%">
-                                </Column>
-                                <Column vAlign="Middle" hAlign="Center" width="15%">
-                                </Column>
-                                <Column vAlign="Middle" hAlign="Center" width="45%">
-                                </Column>
-                                <Column vAlign="Middle" hAlign="Center" width="10%"/>
-                            </columns>                            
-                            <items>
-                                <ColumnListItem>
-                                    <cells>
-                                        <Text text="{fermiprogrammati>inizio}"/>
-                                        <Text text="{fermiprogrammati>fine}"/>
-                                        <Text text="{fermiprogrammati>intervallo}"/>
-                                        <Text text="{fermiprogrammati>causale}"/>
-                                        <Button />
-                                    </cells>
-                                </ColumnListItem> 
-                            </items>   
-                        </Table>  
-                    </content>
-                </ScrollContainer>                    
+                            <t:template>
+                                <Text text="{fermiprogrammati>causale}"/>
+                            </t:template>
+                        </t:Column>
+                        <t:Column hAlign="Center" width="10%" resizable="false">
+                            <t:template>
+                                <Button/>
+                            </t:template>
+                        </t:Column>
+                    </t:columns>
+                    <t:noData>
+                        <Text class="sapUiTableCtrlEmptyMsg" text="Non ci sono fermi programmati per la linea" textAlign="Center"/>
+                    </t:noData>
+                </t:Table>
             </VBox>
             <VBox id="nondisponibileBox" height="40%" alignItems="Center">
                 <VBox height="33%" justifyContent="Center" alignItems="Center">
@@ -119,18 +116,18 @@
             <HBox height="15%">
                 <VBox width="33%"/>
                 <VBox width="34%" justifyContent="Center">
-                    <Button width="100%" text="Conferma"/>
+                    <Button width="100%" text="Conferma" class="chiudiButton"/>
                 </VBox>
                 <VBox width="33%"/>
             </HBox>
-            <HBox height="15%">
+            <HBox height="10%">
                 <VBox width="10%"/>
                 <VBox width="35%">
-                    <Button width="100%" text="Riavvio"/>
+                    <Button width="100%" text="Riavvio" class="allarmeButton"/>
                 </VBox>
                 <VBox width="10%"/>
                 <VBox width="35%">
-                    <Button width="100%" press="onCloseDialog" text="Esci"/>
+                    <Button width="100%" press="onCloseDialog" text="Esci" class="chiudiButton"/>
                 </VBox>
                 <VBox width="10%"/>
             </HBox>

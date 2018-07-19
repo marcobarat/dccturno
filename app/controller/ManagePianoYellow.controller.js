@@ -244,11 +244,18 @@ sap.ui.define([
         },
         SUCCESSCause: function (Jdata) {
             this.ModelCause.setData(Jdata);
-            this.getView().byId("disponibile").setSelected(true);
-            this.getView().byId("nondisponibile").setSelected(false);
             this.oDialog.open();
-            jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").css('display', 'none');
             jQuery("section.sapMDialogSection").find("div[id*='causale']").css('min-width', '7rem');
+        },
+        onCloseDialog: function () {
+            this.RerenderTimePickers();
+            var id_dialog = this.oDialog.getId().split("--")[1];
+            this.getView().byId(id_dialog).close();
+            this.oDialog = null;
+            if (id_dialog === "GestioneIntervalliFermo") {
+                this.STOP = 0;
+                this.RefreshCall("1");
+            }
         },
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
