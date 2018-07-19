@@ -548,6 +548,17 @@
     height: 100%;
     text-shadow: 0 0 0 ;     
 }
+.chiudiButtonStatoLinea .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    background: #f2f2f2;
+    color: #003A6B;
+    border-radius: 10px;
+    height: 105%;
+    width: 100%;
+    text-shadow: 0 0 0 ;
+    top: 1.2rem;
+}
 .buttonDimension .sapMBtnInner {
     bottom: 0.2rem;
     position: relative;

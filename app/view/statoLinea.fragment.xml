@@ -4,57 +4,9 @@
     xmlns:u="sap.ui.unified"
     xmlns:t="sap.ui.table"
     controllerName="myapp.controller.guastiLinea">
-    <Dialog horizontalScrolling="true" contentHeight="600px" contentWidth="1200px" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
+    <Dialog horizontalScrolling="true" contentHeight="500px" contentWidth="800px" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
         <VBox height="100%">
-            <!--            <VBox height="40px"/>
-            <HBox id="statoLineaBox" height="30%">
-                <VBox width="10%"/>
-                <VBox width="80%">
-                    <CheckBox
-                        id="disponibile"
-                        select="GestioneStato"
-                        text="Disponibile per la produzione"
-                        class="blueLabel"/>
-                    <CheckBox
-                        id="nondisponibile"
-                        select="GestioneStato"
-                        text="Non disponibile per la produzione"
-                        class="blueLabel"/>
-                </VBox>
-                <VBox width="10%"/>
-            </HBox>
-            <VBox height="20px"/>
-            <HBox height="300px">
-                <VBox width="10%"/>
-                <VBox width="1rem"/>
-                <VBox id="nondisponibileBox" width="80%" height='' class="bordoBlu paddingleft">
-                    <VBox height="33%" justifyContent="Center">
-                        <Label text="Inizio Turno" class="blueLabel"/>
-                        <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
-                    </VBox>
-                    <VBox height="33%" justifyContent="Center">
-                        <Label text="Fine Turno" class="blueLabel"/>
-                        <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
-                    </VBox>
-                    <VBox height="33%" justifyContent="Center">
-                        <Label text="Causale" class="blueLabel"/>
-                        <Select id="causale" items="{cause>/causali}" autoAdjustWidth="true">
-                            <core:Item key="{cause>id}" text="{cause>fermo}" />
-                        </Select>
-                    </VBox>
-                </VBox>
-                <VBox width="10%"/>
-            </HBox>
-            <HBox height="5%">
-                <VBox class="sapUiSmallMargin" width="48%">
-                    <Button class="annullaButton lessOmbra" text="Annulla" width="100%" press="CloseDialog"/>
-                </VBox>
-                <VBox width="4%"/>
-                <VBox class="sapUiSmallMargin" width="48%">
-                    <Button class="confermaButton lessOmbra" text="Conferma" width="100%"/>
-                </VBox>
-            </HBox>-->
-            <VBox height="35%">
+            <VBox height="55%">
                 <t:Table
                     id="GuastiTable"
                     visibleRowCount="3"
@@ -97,41 +49,45 @@
                     </t:noData>
                 </t:Table>
             </VBox>
-            <VBox id="nondisponibileBox" height="40%" alignItems="Center">
-                <VBox height="33%" justifyContent="Center" alignItems="Center">
-                    <Label text="Inizio Turno" class="blueLabel"/>
-                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
-                </VBox>
-                <VBox height="33%" justifyContent="Center" alignItems="Center">
-                    <Label text="Fine Turno" class="blueLabel"/>
-                    <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
-                </VBox>
-                <VBox height="33%" justifyContent="Center" alignItems="Center">
-                    <Label text="Causale" class="blueLabel"/>
-                    <Select id="causale" items="{cause>/causali}" autoAdjustWidth="true">
-                        <core:Item key="{cause>id}" text="{cause>fermo}" />
-                    </Select>
-                </VBox>                
+            <VBox id="nondisponibileBox" height="30%" width="100%" alignItems="Center">
+                <HBox width="100%" height="100%">
+                    <VBox width="6%"/>
+                    <VBox width="10%">
+                        <Label text="Inizio Turno" class="blueLabel"/>
+                        <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
+                    </VBox>
+                    <VBox width="6%"/>
+                    <VBox width="10%">
+                        <Label text="Fine Turno" class="blueLabel"/>
+                        <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
+                    </VBox>
+                    <VBox width="6%"/>
+                    <VBox width="34%">
+                        <Label text="Causale" class="blueLabel"/>
+                        <Select id="causale" items="{cause>/causali}" autoAdjustWidth="false">
+                            <core:Item key="{cause>id}" text="{cause>fermo}" />
+                        </Select>
+                    </VBox>
+                    <VBox width="6%"/>
+                    <VBox width="16%">
+                        <Button width="100%" text="Inserisci" press="InsertLineIdlePeriod" class="chiudiButtonStatoLinea"/>
+                    </VBox>
+                    <VBox width="6%"/>
+                </HBox>                
             </VBox>
-            <HBox height="15%">
-                <VBox width="33%"/>
-                <VBox width="34%" justifyContent="Center">
-                    <Button width="100%" text="Conferma" class="chiudiButton"/>
-                </VBox>
-                <VBox width="33%"/>
-            </HBox>
-            <HBox height="10%">
-                <VBox width="10%"/>
-                <VBox width="35%">
-                    <Button width="100%" text="Riavvio" class="allarmeButton"/>
-                </VBox>
-                <VBox width="10%"/>
-                <VBox width="35%">
-                    <Button width="100%" press="onCloseDialog" text="Esci" class="chiudiButton"/>
-                </VBox>
-                <VBox width="10%"/>
-            </HBox>
+            <VBox height="15%">
+                <HBox>
+                    <VBox width="10%"/>
+                    <VBox width="35%">
+                        <Button width="100%" press="onCloseDialog" text="Chiudi" class="chiudiButton"/>   
+                    </VBox>
+                    <VBox width="10%"/>
+                    <VBox width="35%">
+                        <Button width="100%" text="Riavvia subito" class="allarmeButton"/>
+                    </VBox>
+                    <VBox width="10%"/>
+                </HBox>
+            </VBox>
         </VBox>
     </Dialog>
-
 </core:FragmentDefinition>
