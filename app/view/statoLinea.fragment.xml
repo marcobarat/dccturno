@@ -108,15 +108,13 @@
                 </VBox>
                 <VBox height="33%" justifyContent="Center" alignItems="Center">
                     <Label text="Causale" class="blueLabel"/>
-                    <Select id="causale" items="{cause>/causali}" autoAdjustWidth="true">
-                        <core:Item key="{cause>id}" text="{cause>fermo}" />
-                    </Select>
+                    <ComboBox id="causale" loadItems="CaricaCausaliDisponibilita"/>
                 </VBox>                
             </VBox>
             <HBox height="15%">
                 <VBox width="33%"/>
                 <VBox width="34%" justifyContent="Center">
-                    <Button width="100%" text="Conferma" class="chiudiButton"/>
+                    <Button width="100%" text="Conferma" class="chiudiButton" press="InserisciFermoProgrammato"/>
                 </VBox>
                 <VBox width="33%"/>
             </HBox>
@@ -127,7 +125,7 @@
                 </VBox>
                 <VBox width="10%"/>
                 <VBox width="35%">
-                    <Button width="100%" press="onCloseDialog" text="Esci" class="chiudiButton"/>
+                    <Button width="100%" press="DestroyDialog" text="Esci" class="chiudiButton"/>
                 </VBox>
                 <VBox width="10%"/>
             </HBox>

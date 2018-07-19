@@ -293,7 +293,8 @@ sap.ui.define([
 //        ************************ TABELLA 20% DI SINISTRA ************************
 //        
 //         -> PULSANTE DELLA LINEA
-        ShowStatoLinea: function () {
+        ShowStatoLinea: function (oEvent) {
+            this.linea_id = this.getView().getModel("linea").getProperty(oEvent.getSource().getBindingContext("linea").sPath).lineaID;
             var link;
             var oView = this.getView();
             this.oDialog = oView.byId("statoLinea");
@@ -339,7 +340,7 @@ sap.ui.define([
                 }
                 selectBox.getBinding("items").filter(aFilter);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 180});
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
         CheckOperatore: function (event) {
@@ -1535,7 +1536,7 @@ sap.ui.define([
                 oTable.getItems()[0].getCells()[3].setVisible(false);
             } else {
 //                this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
-                oTable.getItems()[0].getCells()[3].setVisible(true);                
+                oTable.getItems()[0].getCells()[3].setVisible(true);
             }
             oTable.getItems()[0].getCells()[3].setSelected(false);
             this.CheckTotaleCausa = 0;
@@ -1572,21 +1573,42 @@ sap.ui.define([
 //        -------------------------------------------------
 //        
 //      **************** POPUP LINEA ****************
-
-        GestioneStato: function (event) {
-            var oText = event.getSource().getText();
-            if (oText === "Disponibile per la produzione") {
-                this.getView().byId("disponibile").setSelected(true);
-                this.getView().byId("nondisponibile").setSelected(false);
-                jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").slideUp('fast');
+        CaricaCausaliDisponibilita: function () {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleNonDisponibilita&Content-Type=text/json&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSCausaliDisponibilita.bind(this));
+        },
+        SUCCESSCausaliDisponibilita: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                var oModel = new JSONModel(Jdata);
+                oModel.setData(Jdata);
+                var selectBox = this.getView().byId("causale");
+                var oItemSelectTemplate = new sap.ui.core.Item({
+                    key: "{causaledisp>id}",
+                    text: "{causaledisp>causale}"
+                });
+                selectBox.setModel(oModel, "causaledisp");
+                selectBox.bindAggregation("items", "causaledisp>/causali", oItemSelectTemplate);
             } else {
-                this.getView().byId("nondisponibile").setSelected(true);
-                this.getView().byId("disponibile").setSelected(false);
-                jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").slideDown('fast');
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
-        CloseDialog: function () {
-            this.oDialog.close();
+        InserisciFermoProgrammato: function () {
+            var causale = this.getView().byId("causale").getSelectedKey();
+            if (causale !== "") {
+                var data_inizio = Library.fromStandardToDate(this.piano.data, this.getView().byId("inizio").getValue()) + ":00";
+                var data_fine = Library.fromStandardToDate(this.piano.data, this.getView().byId("fine").getValue()) + ":00";
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertNonDisponibilitaLinea&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
+                Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
+            } else {
+               MessageToast.show("Il campo causale è vuoto o errato. Inserire una causale e riprovare", {duration: 2000}); 
+            }
+        },
+        SUCCESSInserisciFermoProgrammato: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                console.log("Inserimento effettuato!");
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
+            }
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
@@ -2011,6 +2033,7 @@ sap.ui.define([
 //      **************** POPUP GESTIONE INTERVALLI AZIONI DI CONFERMA E DI ANNULLA **************** 
         DestroyDialog: function (oEvent) {
             this.oDialog.destroy();
+            this.RerenderTimePickers();
             this.oDialog = this.getView().byId("GestioneIntervalliFermo");
         },
         ConfermaCambio: function (oEvent) {

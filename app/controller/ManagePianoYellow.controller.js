@@ -257,6 +257,10 @@ sap.ui.define([
                 this.RefreshCall("1");
             }
         },
+        DestroyDialog: function (oEvent) {
+            this.oDialog.destroy();
+            this.RerenderTimePickers();
+        },
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
             var that = this;
