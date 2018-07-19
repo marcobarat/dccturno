@@ -22,29 +22,9 @@
                     </HBox>
                 </VBox>
                 <VBox height="4%" width="100%"/>
-                <!--                <VBox height="5%" width="100%"/>
-                <VBox height="10%" width="100%">
-                    <HBox>
-                        <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="10%">
-                        </VBox>
-                        <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="40%">
-                            <VBox height="100%" width="100%">
-                                <Text id="ReportTitle"/>
-                            </VBox>
-                        </VBox>
-                        <VBox height="100%" width="10%"/>
-                        <VBox height="100%" width="10%">
-                            <Button text="Close" press="onBackNav" width="100%" class="annullaButton"/>
-                        </VBox>
-                        <VBox height="100%" width="10%"/>
-                    </HBox>
-                </VBox>
-                <VBox height="5%" width="100%"/>-->
+                <VBox height="5%" width="100%"/>
                 <VBox height="86%" width="100%">
                     <HBox>
-                        <!--<VBox height="100%" width="5%"/>-->
                         <VBox height="100%" width="100%">
                             <wt:HierarchyTable
                                 rows="{path:'ReportOEE>/', parameters: {arrayNames:['Sottogruppo']}}"
@@ -53,8 +33,7 @@
                                 toggleOpenState="onToggleOpenState"
                                 class="mysapUiTableExt mysapUiTableColCell mysapUiTableTr"
                                 cellClick="LinkClick"
-                                visibleRowCount="24"
-                            > 
+                                visibleRowCount="24"> 
                                 <wt:columns>
                                     <t:Column width="30%" resizable="false">
                                         <t:template>

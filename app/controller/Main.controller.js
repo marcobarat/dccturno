@@ -18,20 +18,6 @@ sap.ui.define([
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
         },
-        onAfterRendering: function () {
-            $("div.tileBlue").mouseenter(function () {
-                $(this).removeClass("tileTitleHoverBlue");
-            });
-            $("div.tileBlue").mouseleave(function () {
-                $(this).addClass("tileTitleHoverBlue");
-            });
-            $("div.tileRed").mouseenter(function () {
-                $(this).removeClass("tileTitleHoverRed");
-            });
-            $("div.tileRed").mouseleave(function () {
-                $(this).addClass("tileTitleHoverRed");
-            });
-        },
         onToPianiPage: function () {
             var link;
             if (this.ISLOCAL === 1) {
