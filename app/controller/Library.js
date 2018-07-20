@@ -88,6 +88,32 @@ sap.ui.define([
             data.Totale.causaleTotale = "";
             return data;
         },
+        AddTimeGapsFermiProgrammati: function (data) {
+            var millisec_diff = [];
+            var start, end;
+            for (var iter in data.nondisponibilita) {
+                start = new Date(data.nondisponibilita[iter].inizio);
+                end = new Date(data.nondisponibilita[iter].fine);
+                millisec_diff.push(end - start);
+                data.nondisponibilita[iter].inizio = this.DateToStandard(start);
+                data.nondisponibilita[iter].fine = this.DateToStandard(end);
+            }
+            var temp;
+            var sum = 0;
+            var arrayGaps = [];
+            for (iter in millisec_diff) {
+                temp = millisec_diff[iter];
+                sum += temp;
+                arrayGaps.push(this.MillisecsToStandard(temp));
+            }
+            for (var i = 0; i < arrayGaps.length; i++) {
+                data.nondisponibilita[i].intervallo = arrayGaps[i];
+            }
+            data.Totale = {};
+            data.Totale.tempoGuastoTotale = this.MillisecsToStandard(sum);
+            data.Totale.causaleTotale = "";
+            return data;
+        },
         RemoveCaused: function (data) {
             for (var i = data.fermi.length - 1; i >= 0; i--) {
                 if (data.fermi[i].causale !== "") {

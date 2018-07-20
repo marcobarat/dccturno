@@ -8,11 +8,13 @@
         <VBox height="100%">
             <VBox height="55%">
                 <t:Table
-                    id="GuastiTable"
+                    width="100%"
+                    enableColumnReordering="true"
+                    id="FermiProgrammatiTable"
                     visibleRowCount="3"
                     class="alternate-color"
                     selectionMode="None"
-                    rows="{fermiprogrammati>/fermiprogrammati}">
+                    rows="{fermiprogrammati>/nondisponibilita}">
                     <t:columns>
                         <t:Column hAlign="Center" width="15%" resizable="false">
                             <Label text="Inizio"/>
@@ -40,7 +42,7 @@
                         </t:Column>
                         <t:Column hAlign="Center" width="10%" resizable="false">
                             <t:template>
-                                <Button/>
+                                <Button text="Delete" press="CancellaFermoProgrammato" enabled="{= ${fermiprogrammati>isAttivo} === '0' ? true : false}"/>
                             </t:template>
                         </t:Column>
                     </t:columns>
@@ -51,23 +53,23 @@
             </VBox>
             <VBox id="nondisponibileBox" height="30%" width="100%" alignItems="Center">
                 <HBox width="100%" height="100%">
-                    <VBox width="6%"/>
-                    <VBox width="10%">
+                    <VBox width="3%"/>
+                    <VBox width="15%">
                         <Label text="Inizio Turno" class="blueLabel"/>
                         <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="inizio"></TimePicker>
                     </VBox>
-                    <VBox width="6%"/>
-                    <VBox width="10%">
+                    <VBox width="2%"/>
+                    <VBox width="15%">
                         <Label text="Fine Turno" class="blueLabel"/>
                         <TimePicker width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="fine"></TimePicker>
                     </VBox>
-                    <VBox width="6%"/>
-                    <VBox width="34%">
+                    <VBox width="2%"/>
+                    <VBox width="35%">
                         <Label text="Causale" class="blueLabel"/>
                         <ComboBox id="causale" loadItems="CaricaCausaliDisponibilita"/>
                     </VBox>
-                    <VBox width="6%"/>
-                    <VBox width="16%">
+                    <VBox width="5%"/>
+                    <VBox width="17%">
                         <Button width="100%" text="Inserisci" press="InserisciFermoProgrammato" class="chiudiButtonStatoLinea"/>
                     </VBox>
                     <VBox width="6%"/>
@@ -81,7 +83,7 @@
                     </VBox>
                     <VBox width="10%"/>
                     <VBox width="35%">
-                        <Button width="100%" text="Riavvia subito" class="allarmeButton"/>
+                        <Button width="100%" text="Riavvia subito" class="allarmeButton" press="RiavviamentoLinea"/>
                     </VBox>
                     <VBox width="10%"/>
                 </HBox>
