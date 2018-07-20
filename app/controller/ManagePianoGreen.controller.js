@@ -1114,7 +1114,9 @@ sap.ui.define([
                             SPCButton.setText("0");
                             SPCButton.addStyleClass("SPCButtonPhase1");
                             SPCButton.addStyleClass("SPCButtonColorYellow");
-                            SPCButton.setIcon("img/triangolo_buco.png");
+                            if (SPCButton.getIcon() !== "img/triangolo_buco.png") {
+                                SPCButton.setIcon("img/triangolo_buco.png");
+                            }
                             SPCButton.setEnabled(false);
                         }
                     }
@@ -1600,7 +1602,7 @@ sap.ui.define([
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertNonDisponibilitaLinea&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
                 Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
             } else {
-               MessageToast.show("Il campo causale è vuoto o errato. Inserire una causale e riprovare", {duration: 2000}); 
+                MessageToast.show("Il campo causale è vuoto o errato. Inserire una causale e riprovare", {duration: 2000});
             }
         },
         SUCCESSInserisciFermoProgrammato: function (Jdata) {
