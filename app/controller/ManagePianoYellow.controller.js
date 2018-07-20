@@ -43,7 +43,9 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         oDialog: null,
+        RefreshLogCounter: 10,
         STOP: 0,
+        STOPLOG: 0,
         oButton: null,
         TTBackup: new JSONModel({}),
         BusyDialog: new sap.m.BusyDialog(),
@@ -59,6 +61,7 @@ sap.ui.define([
         URLChangeCheck: function (event) {
             window.clearInterval(this.TIMER);
             this.RefreshCounter = 10;
+            this.RefreshLogCounter = 10;
             this.Counter = 0;
             this.STOP = 0;
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
@@ -226,7 +229,9 @@ sap.ui.define([
 //        ************************ TABELLA 20% DI SINISTRA ************************
 //        
 //         -> PULSANTE DELLA LINEA
-        ShowStatoLinea: function () {
+        ShowStatoLinea: function (oEvent) {
+            this.linea_id = this.getView().getModel("linea").getProperty(oEvent.getSource().getBindingContext("linea").sPath).lineaID;
+            this.STOPLOG = 0;
             var link;
             var oView = this.getView();
             this.oDialog = oView.byId("statoLinea");
@@ -237,27 +242,43 @@ sap.ui.define([
             if (Number(this.ISLOCAL) === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID" + this.pdcID + "&OutputParameter=JSON";
             }
-            Library.AjaxCallerData(link, this.SUCCESSCause.bind(this));
-            this.getView().setModel(this.ModelCause, "cause");
+            Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
         },
-        SUCCESSCause: function (Jdata) {
-            this.ModelCause.setData(Jdata);
+        SUCCESSFermiProgrammati: function (Jdata) {
+            var data;
+            data = Library.AddTimeGapsFermiProgrammati(Jdata);
+            this.ModelCause.setData(data);
+            this.getView().setModel(this.ModelCause, "fermiprogrammati");
             this.oDialog.open();
-            jQuery("section.sapMDialogSection").find("div[id*='causale']").css('min-width', '7rem');
-        },
-        onCloseDialog: function () {
-            this.RerenderTimePickers();
-            var id_dialog = this.oDialog.getId().split("--")[1];
-            this.getView().byId(id_dialog).close();
-            this.oDialog = null;
-            if (id_dialog === "GestioneIntervalliFermo") {
-                this.STOP = 0;
-                this.RefreshCall("1");
+            if (this.STOPLOG === 0) {
+                this.RefreshLogFunction(60000);
             }
+        },
+        RefreshLogFunction: function (msec) {
+            if (this.RefreshLogCounter >= 10) {
+                setTimeout(this.RefreshLogCall.bind(this), msec);
+                this.RefreshLogCounter = 0;
+            } else {
+                setTimeout(this.VoidLog.bind(this), 1000);
+            }
+        },
+        VoidLog: function () {
+            this.RefreshLogCounter++;
+            this.RefreshLogFunction(60000);
+        },
+        RefreshLogCall: function () {
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "";
+            } else {
+                link = link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID" + this.pdcID + "&OutputParameter=JSON";
+            }
+            Library.SyncAjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
         },
         DestroyDialog: function (oEvent) {
+            this.STOPLOG = 1;
             this.oDialog.destroy();
             this.RerenderTimePickers();
         },
@@ -1130,21 +1151,66 @@ sap.ui.define([
 //        -------------------------------------------------
 //        
 //      **************** POPUP LINEA ****************
-
-        GestioneStato: function (event) {
-            var oText = event.getSource().getText();
-            if (oText === "Disponibile per la produzione") {
-                this.getView().byId("disponibile").setSelected(true);
-                this.getView().byId("nondisponibile").setSelected(false);
-                jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").slideUp('fast');
+        CaricaCausaliDisponibilita: function () {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleNonDisponibilita&Content-Type=text/json&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSCausaliDisponibilita.bind(this));
+        },
+        SUCCESSCausaliDisponibilita: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                var oModel = new JSONModel(Jdata);
+                oModel.setData(Jdata);
+                var selectBox = this.getView().byId("causale");
+                var oItemSelectTemplate = new sap.ui.core.Item({
+                    key: "{causaledisp>id}",
+                    text: "{causaledisp>causale}"
+                });
+                selectBox.setModel(oModel, "causaledisp");
+                selectBox.bindAggregation("items", "causaledisp>/causali", oItemSelectTemplate);
             } else {
-                this.getView().byId("nondisponibile").setSelected(true);
-                this.getView().byId("disponibile").setSelected(false);
-                jQuery("section.sapMDialogSection").find("div[id*='nondisponibileBox']").slideDown('fast');
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
-        CloseDialog: function () {
-            this.oDialog.close();
+        InserisciFermoProgrammato: function () {
+            var causale = this.getView().byId("causale").getSelectedKey();
+            if (causale !== "") {
+                var data_inizio = Library.fromStandardToDate(this.piano.data, this.getView().byId("inizio").getValue()) + ":00";
+                var data_fine = Library.fromStandardToDate(this.piano.data, this.getView().byId("fine").getValue()) + ":00";
+                var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsertND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
+                Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
+            } else {
+                MessageToast.show("Il campo causale è vuoto o errato. Inserire una causale e riprovare", {duration: 2000});
+            }
+        },
+        SUCCESSInserisciFermoProgrammato: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                var data;
+                data = Library.AddTimeGapsFermiProgrammati(Jdata.logND);
+                this.ModelCause.setData(data);
+                this.getView().setModel(this.ModelCause, "fermiprogrammati");
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
+            }
+        },
+        CancellaFermoProgrammato: function (oEvent) {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboDeleteND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&LogSchedulatoID=" + oEvent.getSource().getParent().getBindingContext("fermiprogrammati").getObject().LogSchedulatoID + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSEliminazioneEffettuata.bind(this));
+        },
+        SUCCESSEliminazioneEffettuata: function (Jdata) {
+            if (Number(Jdata.error) === 0) {
+                var data;
+                data = Library.AddTimeGapsFermiProgrammati(Jdata.logND);
+                this.ModelCause.setData(data);
+                this.getView().setModel(this.ModelCause, "fermiprogrammati");
+            } else {
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
+            }
+        },
+        RiavviamentoLinea: function () {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/RiavvioNonDisponibilita&Content-Type=text/json&LineaID=" + this.linea_id + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSRiavviamentoLinea.bind(this));
+        },
+        SUCCESSRiavviamentoLinea: function (Jdata) {
+            this.DestroyDialog();
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
