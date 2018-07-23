@@ -10,7 +10,7 @@
                 <VBox height="10%" width="100%">
                     <HBox height="100%">
                         <VBox height="100%" width="5%"/>
-                        <HBox height="100%" width="20%">
+                        <HBox height="100%" width="25%">
                             <HBox height="100%">
                                 <Button text="Calcolo Consuntivi"
                                         press="CreateReport"
@@ -28,12 +28,12 @@
                                 </Button>  
                             </HBox>    
                         </HBox>                  
-                        <VBox height="100%" width="50%">
+                        <VBox height="100%" width="40%">
                             <VBox height="50%" width="100%" alignItems="Center">
                                 <Text id="ReportTitle"/>
                             </VBox> 
                         </VBox>
-                        <HBox height="100%" width="20%">
+                        <HBox height="100%" width="25%">
                             <HBox width="100%" justifyContent="End">
                                 <Button text="Conferma Chiusura"
                                         id="chiusuraPiano"
