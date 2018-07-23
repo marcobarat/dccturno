@@ -169,13 +169,25 @@ sap.ui.define([
         },
 //FUNZIONI RICORSIVE PER LA TREETABLE        
         RecursiveJSONComparison: function (std, bck, arrayName) {
-            for (var key in std) {
-                if (typeof std[key] === "object") {
-                    bck[key] = this.RecursiveJSONComparison(std[key], bck[key], arrayName);
+            var tempJSON;
+            for (var key in bck) {
+                if (typeof bck[key] === "object") {
+                    if (typeof std === "undefined") {
+                        tempJSON = {};
+                    } else {
+                        tempJSON = std[key];
+                    }
+                    bck[key] = this.RecursiveJSONComparison(tempJSON, bck[key], arrayName);
                 } else {
                     if (key === "value") {
-                        if (bck[key] !== std[key] && bck.expand !== 3) {
-                            bck.expand = 2;
+                        if (typeof std === "undefined") {
+                            if (bck.expand !== 3) {
+                                bck.expand = 2;
+                            }
+                        } else {
+                            if (((typeof std[key] === "undefined") || (bck[key] !== std[key])) && bck.expand !== 3) {
+                                bck.expand = 2;
+                            }
                         }
                     }
                 }

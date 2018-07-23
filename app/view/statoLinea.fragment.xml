@@ -83,7 +83,7 @@
                     </VBox>
                     <VBox width="10%"/>
                     <VBox width="35%">
-                        <Button width="100%" text="Riavvia subito" class="allarmeButton" press="RiavviamentoLinea"/>
+                        <Button id="RiavviaSubito" width="100%" text="Riavvia subito" class="allarmeButton" enabled="false" press="RiavviamentoLinea"/>
                     </VBox>
                     <VBox width="10%"/>
                 </HBox>

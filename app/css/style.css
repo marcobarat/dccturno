@@ -674,6 +674,9 @@
 .AddButton .sapMBtnContent {
     top: 0.2rem;
 }
+.RedLine tr:first-child {
+    background-color: rgba(167,25,48, 0.5);
+}
 /*CLASSI PULSANTE SETTINGS DEL BATCH*/
 .BatchInMacchina .sapMBtnInner {
     background: #003A6B;
@@ -748,7 +751,13 @@
     background: white;
     border-right: 2px solid #003A6B;
 }
-
+.diffRed {
+    color : #A71930;
+}
+.diffLink {
+    color : #003A6B;
+    text-decoration: underline;
+}
 
 
 
