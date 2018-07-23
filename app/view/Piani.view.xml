@@ -83,9 +83,9 @@
                                                 </Column>
                                                 <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center" vAlign="Middle">
+                                                <Column hAlign="End" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center" vAlign="Middle">
+                                                <Column hAlign="End" vAlign="Middle">
                                                 </Column>
                                                 <Column hAlign="Center" vAlign="Middle">
                                                 </Column> 
@@ -106,9 +106,9 @@
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>turno}" />
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>qliconf}"/>
+                                                            text="{turni>qliconf}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>qliresidui}"/>
+                                                            text="{turni>qliresidui}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>lineep}"/>
                                                         <comp:StyleTextTableAttr
@@ -131,9 +131,9 @@
                                             </Column>
                                             <Column hAlign="Center" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center" vAlign="Middle">
+                                            <Column hAlign="End" vAlign="Middle">
                                             </Column>
-                                            <Column hAlign="Center" vAlign="Middle">
+                                            <Column hAlign="End" vAlign="Middle">
                                             </Column>
                                             <Column hAlign="Center" vAlign="Middle">
                                             </Column> 
@@ -154,9 +154,9 @@
                                                     <comp:StyleTextTableAttr
                                                         text="{turni>turno}" />
                                                     <comp:StyleTextTableAttr
-                                                        text="{turni>qliconf}"/>
+                                                        text="{turni>qliconf}" class="decimalPositioning"/>
                                                     <comp:StyleTextTableAttr
-                                                        text="{turni>qliresidui}"/>
+                                                        text="{turni>qliresidui}" class="decimalPositioning"/>
                                                     <comp:StyleTextTableAttr
                                                         text="{turni>lineep}"/>
                                                     <comp:StyleTextTableAttr
@@ -183,9 +183,9 @@
                                                 </Column>
                                                 <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center" vAlign="Middle">
+                                                <Column hAlign="End" vAlign="Middle">
                                                 </Column>
-                                                <Column hAlign="Center" vAlign="Middle">
+                                                <Column hAlign="End" vAlign="Middle">
                                                 </Column>
                                                 <Column hAlign="Center" vAlign="Middle">
                                                 </Column> 
@@ -208,9 +208,9 @@
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>qliconf}"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>qliresidui}"/>
+                                                            text="{turni>qliresidui}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>lineep}"/>
+                                                            text="{turni>lineep}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>turni}"/>
                                                     </cells>
