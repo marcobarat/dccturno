@@ -1210,8 +1210,8 @@ sap.ui.define([
         InserisciFermoProgrammato: function () {
             var causale = this.getView().byId("causale").getSelectedKey();
             if (causale !== "") {
-                var data_inizio = Library.fromStandardToDate(this.piano.data, this.getView().byId("inizio").getValue()) + ":00";
-                var data_fine = Library.fromStandardToDate(this.piano.data, this.getView().byId("fine").getValue()) + ":00";
+                var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("Inizio").getValue() + ":00";
+                var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("Fine").getValue() + ":00";
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsertND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
                 Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
             } else {
@@ -1248,6 +1248,26 @@ sap.ui.define([
         },
         SUCCESSRiavviamentoLinea: function (Jdata) {
             this.DestroyDialog();
+        },
+        SetInizioNonDisponibilita: function () {
+            var secondi_inizio = Library.fromStandardToSeconds(this.getView().byId("Inizio").getValue() + ":00");
+            var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
+            var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
+            if (inizio === fine || secondi_inizio > 21600) {
+                return inizio;
+            } else {
+                return fine;
+            }
+        },
+        SetFineNonDisponibilita: function () {
+            var secondi_fine = Library.fromStandardToSeconds(this.getView().byId("Fine").getValue() + ":00");
+            var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
+            var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
+            if (inizio === fine || secondi_fine > 21600) {
+                return inizio;
+            } else {
+                return fine;
+            }
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
