@@ -114,13 +114,13 @@
                                                                                 <Column width="6%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Seq." />
                                                                                 </Column>
-                                                                                <Column width="20%" hAlign="Center" vAlign="Middle">
+                                                                                <Column width="22%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Formato" />
                                                                                 </Column>
                                                                                 <Column width="15%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Confezionamento" />
                                                                                 </Column>
-                                                                                <Column width="28%" hAlign="Center" vAlign="Middle">
+                                                                                <Column width="26%" hAlign="Center" vAlign="Middle">
                                                                                     <Text text="Destinazione" />
                                                                                 </Column>
                                                                                 <Column width="7%" hAlign="Center" vAlign="Middle">
@@ -144,9 +144,9 @@
                                                                                    items="{path: 'linea>batchlist', templateShareable:false}">
                                                                                 <columns>
                                                                                     <Column width="6%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="20%" vAlign="Middle" hAlign="Center"/>
+                                                                                    <Column width="22%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="15%" vAlign="Middle" hAlign="Center"/>
-                                                                                    <Column width="28%" vAlign="Middle" hAlign="Center"/>
+                                                                                    <Column width="26%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="7%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="7%" vAlign="Middle" hAlign="Center"/>
                                                                                     <Column width="9%" vAlign="Middle" hAlign="Center"/>

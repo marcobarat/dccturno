@@ -155,6 +155,7 @@ sap.ui.define([
                 if (Jdata.area !== "1") {
                     this.BackToPiani();
                 }
+                this.pdcID = Jdata.pdcId;
                 if (this.STOP === 0) {
                     Jdata = this.BarColorCT(Jdata);
                     this.SPCColorCT(Jdata);
@@ -1107,7 +1108,7 @@ sap.ui.define([
                             progressBar.setState("Error");
                             break;
                     }
-                    if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                    if (data.linee[i].statolinea === "Disponibile.Fermo" || data.linee[i].statolinea === "Disponibile.Svuotamento") {
                         progressBar.setState("None");
                     }
                 }
@@ -2353,14 +2354,14 @@ sap.ui.define([
             var vb4 = new sap.m.VBox({width: "10%"});
             var bt1 = new sap.m.Button({
                 id: "AnnullaFermo",
-                text: "ANNULLA",
+                text: "Annulla",
                 width: "100%",
                 enabled: true,
                 press: this.onCloseDialog.bind(this)});
             bt1.addStyleClass("annullaButton");
             var bt2 = new sap.m.Button({
                 id: "ConfermaFermo",
-                text: "CONFERMA",
+                text: "Conferma",
                 width: "100%",
                 enabled: false,
                 press: this.onConfermaFermoCausalizzato.bind(this)});

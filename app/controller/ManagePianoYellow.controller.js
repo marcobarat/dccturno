@@ -135,6 +135,7 @@ sap.ui.define([
                 if (Jdata.area !== "2") {
                     this.BackToPiani();
                 }
+                this.pdcID = Jdata.pdcId;
                 if (this.STOP === 0) {
                     var temp = JSON.parse(JSON.stringify(this.ModelLinea.getData()));
                     if (Jdata.isRidotta === "0") {
