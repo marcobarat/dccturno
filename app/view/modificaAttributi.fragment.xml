@@ -94,7 +94,7 @@
                                                 </t:template>
                                             </t:Column>
                                             <t:Column width="5rem" resizable="false">
-                                                <Label text="SIGLE"/>
+                                                <Label text="MATRICOLA/LOTTO"/>
                                                 <t:template>
                                                     <Text text="{ModelParametri>codeValue}" visible="{= ${ModelParametri>code} === 1}" />
                                                 </t:template>
@@ -105,12 +105,12 @@
                                                     <Input value="{ModelParametri>valueModify}" editable="{= ${ModelParametri>modify} === 1}" visible="{= ${ModelParametri>modify} === 1}" class="diffStandard"/>
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column width="5rem" resizable="false">
+<!--                                            <t:Column width="5rem" resizable="false">
                                                 <Label text="MODIFICA SIGLE"/>
                                                 <t:template>
                                                     <Input value="{ModelParametri>codeValueModify}" placeholder="{ModelParametri>codePlaceholder}" editable="{= ${ModelParametri>code} === 1}" class="diffStandard"/>
                                                 </t:template>
-                                            </t:Column>
+                                            </t:Column>-->
                                         </wt:columns>
                                     </wt:CustomTreeTable>
                                 </VBox>

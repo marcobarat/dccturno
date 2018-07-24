@@ -66,9 +66,8 @@ sap.ui.define([
         rowBinded: null,
         BusyDialog: new sap.m.BusyDialog(),
         Counter: null,
-        RefreshLogCounter: 10,
+        RefreshLogCounter: null,
         RefreshCounter: null,
-        TIMER: null,
         SPCCounter: null,
         SPCTimer: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
@@ -78,8 +77,7 @@ sap.ui.define([
             oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
-            window.clearInterval(this.TIMER);
-            this.RefreshCounter = 10;
+            this.RefreshCounter = 0;
             this.RefreshLogCounter = 10;
             this.Counter = 0;
             this.STOP = 0;
@@ -110,8 +108,15 @@ sap.ui.define([
             this.getView().setModel(oModel, "orarioturno");
             this.RefreshFunction(100, "0");
             var that = this;
-            this.TIMER = setInterval(function () {
-                that.RefreshCounter++;
+            setInterval(function () {
+                try {
+                    that.RefreshCounter++;
+                    if (that.STOP === 0 && that.RefreshCounter >= 10) {
+                        that.RefreshFunction();
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
             }, 1000);
         },
         SUCCESSSKU: function (Jdata) {
@@ -125,22 +130,18 @@ sap.ui.define([
         },
 //        FUNZIONI DI REFRESH
         RefreshFunction: function (msec, IsRidotta) {
+            this.RefreshCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
             if (typeof IsRidotta === "undefined") {
                 IsRidotta = "1";
                 if ((this.Counter % 6) === 0) {
                     IsRidotta = "0";
                 }
             }
-            if (this.RefreshCounter >= 10) {
-                this.Counter++;
-                setTimeout(this.RefreshCall.bind(this), msec, IsRidotta);
-                this.RefreshCounter = 0;
-            } else {
-                setTimeout(this.Void.bind(this), 1000);
-            }
-        },
-        Void: function () {
-            this.RefreshFunction();
+            this.Counter++;
+            setTimeout(this.RefreshCall.bind(this), msec, IsRidotta);
         },
         RefreshCall: function (IsRidotta) {
             if (typeof IsRidotta === "undefined") {
@@ -168,7 +169,7 @@ sap.ui.define([
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
                     this.SettingsButtonColor();
                     this.LineButtonStyle();
-                    this.RefreshFunction(10000);
+                    this.RefreshCounter = 0;
                 }
             }
         },
@@ -268,7 +269,7 @@ sap.ui.define([
 //         -> PULSANTE AGGIORNA
         RefreshButton: function () {
             this.BusyDialog.open();
-            this.RefreshCall("0");
+            this.RefreshFunction(0, "0");
             this.BusyDialog.close();
         },
 //         -> CAMBIO REPARTO
@@ -295,8 +296,8 @@ sap.ui.define([
 //        ************************ TABELLA 20% DI SINISTRA ************************
 //        
 //         -> PULSANTE DELLA LINEA
-        ShowStatoLinea: function (oEvent) {
-            this.linea_id = this.getView().getModel("linea").getProperty(oEvent.getSource().getBindingContext("linea").sPath).lineaID;
+        ShowStatoLinea: function (event) {
+            this.linea_id = this.getView().getModel("linea").getProperty(event.getSource().getBindingContext("linea").sPath).lineaID;
             this.STOPLOG = 0;
             var link;
             var oView = this.getView();
@@ -308,18 +309,34 @@ sap.ui.define([
             if (Number(this.ISLOCAL) === 1) {
                 link = "model/JSON_FermoTestiNew.json";
             } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID" + this.pdcID + "&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
             }
+            this.oDialog.open();
             Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
         },
         SUCCESSFermiProgrammati: function (Jdata) {
-            var data;
-            data = Library.AddTimeGapsFermiProgrammati(Jdata);
-            this.ModelCause.setData(data);
-            this.getView().setModel(this.ModelCause, "fermiprogrammati");
-            this.oDialog.open();
-            if (this.STOPLOG === 0) {
-                this.RefreshLogFunction(60000);
+            if (this.oDialog) {
+                if (this.oDialog.isOpen()) {
+                    var data;
+                    data = Library.AddTimeGapsFermiProgrammati(Jdata);
+                    if (data.nondisponibilita.length > 0) {
+                        if (data.nondisponibilita[0].isAttivo === "1") {
+                            this.getView().byId("FermiProgrammatiTable").addStyleClass("RedLine");
+                            this.getView().byId("RiavviaSubito").setEnabled(true);
+                        } else {
+                            this.getView().byId("FermiProgrammatiTable").removeStyleClass("RedLine");
+                            this.getView().byId("RiavviaSubito").setEnabled(false);
+                        }
+                    } else {
+                        this.getView().byId("FermiProgrammatiTable").removeStyleClass("RedLine");
+                        this.getView().byId("RiavviaSubito").setEnabled(false);
+                    }
+                    this.ModelCause.setData(data);
+                    this.getView().setModel(this.ModelCause, "fermiprogrammati");
+                    if (this.STOPLOG === 0) {
+                        this.RefreshLogFunction(10000);
+                    }
+                }
             }
         },
         RefreshLogFunction: function (msec) {
@@ -332,14 +349,14 @@ sap.ui.define([
         },
         VoidLog: function () {
             this.RefreshLogCounter++;
-            this.RefreshLogFunction(60000);
+            this.RefreshLogFunction(1000);
         },
         RefreshLogCall: function () {
             var link;
             if (this.ISLOCAL === 1) {
                 link = "";
             } else {
-                link = link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID" + this.pdcID + "&OutputParameter=JSON";
+                link = link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
             }
             Library.SyncAjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
         },
@@ -394,7 +411,7 @@ sap.ui.define([
             var posizione_ID = this.getView().getModel("linea").getProperty(event.getSource().getBindingContext("linea").sPath).posizioneId;
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/UpdatePosizioneAddetto&Content-Type=text/json&AddettoID=" + addetto_ID + "&PosizioneAddettoID=" + posizione_ID + "&OutputParameter=JSON";
             Library.AjaxCallerVoid(link, function () {
-                that.refreshCall.bind(that);
+                that.RefreshFunction.bind(that);
             }, function (error) {
                 console.log(error);
             });
@@ -808,7 +825,7 @@ sap.ui.define([
                     Library.SyncAjaxCallerData(link, function (Jdata) {
                         if (Number(Jdata.error) === 0) {
                             that.rowBinded.modifyBatch = 0;
-                            that.RefreshCall("0");
+                            that.RefreshFunction(0, "0");
                         } else {
                             MessageToast.show(Jdata.errorMessage, {duration: 2000});
                         }
@@ -844,7 +861,7 @@ sap.ui.define([
                     this.ModelLinea.getData().linee[indexLinea].batchlist.pop();
                     AddButton.setEnabled(true);
                 }
-                this.RefreshCall("0");
+                this.RefreshFunction(0, "0");
             }
         },
 //        >>>>>>>>>>>>>>>>>> FUNZIONI DI SUPPORTO <<<<<<<<<<<<<<<<<<
@@ -877,7 +894,7 @@ sap.ui.define([
                     case 'Disponibile':
                         button.addStyleClass("LineaDispo");
                         break;
-                    case 'Nondisponibile':
+                    case 'NonDisponibile':
                         button.addStyleClass("LineaNonDispo");
                         break;
                 }
@@ -956,7 +973,7 @@ sap.ui.define([
             alarmButton.removeStyleClass("allarmeButton");
             alarmButton.addStyleClass("chiudiButton");
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.idBatch + "&ParametroID=" + this.ParametroID;
-            Library.AjaxCallerVoid(link, this.RefreshCall.bind(this));
+            Library.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
             this.CloseSPCDialog();
         },
         CloseSPCDialog: function () {
@@ -1105,16 +1122,20 @@ sap.ui.define([
                 for (var i = 0; i < data.linee.length; i++) {
                     for (var j = 0; j < data.linee[i].SPC.length; j++) {
                         SPCButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[j + 1].getItems()[0];
-                        if (data.linee[i].SPC[j].fase !== "") {
-                            SPCButton.setEnabled(true);
-                        } else {
-                            SPCButton.setEnabled(false);
-                        }
                         for (var k = 0; k < CSS_classesButton.length; k++) {
                             SPCButton.removeStyleClass(CSS_classesButton[k]);
                         }
-                        switch (data.linee[i].SPC[j].fase) {
+                        var discr = "";
+                        if (data.linee[i].statolinea === "Disponibile.Lavorazione") {
+                            if (data.linee[i].SPC[j].fase === "1") {
+                                discr = "1";
+                            } else if (data.linee[i].SPC[j].fase === "2") {
+                                discr = "2";
+                            }
+                        }
+                        switch (discr) {
                             case "1":
+                                SPCButton.setEnabled(true);
                                 if (SPCButton.getIcon() !== "img/triangolo_buco.png") {
                                     SPCButton.setIcon("img/triangolo_buco.png");
                                 }
@@ -1123,6 +1144,7 @@ sap.ui.define([
                                 SPCButton.addStyleClass("SPCButtonColorYellow");
                                 break;
                             case "2":
+                                SPCButton.setEnabled(true);
                                 SPCButton.setIcon("");
                                 SPCButton.setText("");
                                 if (data.linee[i].SPC[j].allarme === "0") {
@@ -1137,15 +1159,6 @@ sap.ui.define([
                                 SPCButton.setIcon("");
                                 SPCButton.setEnabled(false);
                                 break;
-                        }
-                        if (data.linee[i].statolinea === "Disponibile.Fermo" || data.linee[i].statolinea === "Disponibile.Svuotamento") {
-                            SPCButton.setText("0");
-                            SPCButton.addStyleClass("SPCButtonPhase1");
-                            SPCButton.addStyleClass("SPCButtonColorYellow");
-                            if (SPCButton.getIcon() !== "img/triangolo_buco.png") {
-                                SPCButton.setIcon("img/triangolo_buco.png");
-                            }
-                            SPCButton.setEnabled(false);
                         }
                     }
                 }
@@ -1416,11 +1429,11 @@ sap.ui.define([
                     this.ShowBatchDetails();
                     break;
                 case "Trasferimento Batch a Linea":
-                    this.BusyDialog.open();
                     Path = this.oButton.getBindingContext("linea").sPath;
                     qli = this.ModelLinea.getProperty(Path).qli;
                     cartoni = this.ModelLinea.getProperty(Path).cartoni;
                     if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+                        this.BusyDialog.open();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimento&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatch.bind(this));
                     } else {
@@ -1428,11 +1441,11 @@ sap.ui.define([
                     }
                     break;
                 case "Trasferimento Batch a Linea (solo attrezzaggio)":
-                    this.BusyDialog.open();
                     Path = this.oButton.getBindingContext("linea").sPath;
                     qli = this.ModelLinea.getProperty(Path).qli;
                     cartoni = this.ModelLinea.getProperty(Path).cartoni;
                     if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+                        this.BusyDialog.open();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoPredisposizione&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatchAttrezzaggio.bind(this));
                     } else {
@@ -1500,19 +1513,19 @@ sap.ui.define([
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
-            this.RefreshCall("0");
+            this.RefreshFunction(0, "0");
         },
         SUCCESSTrasferimentoBatchAttrezzaggio: function (Jdata) {
             this.BusyDialog.close();
             this.ModelLinea.setData(Jdata);
             this.getView().setModel(this.ModelLinea, "linea");
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
-            this.RefreshCall("0");
+            this.RefreshFunction(0, "0");
         },
         SUCCESSRichiamoBatch: function (Jdata) {
             this.BusyDialog.close();
             if (Number(Jdata.error) === 0) {
-                this.RefreshCall("0");
+                this.RefreshFunction(0, "0");
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 120});
             }
@@ -1525,7 +1538,7 @@ sap.ui.define([
                 var indexLinea = Number(PathArray[PathArray.indexOf("linee") + 1]);
                 var indexBatch = Number(PathArray[PathArray.indexOf("batchlist") + 1]);
                 this.ModelLinea.getData().linee[indexLinea].batchlist.splice(indexBatch, 1);
-                this.RefreshCall("0");
+                this.RefreshFunction(0, "0");
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 120});
             }
@@ -1642,8 +1655,8 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
-        CancellaFermoProgrammato: function (oEvent) {
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboDeleteND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&LogSchedulatoID=" + oEvent.getSource().getParent().getBindingContext("fermiprogrammati").getObject().LogSchedulatoID + "&OutputParameter=JSON";
+        CancellaFermoProgrammato: function (event) {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboDeleteND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&LogSchedulatoID=" + event.getSource().getParent().getBindingContext("fermiprogrammati").getObject().LogSchedulatoID + "&OutputParameter=JSON";
             Library.AjaxCallerData(link, this.SUCCESSEliminazioneEffettuata.bind(this));
         },
         SUCCESSEliminazioneEffettuata: function (Jdata) {
@@ -1661,8 +1674,8 @@ sap.ui.define([
             Library.AjaxCallerData(link, this.SUCCESSRiavviamentoLinea.bind(this));
         },
         SUCCESSRiavviamentoLinea: function (Jdata) {
-            if (Number(Jdata) === 1){
-              MessageToast.show(Jdata.errorMessage, {duration: 2000});  
+            if (Number(Jdata) === 1) {
+                MessageToast.show(Jdata.errorMessage, {duration: 3000});
             }
             this.DestroyDialog();
         },
@@ -1671,8 +1684,8 @@ sap.ui.define([
 //        -------------------------------------------------
 //        
 //      **************** POPUP GESTIONE INTERVALLI DI FERMO ****************        
-        OpenMenuCausalizzazione: function (oEvent) {
-            this.oButton = oEvent.getSource();
+        OpenMenuCausalizzazione: function (event) {
+            this.oButton = event.getSource();
             var link;
             this.row = this.oButton.getParent().getBindingContext("guasti").getObject();
             if (this.ISLOCAL === 1) {
@@ -1701,8 +1714,8 @@ sap.ui.define([
             var eDock = sap.ui.core.Popup.Dock;
             this._menu.open(this._bKeyboard, this.Button, eDock.EndTop, eDock.BeginBottom, this.oButton);
         },
-        ModificaGuasti: function (oEvent) {
-            var oText = oEvent.getParameter("item").getText();
+        ModificaGuasti: function (event) {
+            var oText = event.getParameter("item").getText();
             switch (oText) {
                 case "Modifica Causale Fermo":
                     this.CreaFinestraModificaCausale(oText);
@@ -2095,19 +2108,19 @@ sap.ui.define([
             this.oDialog.open();
         },
 //      **************** POPUP GESTIONE INTERVALLI AZIONI DI CONFERMA E DI ANNULLA **************** 
-        DestroyDialog: function (oEvent) {
+        DestroyDialog: function (event) {
             this.STOPLOG = 1;
             this.oDialog.destroy();
             this.RerenderTimePickers();
             this.oDialog = this.getView().byId("GestioneIntervalliFermo");
         },
-        ConfermaCambio: function (oEvent) {
+        ConfermaCambio: function (event) {
             var oText = this.getView().byId("title").getText();
             var obj, link;
             switch (oText) {
                 case "Modifica Causale Fermo":
                     if (this.ISLOCAL === 1) {
-                        this.LOCALModificaCausaleFermo(oEvent);
+                        this.LOCALModificaCausaleFermo(event);
                         this.oDialog.destroy();
                     } else {
                         obj = {};
@@ -2116,7 +2129,7 @@ sap.ui.define([
                         obj.batchId = this.row.batchID;
                         obj.dataFine = "";
                         obj.dataInizio = "";
-                        obj.causaleId = oEvent.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
+                        obj.causaleId = event.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermiAttivo_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this), function (error) {
                             console.log(error);
@@ -2429,7 +2442,7 @@ sap.ui.define([
             this.oDialog = null;
             if (id_dialog === "GestioneIntervalliFermo") {
                 this.STOP = 0;
-                this.RefreshCall("1");
+                this.RefreshFunction(0, "1");
             }
         },
 //        -------------------------------------------------
