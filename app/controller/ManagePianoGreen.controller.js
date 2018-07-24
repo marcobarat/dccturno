@@ -1324,6 +1324,7 @@ sap.ui.define([
                 this.row.getCells()[5].setValue("");
                 this.row.getCells()[6].setValue("");
                 row_binded.SKUCodiceInterno = "";
+                this.RerenderTimePickers();
                 this.oDialog.destroy();
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
