@@ -38,10 +38,6 @@
             "css": [{
                     "uri": "css/style.css",
                     "id": "customstyle"
-                },
-                {
-                    "uri": "css/styleDeCecco.css",
-                    "id": "styleDeCecco"
                 }]
         },
         "contentDensities": {

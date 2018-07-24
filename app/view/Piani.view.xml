@@ -74,7 +74,7 @@
                                     <ScrollContainer id="scrollTurniConclusi" height="187px" horizontal="false" vertical="true" class="scrollingbar">
                                         <Table 
                                             width="100%"
-                                            class="tableTextSize noBorder"
+                                            class="tableTextSize noBorder greyTable"
                                             items="{path: 'turni>/pianidiconfezionamento/conclusi'}">
                                             <columns>
                                                 <Column hAlign="Center" vAlign="Middle">
@@ -123,7 +123,7 @@
                                     <Text/>
                                 </VBox>
                                 <VBox height="10%" width="100%" class="bordoBlu green scrollingbarTransparent">
-                                    <Table width="100%" items='{turni>/pianidiconfezionamento/incorso}' class="tableTextSize">
+                                    <Table width="100%" items='{turni>/pianidiconfezionamento/incorso}' class="tableTextSize greenTable">
                                         <columns>
                                             <Column hAlign="Center" vAlign="Middle">
                                             </Column>
@@ -175,7 +175,7 @@
                                         <Table 
                                             width="100%"
                                             items="{path: 'turni>/pianidiconfezionamento/programmati'}"
-                                            class="tableTextSize noBorder">
+                                            class="tableTextSize noBorder yellowTable">
                                             <columns>
                                                 <Column hAlign="Center" vAlign="Middle">
                                                 </Column>
@@ -206,11 +206,11 @@
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>turno}" />
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>qliconf}"/>
+                                                            text="{turni>qliconf}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>qliresidui}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>lineep}" class="decimalPositioning"/>
+                                                            text="{turni>lineep}"/>
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>turni}"/>
                                                     </cells>

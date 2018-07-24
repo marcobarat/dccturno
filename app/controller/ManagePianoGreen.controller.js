@@ -28,8 +28,8 @@ sap.ui.define([
         grammatura: null,
         row: null,
         linea: null,
-        pezzi_cartone: 24, //ARRIVA DA BACKEND 
-        tempo_ciclo: 4, //ARRIVA DA BACKEND
+        pezzi_cartone: null, //ARRIVA DA BACKEND 
+        tempo_ciclo: null, //ARRIVA DA BACKEND
         TimeFormatter: TimeFormatter,
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
         data_json: {},
@@ -525,7 +525,7 @@ sap.ui.define([
                 selectBox.setModel(oModel, "formati");
                 selectBox.bindAggregation("items", "formati>/formati", oItemSelectTemplate);
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 180});
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
         ResetConfezionamenti: function (event) {
@@ -576,7 +576,7 @@ sap.ui.define([
                 selectBox.bindAggregation("items", "confezionamenti>/confezioni", oItemSelectTemplate);
                 selectBox.clearSelection();
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 180});
+                MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
         LoadDestinazione: function (event) {
@@ -1836,10 +1836,12 @@ sap.ui.define([
                 text: "fine"
             });
             oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row.fine,
                 id: "Fine"
             });
             oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row.inizio,
                 id: "Inizio"
             });
@@ -1913,6 +1915,7 @@ sap.ui.define([
                 text: "inizio"
             });
             oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row.inizio,
                 id: "Inizio"
             });
@@ -1945,6 +1948,7 @@ sap.ui.define([
                 text: "fine"
             });
             oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row.fine,
                 id: "Fine"
             });
@@ -1978,6 +1982,7 @@ sap.ui.define([
                 text: "inizio"
             });
             var oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row.inizio,
                 id: "Inizio",
                 enabled: false
@@ -2009,6 +2014,7 @@ sap.ui.define([
                 text: "fine"
             });
             var oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row.fine,
                 id: "Fine",
                 enabled: false
@@ -2042,6 +2048,7 @@ sap.ui.define([
                 text: "inizio"
             });
             var oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: "00:00:00",
                 id: "Inizio"
             });
@@ -2074,6 +2081,7 @@ sap.ui.define([
                 text: "fine"
             });
             var oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: "00:00:00",
                 id: "Fine"
             });

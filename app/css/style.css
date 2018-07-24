@@ -77,11 +77,20 @@
 .grey {
     background: #f2f2f2;
 }
+.greyTable  .sapMListTbl .sapMLIB {
+    background-color: #f2f2f2 !important; 
+}
 .green {
     background: #7CA295;
 }
+.greenTable  .sapMListTbl .sapMLIB {
+    background-color: #7CA295 !important; 
+}
 .yellow {
     background: #FFD300;
+}
+.yellowTable  .sapMListTbl .sapMLIB {
+    background-color: #FFD300 !important; 
 }
 .noBorder *{
     border: 0px !important;

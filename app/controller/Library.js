@@ -288,7 +288,7 @@ sap.ui.define([
                             }
                             temp.IDParametro = setup.IDParametro;
                             temp.ValueML = setup.codeValue;
-                            temp.Value = setup.value;
+                            temp.Value = setup.valueModify;
                             if (temp !== this.dataXML[this.dataXML.length - 1]) {
                                 this.dataXML.push(temp);
                             }
@@ -308,7 +308,7 @@ sap.ui.define([
                     '<dataFine>' + obj.dataFine + '</dataFine>' +
                     '<dataInizio>' + obj.dataInizio + '</dataInizio>' +
                     '<causaleId>' + obj.causaleId + '</causaleId>';
-            return top + parameters + bottom;
+            return this.EncodeForUri(top + parameters + bottom);
         },
         createXMLBatch: function (obj) {
             var top = '<root>';
@@ -330,8 +330,7 @@ sap.ui.define([
                     '<qliTeo>' + obj.quintali + '</qliTeo>' +
                     '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
                     '<oreTeo>' + obj.ore + '</oreTeo>';
-            parameters = parameters.replace('+', '%2B');
-            return top + parameters + bottom;
+            return this.EncodeForUri(top + parameters + bottom);
         },
         createXMLDestinazione: function (obj) {
             var top = '<root><pianoDiConfezionamentoId/>';
@@ -342,7 +341,7 @@ sap.ui.define([
             parameters += '<formatoProduttivo>' + obj.formatoProduttivo + '</formatoProduttivo>' +
                     '<grammatura>' + obj.grammatura + '</grammatura>' +
                     '<tipologia>' + obj.tipologia + '</tipologia>';
-            return top + parameters + bottom;
+            return this.EncodeForUri(top + parameters + bottom);
         },
         XMLSetupUpdates: function (setup, idLinea, idSKU) {
             var heading = "<Parameters>" +
@@ -361,7 +360,7 @@ sap.ui.define([
                 }
                 body += "</Parameter>";
             }
-            return (heading + body + bottom);
+            return this.EncodeForUri(heading + body + bottom);
         },
         XMLSetupUpdatesCT: function (setup, idBatch) {
             var heading = "<Parameters>" +
@@ -379,7 +378,28 @@ sap.ui.define([
                 }
                 body += "</Parameter>";
             }
-            return (heading + body + bottom);
+            return this.EncodeForUri(heading + body + bottom);
+        },
+        EncodeForUri: function (string){
+            string = string.replace('!', '%21');
+            string = string.replace('#', '%23');
+            string = string.replace('$', '%24');
+            string = string.replace('&', '%26');
+            string = string.replace("'", '%27');
+            string = string.replace('(', '%28');
+            string = string.replace(')', '%29');
+            string = string.replace('*', '%2A');
+            string = string.replace('+', '%2B');
+            string = string.replace(',', '%2C');
+            string = string.replace('/', '%2F');
+            string = string.replace(':', '%3A');
+            string = string.replace(';', '%3B');
+            string = string.replace('=', '%3D');
+            string = string.replace('?', '%3F');
+            string = string.replace('@', '%40');
+            string = string.replace('[', '%5B');
+            string = string.replace(']', '%5D');
+            return string; 
         }
     };
 });

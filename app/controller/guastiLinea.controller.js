@@ -239,10 +239,12 @@ sap.ui.define([
                 text: "fine"
             });
             oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row_binded.fine,
                 id: "Fine"
             });
             oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row_binded.inizio,
                 id: "Inizio"
             });
@@ -317,6 +319,7 @@ sap.ui.define([
                 text: "inizio"
             });
             oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row_binded.inizio,
                 id: "Inizio"
             });
@@ -349,6 +352,7 @@ sap.ui.define([
                 text: "fine"
             });
             oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row_binded.fine,
                 id: "Fine"
             });
@@ -383,6 +387,7 @@ sap.ui.define([
                 text: "inizio"
             });
             var oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row_binded.inizio,
                 id: "Inizio",
                 enabled: false
@@ -414,6 +419,7 @@ sap.ui.define([
                 text: "fine"
             });
             var oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: this.row_binded.fine,
                 id: "Fine",
                 enabled: false
@@ -447,6 +453,7 @@ sap.ui.define([
                 text: "inizio"
             });
             var oTextInizio = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: "00:00:00",
                 id: "Inizio"
             });
@@ -479,6 +486,7 @@ sap.ui.define([
                 text: "fine"
             });
             var oTextFine = new sap.m.TimePicker({
+                localeId: "it_IT",
                 value: "00:00:00",
                 id: "Fine"
             });
