@@ -6,7 +6,7 @@
     controllerName="myapp.controller.guastiLinea">
     <Dialog horizontalScrolling="true" contentHeight="500px" contentWidth="800px" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
         <VBox height="100%">
-            <VBox height="55%">
+            <VBox height="275px">
                 <t:Table
                     width="100%"
                     enableColumnReordering="true"
@@ -51,7 +51,7 @@
                     </t:noData>
                 </t:Table>
             </VBox>
-            <VBox id="nondisponibileBox" height="30%" width="100%" alignItems="Center">
+            <VBox id="nondisponibileBox" height="150px" width="100%" alignItems="Center">
                 <HBox width="100%" height="100%">
                     <VBox width="3%"/>
                     <VBox width="15%">
@@ -75,7 +75,7 @@
                     <VBox width="6%"/>
                 </HBox>                
             </VBox>
-            <VBox height="15%">
+            <VBox height="75px">
                 <HBox>
                     <VBox width="10%"/>
                     <VBox width="35%">
