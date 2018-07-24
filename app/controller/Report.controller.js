@@ -10,12 +10,16 @@ sap.ui.define([
         ModelTurni: sap.ui.getCore().getModel("turni"),
         ModelOEE: sap.ui.getCore().getModel("ReportOEE"),
         ModelGuasti: new JSONModel({}),
+        ModelLinea: new JSONModel({}),
         minValues: [],
         guasti: {},
         piano: null,
         pianoPath: null,
         turnoPath: null,
         GlobalBusyDialog: new sap.m.BusyDialog(),
+        StabilimentoID: null,
+        pdcID: null,
+        repartoID: null,
         rowHTML: null,
         onInit: function () {
             this.getView().byId("ComponentiOEE").setHeaderSpan([3, 1, 1]);
@@ -46,9 +50,12 @@ sap.ui.define([
             setTimeout(function () {
                 that.getView().byId("TreeTableReport").onAfterRendering();
                 that.GlobalBusyDialog.close();
-            },1000);
+            }, 1000);
         },
         _onObjectMatched: function (oEvent) {
+            this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
+            this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
+            this.repartoID = sap.ui.getCore().getModel("ParametriPiano").getData().reparto;
             this.GlobalBusyDialog.open();
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
@@ -224,10 +231,16 @@ sap.ui.define([
                     });
         },
         onBackNav: function () {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
+        },
+        SUCCESSTurnoChiuso: function (Jdata) {
+            this.ModelLinea.setData(Jdata);
+            sap.ui.getCore().setModel(this.ModelLinea, "linee");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGrey", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
+            this.ModelLinea.refresh(true);
         }
-
     });
 });
 

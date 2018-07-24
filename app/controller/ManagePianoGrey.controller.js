@@ -70,7 +70,7 @@ sap.ui.define([
                 if (this.ISLOCAL === 1) {
                     link = "model/OEE.json";
                 } else {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcPassato_GetReportOEE&Content-Type=text/json&stabilimentoID=" + this.ModelPianoParameters.stabilimento + "&pdcID=" + this.ModelPianoParameters.pdc + "&repartoID=" + this.ModelPianoParameters.reparto + "&OutputParameter=JSON";
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcPassato_GetReportOEE&Content-Type=text/json&stabilimentoID=" + this.ModelPianoParameters.stabilimento + "&pdcID=" + this.ModelPianoParameters.pdc + "&repartoID=" + this.getView().byId("ManageIconTabBar").getSelectedKey() + "&OutputParameter=JSON";
                 }
                 Library.AjaxCallerData(link, this.SUCCESSReportCreated.bind(this));
             }
