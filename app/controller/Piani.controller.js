@@ -16,6 +16,7 @@ sap.ui.define([
         STOP: 0,
         TIMER: null,
         RefreshCounter: null,
+        PDCParameters: null,
 
         onInit: function () {
             var oModel = new JSONModel({StabilimentoID: this.StabilimentoID});
@@ -106,8 +107,7 @@ sap.ui.define([
             var pdcId = Row.PdcID;
             var link;
             var repartoId = this.ModelReparti.getData().ListaReparti[0].RepartoID;
-            var PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
-            sap.ui.getCore().setModel(new JSONModel(PDCParameters), "ParametriPiano");
+            this.PDCParameters = {pdc: pdcId, stabilimento: this.StabilimentoID, reparto: repartoId};
             if (this.ISLOCAL === 1) {
                 if (area === "0") {
                     link = "model/linee.json";
@@ -136,6 +136,7 @@ sap.ui.define([
             this.STOP = 1;
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            sap.ui.getCore().setModel(new JSONModel(this.PDCParameters), "ParametriPiano");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGrey", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
             this.ModelLinea.refresh(true);
@@ -151,6 +152,8 @@ sap.ui.define([
             }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            this.PDCParameters.pdc = Jdata.pdcId;
+            sap.ui.getCore().setModel(new JSONModel(this.PDCParameters), "ParametriPiano");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGreen", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
             this.ModelLinea.refresh(true);
@@ -159,6 +162,8 @@ sap.ui.define([
             this.STOP = 1;
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
+            this.PDCParameters.pdc = Jdata.pdcId;
+            sap.ui.getCore().setModel(new JSONModel(this.PDCParameters), "ParametriPiano");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoYellow", {turnoPath: this.paths[1], pianoPath: this.paths[2]});
             this.ModelLinea.refresh(true);

@@ -86,7 +86,7 @@ sap.ui.define([
             this.getView().setModel(this.ModelLinea, 'linea');
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
-            this.RefreshFunction(100, "0");
+//            this.RefreshFunction(100, "0");
             var that = this;
             setInterval(function () {
                 try {
@@ -1070,11 +1070,11 @@ sap.ui.define([
                     this.ShowBatchDetails();
                     break;
                 case "Trasferimento schedulato":
-                    this.BusyDialog.open();
                     var Path = this.oButton.getBindingContext("linea").sPath;
                     var qli = this.ModelLinea.getProperty(Path).qli;
                     var cartoni = this.ModelLinea.getProperty(Path).cartoni;
                     if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+                        this.BusyDialog.open();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/BatchSchedulato&Content-Type=text/json&BatchID=" + this.batch_id + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSTrasferimentoSchedulato.bind(this));
                     } else {

@@ -34,15 +34,15 @@
                                 <Text text="{fermiprogrammati>intervallo}"/>
                             </t:template>
                         </t:Column>
-                        <t:Column hAlign="Center" width="45%" resizable="false">
+                        <t:Column hAlign="Center" width="40%" resizable="false">
                             <Label text="Causale"/>
                             <t:template>
                                 <Text text="{fermiprogrammati>causale}"/>
                             </t:template>
                         </t:Column>
-                        <t:Column hAlign="Center" width="10%" resizable="false">
+                        <t:Column hAlign="Center" width="15%" resizable="false">
                             <t:template>
-                                <Button text="Delete" press="CancellaFermoProgrammato" enabled="{= ${fermiprogrammati>isAttivo} === '0' ? true : false}"/>
+                                <Button text="Elimina" press="CancellaFermoProgrammato" enabled="{= ${fermiprogrammati>isAttivo} === '0' ? true : false}"/>
                             </t:template>
                         </t:Column>
                     </t:columns>
