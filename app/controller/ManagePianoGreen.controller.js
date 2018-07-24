@@ -106,7 +106,7 @@ sap.ui.define([
             this.getView().setModel(this.ModelLinea, 'linea');
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
-            this.RefreshFunction(100, "0");
+//            this.RefreshFunction(100, "0");
             var that = this;
             setInterval(function () {
                 try {
@@ -517,7 +517,7 @@ sap.ui.define([
             var rowPath = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
             row_binded.modifyBatch = 1;
-//            this.ModelLinea.refresh();
+            this.ModelLinea.refresh();
         },
 //              - DROPDOWN FORMATI
         CaricaFormati: function (event) {
