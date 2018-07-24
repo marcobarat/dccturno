@@ -330,7 +330,7 @@ sap.ui.define([
             if (obj.batchId) {
                 parameters += '<batchId>' + obj.batchId + '</batchId>';
             } else {
-                parameters += '<batchId/>';
+                parameters += '<batchId>' + '</batchId>';
             }
 //            parameters += '<SKUCodiceInterno>' + obj.SKUCodiceInterno + '</SKUCodiceInterno>';
             parameters += '<SKUCodiceInterno></SKUCodiceInterno>';
@@ -338,7 +338,7 @@ sap.ui.define([
                     '<grammatura>' + obj.grammatura + '</grammatura>' +
                     '<sequenza>' + obj.sequenza + '</sequenza>' +
                     '<tipologia>' + obj.tipologia + '</tipologia>' +
-                    '<destinazione>' + obj.destinazione + '</destinazione>' +
+                    '<destinazione>' + this.EncodeXMLSpecial(obj.destinazione) + '</destinazione>' +
                     '<qliTeo>' + obj.quintali + '</qliTeo>' +
                     '<cartoniTeo>' + obj.cartoni + '</cartoniTeo>' +
                     '<oreTeo>' + obj.ore + '</oreTeo>';
@@ -392,26 +392,45 @@ sap.ui.define([
             }
             return this.EncodeForUri(heading + body + bottom);
         },
-        EncodeForUri: function (string){
-            string = string.replace('!', '%21');
-            string = string.replace('#', '%23');
-            string = string.replace('$', '%24');
-            string = string.replace('&', '%26');
-            string = string.replace("'", '%27');
-            string = string.replace('(', '%28');
-            string = string.replace(')', '%29');
-            string = string.replace('*', '%2A');
-            string = string.replace('+', '%2B');
-            string = string.replace(',', '%2C');
-            string = string.replace('/', '%2F');
-            string = string.replace(':', '%3A');
-            string = string.replace(';', '%3B');
-            string = string.replace('=', '%3D');
-            string = string.replace('?', '%3F');
-            string = string.replace('@', '%40');
-            string = string.replace('[', '%5B');
-            string = string.replace(']', '%5D');
+        EncodeXMLSpecial: function (string) {
+            string = this.ReplaceAll('<', '&#60;', string);
+            string = this.ReplaceAll('>', '&#62;', string);
+            string = this.ReplaceAll('&', '&#38;', string);
+            string = this.ReplaceAll('"', '&#34;', string);
+            string = this.ReplaceAll("'", '&#39;', string);
             return string; 
+        },
+        EncodeForUri: function (string) {
+            string = this.ReplaceAll('!', '%21', string);
+            string = this.ReplaceAll('#', '%23', string);
+            string = this.ReplaceAll('$', '%24', string);
+            string = this.ReplaceAll('&', '%26', string);
+            string = this.ReplaceAll("'", '%27', string);
+            string = this.ReplaceAll('(', '%28', string);
+            string = this.ReplaceAll(')', '%29', string);
+            string = this.ReplaceAll('*', '%2A', string);
+            string = this.ReplaceAll('+', '%2B', string);
+            string = this.ReplaceAll(',', '%2C', string);
+            string = this.ReplaceAll('/', '%2F', string);
+            string = this.ReplaceAll(':', '%3A', string);
+            string = this.ReplaceAll(';', '%3B', string);
+            string = this.ReplaceAll('=', '%3D', string);
+            string = this.ReplaceAll('?', '%3F', string);
+            string = this.ReplaceAll('@', '%40', string);
+            string = this.ReplaceAll('[', '%5B', string);
+            string = this.ReplaceAll(']', '%5D', string);
+            return string;
+        },
+        ReplaceAll: function (stringToFind, stringToReplace, string) {
+            if (stringToFind === stringToReplace)
+                return string;
+            var temp = string;
+            var index = temp.indexOf(stringToFind);
+            while (index !== -1 && temp[index+1] !== '#') {
+                temp = temp.replace(stringToFind, stringToReplace);
+                index = temp.indexOf(stringToFind);
+            }
+            return temp;
         }
     };
 });
