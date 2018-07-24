@@ -59,6 +59,9 @@ sap.ui.define([
             var array_data = data.split("/");
             return array_data[2] + "-" + array_data[1] + "-" + array_data[0] + "T" + ora;
         },
+        fromStandardToSeconds: function (string){
+            return parseInt(string.split(":")[2], 10) + parseInt(string.split(":")[1], 10)*60 + parseInt(string.split(":")[0], 10) * 60 * 60;
+        },
 // FUNZIONI PER LA SUDDIVISIONE DEI GUASTI IN CAUSALIZZATI E NON
 
 

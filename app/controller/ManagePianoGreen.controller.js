@@ -1638,8 +1638,8 @@ sap.ui.define([
         InserisciFermoProgrammato: function () {
             var causale = this.getView().byId("causale").getSelectedKey();
             if (causale !== "") {
-                var data_inizio = Library.fromStandardToDate(this.piano.data, this.getView().byId("inizio").getValue()) + ":00";
-                var data_fine = Library.fromStandardToDate(this.piano.data, this.getView().byId("fine").getValue()) + ":00";
+                var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("Inizio").getValue() + ":00";
+                var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("Fine").getValue() + ":00";
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsertND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
                 Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
             } else {
@@ -1679,6 +1679,26 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 3000});
             }
             this.DestroyDialog();
+        },
+        SetInizioNonDisponibilita: function () {
+            var secondi_inizio = Library.fromStandardToSeconds(this.getView().byId("Inizio").getValue() + ":00");
+            var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
+            var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
+            if (inizio === fine || secondi_inizio > 21600) {
+                return inizio;
+            } else {
+                return fine;
+            }
+        },
+        SetFineNonDisponibilita: function () {
+            var secondi_fine = Library.fromStandardToSeconds(this.getView().byId("Fine").getValue() + ":00");
+            var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
+            var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
+            if (inizio === fine || secondi_fine > 21600) {
+                return inizio;
+            } else {
+                return fine;
+            }
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
@@ -2117,7 +2137,7 @@ sap.ui.define([
         },
         ConfermaCambio: function (event) {
             var oText = this.getView().byId("title").getText();
-            var obj, link;
+            var obj, link, data_inizio, data_fine;
             switch (oText) {
                 case "Modifica Causale Fermo":
                     if (this.ISLOCAL === 1) {
@@ -2142,12 +2162,14 @@ sap.ui.define([
                         this.LOCALModificaTempiFermo();
                         this.oDialog.destroy();
                     } else {
+                        data_inizio = this.SetDataIniziale();
+                        data_fine = this.SetDataFinale();
                         obj = {};
                         obj.caso = "updateInizioFine";
                         obj.logId = this.row.LogID;
                         obj.batchId = this.row.batchID;
-                        obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
-                        obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
+                        obj.dataFine = data_fine + 'T' + sap.ui.getCore().byId("Fine").getValue();
+                        obj.dataInizio = data_inizio + 'T' + sap.ui.getCore().byId("Inizio").getValue();
                         obj.causaleId = "";
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermiAttivo_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
@@ -2158,12 +2180,14 @@ sap.ui.define([
                         this.LOCALFrazionaFermo();
                         this.oDialog.destroy();
                     } else {
+                        data_inizio = this.SetDataIniziale();
+                        data_fine = this.SetDataFinale();
                         obj = {};
                         obj.caso = "divide";
                         obj.logId = this.row.LogID;
                         obj.batchId = this.row.batchID;
-                        obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
-                        obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
+                        obj.dataFine = data_fine + 'T' + sap.ui.getCore().byId("Fine").getValue();
+                        obj.dataInizio = data_inizio + 'T' + sap.ui.getCore().byId("Inizio").getValue();
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermiAttivo_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
@@ -2190,12 +2214,14 @@ sap.ui.define([
                         this.LOCALInserisciFermo();
                         this.oDialog.destroy();
                     } else {
+                        data_inizio = this.SetDataIniziale();
+                        data_fine = this.SetDataFinale();
                         obj = {};
                         obj.caso = "insert";
                         obj.logId = "";
                         obj.batchId = this.row.batchID;
-                        obj.dataFine = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Fine").getValue());
-                        obj.dataInizio = Library.fromStandardToDate(this.piano.data, sap.ui.getCore().byId("Inizio").getValue());
+                        obj.dataFine = data_fine + 'T' + sap.ui.getCore().byId("Fine").getValue();
+                        obj.dataInizio = data_inizio + 'T' + sap.ui.getCore().byId("Inizio").getValue();
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermiAttivo_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this));
@@ -2214,6 +2240,26 @@ sap.ui.define([
                 this.oDialog = this.getView().byId("GestioneIntervalliFermo");
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
+            }
+        },
+        SetDataIniziale: function () {
+            var secondi_inizio = Library.fromStandardToSeconds(sap.ui.getCore().byId("Inizio").getValue());
+            var inizio = this.getView().getModel("guasti").getData().dataInizioLavorazione.split("T")[0];
+            var fine = this.getView().getModel("guasti").getData().dataInizioChiusura.split("T")[0];
+            if (inizio === fine || secondi_inizio > 21600) {
+                return inizio;
+            } else {
+                return fine;
+            }
+        },
+        SetDataFinale: function () {
+            var secondi_fine = Library.fromStandardToSeconds(sap.ui.getCore().byId("Fine").getValue());
+            var inizio = this.getView().getModel("guasti").getData().dataInizioLavorazione.split("T")[0];
+            var fine = this.getView().getModel("guasti").getData().dataInizioChiusura.split("T")[0];
+            if (inizio === fine || secondi_fine > 21600) {
+                return inizio;
+            } else {
+                return fine;
             }
         },
 //        -------------------------------------------------
