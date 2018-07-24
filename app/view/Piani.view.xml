@@ -58,12 +58,12 @@
                                             </Column>  
                                             <Column hAlign="Center">
                                                 <header>
-                                                    <Text text="LineeP"/>
+                                                    <Text text="LineeDispo"/>
                                                 </header>
                                             </Column> 
                                             <Column hAlign="Center">
                                                 <header>
-                                                    <Text text="Turni"/>
+                                                    <Text text="Ore"/>
                                                 </header>
                                             </Column>                                             
                                         </columns>
