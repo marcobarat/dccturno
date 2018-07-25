@@ -205,17 +205,18 @@ sap.ui.define([
                     }
                     Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
                 }
+                Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
             }
         },
         SUCCESSGuasti: function (Jdata) {
             if (this.ISLOCAL === 1) {
-                for (var i = 0; i < Jdata.fermi.length; i++) {
-                    if (Jdata.fermi[i].nome === this.rowHTML.getCells()[0].getText()) {
-                        this.guasti = Jdata.fermi[i];
-                        break;
-                    }
-                }
-                this.guasti = Library.AddTimeGaps(this.guasti);
+//                for (var i = 0; i < Jdata.guasti.length; i++) {
+//                    if (Jdata.fermi[i].nome === this.rowHTML.getCells()[0].getText()) {
+//                        this.guasti = Jdata.fermi[i];
+//                        break;
+//                    }
+//                }
+                this.guasti = Library.AddTimeGaps(Jdata);
                 this.ModelGuasti.setData(this.guasti);
             } else {
                 this.guasti = Jdata;

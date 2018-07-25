@@ -820,7 +820,11 @@ sap.ui.define([
             var oValueChanged = event.getParameter("value");
             var oCellChanged = event.getSource();
             var oRow = event.getSource().getParent();
-            grammatura = row_binded.grammatura;
+            if (oRow.getCells()[2].getSelectedItem() !== null) {
+                grammatura = oRow.getCells()[2].getSelectedItem().getKey();
+            } else {
+                grammatura = row_binded.grammatura;
+            }
             if (oCellChanged === oRow.getCells()[4]) {
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
                 cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
@@ -894,7 +898,11 @@ sap.ui.define([
             obj.pianodiconfezionamento = this.pdcID;
             obj.lineaId = this.linea_id;
             obj.formatoProduttivo = oRow.getCells()[1].getValue();
-            obj.grammatura = row_binded.grammatura;
+            if (oRow.getCells()[2].getSelectedItem() !== null) {
+                obj.grammatura = oRow.getCells()[2].getSelectedItem().getKey();
+            } else {
+                obj.grammatura = row_binded.grammatura;
+            }
             obj.tipologia = row_binded.confezione;
             obj.sequenza = oRow.getCells()[0].getValue();
             obj.destinazione = oRow.getCells()[3].getText();
@@ -1811,7 +1819,22 @@ sap.ui.define([
 //        -------------------------------------------------
 //        -------------------------------------------------
 //        
-//      **************** POPUP GESTIONE INTERVALLI DI FERMO ****************        
+//      **************** POPUP GESTIONE INTERVALLI DI FERMO ****************
+//        -> PULSANTE DI AGGIUNTA DEL FERMO
+        AggiungiFermo: function () {
+            var link;
+            var that = this;
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_FermoTestiNew.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+            }
+            Library.AjaxCallerData(link, function (Jdata) {
+                that.ModelCausali.setData(Jdata);
+                that.getView().setModel(that.ModelCausali, "cause");
+                that.CreaFinestraInserimento("Inserisci Fermo");
+            });
+        },
         OpenMenuCausalizzazione: function (event) {
             this.oButton = event.getSource();
             var link;

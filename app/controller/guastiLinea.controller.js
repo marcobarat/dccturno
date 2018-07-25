@@ -62,6 +62,21 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("Report", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
         },
+//        -> PULSANTE DI AGGIUNTA DEL FERMO
+        AggiungiFermo: function () {
+            var link;
+            var that = this; 
+            if (this.ISLOCAL === 1) {
+                link = "model/JSON_FermoTestiNew.json";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetListaCausaleFermoPiatta&Content-Type=text/json&OutputParameter=JSON&IsManuale=1";
+            }
+            Library.AjaxCallerData(link, function (Jdata) {
+                that.ModelCausali.setData(Jdata);
+                that.getView().setModel(that.ModelCausali, "cause");
+                that.CreaFinestraInserimento("Inserisci Fermo");
+            });
+        },
 //        ************************ TABELLA ************************
 //    
 //      -> CREAZIONE MENU PER LA GESTIONE DEI GUASTI
