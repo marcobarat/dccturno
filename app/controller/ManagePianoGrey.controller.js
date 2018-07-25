@@ -33,6 +33,7 @@ sap.ui.define([
         pianoPath: null,
         turnoPath: null,
         data_json: {},
+        getDialog: null,
 
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
@@ -41,6 +42,8 @@ sap.ui.define([
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            this.getDialog = sap.ui.getCore().byId("GlobalBusyDialog");
+            this.getDialog.close();
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
             this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
             this.repartoID = sap.ui.getCore().getModel("ParametriPiano").getData().reparto;

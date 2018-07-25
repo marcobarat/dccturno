@@ -30,6 +30,7 @@
                                 rows="{path:'ReportOEE>/', parameters: {arrayNames:['Sottogruppo']}}"
                                 id="TreeTableReport"
                                 selectionMode="None"
+                                enableColumnReordering="false"
                                 toggleOpenState="onToggleOpenState"
                                 class="mysapUiTableExt mysapUiTableColCell mysapUiTableTr"
                                 cellClick="LinkClick"

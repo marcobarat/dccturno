@@ -505,7 +505,7 @@
     border: solid 2px #A71930;
 }
 .bordoBlu {
-    border: solid 2px #003A6B;
+    border: solid 1px #003A6B;
 }
 .bordoBluL {
     border-left: 2px solid #003A6B;
@@ -584,7 +584,7 @@
     top: 1.2rem;
 }
 .buttonDimension .sapMBtnInner {
-    bottom: 0.2rem;
+    bottom: 0.23rem;
     position: relative;
     height: 2.95rem;
 }

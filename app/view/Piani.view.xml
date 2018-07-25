@@ -3,7 +3,7 @@
           xmlns:comp="myapp.control"
           controllerName="myapp.controller.Piani"
           id="Piani">
-    <Page class="colorPage" showHeader="false">
+    <Page class="colorPage" showHeader="false" id="piani">
         <content>
             <VBox height="100%" width="100%">
                 <VBox height="25%" width="100%">

@@ -55,6 +55,7 @@ sap.ui.define([
         bckupQLI: "",
         bckupCRT: "",
         bckupHOUR: "",
+        getDialog: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -62,6 +63,8 @@ sap.ui.define([
             oRouter.getRoute("managePianoYellow").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            this.getDialog = sap.ui.getCore().byId("GlobalBusyDialog");
+            this.getDialog.close();
             this.RefreshCounter = 0;
             this.RefreshLogCounter = 10;
             this.Counter = 0;
@@ -963,7 +966,11 @@ sap.ui.define([
             this.TTBackup.setData(data);
             this.ModelParametri.setData(data);
             this.getView().setModel(this.ModelParametri, "ModelParametri");
-            this.BusyDialog.close();
+            var that = this;
+            setTimeout(function () {
+                that.ShowRelevant(null, "Parametri_TT");
+                that.BusyDialog.close();
+            }, 100);
         },
         ChangeSKU: function () {
 //            var array_confezione;
