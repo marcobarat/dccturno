@@ -73,6 +73,7 @@
                                 <VBox height="30%" width="100%" class="bordoBlu grey">
                                     <ScrollContainer id="scrollTurniConclusi" height="187px" horizontal="false" vertical="true" class="scrollingbar">
                                         <Table 
+                                            noDataText="Nessun piano passato da chiudere"
                                             width="100%"
                                             class="tableTextSize noBorder greyTable"
                                             items="{path: 'turni>/pianidiconfezionamento/conclusi'}">
@@ -173,6 +174,7 @@
                                 <VBox height="30%" width="100%" class="bordoBlu yellow">
                                     <ScrollContainer id="scrollTurniProgrammati" height="187px" horizontal="false" vertical="true" class="scrollingbar">
                                         <Table 
+                                            noDataText="Nessun piano programmato"
                                             width="100%"
                                             items="{path: 'turni>/pianidiconfezionamento/programmati'}"
                                             class="tableTextSize noBorder yellowTable">

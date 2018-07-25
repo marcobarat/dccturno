@@ -198,7 +198,7 @@ sap.ui.define([
                 }
                 var link;
                 if (this.ISLOCAL === 1) {
-                    link = "model/guasti_linee.json";
+                    link = "model/guasti.json";
                 } else {
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
 //                    sap.ui.getCore().setModel({batchID: batchId}, "batchID");
@@ -208,13 +208,13 @@ sap.ui.define([
         },
         SUCCESSGuasti: function (Jdata) {
             if (this.ISLOCAL === 1) {
-                for (var i = 0; i < Jdata.fermi.length; i++) {
-                    if (Jdata.fermi[i].nome === this.rowHTML.getCells()[0].getText()) {
-                        this.guasti = Jdata.fermi[i];
-                        break;
-                    }
-                }
-                this.guasti = Library.AddTimeGaps(this.guasti);
+//                for (var i = 0; i < Jdata.guasti.length; i++) {
+//                    if (Jdata.fermi[i].nome === this.rowHTML.getCells()[0].getText()) {
+//                        this.guasti = Jdata.fermi[i];
+//                        break;
+//                    }
+//                }
+                this.guasti = Library.AddTimeGaps(Jdata);
                 this.ModelGuasti.setData(this.guasti);
             } else {
                 this.guasti = Jdata;

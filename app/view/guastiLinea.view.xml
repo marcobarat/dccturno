@@ -64,6 +64,7 @@
                                         </t:template>
                                     </t:Column>
                                     <t:Column hAlign="Center" vAlign="Middle" width="10%">
+                                        <Button class="AddFermoButton noFocus" icon="sap-icon://add-equipment" press="AggiungiFermo" />
                                         <t:template>
                                             <Button press="OpenMenuCausalizzazione" icon="sap-icon://technical-object"/>
                                         </t:template>
