@@ -627,6 +627,7 @@ sap.ui.define([
         },
 //              - INPUT QLI, CARTONI E ORE
         QLIChanged: function (event) {
+            this.ShowUpdateButton(event);
             var ind;
             var obj = sap.ui.getCore().byId(event.getSource().getId());
             var value = obj.getValue();
@@ -639,18 +640,15 @@ sap.ui.define([
                     MessageToast.show("Inserire solo numeri positivi", {duration: 3000});
                 } else {
                     ind = 1 + value.indexOf(".") + value.indexOf(",");
-                    if (ind > -1) {
-                        if ((value.length - ind) > 3) {
-                            obj.setValue(this.bckupQLI);
-                            MessageToast.show("Inserire massimo due decimali", {duration: 3000});
-                        } else {
-                            this.bckupQLI = value;
-                            this.ChangeValues(event);
-                        }
+                    if ((ind > -1) && ((value.length - ind) > 3)) {
+                        obj.setValue(this.bckupQLI);
+                        MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                    } else {
+                        this.bckupQLI = value;
+                        this.ChangeValues(event);
                     }
                 }
             }
-            this.ShowUpdateButton(event);
         },
         CRTChanged: function (event) {
             var obj = sap.ui.getCore().byId(event.getSource().getId());
