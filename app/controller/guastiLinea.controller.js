@@ -8,7 +8,7 @@ sap.ui.define([
     return Controller.extend("myapp.controller.guastiLinea", {
         ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
         pdcID: sap.ui.getCore().getModel("ParametriPiano").getData().pdc,
-        batchID: sap.ui.getCore().getModel("batchID").batchID,
+        batchID: null,
         linea: "",
         menuJSON: {},
         row_binded: {},
@@ -27,6 +27,7 @@ sap.ui.define([
             oRouter.getRoute("guastidilinea").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (oEvent) {
+            this.batchID = sap.ui.getCore().getModel("batchID").batchID; 
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
             this.linea = oEvent.getParameter("arguments").guastiPath;
@@ -598,7 +599,7 @@ sap.ui.define([
                         obj = {};
                         obj.caso = "insert";
                         obj.logId = "";
-                        obj.batchId = this.row_binded.batchID;
+                        obj.batchId = this.batchID;
                         obj.dataFine = data_fine + 'T' + sap.ui.getCore().byId("Fine").getValue();
                         obj.dataInizio = data_inizio + 'T' + sap.ui.getCore().byId("Inizio").getValue();
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();

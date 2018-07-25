@@ -2347,7 +2347,7 @@ sap.ui.define([
                         obj = {};
                         obj.caso = "insert";
                         obj.logId = "";
-                        obj.batchId = this.row.batchID;
+                        obj.batchId = this.batch_id;
                         obj.dataFine = data_fine + 'T' + sap.ui.getCore().byId("Fine").getValue();
                         obj.dataInizio = data_inizio + 'T' + sap.ui.getCore().byId("Inizio").getValue();
                         obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
