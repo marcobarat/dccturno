@@ -202,7 +202,6 @@ sap.ui.define([
                         link = "model/guasti_linee.json";
                     } else {
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
-//                    sap.ui.getCore().setModel({batchID: batchId}, "batchID");
                     }
                     Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
                 }

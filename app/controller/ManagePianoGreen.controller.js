@@ -70,6 +70,10 @@ sap.ui.define([
         RefreshCounter: null,
         SPCCounter: null,
         SPCTimer: null,
+        bckupSEQ: "",
+        bckupQLI: "",
+        bckupCRT: "",
+        bckupHOUR: "",
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -513,6 +517,27 @@ sap.ui.define([
         },
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
+        SEQChanged: function (event) {
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            if (isNaN(Number(value))) {
+                obj.setValue(this.bckupSEQ);
+                MessageToast.show("Inserire solo numeri interi", {duration: 3000});
+            } else {
+                if (Number(value) < 0) {
+                    obj.setValue(this.bckupSEQ);
+                    MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                } else {
+                    if (value.indexOf(".") > -1) {
+                        obj.setValue(this.bckupSEQ);
+                        MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                    } else {
+                        this.bckupSEQ = value;
+                    }
+                }
+            }
+            this.ShowUpdateButton(event);
+        },
         ShowUpdateButton: function (event) {
             var rowPath = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
@@ -716,20 +741,79 @@ sap.ui.define([
                 this.getView().byId("formato_SKU").setValue(oRow.getCells()[1].getValue());
                 this.getView().byId("confezione_SKU").setValue(oRow.getCells()[2].getValue());
                 this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
-//                if (!event) {
-//                    this.getView().byId("formato_SKU").setEnabled(false);
-//                    this.getView().byId("confezione_SKU").setEnabled(false);
-//                    this.getView().byId("cliente_SKU").setEnabled(false);
-//                }
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
             }
         },
 //              - INPUT QLI, CARTONI E ORE
+        QLIChanged: function (event) {
+            var ind;
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            if (isNaN(Number(value))) {
+                obj.setValue(this.bckupQLI);
+                MessageToast.show("Inserire solo numeri", {duration: 3000});
+            } else {
+                if (Number(value) < 0) {
+                    obj.setValue(this.bckupQLI);
+                    MessageToast.show("Inserire solo numeri positivi", {duration: 3000});
+                } else {
+                    ind = 1 + value.indexOf(".") + value.indexOf(",");
+                    if (ind > -1) {
+                        if ((value.length - ind) > 3) {
+                            obj.setValue(this.bckupQLI);
+                            MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                        } else {
+                            this.bckupQLI = value;
+                            this.ChangeValues(event);
+                        }
+                    }
+                }
+            }
+            this.ShowUpdateButton(event);
+        },
+        CRTChanged: function (event) {
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            if (isNaN(Number(value))) {
+                obj.setValue(this.bckupCRT);
+                MessageToast.show("Inserire solo numeri interi", {duration: 3000});
+            } else {
+                if (Number(value) < 0) {
+                    obj.setValue(this.bckupCRT);
+                    MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                } else {
+                    var ind = 1 + value.indexOf(".") + value.indexOf(",");
+                    if (ind > -1) {
+                        obj.setValue(this.bckupCRT);
+                        MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                    } else {
+                        this.bckupCRT = value;
+                        this.ChangeValues(event);
+                    }
+                }
+            }
+            this.ShowUpdateButton(event);
+        },
+        HOURChanged: function (event) {
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            var hours = Number(value.substring(0, 2));
+            var mins = Number(value.substring(3, 5));
+            if (hours > 8 || (hours === 8 && mins !== 0)) {
+                obj.setValue(this.bckupHOUR);
+                MessageToast.show("Non si possono inserire batch da più di 8 ore", {duration: 3000});
+            } else {
+                this.bckupHOUR = value;
+                this.ChangeValues(event);
+            }
+            this.ShowUpdateButton(event);
+        },
         ChangeValues: function (event) {
             this.ShowUpdateButton(event);
-            var row_path = event.getSource().getBindingContext("linea").sPath;
-            var row_binded = this.getView().getModel("linea").getProperty(row_path);
+            var rowPath = event.getSource().getBindingContext("linea").sPath;
+            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
+            row_binded.modifyBatch = 1;
             this.pezzi_cartone = row_binded.pezziCartone;
             this.tempo_ciclo = row_binded.secondiPerPezzo;
             var grammatura, numero_pezzi, cartoni, ore, quintali;
@@ -758,6 +842,7 @@ sap.ui.define([
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
                 oRow.getCells()[5].setValue(cartoni);
             }
+            this.ModelLinea.refresh();
         },
 //              - IMPOSTAZIONI BATCH
         BatchSettings: function (event) {
@@ -1406,15 +1491,36 @@ sap.ui.define([
             this.getView().setModel(this.ModelParametri, "ModelParametri");
         },
         TreeTableRowClickExpander: function (event) {
+            var txt, model;
+            if (event.getSource().getId().indexOf("SKU_TT") > -1) {
+                model = this.ModelSKU;
+            } else {
+                model = this.ModelParametri;
+            }
+            var path = event.getParameters().rowBindingContext.sPath;
             var View = this.getView().byId(event.getSource().data("mydata"));
             var clicked_row = event.getParameters().rowIndex;
             var clicked_column = event.getParameters().columnIndex;
-            if (clicked_column === "0") {
-                if (!View.isExpanded(clicked_row)) {
-                    View.expand(clicked_row);
-                } else {
-                    View.collapse(clicked_row);
-                }
+            switch (clicked_column) {
+                case "0":
+                    if (!View.isExpanded(clicked_row)) {
+                        View.expand(clicked_row);
+                    } else {
+                        View.collapse(clicked_row);
+                    }
+                    break;
+                case "1":
+                    txt = model.getProperty(path).value;
+                    if (txt !== "") {
+                        MessageToast.show(txt, {duration: 10000});
+                    }
+                    break;
+                case "2":
+                    txt = model.getProperty(path).codeValue;
+                    if (txt !== "") {
+                        MessageToast.show(txt, {duration: 10000});
+                    }
+                    break;
             }
         },
 //        -------------------------------------------------
@@ -1529,7 +1635,7 @@ sap.ui.define([
             if (Number(Jdata.error) === 0) {
                 this.RefreshFunction(0, "0");
             } else {
-                MessageToast.show(Jdata.errorMessage, {duration: 120});
+                MessageToast.show(Jdata.errorMessage, {duration: 3000});
             }
         },
         SUCCESSCancellazioneBatch: function (Jdata) {
