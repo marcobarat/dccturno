@@ -205,7 +205,6 @@ sap.ui.define([
                     }
                     Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
                 }
-                Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
             }
         },
         SUCCESSGuasti: function (Jdata) {
