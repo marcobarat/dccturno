@@ -86,7 +86,7 @@ sap.ui.define([
             this.getView().setModel(this.ModelLinea, 'linea');
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
-//            this.RefreshFunction(100, "0");
+            this.RefreshFunction(100, "0");
             var that = this;
             setInterval(function () {
                 try {
