@@ -197,15 +197,14 @@ sap.ui.define([
                             break;
                         }
                     }
+                    var link;
+                    if (this.ISLOCAL === 1) {
+                        link = "model/guasti_linee.json";
+                    } else {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
+                    }
+                    Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
                 }
-                var link;
-                if (this.ISLOCAL === 1) {
-                    link = "model/guasti.json";
-                } else {
-                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + batchId + "&OutputParameter=JSON";
-//                    sap.ui.getCore().setModel({batchID: batchId}, "batchID");
-                }
-                Library.AjaxCallerData(link, this.SUCCESSGuasti.bind(this));
             }
         },
         SUCCESSGuasti: function (Jdata) {

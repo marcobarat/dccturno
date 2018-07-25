@@ -43,14 +43,14 @@
                                                 <t:Column resizable="false">
                                                     <Label text="ATTRIBUTI"/>
                                                     <t:template>
-                                                        <wt:StyleTextTreeTableAttr text="{SKU>name}" diff="{SKU>expand}" discr="{SKU>value}" />
+                                                        <wt:StyleTextTreeTableAttr text="{SKU>name}" diff="{SKU>expand}" discr="{SKU>value}" maxLines="1"/>
                                                     </t:template>
                                                 </t:Column>
                                                 <t:Column resizable="false">
                                                     <Label text="VALORE"/>
                                                     <t:template>
                                                         <HBox>
-                                                            <wt:StyleTextTreeTableValue text="{SKU>value}" diff="{SKU>expand}" />
+                                                            <wt:StyleTextTreeTableValue text="{SKU>value}" diff="{SKU>expand}" maxLines="1" tooltip="{SKU>value}"/>
                                                         </HBox>
                                                     </t:template>
                                                 </t:Column>
@@ -62,58 +62,50 @@
                         </TabContainerItem>
                         <TabContainerItem name="Parametri" id="Parametri">
                             <content>
-                                <VBox height="100%" width="100%">                 
-                                    <wt:CustomTreeTable
-                                        id="Parametri_TT"
-                                        rows="{path:'ModelParametri>/', parameters: {arrayNames:['attributi']}}"
-                                        selectionMode="None"
-                                        ariaLabelledBy="title"
-                                        visibleRowCount="9"
-                                        cellClick="TreeTableRowClickExpander"
-                                        app:mydata="Parametri_TT">
-                                        <wt:toolbar>
-                                            <Toolbar>
-                                                <Button text="Ripristina valori" press="RestoreDefault" class="TTButton"/>
-                                                <ToolbarSpacer/>
-                                                <Button text="Collassa" press="CollapseAll" app:mydata="Parametri_TT" class="TTButton"/>
-                                                <Button text="Espandi" press="ExpandAll" app:mydata="Parametri_TT" class="TTButton"/>
-                                                <Button text="Da confermare" press="ShowRelevant" app:mydata="Parametri_TT" class="TTButton"/>
-                                            </Toolbar>
-                                        </wt:toolbar>
-                                        <wt:columns>
-                                            <t:Column width="15rem" resizable="false">
-                                                <Label text="ATTRIBUTI"/>
-                                                <t:template>
-                                                    <Text text="{ModelParametri>name}" />
-                                                </t:template>
-                                            </t:Column>
-                                            <t:Column width="5rem" resizable="false">
-                                                <Label text="VALORE"/>
-                                                <t:template>
-                                                    <Text text="{ModelParametri>value}" />
-                                                </t:template>
-                                            </t:Column>
-                                            <t:Column width="5rem" resizable="false">
-                                                <Label text="MATRICOLA/LOTTO"/>
-                                                <t:template>
-                                                    <Text text="{ModelParametri>codeValue}" visible="{= ${ModelParametri>code} === 1}" />
-                                                </t:template>
-                                            </t:Column>
-                                            <t:Column width="5rem" resizable="false">
-                                                <Label text="MODIFICA VALORE"/>
-                                                <t:template>
-                                                    <Input value="{ModelParametri>valueModify}" editable="{= ${ModelParametri>modify} === 1}" visible="{= ${ModelParametri>modify} === 1}" class="diffStandard"/>
-                                                </t:template>
-                                            </t:Column>
-<!--                                            <t:Column width="5rem" resizable="false">
-                                                <Label text="MODIFICA SIGLE"/>
-                                                <t:template>
-                                                    <Input value="{ModelParametri>codeValueModify}" placeholder="{ModelParametri>codePlaceholder}" editable="{= ${ModelParametri>code} === 1}" class="diffStandard"/>
-                                                </t:template>
-                                            </t:Column>-->
-                                        </wt:columns>
-                                    </wt:CustomTreeTable>
-                                </VBox>
+                                <wt:CustomTreeTable
+                                    id="Parametri_TT"
+                                    rows="{path:'ModelParametri>/', parameters: {arrayNames:['attributi']}}"
+                                    selectionMode="None"
+                                    ariaLabelledBy="title"
+                                    visibleRowCount="9"
+                                    cellClick="TreeTableRowClickExpander"
+                                    app:mydata="Parametri_TT">
+                                    <wt:toolbar>
+                                        <Toolbar>
+                                            <Button text="Ripristina valori" press="RestoreDefault" class="TTButton"/>
+                                            <ToolbarSpacer/>
+                                            <Button text="Collassa" press="CollapseAll" app:mydata="Parametri_TT" class="TTButton"/>
+                                            <Button text="Espandi" press="ExpandAll" app:mydata="Parametri_TT" class="TTButton"/>
+                                            <Button text="Da confermare" press="ShowRelevant" app:mydata="Parametri_TT" class="TTButton"/>
+                                        </Toolbar>
+                                    </wt:toolbar>
+                                    <wt:columns>
+                                        <t:Column width="15rem" resizable="false">
+                                            <Label text="ATTRIBUTI"/>
+                                            <t:template>
+                                                <Text text="{ModelParametri>name}" maxLines="1"/>
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem" resizable="false">
+                                            <Label text="VALORE"/>
+                                            <t:template>
+                                                <Text text="{ModelParametri>value}" maxLines="1" tooltip="{ModelParametri>value}"/>
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem" resizable="false">
+                                            <Label text="MATRICOLA/LOTTO"/>
+                                            <t:template>
+                                                <Text text="{ModelParametri>codeValue}" visible="{= ${ModelParametri>code} === 1}" maxLines="1" tooltip="{ModelParametri>codeValue}"/>
+                                            </t:template>
+                                        </t:Column>
+                                        <t:Column width="5rem" resizable="false">
+                                            <Label text="MODIFICA VALORE"/>
+                                            <t:template>
+                                                <Input value="{ModelParametri>valueModify}" editable="{= ${ModelParametri>modify} === 1}" visible="{= ${ModelParametri>modify} === 1}" class="diffStandard" type="Text" maxLength="30"/>
+                                            </t:template>
+                                        </t:Column>
+                                    </wt:columns>
+                                </wt:CustomTreeTable>
                             </content>
                         </TabContainerItem>                
                     </items>

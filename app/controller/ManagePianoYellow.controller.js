@@ -51,6 +51,10 @@ sap.ui.define([
         BusyDialog: new sap.m.BusyDialog(),
         Counter: null,
         RefreshCounter: null,
+        bckupSEQ: "",
+        bckupQLI: "",
+        bckupCRT: "",
+        bckupHOUR: "",
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -388,6 +392,27 @@ sap.ui.define([
         },
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
+        SEQChanged: function (event) {
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            if (isNaN(Number(value))) {
+                obj.setValue(this.bckupSEQ);
+                MessageToast.show("Inserire solo numeri interi", {duration: 3000});
+            } else {
+                if (Number(value) < 0) {
+                    obj.setValue(this.bckupSEQ);
+                    MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                } else {
+                    if (value.indexOf(".") > -1) {
+                        obj.setValue(this.bckupSEQ);
+                        MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                    } else {
+                        this.bckupSEQ = value;
+                    }
+                }
+            }
+            this.ShowUpdateButton(event);
+        },
         ShowUpdateButton: function (event) {
             var rowPath = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
@@ -601,6 +626,69 @@ sap.ui.define([
             }
         },
 //              - INPUT QLI, CARTONI E ORE
+        QLIChanged: function (event) {
+            var ind;
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            if (isNaN(Number(value))) {
+                obj.setValue(this.bckupQLI);
+                MessageToast.show("Inserire solo numeri", {duration: 3000});
+            } else {
+                if (Number(value) < 0) {
+                    obj.setValue(this.bckupQLI);
+                    MessageToast.show("Inserire solo numeri positivi", {duration: 3000});
+                } else {
+                    ind = 1 + value.indexOf(".") + value.indexOf(",");
+                    if (ind > -1) {
+                        if ((value.length - ind) > 3) {
+                            obj.setValue(this.bckupQLI);
+                            MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                        } else {
+                            this.bckupQLI = value;
+                            this.ChangeValues(event);
+                        }
+                    }
+                }
+            }
+            this.ShowUpdateButton(event);
+        },
+        CRTChanged: function (event) {
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            if (isNaN(Number(value))) {
+                obj.setValue(this.bckupCRT);
+                MessageToast.show("Inserire solo numeri interi", {duration: 3000});
+            } else {
+                if (Number(value) < 0) {
+                    obj.setValue(this.bckupCRT);
+                    MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                } else {
+                    var ind = 1 + value.indexOf(".") + value.indexOf(",");
+                    if (ind > -1) {
+                        obj.setValue(this.bckupCRT);
+                        MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                    } else {
+                        this.bckupCRT = value;
+                        this.ChangeValues(event);
+                    }
+                }
+            }
+            this.ShowUpdateButton(event);
+        },
+        HOURChanged: function (event) {
+            var obj = sap.ui.getCore().byId(event.getSource().getId());
+            var value = obj.getValue();
+            var hours = Number(value.substring(0, 2));
+            var mins = Number(value.substring(3, 5));
+            if (hours > 8 || (hours === 8 && mins !== 0)) {
+                obj.setValue(this.bckupHOUR);
+                MessageToast.show("Non si possono inserire batch da più di 8 ore", {duration: 3000});
+            } else {
+                this.bckupHOUR = value;
+                this.ChangeValues(event);
+            }
+            this.ShowUpdateButton(event);
+        },
         ChangeValues: function (event) {
             this.ShowUpdateButton(event);
             var row_path = event.getSource().getBindingContext("linea").sPath;
@@ -1054,15 +1142,36 @@ sap.ui.define([
             this.getView().setModel(this.ModelParametri, "ModelParametri");
         },
         TreeTableRowClickExpander: function (event) {
+            var txt, model;
+            if (event.getSource().getId().indexOf("SKU_TT") > -1) {
+                model = this.ModelSKU;
+            } else {
+                model = this.ModelParametri;
+            }
+            var path = event.getParameters().rowBindingContext.sPath;
             var View = this.getView().byId(event.getSource().data("mydata"));
             var clicked_row = event.getParameters().rowIndex;
             var clicked_column = event.getParameters().columnIndex;
-            if (clicked_column === "0") {
-                if (!View.isExpanded(clicked_row)) {
-                    View.expand(clicked_row);
-                } else {
-                    View.collapse(clicked_row);
-                }
+            switch (clicked_column) {
+                case "0":
+                    if (!View.isExpanded(clicked_row)) {
+                        View.expand(clicked_row);
+                    } else {
+                        View.collapse(clicked_row);
+                    }
+                    break;
+                case "1":
+                    txt = model.getProperty(path).value;
+                    if (txt !== "") {
+                        MessageToast.show(txt, {duration: 10000});
+                    }
+                    break;
+                case "2":
+                    txt = model.getProperty(path).codeValue;
+                    if (txt !== "") {
+                        MessageToast.show(txt, {duration: 10000});
+                    }
+                    break;
             }
         },
 //        -------------------------------------------------
