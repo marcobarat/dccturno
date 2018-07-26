@@ -104,6 +104,7 @@ sap.ui.define([
                     if (that.STOP === 0 && that.RefreshCounter >= 10) {
                         that.RefreshFunction();
                     }
+                    that.RerenderTimePickers();
                 } catch (e) {
                     console.log(e);
                 }
