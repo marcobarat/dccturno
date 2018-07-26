@@ -4,3 +4,4 @@ setTimeout
 app/component/**7
 Plotly
 setInterval
+clearInterval
