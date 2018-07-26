@@ -5,7 +5,7 @@
     xmlns:core="sap.ui.core"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1220px" contentHeight="720px" id="SPCWindow" showHeader="false" class="colorPage bordoBlu">
+    <Dialog afterClose="DestroyDialog" contentWidth="1220px" contentHeight="720px" id="SPCWindow" showHeader="false" class="colorPage bordoBlu">
         <FlexBox alignItems="Start" justifyContent="Center">
             <VBox height="700px" width="1200px">
                 <VBox height="14px" width="1200px" class="colorPage"/>
