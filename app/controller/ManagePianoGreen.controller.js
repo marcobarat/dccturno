@@ -74,6 +74,7 @@ sap.ui.define([
         bckupQLI: "",
         bckupCRT: "",
         bckupHOUR: "",
+        getDialog: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.getView().setModel(this.ModelReparti, "reparti");
@@ -81,6 +82,9 @@ sap.ui.define([
             oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            this.getDialog = sap.ui.getCore().byId("GlobalBusyDialog");
+            this.getDialog.close();
+            var that = this;
             this.RefreshCounter = 0;
             this.RefreshLogCounter = 10;
             this.Counter = 0;
@@ -111,7 +115,6 @@ sap.ui.define([
             var oModel = new JSONModel({inizio: this.piano.turno.split("-")[0].trim(), fine: this.piano.turno.split("-")[1].trim()});
             this.getView().setModel(oModel, "orarioturno");
             this.RefreshFunction(100, "0");
-            var that = this;
             setInterval(function () {
                 try {
                     that.RefreshCounter++;
@@ -518,6 +521,7 @@ sap.ui.define([
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
         SEQChanged: function (event) {
+            this.ShowUpdateButton(event);
             var obj = sap.ui.getCore().byId(event.getSource().getId());
             var value = obj.getValue();
             if (isNaN(Number(value))) {
@@ -536,7 +540,6 @@ sap.ui.define([
                     }
                 }
             }
-            this.ShowUpdateButton(event);
         },
         ShowUpdateButton: function (event) {
             var rowPath = event.getSource().getBindingContext("linea").sPath;
@@ -631,6 +634,8 @@ sap.ui.define([
             var oRow = event.getSource().getParent();
             var row_path = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(row_path);
+            row_binded.grammatura = event.getSource().getSelectedItem().getKey();
+            row_binded.confezioneCodiceInterno = event.getSource().getSelectedItem().getText();
             var Button = oRow.getCells()[3];
             if (this.ISLOCAL === 1) {
                 row_binded.pezziCartone = 10;
@@ -747,6 +752,7 @@ sap.ui.define([
         },
 //              - INPUT QLI, CARTONI E ORE
         QLIChanged: function (event) {
+            this.ShowUpdateButton(event);
             var ind;
             var obj = sap.ui.getCore().byId(event.getSource().getId());
             var value = obj.getValue();
@@ -759,20 +765,18 @@ sap.ui.define([
                     MessageToast.show("Inserire solo numeri positivi", {duration: 3000});
                 } else {
                     ind = 1 + value.indexOf(".") + value.indexOf(",");
-                    if (ind > -1) {
-                        if ((value.length - ind) > 3) {
-                            obj.setValue(this.bckupQLI);
-                            MessageToast.show("Inserire massimo due decimali", {duration: 3000});
-                        } else {
-                            this.bckupQLI = value;
-                            this.ChangeValues(event);
-                        }
+                    if ((ind > -1) && ((value.length - ind) > 3)) {
+                        obj.setValue(this.bckupQLI);
+                        MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                    } else {
+                        this.bckupQLI = value;
+                        this.ChangeValues(event);
                     }
                 }
             }
-            this.ShowUpdateButton(event);
         },
         CRTChanged: function (event) {
+            this.ShowUpdateButton(event);
             var obj = sap.ui.getCore().byId(event.getSource().getId());
             var value = obj.getValue();
             if (isNaN(Number(value))) {
@@ -793,9 +797,9 @@ sap.ui.define([
                     }
                 }
             }
-            this.ShowUpdateButton(event);
         },
         HOURChanged: function (event) {
+            this.ShowUpdateButton(event);
             var obj = sap.ui.getCore().byId(event.getSource().getId());
             var value = obj.getValue();
             var hours = Number(value.substring(0, 2));
@@ -807,7 +811,6 @@ sap.ui.define([
                 this.bckupHOUR = value;
                 this.ChangeValues(event);
             }
-            this.ShowUpdateButton(event);
         },
         ChangeValues: function (event) {
             this.ShowUpdateButton(event);
@@ -820,11 +823,7 @@ sap.ui.define([
             var oValueChanged = event.getParameter("value");
             var oCellChanged = event.getSource();
             var oRow = event.getSource().getParent();
-            if (oRow.getCells()[2].getSelectedItem() !== null) {
-                grammatura = oRow.getCells()[2].getSelectedItem().getKey();
-            } else {
-                grammatura = row_binded.grammatura;
-            }
+            grammatura = row_binded.grammatura;
             if (oCellChanged === oRow.getCells()[4]) {
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
                 cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
@@ -1327,7 +1326,11 @@ sap.ui.define([
             this.TTBackup.setData(data);
             this.ModelParametri.setData(data);
             this.getView().setModel(this.ModelParametri, "ModelParametri");
-            this.BusyDialog.close();
+            var that = this;
+            setTimeout(function () {
+                that.ShowRelevant(null, "Parametri_TT");
+                that.BusyDialog.close();
+            }, 100);
         },
         ChangeSKU: function () {
             if (this.ISLOCAL !== 1) {

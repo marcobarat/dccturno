@@ -17,6 +17,7 @@ sap.ui.define([
         TIMER: null,
         RefreshCounter: null,
         PDCParameters: null,
+        BusyDialog: new sap.m.BusyDialog("GlobalBusyDialog"),
 
         onInit: function () {
             var oModel = new JSONModel({StabilimentoID: this.StabilimentoID});
@@ -26,6 +27,8 @@ sap.ui.define([
             oRouter.getRoute("piani").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (oEvent) {
+            this.getView().byId("piani").setBusy(false);
+            this.BusyDialog.close();
             window.clearInterval(this.TIMER);
             this.RefreshCounter = 10;
             this.STOP = 0;
@@ -100,6 +103,8 @@ sap.ui.define([
             }
         },
         SwitcherTurni: function (oEvent) {
+            this.BusyDialog.open();
+            this.getView().byId("piani").setBusy(true);
             var oTable = oEvent.getSource().getParent().getBindingContext("turni");
             var Row = oTable.getModel().getProperty(oTable.sPath);
             var area = Row.area;
