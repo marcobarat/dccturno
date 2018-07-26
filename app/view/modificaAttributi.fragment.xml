@@ -86,25 +86,25 @@
                                         <t:Column width="15rem" resizable="false">
                                             <Label text="ATTRIBUTI"/>
                                             <t:template>
-                                                <Text text="{ModelParametri>name}" maxLines="2"/>
+                                                <Text text="{ModelParametri>name}" maxLines="2" class="verticalAlignment"/>
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem" resizable="false">
                                             <Label text="VALORE"/>
                                             <t:template>
-                                                <Text text="{ModelParametri>value}" maxLines="2" tooltip="{ModelParametri>value}"/>
+                                                <Text text="{ModelParametri>value}" maxLines="2" tooltip="{ModelParametri>value}" class="verticalAlignment"/>
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem" resizable="false">
                                             <Label text="MATRICOLA/LOTTO"/>
                                             <t:template>
-                                                <Text text="{ModelParametri>codeValue}" visible="{= ${ModelParametri>code} === 1}" maxLines="2" tooltip="{ModelParametri>codeValue}"/>
+                                                <Text text="{ModelParametri>codeValue}" visible="{= ${ModelParametri>code} === 1}" maxLines="2" tooltip="{ModelParametri>codeValue}" class="verticalAlignment"/>
                                             </t:template>
                                         </t:Column>
                                         <t:Column width="5rem" resizable="false">
                                             <Label text="MODIFICA VALORE"/>
                                             <t:template>
-                                                <Input value="{ModelParametri>valueModify}" editable="{= ${ModelParametri>modify} === 1}" type="Text" maxLength="30" visible="{= ${ModelParametri>modify} === 1}" class="diffStandard" />
+                                                <Input value="{ModelParametri>valueModify}" editable="{= ${ModelParametri>modify} === 1}" type="Text" maxLength="30" visible="{= ${ModelParametri>modify} === 1}" class="diffStandard redInputParametri" />
                                             </t:template>
                                         </t:Column>
                                     </wt:columns>

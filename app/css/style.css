@@ -327,6 +327,12 @@
 .paddingTopComboboxes {
     top: 2.7rem;
 }
+.redInputParametri .sapMInputBaseInner {
+    font-size: 0.875rem; 
+}
+.verticalAlignment {
+    vertical-align: middle; 
+}
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
@@ -814,13 +820,15 @@
     width: 0px !important; 
 }
 .sapMTabStripItemLabel {
-    font-size: 15pt; 
+    font-size: 20pt; 
 }
 
 /* SAPMLABEL OVERWRITE */
 .sapMLabel {
     color: #003A6B !important;
 }
+
+
 
 
 
