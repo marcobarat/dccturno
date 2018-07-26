@@ -6,7 +6,7 @@
     xmlns:wt="myapp.control" 
     controllerName="myapp.controller.MenuItemEventing"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1200px" contentHeight="700px" horizontalScrolling="false" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu"  id="modificaAttributi">
+    <Dialog contentWidth="1200px" contentHeight="700px" horizontalScrolling="false" afterClose="DestroyDialog" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu"  id="modificaAttributi">
         <VBox height="100%" width="100%">
             <VBox height="90%" width="100%">
                 <TabContainer id="attributiContainer" itemSelect="TabSelection">

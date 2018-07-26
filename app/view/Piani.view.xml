@@ -58,7 +58,7 @@
                                             </Column>  
                                             <Column hAlign="Center">
                                                 <header>
-                                                    <Text text="LineeDispo"/>
+                                                    <Text text="Linee Disponibili"/>
                                                 </header>
                                             </Column> 
                                             <Column hAlign="Center">

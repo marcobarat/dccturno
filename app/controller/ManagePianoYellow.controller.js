@@ -509,6 +509,8 @@ sap.ui.define([
             var oRow = event.getSource().getParent();
             var row_path = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(row_path);
+            row_binded.grammatura = event.getSource().getSelectedItem().getKey();
+            row_binded.confezioneCodiceInterno = event.getSource().getSelectedItem().getText();
             var Button = oRow.getCells()[3];
             if (this.ISLOCAL === 1) {
                 row_binded.pezziCartone = 10;
@@ -700,11 +702,7 @@ sap.ui.define([
             var oValueChanged = event.getParameter("value");
             var oCellChanged = event.getSource();
             var oRow = event.getSource().getParent();
-            if (oRow.getCells()[2].getSelectedItem() !== null) {
-                grammatura = oRow.getCells()[2].getSelectedItem().getKey();
-            } else {
-                grammatura = row_binded.grammatura;
-            }
+            grammatura = row_binded.grammatura;
             if (oCellChanged === oRow.getCells()[4]) {
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
                 cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
