@@ -29,7 +29,7 @@ sap.ui.define([
         URLChangeCheck: function (oEvent) {
             this.getView().byId("piani").setBusy(false);
             this.BusyDialog.close();
-            window.clearInterval(this.TIMER);
+            clearInterval(this.TIMER);
             this.RefreshCounter = 10;
             this.STOP = 0;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;
@@ -38,19 +38,22 @@ sap.ui.define([
             this.RefreshCall();
             var that = this;
             this.TIMER = setInterval(function () {
-                that.RefreshCounter++;
+                try {
+                    that.RefreshCounter++;
+                    if (that.STOP === 0 && that.RefreshCounter >= 10) {
+                        that.RefreshFunction();
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
             }, 1000);
         },
         RefreshFunction: function (msec) {
-            if (this.RefreshCounter >= 10) {
-                setTimeout(this.RefreshCall.bind(this), msec);
-                this.RefreshCounter = 0;
-            } else {
-                setTimeout(this.Void.bind(this), 1000);
+            this.RefreshCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
             }
-        },
-        Void: function () {
-            this.RefreshFunction();
+            setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
             var link;
@@ -70,7 +73,7 @@ sap.ui.define([
             oScroll = this.getView().byId("scrollTurniProgrammati");
             this.setScrollHeight(oScroll);
             if (this.ISLOCAL !== 1 && this.STOP === 0) {
-                this.RefreshFunction(10000);
+                this.RefreshCounter = 0;
             }
         },
         setScrollHeight: function (oScroll) {
@@ -138,6 +141,7 @@ sap.ui.define([
             }
         },
         SUCCESSTurnoChiuso: function (Jdata) {
+            clearInterval(this.TIMER);
             this.STOP = 1;
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
@@ -147,6 +151,7 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoInCorso: function (Jdata) {
+            clearInterval(this.TIMER);
             this.STOP = 1;
             for (var i = 0; i < Jdata.linee.length; i++) {
                 if (Number(Jdata.linee[i].avanzamento) >= 100) {
@@ -164,6 +169,7 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         SUCCESSTurnoApertoFuturo: function (Jdata) {
+            clearInterval(this.TIMER);
             this.STOP = 1;
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
@@ -174,6 +180,7 @@ sap.ui.define([
             this.ModelLinea.refresh(true);
         },
         BackToMain: function () {
+            clearInterval(this.TIMER);
             this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("Main");
         }

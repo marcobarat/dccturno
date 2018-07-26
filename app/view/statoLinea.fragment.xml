@@ -4,7 +4,7 @@
     xmlns:u="sap.ui.unified"
     xmlns:t="sap.ui.table"
     controllerName="myapp.controller.guastiLinea">
-    <Dialog horizontalScrolling="true" contentHeight="500px" contentWidth="800px" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
+    <Dialog horizontalScrolling="true" contentHeight="500px" contentWidth="800px" afterClose="DestroyDialog" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="statoLinea">
         <VBox height="100%">
             <VBox height="275px">
                 <t:Table

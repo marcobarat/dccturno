@@ -13,6 +13,7 @@
 		"alert": false,
 		"setTimeout": false,
 		"Plotly": false,
-		"setInterval": false
+		"setInterval": false,
+        "clearInterval": false
     }
 }

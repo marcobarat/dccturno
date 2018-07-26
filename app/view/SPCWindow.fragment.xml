@@ -5,7 +5,7 @@
     xmlns:core="sap.ui.core"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1220px" contentHeight="720px" id="SPCWindow" showHeader="false" class="colorPage bordoBlu">
+    <Dialog contentWidth="1220px" contentHeight="720px" id="SPCWindow" afterClose="CloseSPCDialog" showHeader="false" class="colorPage bordoBlu">
         <FlexBox alignItems="Start" justifyContent="Center">
             <VBox height="700px" width="1200px">
                 <VBox height="14px" width="1200px" class="colorPage"/>
@@ -46,50 +46,3 @@
         </FlexBox>
     </Dialog>
 </core:FragmentDefinition>
-
-<!--<core:FragmentDefinition
-    controllerName="myapp.controller.SPCWindow"
-    id="SPCWindow"
-    xmlns="sap.m"
-    xmlns:core="sap.ui.core"
-    xmlns:html="http://www.w3.org/1999/xhtml"
-    xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1600px" contentHeight="1200px" id="SPCWindow" showHeader="false" class="sfondobianco">
-        <VBox height="100px" width="1200px">
-            <VBox height="2px" width="1200px" class="colorPage"/>
-            <VBox height="8px" width="1200px" class="colorPage">
-                <HBox>
-                    <VBox height="100px" width="1200px">
-                        <FlexBox alignItems="Start" justifyContent="Center">
-                            <Text id="headerSPCWindow" text="" class="textTop"/>
-                        </FlexBox>
-                    </VBox>
-                </HBox>
-            </VBox>
-            <VBox height="8px" width="1200px" class="colorPage">
-                <HBox>
-                    <VBox height="100px" width="1200px">
-                        <FlexBox alignItems="Start" justifyContent="Center">
-                            <Text id="samplingSPC" text="" class="textTop"/>
-                        </FlexBox>
-                    </VBox>
-                </HBox>
-            </VBox>
-            <VBox id="plotBox" height="790px" width="1200px" class="colorPage"/>
-            <VBox height="3px" width="1200px" class="colorPage"/>
-            <VBox height="7px" width="1200px" class="colorPage">
-                <HBox>
-                    <VBox height="100px" width="10px"/>
-                    <VBox height="100px" width="30px">
-                        <Button text="Chiudi" width="1200px" press="CloseSPCDialog" class="chiudiButton"/>
-                    </VBox>
-                    <VBox height="100px" width="20px"/>
-                    <VBox height="100px" width="30px">
-                        <Button id="alarmButton" text="Rimuovi allarme" width="1200px" enabled="false" press="RemoveAlarm" class="chiudiButton"/>
-                    </VBox>
-                    <VBox height="100px" width="10px"/>
-                </HBox>
-            </VBox>
-        </VBox>
-    </Dialog>
-</core:FragmentDefinition>-->
