@@ -493,6 +493,9 @@ sap.ui.define([
             this.getView().byId(id_dialog).close();
             this.oDialog = null;
         },
+        DestroyDialog: function (event) {
+            this.oDialog.destroy();
+        },
         SplitId: function (id, string) {
             var splitter = id.indexOf(string);
             var root = id.substring(0, splitter);

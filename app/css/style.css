@@ -149,6 +149,7 @@
     margin-left: 3%;
     font-size: large;
     font-weight: bold; 
+    color : #003A6B;
 }
 .textArea .sapMTextAreaInner{
     padding-left: 0px !important;
@@ -180,6 +181,9 @@
     padding-right: 0px;
     padding-top: 0.4rem;
     padding-bottom: 0.4rem;
+}
+.paddingHeaderTabella .sapMListTbl .sapMListTblHeader .sapMListTblCell .sapMText{
+    color : #003A6B;
 }
 .paddingOperatori .sapMListTblCell {
     padding: 0.35rem 0.1rem !important;
@@ -783,8 +787,40 @@
     text-decoration: underline;
 }
 
+/* TAB STRIP OVERWRITE  */
 
+.sapMTabStrip {
+    background: white;
+}
+.sapMTabStripItem {
+    outline: none !important;
+    padding-left: 0px !important;
+    margin-left: 1rem !important; 
+    margin-right: 1rem !important;
+    background: white !important;
+    border: 0px !important;
+    color: #003A6B !important; 
+}
+.sapMTabStripItem:focus::before {
+    border: 0px !important; 
+}
+.sapMTabStripItem:hover {
+    background: white !important;
+}
+.sapMTabStripItemSelected {
+    border-bottom: 2px solid #003A6B !important;
+}
+.sapMTSItemCloseBtnCnt {
+    width: 0px !important; 
+}
+.sapMTabStripItemLabel {
+    font-size: 15pt; 
+}
 
+/* SAPMLABEL OVERWRITE */
+.sapMLabel {
+    color: #003A6B !important;
+}
 
 
 

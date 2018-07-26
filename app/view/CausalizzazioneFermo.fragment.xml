@@ -5,6 +5,7 @@
     xmlns:core="sap.ui.core"
     xmlns:t="sap.ui.table">
     <Dialog
+        afterClose="DestroyDialog"
         showHeader="false"
         class="colorPage bordoBlu"
         contentWidth="1200px"
@@ -20,10 +21,10 @@
                         <Column width="30%" hAlign="Center">
                         </Column>
                         <Column width="15%" hAlign="Center">
-                            <Text text="Tempo"/>                                                       
+                            <Label text="Tempo"/>                                                       
                         </Column>
                         <Column width="45%" hAlign="Center">
-                            <Text text="Causale"/>
+                            <Label text="Causale"/>
                         </Column>
                         <Column width="10%" hAlign="Center">
                         </Column>

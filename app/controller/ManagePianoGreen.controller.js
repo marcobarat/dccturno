@@ -1772,7 +1772,7 @@ sap.ui.define([
             if (Number(Jdata.error) === 0) {
                 var oModel = new JSONModel(Jdata);
                 oModel.setData(Jdata);
-                var selectBox = this.getView().byId("causale");
+                var selectBox = this.getView().byId("CausaleNonDisp");
                 var oItemSelectTemplate = new sap.ui.core.Item({
                     key: "{causaledisp>id}",
                     text: "{causaledisp>causale}"
@@ -1784,7 +1784,7 @@ sap.ui.define([
             }
         },
         InserisciFermoProgrammato: function () {
-            var causale = this.getView().byId("causale").getSelectedKey();
+            var causale = this.getView().byId("CausaleNonDisp").getSelectedKey();
             if (causale !== "") {
                 var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("Inizio").getValue() + ":00";
                 var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("Fine").getValue() + ":00";
@@ -1829,7 +1829,7 @@ sap.ui.define([
             this.DestroyDialog();
         },
         SetInizioNonDisponibilita: function () {
-            var secondi_inizio = Library.fromStandardToSeconds(this.getView().byId("Inizio").getValue() + ":00");
+            var secondi_inizio = Library.fromStandardToSeconds(this.getView().byId("InizioNonDisp").getValue() + ":00");
             var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
             var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
             if (inizio === fine || secondi_inizio > 21600) {
@@ -1839,7 +1839,7 @@ sap.ui.define([
             }
         },
         SetFineNonDisponibilita: function () {
-            var secondi_fine = Library.fromStandardToSeconds(this.getView().byId("Fine").getValue() + ":00");
+            var secondi_fine = Library.fromStandardToSeconds(this.getView().byId("FineNonDisp").getValue() + ":00");
             var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
             var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
             if (inizio === fine || secondi_fine > 21600) {

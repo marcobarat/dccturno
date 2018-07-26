@@ -4,7 +4,7 @@
     xmlns:core="sap.ui.core"
     xmlns:u="sap.ui.unified"
 >
-    <Dialog contentWidth="600px" horizontalScrolling="false" verticalScrolling="true" class="colorPage bordoBlu">
+    <Dialog afterClose="DestroyDialog" contentWidth="600px" horizontalScrolling="false" verticalScrolling="true" class="colorPage bordoBlu">
         <customHeader>
             <Bar>
                 <contentLeft>

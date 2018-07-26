@@ -6,6 +6,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:cus="myapp.control">
     <Dialog
+        afterClose="DestroyDialog"
         showHeader="false"
         class="colorPage bordoBlu"
         contentWidth="1600px"

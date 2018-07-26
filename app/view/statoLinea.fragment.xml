@@ -56,17 +56,17 @@
                     <VBox width="3%"/>
                     <VBox width="15%">
                         <Label text="Inizio Turno" class="blueLabel"/>
-                        <TimePicker localeId="it_IT" width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="Inizio"></TimePicker>
+                        <TimePicker localeId="it_IT" width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/inizio}" id="InizioNonDisp"></TimePicker>
                     </VBox>
                     <VBox width="2%"/>
                     <VBox width="15%">
                         <Label text="Fine Turno" class="blueLabel"/>
-                        <TimePicker localeId="it_IT" width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="Fine"></TimePicker>
+                        <TimePicker localeId="it_IT" width="7rem" valueFormat="HH:mm" displayFormat="HH:mm" value="{orarioturno>/fine}" id="FineNonDisp"></TimePicker>
                     </VBox>
                     <VBox width="2%"/>
                     <VBox width="35%">
                         <Label text="Causale" class="blueLabel"/>
-                        <ComboBox id="causale" loadItems="CaricaCausaliDisponibilita"/>
+                        <ComboBox id="CausaleNonDisp" loadItems="CaricaCausaliDisponibilita"/>
                     </VBox>
                     <VBox width="5%"/>
                     <VBox width="17%">
