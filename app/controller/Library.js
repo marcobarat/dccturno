@@ -41,6 +41,18 @@ sap.ui.define([
             string_mins = this.StringTime(mins);
             return (string_hours + ":" + string_mins);
         },
+        SecondsToStandard: function (val) {
+            var hours = Math.floor(val / 3600);
+            val -= hours * 3600;
+            var mins = Math.floor(val / 60);
+            val -= mins * 60;
+            var secs = val;
+            var string_hours, string_mins, string_sec;
+            string_hours = this.StringTime(hours);
+            string_mins = this.StringTime(mins);
+            string_sec = this.StringTime(secs);
+            return (string_hours + ":" + string_mins + ":" + string_sec);
+        },
         StringTime: function (val) {
             if (val < 10) {
                 return  ('0' + String(val));
@@ -59,8 +71,8 @@ sap.ui.define([
             var array_data = data.split("/");
             return array_data[2] + "-" + array_data[1] + "-" + array_data[0] + "T" + ora;
         },
-        fromStandardToSeconds: function (string){
-            return parseInt(string.split(":")[2], 10) + parseInt(string.split(":")[1], 10)*60 + parseInt(string.split(":")[0], 10) * 60 * 60;
+        fromStandardToSeconds: function (string) {
+            return parseInt(string.split(":")[2], 10) + parseInt(string.split(":")[1], 10) * 60 + parseInt(string.split(":")[0], 10) * 60 * 60;
         },
 // FUNZIONI PER LA SUDDIVISIONE DEI GUASTI IN CAUSALIZZATI E NON
 
@@ -401,7 +413,7 @@ sap.ui.define([
             string = this.ReplaceAll('&', '&#38;', string);
             string = this.ReplaceAll('"', '&#34;', string);
             string = this.ReplaceAll("'", '&#39;', string);
-            return string; 
+            return string;
         },
         EncodeForUri: function (string) {
             string = this.ReplaceAll('!', '%21', string);
@@ -429,7 +441,7 @@ sap.ui.define([
                 return string;
             var temp = string;
             var index = temp.indexOf(stringToFind);
-            while (index !== -1 && temp[index+1] !== '#') {
+            while (index !== -1 && temp[index + 1] !== '#') {
                 temp = temp.replace(stringToFind, stringToReplace);
                 index = temp.indexOf(stringToFind);
             }

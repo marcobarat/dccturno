@@ -708,8 +708,9 @@ sap.ui.define([
         },
         ChangeValues: function (event) {
             this.ShowUpdateButton(event);
-            var row_path = event.getSource().getBindingContext("linea").sPath;
-            var row_binded = this.getView().getModel("linea").getProperty(row_path);
+            var rowPath = event.getSource().getBindingContext("linea").sPath;
+            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
+            row_binded.modifyBatch = 1;
             this.pezzi_cartone = row_binded.pezziCartone;
             this.tempo_ciclo = row_binded.secondiPerPezzo;
             var grammatura, numero_pezzi, cartoni, ore, quintali;
@@ -721,23 +722,24 @@ sap.ui.define([
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
                 cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
                 oRow.getCells()[5].setValue(cartoni);
-                ore = Math.round((numero_pezzi * this.tempo_ciclo) / 60);
-                oRow.getCells()[6].setValue(Library.minutesToStandard(ore));
+                ore = Math.round(numero_pezzi * this.tempo_ciclo);
+                oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[5]) {
                 numero_pezzi = oValueChanged * this.pezzi_cartone;
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
-                ore = Math.round((numero_pezzi * this.tempo_ciclo) / 60);
-                oRow.getCells()[6].setValue(Library.minutesToStandard(ore));
+                ore = Math.round(numero_pezzi * this.tempo_ciclo);
+                oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[6]) {
-                numero_pezzi = Library.standardToMinutes(oValueChanged) / (this.tempo_ciclo / 60);
+                numero_pezzi = (Library.standardToMinutes(oValueChanged)*60) / this.tempo_ciclo;
                 cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
                 oRow.getCells()[5].setValue(cartoni);
             }
+            this.ModelLinea.refresh();
         },
 //              - IMPOSTAZIONI BATCH
         BatchSettings: function (event) {
