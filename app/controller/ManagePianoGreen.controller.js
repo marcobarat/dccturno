@@ -2315,7 +2315,7 @@ sap.ui.define([
                         obj.batchId = this.row.batchID;
                         obj.dataFine = "";
                         obj.dataInizio = "";
-                        obj.causaleId = event.getSource().getParent().getContent()[0].getItems()[2].getItems()[1].getItems()[0].getSelectedKey();
+                        obj.causaleId = sap.ui.getCore().byId("selectionMenu").getSelectedKey();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboGestionFermiAttivo_GetAllFermi&Content-Type=text/json&xml=" + Library.createXMLFermo(obj) + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSGuastoModificato.bind(this), function (error) {
                             console.log(error);
