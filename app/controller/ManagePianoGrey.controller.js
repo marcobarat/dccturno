@@ -107,6 +107,7 @@ sap.ui.define([
             }
         },
         SUCCESSConfermaChiusura: function (Jdata) {
+            this.RemoveReport();
             this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("piani");
