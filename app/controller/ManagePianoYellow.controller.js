@@ -104,7 +104,6 @@ sap.ui.define([
                     if (that.STOP === 0 && that.RefreshCounter >= 10) {
                         that.RefreshFunction();
                     }
-                    that.RerenderTimePickers();
                 } catch (e) {
                     console.log(e);
                 }
@@ -1129,8 +1128,13 @@ sap.ui.define([
             var View = this.getView().byId(event.getSource().data("mydata"));
             View.collapseAll();
         },
-        ExpandAll: function (event) {
-            var View = this.getView().byId(event.getSource().data("mydata"));
+        ExpandAll: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = this.getView().byId(TT);
+            }
             View.expandToLevel(20);
         },
         ShowRelevant: function (event, TT) {
@@ -1319,7 +1323,11 @@ sap.ui.define([
             data = Library.RecursiveLinkRemoval(data);
             this.ModelParametri.setData(data);
             this.getView().setModel(this.ModelParametri, "ModelParametri");
-            this.BusyDialog.close();
+            var that = this;
+            setTimeout(function () {
+                that.ExpandAll(null, "Parametri_TT");
+                that.BusyDialog.close();
+            }, 100);
         },
 //        -------------------------------------------------
 //        -------------------------------------------------

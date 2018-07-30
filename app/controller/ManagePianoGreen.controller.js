@@ -124,7 +124,6 @@ sap.ui.define([
                     if (that.STOP === 0 && that.RefreshCounter >= 10) {
                         that.RefreshFunction();
                     }
-                    that.RerenderTimePickers();
                 } catch (e) {
                     console.log(e);
                 }
@@ -859,7 +858,7 @@ sap.ui.define([
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[6]) {
-                numero_pezzi = (Library.standardToMinutes(oValueChanged)*60) / this.tempo_ciclo;
+                numero_pezzi = (Library.standardToMinutes(oValueChanged) * 60) / this.tempo_ciclo;
                 cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
@@ -1498,8 +1497,13 @@ sap.ui.define([
             var View = this.getView().byId(event.getSource().data("mydata"));
             View.collapseAll();
         },
-        ExpandAll: function (event) {
-            var View = this.getView().byId(event.getSource().data("mydata"));
+        ExpandAll: function (event, TT) {
+            var View;
+            if (typeof TT === "undefined") {
+                View = this.getView().byId(event.getSource().data("mydata"));
+            } else {
+                View = this.getView().byId(TT);
+            }
             View.expandToLevel(20);
         },
         ShowRelevant: function (event, TT) {
@@ -1724,10 +1728,8 @@ sap.ui.define([
             var tempo_totale = Jdata.Totale.tempoGuastoTotale;
             var oTable = this.getView().byId("TotaleTable");
             if (tempo_totale === "00:00:00") {
-//                this.getView().byId("NoFermiDaCausalizzare").setVisible(true);
                 oTable.getItems()[0].getCells()[3].setVisible(false);
             } else {
-//                this.getView().byId("NoFermiDaCausalizzare").setVisible(false);
                 oTable.getItems()[0].getCells()[3].setVisible(true);
             }
             oTable.getItems()[0].getCells()[3].setSelected(false);
@@ -1757,7 +1759,11 @@ sap.ui.define([
             data = Library.RecursiveLinkRemoval(data);
             this.ModelParametri.setData(data);
             this.getView().setModel(this.ModelParametri, "ModelParametri");
-            this.BusyDialog.close();
+            var that = this;
+            setTimeout(function () {
+                that.ExpandAll(null, "Parametri_TT");
+                that.BusyDialog.close();
+            }, 100);
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
