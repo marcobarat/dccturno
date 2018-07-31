@@ -316,12 +316,12 @@ sap.ui.define([
             this.getView().setModel(this.ModelCausali, "CausaliFermo");
             var oView = this.getView();
             this.onCloseDialog();
-            var old_id = this.GetActiveCB();
-            if (old_id !== 0) {
-                var old_CB = sap.ui.getCore().byId(old_id);
-                old_CB.setSelected(false);
-                this.CheckFermo[old_id] = 0;
-            }
+//            var old_id = this.GetActiveCB();
+//            if (old_id !== 0) {
+//                var old_CB = sap.ui.getCore().byId(old_id);
+//                old_CB.setSelected(false);
+//                this.CheckFermo[old_id] = 0;
+//            }
 
             var dialog = oView.byId("CausalizzazioneFermoPanel");
             if (!dialog) {
@@ -492,7 +492,7 @@ sap.ui.define([
         onCloseDialog: function () {
             var id_dialog = this.oDialog.getId().split("--")[1];
             this.getView().byId(id_dialog).close();
-            this.oDialog = null;
+//            this.oDialog = null;
         },
         DestroyDialog: function (event) {
             this.oDialog.destroy();

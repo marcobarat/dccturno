@@ -412,20 +412,22 @@ sap.ui.define([
         CheckOperatore: function (event) {
             var that = this;
             var check = 0;
-            var selectBoxValue = event.getSource().getValue();
-            var oTables = this.getView().byId("managePianoTable").getItems();
-            for (var i = 0; i < oTables.length; i++) {
-                var table_operatore = oTables[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[0].getContent()[0].getItems();
-                for (var j = 0; j < table_operatore.length; j++) {
-                    if (table_operatore[j].getCells()[0].getValue() === selectBoxValue && table_operatore[j].getCells()[0] !== event.getSource()) {
-                        table_operatore[j].getCells()[0].setValue("");
-                        table_operatore[j].getCells()[0].clearSelection();
-                        check = 1;
+            if (event.getSource().getPlaceholder() === "Macchinista") {
+                var selectBoxValue = event.getSource().getValue();
+                var oTables = this.getView().byId("managePianoTable").getItems();
+                for (var i = 0; i < oTables.length; i++) {
+                    var table_operatore = oTables[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[0].getContent()[0].getItems();
+                    for (var j = 0; j < table_operatore.length; j++) {
+                        if (table_operatore[j].getCells()[0].getValue() === selectBoxValue && table_operatore[j].getCells()[0] !== event.getSource()) {
+                            table_operatore[j].getCells()[0].setValue("");
+                            table_operatore[j].getCells()[0].clearSelection();
+                            check = 1;
+                            break;
+                        }
+                    }
+                    if (check === 1) {
                         break;
                     }
-                }
-                if (check === 1) {
-                    break;
                 }
             }
             var addetto_ID = event.getParameter("selectedItem").getKey();
@@ -2499,14 +2501,14 @@ sap.ui.define([
             this.getView().setModel(this.ModelCausali, "CausaliFermo");
             var oView = this.getView();
             this.onCloseDialog();
-            var old_id = this.GetActiveCB();
-            if (old_id !== 0) {
-                var old_CB = sap.ui.getCore().byId(old_id);
-                old_CB.setSelected(false);
-                this.CheckFermo[old_id] = 0;
-            }
+//            var old_id = this.GetActiveCB();
+//            if (old_id !== 0) {
+//                var old_CB = sap.ui.getCore().byId(old_id);
+//                old_CB.setSelected(false);
+//                this.CheckFermo[old_id] = 0;
+//            }
 
-            var dialog = oView.byId("CausalizzazioneFermoPanel");
+            var dialog = this.getView().byId("CausalizzazioneFermoPanel");
             if (!dialog) {
                 dialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);
                 oView.addDependent(dialog);
@@ -2658,7 +2660,7 @@ sap.ui.define([
             this.RerenderTimePickers();
             var id_dialog = this.oDialog.getId().split("--")[1];
             this.getView().byId(id_dialog).close();
-            this.oDialog = null;
+//            this.oDialog = null;
             if (id_dialog === "GestioneIntervalliFermo") {
                 this.STOP = 0;
                 this.RefreshFunction(0, "1");

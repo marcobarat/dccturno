@@ -353,20 +353,22 @@ sap.ui.define([
         CheckOperatore: function (event) {
             var that = this;
             var check = 0;
-            var selectBoxValue = event.getSource().getValue();
-            var oTables = this.getView().byId("managePianoTable").getItems();
-            for (var i = 0; i < oTables.length; i++) {
-                var table_operatore = oTables[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[0].getContent()[0].getItems();
-                for (var j = 0; j < table_operatore.length; j++) {
-                    if (table_operatore[j].getCells()[0].getValue() === selectBoxValue && table_operatore[j].getCells()[0] !== event.getSource()) {
-                        table_operatore[j].getCells()[0].setValue("");
-                        table_operatore[j].getCells()[0].clearSelection();
-                        check = 1;
+            if (event.getSource().getPlaceholder() === "Macchinista") {
+                var selectBoxValue = event.getSource().getValue();
+                var oTables = this.getView().byId("managePianoTable").getItems();
+                for (var i = 0; i < oTables.length; i++) {
+                    var table_operatore = oTables[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[1].getItems()[0].getContent()[0].getItems();
+                    for (var j = 0; j < table_operatore.length; j++) {
+                        if (table_operatore[j].getCells()[0].getValue() === selectBoxValue && table_operatore[j].getCells()[0] !== event.getSource()) {
+                            table_operatore[j].getCells()[0].setValue("");
+                            table_operatore[j].getCells()[0].clearSelection();
+                            check = 1;
+                            break;
+                        }
+                    }
+                    if (check === 1) {
                         break;
                     }
-                }
-                if (check === 1) {
-                    break;
                 }
             }
             var addetto_ID = event.getParameter("selectedItem").getKey();
@@ -732,7 +734,7 @@ sap.ui.define([
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[6]) {
-                numero_pezzi = (Library.standardToMinutes(oValueChanged)*60) / this.tempo_ciclo;
+                numero_pezzi = (Library.standardToMinutes(oValueChanged) * 60) / this.tempo_ciclo;
                 cartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
