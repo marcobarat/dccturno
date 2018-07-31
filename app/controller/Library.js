@@ -160,9 +160,9 @@ sap.ui.define([
             jQuery.ajax({
                 url: addressOfJSON,
                 method: "GET",
-                dataType: "xml",
+                dataType: "json",
                 async: true,
-                success: jQuery.proxy(this.WrapperSuccessFunc, this, successFunc),
+                success: successFunc,
                 error: errorFunc
             });
         },
@@ -177,18 +177,19 @@ sap.ui.define([
             jQuery.ajax({
                 url: addressOfJSON,
                 method: "GET",
-                dataType: "xml",
+                dataType: "json",
                 async: false,
-                success: jQuery.proxy(this.WrapperSuccessFunc, this, successFunc),
+                success: successFunc,
                 error: errorFunc
             });
         },
-        WrapperSuccessFunc: function (successFunc, Jdata) {
-            if (jQuery.isXMLDoc(Jdata)) {
-                Jdata = JSON.parse(Jdata.documentElement.textContent);
-            }
-            successFunc(Jdata);
-        },
+//        success: jQuery.proxy(this.WrapperSuccessFunc, this, successFunc),
+//        WrapperSuccessFunc: function (successFunc, Jdata) {
+//            if (jQuery.isXMLDoc(Jdata)) {
+//                Jdata = JSON.parse(Jdata.documentElement.textContent);
+//            }
+//            successFunc(Jdata);
+//        },
 //FUNZIONI RICORSIVE PER LA TREETABLE        
         RecursiveJSONComparison: function (std, bck, arrayName) {
             var tempJSON;
