@@ -719,21 +719,21 @@ sap.ui.define([
             grammatura = row_binded.grammatura;
             if (oCellChanged === oRow.getCells()[4]) {
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
-                cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
+                cartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
                 oRow.getCells()[5].setValue(cartoni);
-                ore = Math.round(numero_pezzi * this.tempo_ciclo);
+                ore = Math.floor(numero_pezzi * this.tempo_ciclo);
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[5]) {
                 numero_pezzi = oValueChanged * this.pezzi_cartone;
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
-                ore = Math.round(numero_pezzi * this.tempo_ciclo);
+                ore = Math.floor(numero_pezzi * this.tempo_ciclo);
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[6]) {
                 numero_pezzi = (Library.standardToMinutes(oValueChanged)*60) / this.tempo_ciclo;
-                cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
+                cartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
                 oRow.getCells()[5].setValue(cartoni);
@@ -1342,7 +1342,7 @@ sap.ui.define([
             if (Number(Jdata.error) === 0) {
                 var oModel = new JSONModel(Jdata);
                 oModel.setData(Jdata);
-                var selectBox = this.getView().byId("causale");
+                var selectBox = this.getView().byId("CausaleNonDisp");
                 var oItemSelectTemplate = new sap.ui.core.Item({
                     key: "{causaledisp>id}",
                     text: "{causaledisp>causale}"
@@ -1356,8 +1356,8 @@ sap.ui.define([
         InserisciFermoProgrammato: function () {
             var causale = this.getView().byId("causale").getSelectedKey();
             if (causale !== "") {
-                var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("Inizio").getValue() + ":00";
-                var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("Fine").getValue() + ":00";
+                var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("InizioNonDisp").getValue() + ":00";
+                var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("FineNonDisp").getValue() + ":00";
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsertND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
                 Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
             } else {
@@ -1399,7 +1399,7 @@ sap.ui.define([
             this.DestroyDialog();
         },
         SetInizioNonDisponibilita: function () {
-            var secondi_inizio = Library.fromStandardToSeconds(this.getView().byId("Inizio").getValue() + ":00");
+            var secondi_inizio = Library.fromStandardToSeconds(this.getView().byId("InizioNonDisp").getValue() + ":00");
             var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
             var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
             if (inizio === fine || secondi_inizio > 21600) {
@@ -1409,7 +1409,7 @@ sap.ui.define([
             }
         },
         SetFineNonDisponibilita: function () {
-            var secondi_fine = Library.fromStandardToSeconds(this.getView().byId("Fine").getValue() + ":00");
+            var secondi_fine = Library.fromStandardToSeconds(this.getView().byId("FineNonDisp").getValue() + ":00");
             var inizio = this.getView().getModel("fermiprogrammati").getData().inizioPdc.split("T")[0];
             var fine = this.getView().getModel("fermiprogrammati").getData().finePdc.split("T")[0];
             if (inizio === fine || secondi_fine > 21600) {

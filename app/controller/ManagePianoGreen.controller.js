@@ -845,21 +845,21 @@ sap.ui.define([
             grammatura = row_binded.grammatura;
             if (oCellChanged === oRow.getCells()[4]) {
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
-                cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
+                cartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
                 oRow.getCells()[5].setValue(cartoni);
-                ore = Math.round(numero_pezzi * this.tempo_ciclo);
+                ore = Math.floor(numero_pezzi * this.tempo_ciclo);
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[5]) {
                 numero_pezzi = oValueChanged * this.pezzi_cartone;
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
-                ore = Math.round(numero_pezzi * this.tempo_ciclo);
+                ore = Math.floor(numero_pezzi * this.tempo_ciclo);
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[6]) {
                 numero_pezzi = (Library.standardToMinutes(oValueChanged) * 60) / this.tempo_ciclo;
-                cartoni = Math.round(numero_pezzi / this.pezzi_cartone);
+                cartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
                 oRow.getCells()[5].setValue(cartoni);
@@ -1726,6 +1726,7 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
             var tempo_totale = Jdata.Totale.tempoGuastoTotale;
+            this.getView().byId("ConfermaFermi").setEnabled(false);
             var oTable = this.getView().byId("TotaleTable");
             if (tempo_totale === "00:00:00") {
                 oTable.getItems()[0].getCells()[3].setVisible(false);
@@ -1792,8 +1793,8 @@ sap.ui.define([
         InserisciFermoProgrammato: function () {
             var causale = this.getView().byId("CausaleNonDisp").getSelectedKey();
             if (causale !== "") {
-                var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("Inizio").getValue() + ":00";
-                var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("Fine").getValue() + ":00";
+                var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("InizioNonDisp").getValue() + ":00";
+                var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("FineNonDisp").getValue() + ":00";
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsertND_LogND&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&CausaleID=" + causale + "&datefrom=" + data_inizio + "&dateto=" + data_fine + "&OutputParameter=JSON";
                 Library.AjaxCallerData(link, this.SUCCESSInserisciFermoProgrammato.bind(this));
             } else {
