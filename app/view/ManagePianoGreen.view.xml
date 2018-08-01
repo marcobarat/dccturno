@@ -83,7 +83,7 @@
                                                                                     <items>
                                                                                         <ColumnListItem class="noDelimitator paddingOperatori">
                                                                                             <cells>
-                                                                                                <ComboBox width="95%"  value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{= ${linea>nome} === '---' ? ${linea>sezione}: ''}" loadItems="LoadOperatori" selectionChange="CheckOperatore"/>
+                                                                                                <ComboBox width="95%"  value="{= ${linea>nome} === '---' ? '' : ${linea>cognome} + ' ' + ${linea>nome} }" placeholder="{linea>sezione}" loadItems="LoadOperatori" selectionChange="CheckOperatore"/>
                                                                                             </cells>
                                                                                         </ColumnListItem>
                                                                                     </items>
