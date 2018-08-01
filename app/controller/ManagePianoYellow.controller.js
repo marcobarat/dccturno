@@ -1365,7 +1365,7 @@ sap.ui.define([
             }
         },
         InserisciFermoProgrammato: function () {
-            var causale = this.getView().byId("causale").getSelectedKey();
+            var causale = this.getView().byId("CausaleNonDisp").getSelectedKey();
             if (causale !== "") {
                 var data_inizio = this.SetInizioNonDisponibilita() + "T" + this.getView().byId("InizioNonDisp").getValue() + ":00";
                 var data_fine = this.SetFineNonDisponibilita() + "T" + this.getView().byId("FineNonDisp").getValue() + ":00";
