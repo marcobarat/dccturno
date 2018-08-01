@@ -111,9 +111,9 @@
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>qliresidui}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>lineep}"/>
+                                                            text="{turni>lineed}"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>turni}"/>
+                                                            text="{turni>ore}"/>
                                                     </cells>
                                                 </ColumnListItem>
                                             </items>
@@ -159,9 +159,9 @@
                                                     <comp:StyleTextTableAttr
                                                         text="{turni>qliresidui}" class="decimalPositioning"/>
                                                     <comp:StyleTextTableAttr
-                                                        text="{turni>lineep}"/>
+                                                        text="{turni>lineed}"/>
                                                     <comp:StyleTextTableAttr
-                                                        text="{turni>turni}"/>
+                                                        text="{turni>ore}"/>
 
                                                 </cells>
                                             </ColumnListItem>
@@ -212,9 +212,9 @@
                                                         <comp:StyleTextTableAttr
                                                             text="{turni>qliresidui}" class="decimalPositioning"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>lineep}"/>
+                                                            text="{turni>lineed}"/>
                                                         <comp:StyleTextTableAttr
-                                                            text="{turni>turni}"/>
+                                                            text="{turni>ore}"/>
                                                     </cells>
                                                 </ColumnListItem>
                                             </items>
@@ -254,8 +254,8 @@
                                                     <comp:StyleTextTableAttr text="{turni>turno}"/>
                                                     <comp:StyleTextTableAttr text="{turni>qliconf}"/>
                                                     <comp:StyleTextTableAttr text="{turni>qliresidui}"/>
-                                                    <comp:StyleTextTableAttr text="{turni>lineep}"/>
-                                                    <comp:StyleTextTableAttr text="{turni>turni}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>lineed}"/>
+                                                    <comp:StyleTextTableAttr text="{turni>ore}"/>
                                                 </cells>
                                             </ColumnListItem>
                                         </items>

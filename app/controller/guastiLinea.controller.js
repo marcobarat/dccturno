@@ -7,7 +7,7 @@ sap.ui.define([
     "use strict";
     return Controller.extend("myapp.controller.guastiLinea", {
         ISLOCAL: Number(sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL),
-        pdcID: sap.ui.getCore().getModel("ParametriPiano").getData().pdc,
+        pdcID: null,
         batchID: null,
         linea: "",
         menuJSON: {},
@@ -27,6 +27,7 @@ sap.ui.define([
             oRouter.getRoute("guastidilinea").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (oEvent) {
+            this.pdcID = sap.ui.getCore().getModel("ParametriPiano").getData().pdc;
             this.batchID = sap.ui.getCore().getModel("batchID").batchID; 
             this.pianoPath = oEvent.getParameter("arguments").pianoPath;
             this.turnoPath = oEvent.getParameter("arguments").turnoPath;

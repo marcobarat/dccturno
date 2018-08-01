@@ -317,6 +317,7 @@ sap.ui.define([
         },
         DestroyDialog: function () {
             clearInterval(this.NDTIMER);
+            this.BusyDialog.close();
             this.STOPLOG = 1;
             this.oDialog.destroy();
             this.RerenderTimePickers();
@@ -568,6 +569,14 @@ sap.ui.define([
                 row_binded.pezziCartone = Number(Jdata.pezziCartone);
                 row_binded.secondiPerPezzo = Number(Jdata.secondiPerPezzo);
             } else {
+                oRow.getCells()[4].setEnabled(false);
+                oRow.getCells()[5].setEnabled(false);
+                oRow.getCells()[6].setEnabled(false);
+                oRow.getCells()[4].setValue("");
+                oRow.getCells()[5].setValue("");
+                oRow.getCells()[6].setValue("");
+                oRow.getCells()[3].setText(Jdata.destinazione);
+                oRow.getCells()[3].setEnabled(false);
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
