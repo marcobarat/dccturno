@@ -24,7 +24,7 @@ sap.ui.define([
                                 }
                             }
                         }
-                    }, 0);
+                    }, 100);
                     if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
                         sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
                     }
