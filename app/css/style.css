@@ -476,6 +476,29 @@
 .textVBox .sapMFlexItem {
     text-align: center; 
 }
+
+.faraModelStyle {
+    width: 170%;
+    left: -200px;
+    position: absolute;
+    top: -400px;
+}
+.invisible {
+    opacity: 0; 
+}
+.fixed{
+    background-color: white; 
+    position: fixed; 
+    left: 79.15%; 
+}
+.panelRiepilogo {
+    padding: 1rem; 
+    border-left: 1px solid #003A6B;
+    border-bottom: 1px solid #003A6B;
+}
+.marginPanel {
+    margin-right: 10%; 
+}
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
