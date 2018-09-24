@@ -409,7 +409,9 @@ sap.ui.define([
             for (var i in this.dataXML) {
                 body += "<Parameter>";
                 for (var key in this.dataXML[i]) {
-                    body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
+                    if (typeof this.dataXML[i][key] !== "undefined") {
+                        body += "<" + key + ">" + String(this.dataXML[i][key]) + "</" + key + ">";
+                    }
                 }
                 body += "</Parameter>";
             }

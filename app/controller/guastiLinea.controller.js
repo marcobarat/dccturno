@@ -23,6 +23,7 @@ sap.ui.define([
         oDialog: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
+            this.ModelCausali.setSizeLimit("1000");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("guastidilinea").attachPatternMatched(this.URLChangeCheck, this);
         },

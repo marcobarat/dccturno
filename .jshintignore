@@ -3,5 +3,6 @@ alert
 setTimeout
 app/component/**7
 Plotly
+location
 setInterval
 clearInterval

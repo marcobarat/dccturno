@@ -37,6 +37,9 @@ sap.ui.define([
 
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
+            this.ModelCausali.setSizeLimit("1000");
+            this.ModelOEE.setSizeLimit("1000");
+            this.ModelGuasti.setSizeLimit("1000");
             this.getView().setModel(this.ModelReparti, "reparti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this.URLChangeCheck, this);
@@ -174,12 +177,14 @@ sap.ui.define([
             this.CheckSingoloCausa = [];
             Jdata = Library.AddTimeGaps(Jdata);
             this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setSizeLimit("1000");
             this.ModelGuastiLinea.setData(Jdata);
             for (var j in Jdata.fermi) {
                 this.CheckSingoloCausa.push(0);
                 Jdata.fermi[j].selected = false;
             }
             this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setSizeLimit("1000");
             this.ModelGuastiLinea.setData(Jdata);
             var oView = this.getView();
             oView.setModel(this.ModelGuastiLinea, "guastilinea");

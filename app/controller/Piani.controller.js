@@ -20,6 +20,8 @@ sap.ui.define([
         BusyDialog: new sap.m.BusyDialog("GlobalBusyDialog"),
 
         onInit: function () {
+            this.ModelLinea.setSizeLimit("1000");
+            this.ModelTurni.setSizeLimit("1000");
             var oModel = new JSONModel({StabilimentoID: this.StabilimentoID});
             sap.ui.getCore().setModel(oModel, "stabilimento");
             sap.ui.getCore().setModel(this.ModelTurni, "turni");

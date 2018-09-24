@@ -14,7 +14,6 @@ sap.ui.define([
 //        VARIABILI GLOBALI
         checkSingoloCausa: null,
         checkTotaleCausa: null,
-        ModelGuastiLinea: null,
         ModelCausali: new JSONModel({}),
         StabilimentoID: null,
         pdcID: null,
@@ -60,6 +59,14 @@ sap.ui.define([
         getDialog: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
+            this.ModelCausali.setSizeLimit("1000");
+            this.ModelCause.setSizeLimit("1000");
+            this.ModelMenu.setSizeLimit("1000");
+            this.ModelOperatori.setSizeLimit("1000");
+            this.ModelParametri.setSizeLimit("1000");
+            this.ModelSKU.setSizeLimit("1000");
+            this.ModelSKUstd.setSizeLimit("1000");
+            this.TTBackup.setSizeLimit("1000");
             this.getView().setModel(this.ModelReparti, "reparti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoYellow").attachPatternMatched(this.URLChangeCheck, this);
@@ -292,10 +299,13 @@ sap.ui.define([
                     }
                     this.ModelCause.setData(data);
                     this.getView().setModel(this.ModelCause, "fermiprogrammati");
-                    this.BusyDialog.close();
                     if (this.STOPLOG === 0) {
                         this.RefreshLogCounter = 0;
                     }
+                    var that = this;
+                    setTimeout(function () {
+                        that.BusyDialog.close();
+                    }, 1000);
                 }
             }
         },
@@ -319,6 +329,7 @@ sap.ui.define([
             clearInterval(this.NDTIMER);
             this.BusyDialog.close();
             this.STOPLOG = 1;
+            this.getView().setModel(new JSONModel({}), "fermiprogrammati");
             this.oDialog.destroy();
             this.RerenderTimePickers();
             this.ModelLinea.refresh();
@@ -1173,7 +1184,7 @@ sap.ui.define([
             }
         },
         RestoreDefault: function () {
-            var data = JSON.parse(JSON.stringify(this.TTBackup.getData()));
+            var data = this.TTBackup;
             this.ModelParametri.setData(data);
             this.getView().setModel(this.ModelParametri, "ModelParametri");
         },

@@ -22,6 +22,8 @@ sap.ui.define([
         repartoID: null,
         rowHTML: null,
         onInit: function () {
+            this.ModelGuasti.setSizeLimit("1000");
+            this.ModelLinea.setSizeLimit("1000");
             this.getView().byId("ComponentiOEE").setHeaderSpan([3, 1, 1]);
             this.getView().byId("ComponentiPerdita").setHeaderSpan([9, 3, 1]);
             this.getView().byId("ComponentiProduttivita").setHeaderSpan([9, 3, 1]);

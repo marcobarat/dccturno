@@ -79,6 +79,16 @@ sap.ui.define([
         TIMER: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
+            this.ModelGuasti.setSizeLimit("1000");
+            this.ModelSPCData.setSizeLimit("1000");
+            this.ModelCausali.setSizeLimit("1000");
+            this.ModelCause.setSizeLimit("1000");
+            this.ModelMenu.setSizeLimit("1000");
+            this.ModelOperatori.setSizeLimit("1000");
+            this.ModelParametri.setSizeLimit("1000");
+            this.ModelSKU.setSizeLimit("1000");
+            this.ModelSKUstd.setSizeLimit("1000");
+            this.TTBackup.setSizeLimit("1000");
             this.getView().setModel(this.ModelReparti, "reparti");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("managePianoGreen").attachPatternMatched(this.URLChangeCheck, this);
@@ -358,10 +368,13 @@ sap.ui.define([
                     }
                     this.ModelCause.setData(data);
                     this.getView().setModel(this.ModelCause, "fermiprogrammati");
-                    this.BusyDialog.close();
                     if (this.STOPLOG === 0) {
                         this.RefreshLogCounter = 0;
                     }
+                    var that = this;
+                    setTimeout(function () {
+                        that.BusyDialog.close();
+                    }, 1000);
                 }
             }
         },
@@ -1459,6 +1472,7 @@ sap.ui.define([
                 row_binded.SKUCodiceInterno = "";
                 this.RerenderTimePickers();
                 this.oDialog.destroy();
+                this.TTBackup.setData(JSON.parse(JSON.stringify(this.ModelParametri.getData())));
                 this.ModelLinea.refresh();
             } else {
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
@@ -1467,6 +1481,8 @@ sap.ui.define([
         AnnullaModifiche: function () {
             this.RerenderTimePickers();
             this.oDialog.destroy();
+            var data = JSON.parse(JSON.stringify(this.TTBackup.getData()));
+            this.ModelParametri.setData(data);
             this.ModelLinea.refresh();
         },
         RerenderTimePickers: function () {
@@ -1721,12 +1737,14 @@ sap.ui.define([
             this.CheckSingoloCausa = [];
             Jdata = Library.AddTimeGaps(Jdata);
             this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setSizeLimit("1000");
             this.ModelGuastiLinea.setData(Jdata);
             for (var j in Jdata.fermi) {
                 this.CheckSingoloCausa.push(0);
                 Jdata.fermi[j].selected = false;
             }
             this.ModelGuastiLinea = new JSONModel({});
+            this.ModelGuastiLinea.setSizeLimit("1000");
             this.ModelGuastiLinea.setData(Jdata);
             var oView = this.getView();
             oView.setModel(this.ModelGuastiLinea, "guastilinea");
@@ -2313,6 +2331,7 @@ sap.ui.define([
             clearInterval(this.NDTIMER);
             this.BusyDialog.close();
             this.STOPLOG = 1;
+            this.getView().setModel(new JSONModel({}), "fermiprogrammati");
             this.oDialog.destroy();
             this.RerenderTimePickers();
             this.oDialog = this.getView().byId("GestioneIntervalliFermo");

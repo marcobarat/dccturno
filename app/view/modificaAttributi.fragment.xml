@@ -75,7 +75,7 @@
                                     app:mydata="Parametri_TT">
                                     <wt:toolbar>
                                         <Toolbar>
-                                            <Button text="Ripristina valori" press="RestoreDefault" class="TTButton"/>
+                                            <!--<Button text="Ripristina valori" press="RestoreDefault" class="TTButton"/>-->
                                             <ToolbarSpacer/>
                                             <Button text="Collassa" press="CollapseAll" app:mydata="Parametri_TT" class="TTButton"/>
                                             <Button text="Espandi" press="ExpandAll" app:mydata="Parametri_TT" class="TTButton"/>
