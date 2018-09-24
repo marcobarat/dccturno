@@ -46,7 +46,7 @@ sap.ui.define([
         onSinotticiPage: function () {
             var link;
             if (this.ISLOCAL === 1) {
-                link = "model/linee_riepilogo.json";
+                link = "model/linee_riepilogo1.json";
             } else {
                 MessageToast.show("Non ancora disponibile", {duration: 3000});
             }
