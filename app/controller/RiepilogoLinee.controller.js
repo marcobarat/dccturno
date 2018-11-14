@@ -7,46 +7,43 @@ sap.ui.define([
     return Controller.extend("myapp.controller.RiepilogoLinee", {
         ModelLinee: new JSONModel(),
         ModelElencoLinee: new JSONModel(),
-        ModelSinotticoLinea: new JSONModel(),
+        ModelSinottico: new JSONModel(),
         STOP: null,
         ISLOCAL: sap.ui.getCore().getModel("ISLOCAL").getData().ISLOCAL,
         BusyDialog: new sap.m.BusyDialog(),
         CHECKFIRSTTIME: 0,
-//  FUNZIONI D'INIZIALIZZAZIONE        
+        StabilimentoID: 1,
+        RepartoID: 1,
+        TIMER: null,
+        SPCDialog: null,
+        SPCDialogFiller: null,
+        STOPSPC: null,
+        SPCCounter: null,
+        ModelSPCData: new JSONModel({}),
+        indexSPC: null,
+        IDSelected: null,
+//  FUNZIONI D'INIZIALIZZAZIONE      
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.getRoute("RiepilogoLinee").attachPatternMatched(this.URLChangeCheck, this);
-            this.getView().addEventDelegate({
-                onAfterShow: jQuery.proxy(function (evt) {
-                    this.BusyDialog.open();
-                    this.loadObject();
-                }, this)
-            });
-        },
-        loadObject: function () {
-            var that = this;
-            $('object')[0].contentDocument.addEventListener("DOMContentLoaded", function () {
-                if (that.CHECKFIRSTTIME === 0) {
-                    that.PositionFunction();
-                } else {
-                    that.BusyDialog.close();
-                }
-            });
         },
         URLChangeCheck: function () {
+            clearInterval(this.TIMER);
             this.STOP = 0;
             this.ModelLinee = sap.ui.getCore().getModel("linee");
             this.getView().setModel(this.ModelLinee, "linee");
-            this.LineButtonStyle();
-            this.BarColorCT(this.ModelLinee.getData());
-            this.checkCells();
-            var oButtons = this.getView().byId("buttonsPanelRiepilogo").getContent();
-            for (var i=0; i<oButtons.length; i++){
-                if (i%2 === 0){
-                    oButtons[i].addStyleClass("marginPanel");
+            this.RefreshFunction(100);
+            var that = this;
+            this.TIMER = setInterval(function () {
+                try {
+                    that.RefreshCounter++;
+                    if (that.STOP === 0 && that.RefreshCounter >= 10) {
+                        that.RefreshFunction();
+                    }
+                } catch (e) {
+                    console.log(e);
                 }
-            }
-            this.RefreshFunction(10000);
+            }, 1000);
         },
 //  FUNZIONI DI REFRESH
         RefreshFunction: function (msec) {
@@ -55,74 +52,145 @@ sap.ui.define([
         RefreshCall: function () {
             var link;
             if (this.ISLOCAL === 1) {
-                link = "model/linee_riepilogo1.json";
+                link = "model/linee_riepilogo.json";
             } else {
-
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetInfoSinottico&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
             }
             Library.SyncAjaxCallerData(link, this.RefreshModelLinee.bind(this));
         },
         RefreshModelLinee: function (Jdata) {
             if (this.STOP === 0) {
+                for (var i = 0;i < Jdata.corta.length; i++) {
+                    Jdata.corta[i].avanzamento = (Number(Jdata.corta[i].avanzamento)*100 >= 100) ? 100 : Number(Jdata.corta[i].avanzamento)*100;
+                    Jdata.corta[i].perc_avanzamento = String(Math.round(Jdata.corta[i].avanzamento * 100)/100) + "%";
+                }
                 this.ModelLinee.setData(Jdata);
                 this.ModelLinee.refresh(true);
                 this.getView().setModel(this.ModelLinee, "linee");
                 this.LineButtonStyle();
                 this.BarColorCT(this.ModelLinee.getData());
-                this.checkCells();
+                this.SPCColorCT(this.ModelLinee.getData());
+                this.CheckCells();
                 this.RefreshFunction(10000);
             }
         },
-//        -------------------------------------------------
-//        -------------------------------------------------
-//        -------------------------------------------------
-//        
-//        >>>>>>>> FUNZIONI CHIAMATE AL CLICK <<<<<<<<
-//        
-//        ************************ INTESTAZIONE ************************
-//              
-        GoToHome: function () {
-            this.STOP = 1;
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("main", true);
+        GoToSinottico: function (event) {
+            var path = event.getSource().getBindingContext("linee").getPath();
+            this.IDSelected = this.ModelLinee.getProperty(path).lineaID;
+            var link;
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllLinee&Content-Type=text/json&OutputParameter=JSON";
+            }
+            Library.SyncAjaxCallerData(link, this.SUCCESSGoToSinottico.bind(this));
+            this.getOwnerComponent().getRouter().navTo("OverviewLinea");
         },
-//        ************************ BOTTONE DI LINEA ************************        
-        GoToSinotticoLinea: function (oEvent) {
-            this.STOP = 1;
-            var oLinea = oEvent.getSource().getBindingContext("linee").sPath;
-            var lineaID = this.getView().getModel("linee").getProperty(oLinea).lineaID;
-            var oModel = new JSONModel({lineaID: lineaID});
-            sap.ui.getCore().setModel(oModel, "LineaCliccata");
-            Library.AjaxCallerData("model/elencolinee.json", this.SUCCESSElencoLinee.bind(this));
-            sap.ui.getCore().setModel(this.ModelElencoLinee, "elencolinee");
-            Library.AjaxCallerData("model/sinotticodilinea.json", this.SUCCESSLineaSinottico.bind(this));
-            sap.ui.getCore().setModel(this.ModelSinotticoLinea, "sinotticodilinea");
-            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-            oRouter.navTo("sinotticoLinea");
+        SUCCESSGoToSinottico: function (Jdata) {
+            var i, j, temp;
+            var Macchine = ["Marcatore SX", "Marcatore DX", "PackItal SX", "PackItal DX", "Scatolatrice", "Etichettatrice"];
+            for (i = 0;i < Jdata.length; i++) {
+                Jdata[i].IMG = Jdata[i].Descrizione.toLowerCase().split(" ").join("_") + ".png";
+                Jdata[i].IsSelected = (Jdata[i].LineaID === this.IDSelected) ? "1" : "0";
+                Jdata[i].Macchine = [];
+                //Jdata[i].Classes = [];
+                for (j = 0;j < Macchine.length; j++) {
+                    temp = {};
+                    temp.nome = Macchine[j];
+                    temp.stato = "Good";
+                    temp.class = Macchine[j].split(" ").join("");
+                    Jdata[i].Macchine.push(temp);
+                    //Jdata[i].Classes.push(Jdata[i].Macchine[j].split(" ").join(""));
+                }
+            }
+            this.ModelSinottico.setData(Jdata);
+            sap.ui.getCore().setModel(this.ModelSinottico, "ModelSinottico");
+            this.getView().setModel(this.ModelSinottico, "ModelSinottico");
+            this.getOwnerComponent().getRouter().navTo("OverviewLinea");
         },
-        SUCCESSElencoLinee: function (Jdata) {
-            this.ModelElencoLinee.setData(Jdata);
+        //         -> PULSANTI SPC CON REFRESH
+        SPCGraph: function (event) {
+            this.STOPSPC = 0;
+            clearInterval(this.SPCTimer);
+            this.SPCCounter = 5;
+            this.pathLinea = event.getSource().getBindingContext("linea").sPath;
+            this.indexSPC = Number(event.getSource().data("mydata"));
+            this.idBatch = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].IDbatchAttivo;
+            this.idLinea = this.ModelLinea.getProperty(this.pathLinea).lineaID;
+            this.ParametroID = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].parametroId;
+            this.DescrizioneParametro = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].descrizioneParametro;
+            this.SPCDialog = this.getView().byId("SPCWindow");
+            if (!this.SPCDialog) {
+                this.SPCDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
+                this.getView().addDependent(this.SPCDialog);
+            }
+            this.SPCDialog.open();
+            this.SPCDataCaller();
+            var that = this;
+            this.SPCTimer = setInterval(function () {
+                try {
+                    that.SPCCounter++;
+                    if (that.STOPSPC === 0 && that.SPCCounter >= 5) {
+                        that.SPCRefresh();
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }, 1000);
         },
-        SUCCESSLineaSinottico: function (Jdata) {
-            this.ModelSinotticoLinea.setData(Jdata);
+        SUCCESSSPCDataLoad: function (Jdata) {
+            var isEmpty;
+            this.Allarme = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
+            this.Fase = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
+            if (Jdata.valori === "") {
+                isEmpty = 1;
+            } else {
+                isEmpty = 0;
+                Jdata = this.ParseSPCData(Jdata, "#");
+                if (this.Fase === "1") {
+                    Jdata = this.Phase1(Jdata);
+                }
+                this.ModelSPCData.setProperty("/", Jdata);
+            }
+            this.SPCDialogFiller(isEmpty);
+            if (this.STOPSPC === 0) {
+                this.SPCCounter = 0;
+            }
         },
-//        -------------------------------------------------
-//        -------------------------------------------------
-//        -------------------------------------------------
-//        
-//        >>>>>>>> GESTIONE STILE <<<<<<<<
-//  
-//        ************************ GESTIONE STILE PULSANTE DI LINEA ************************    
+        SPCRefresh: function (msec) {
+            this.SPCCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.SPCDataCaller.bind(this), msec);
+        },
+        SPCDataCaller: function () {
+            if (this.SPCDialog) {
+                if (this.SPCDialog.isOpen()) {
+                    var link;
+                    if (this.ISLOCAL === 1) {
+                        link = "model/JSON_SPCData.json";
+                    } else {
+                        if (typeof this.ParametroID !== "undefined") {
+                            link = "/XMII/Runner?Transaction=DeCecco/Transactions/SPCDataPlot&Content-Type=text/json&OutputParameter=JSON&LineaID=" + this.idLinea + "&ParametroID=" + this.ParametroID;
+                        }
+                    }
+                    Library.SyncAjaxCallerData(link, this.SUCCESSSPCDataLoad.bind(this));
+                }
+            }
+        },
+
+        //        ************************ GESTIONE STILE PULSANTE DI LINEA ************************    
         LineButtonStyle: function () {
             var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
-            var data = this.ModelLinee.getData();
+            var data = this.ModelLinee.getData().corta;
             var button;
             var state;
-            for (var i = 0; i < data.linee.length; i++) {
+            for (var i = 0; i < data.length; i++) {
                 button = this.getView().byId("linee").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0];
                 for (var k = 0; k < classes.length; k++) {
                     button.removeStyleClass(classes[k]);
                 }
-                state = data.linee[i].statolinea.split(".");
+                state = data[i].statoLinea.split(".");
                 switch (state[0]) {
                     case "Disponibile":
                         button.addStyleClass("LineaDispo");
@@ -153,15 +221,15 @@ sap.ui.define([
 //        ************************ GESTIONE STILE PROGRESS INDICATOR ************************     
         BarColorCT: function (data) {
             var progressBar;
-            if (data.linee.length > 0) {
-                for (var i = 0; i < data.linee.length; i++) {
-                    if (Number(data.linee[i].avanzamento) >= 100) {
-                        data.linee[i].avanzamento = 100;
+            if (data.corta.length > 0) {
+                for (var i = 0; i < data.corta.length; i++) {
+                    if (Number(data.corta[i].avanzamento) >= 100) {
+                        data.corta[i].avanzamento = 100;
                     } else {
-                        data.linee[i].avanzamento = Number(data.linee[i].avanzamento);
+                        data.corta[i].avanzamento = Number(data.corta[i].avanzamento);
                     }
                     progressBar = this.getView().byId("linee").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0];
-                    switch (data.linee[i].barColor) {
+                    switch (data.corta[i].barColor) {
                         case "yellow":
                             progressBar.setState("Warning");
                             break;
@@ -172,55 +240,77 @@ sap.ui.define([
                             progressBar.setState("Error");
                             break;
                     }
-                    if (data.linee[i].statolinea === "Disponibile.Fermo") {
+                    if (data.corta[i].statolinea === "Disponibile.Fermo") {
                         progressBar.setState("None");
                     }
                 }
             }
             return data;
         },
-        checkCells: function(){
-          var oItems = this.getView().byId("linee").getItems();
-          for (var i=0; i<oItems.length; i++){
-              var cellText = oItems[i].getCells()[0].getItems()[1].getItems()[3];
-              var cellBugged = oItems[i].getCells()[0].getItems()[1].getItems()[2];
-              if (cellBugged.getHeight() !== cellText.getHeight()){
-                  cellBugged.setHeight(cellText.getHeight());
-              }
-          }
-        },
-// ***********************GESTIONE DELLA POSIZIONE DELLE LINEE************************************
-        PositionFunction: function () {
-            var items = this.getView().byId("linee").getItems();
-            for (var i = 0; i < items.length; i++) {
-                var item_binded = this.getView().getModel("linee").getProperty(items[i].getBindingContext("linee").sPath);
-                var id = item_binded.lineaID;
-                var coordinates = $('object')[0].contentDocument.getElementById(id).getBoundingClientRect();
-                var elem_coordinates = $('tr')[i + 1].getBoundingClientRect();
-                var offsetTop = $('object')[0].offsetTop;
-                var offsetLeft = $('object')[0].offsetLeft;
-                $('tr')[i + 1].style.transform = 'translate(' + (coordinates.left - elem_coordinates.left + offsetLeft - 28) + 'px,' + (coordinates.top + offsetTop - elem_coordinates.top - elem_coordinates.height / 2) + 'px)';
-                // il numero 28 sta effettivamente per il padding opaco di ogni elemento della tabella, ossia 1 rem + 0.75 rem -> 28px 
+        //      GESTIONE STILE SPC
+        SPCColorCT: function (data) {
+            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent", "SPCButtonEmpty"];
+            var SPCButton;
+            if (data.corta.length > 0) {
+                for (var i = 0; i < data.corta.length; i++) {
+                    for (var j = 0; j < data.corta[i].SPC.length; j++) {
+                        SPCButton = this.getView().byId("linee").getItems()[0].getCells()[0].getItems()[0].getItems()[j+2].getItems()[0];
+                        for (var k = 0; k < CSS_classesButton.length; k++) {
+                            SPCButton.removeStyleClass(CSS_classesButton[k]);
+                        }
+                        var discr = "";
+                        if (data.corta[i].statoLinea === "Disponibile.Lavorazione") {
+                            if (data.corta[i].SPC[j].fase === "1") {
+                                discr = "1";
+                            } else if (data.corta[i].SPC[j].fase === "2") {
+                                discr = "2";
+                            }
+                        }
+                        switch (discr) {
+                            case "1":
+                                SPCButton.setEnabled(true);
+                                if (SPCButton.getIcon() !== "img/triangolo_buco.png") {
+                                    SPCButton.setIcon("img/triangolo_buco.png");
+                                }
+                                SPCButton.setText(data.corta[i].SPC[j].numeroCampionamenti);
+                                SPCButton.addStyleClass("SPCButtonPhase1");
+                                SPCButton.addStyleClass("SPCButtonColorYellow");
+                                break;
+                            case "2":
+                                SPCButton.setEnabled(true);
+                                SPCButton.setIcon("");
+                                SPCButton.setText("");
+                                if (data.corta[i].SPC[j].allarme === "0") {
+                                    SPCButton.addStyleClass("SPCButtonColorGreen");
+                                } else if (data.corta[i].SPC[j].allarme === "1") {
+                                    SPCButton.addStyleClass("SPCButtonColorYellow");
+                                }
+                                break;
+                            default:
+                                SPCButton.setText("");
+                                SPCButton.addStyleClass("SPCButtonEmpty");
+                                SPCButton.setIcon("");
+                                SPCButton.setEnabled(false);
+                                break;
+                        }
+                    }
+                }
             }
-            this.getView().byId("linee").removeStyleClass("invisible");
-            this.BusyDialog.close();
-            this.CHECKFIRSTTIME = 1;
         },
-// *********************** FUNZIONE PER RINTRACCIARE LA LINEA DESIDERATA **********************
-        FocusOnElement: function (event) {
-            var oButtonLinea = event.getSource().getText();
-            var buttons = $("span:contains(" + oButtonLinea + ")");
-            var topPos = buttons[0].getBoundingClientRect().y;
-            var topViewPos = this.getView().byId("RiepilogoLineePage")._oScroller.getScrollTop();
-            this.getView().byId("RiepilogoLineePage").scrollTo(topPos + topViewPos - 200);
-            $("span:contains(" + oButtonLinea + ")")[0].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.backgroundColor = '#FFD300';
-            $("span:contains(" + oButtonLinea + ")")[0].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.transition = 'background-color 1s';
-            setTimeout(function () {
-                $("span:contains("+ oButtonLinea +")")[0].parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
-            }, 1000);
+        CheckCells: function () {
+            var oItems = this.getView().byId("linee").getItems();
+            for (var i = 0; i < oItems.length; i++) {
+                var cellText = oItems[i].getCells()[0].getItems()[1].getItems()[3];
+                var cellBugged = oItems[i].getCells()[0].getItems()[1].getItems()[2];
+                if (cellBugged.getHeight() !== cellText.getHeight()) {
+                    cellBugged.setHeight(cellText.getHeight());
+                }
+            }
+        },
+        BackToMain: function () {
+            clearInterval(this.TIMER);
+            this.STOP = 1;
+            this.getOwnerComponent().getRouter().navTo("Main");
         }
-
     });
 });
-
-

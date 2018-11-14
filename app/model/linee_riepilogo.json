@@ -1,9 +1,9 @@
 {
     "linee": {
-        "PastaLunga": [
+        "Corta": [
             {
-                "lineaID": 6,
-                "linea": "Gruppo 6",
+                "lineaID": 16,
+                "linea": "Coppia 6",
                 "statolinea": "Disponibile.Lavorazione",
                 "avanzamento": "55",
                 "barColor": "green",
@@ -16,8 +16,8 @@
                 "statoSPC": "1"
             },
             {
-                "lineaID": 5,
-                "linea": "Gruppo 5",
+                "lineaID": 1,
+                "linea": "Coppia 5",
                 "statolinea": "Disponibile.Fermo",
                 "avanzamento": "99",
                 "barColor": "green",
@@ -31,7 +31,7 @@
             },
             {
                 "lineaID": 4,
-                "linea": "Gruppo 4",
+                "linea": "Coppia 4",
                 "statolinea": "Nondisponibile",
                 "avanzamento": "0",
                 "barColor": "",
@@ -45,7 +45,7 @@
             },
             {
                 "lineaID": 3,
-                "linea": "Gruppo 3",
+                "linea": "Coppia 3",
                 "statolinea": "Disponibile.Attrezzaggio",
                 "avanzamento": "0",
                 "barColor": "",
@@ -59,7 +59,7 @@
             },
             {
                 "lineaID": 2,
-                "linea": "Gruppo 2",
+                "linea": "Coppia 2",
                 "statolinea": "Disponibile.Lavorazione",
                 "avanzamento": "78",
                 "barColor": "yellow",
@@ -70,9 +70,9 @@
                 "batchLavorazione": "093 Farfalle 500gr.***",
                 "oreRimanenti": "03:15",
                 "statoSPC": "1"
-            } 
+            }
         ],
-        "PastaCorta": [
+        "Lunga": [
             {
                 "lineaID": 11,
                 "linea": "Linea 11",

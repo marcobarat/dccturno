@@ -13,7 +13,12 @@ sap.ui.define([
         ISLOCAL: null,
         ModelLinee: new JSONModel({}),
         ModelTiles: new JSONModel({}),
+        StabilimentoID: 1,
+        RepartoID: 1,
+        
         onInit: function () {
+
+
             this.ISLOCALModel.setSizeLimit("1000");
             this.ModelReparti.setSizeLimit("1000");
             this.ModelLinee.setSizeLimit("1000");
@@ -21,7 +26,9 @@ sap.ui.define([
             this.ISLOCAL = Number(jQuery.sap.getUriParameters().get("ISLOCAL"));
             this.ISLOCALModel.setData({"ISLOCAL": this.ISLOCAL});
             sap.ui.getCore().setModel(this.ISLOCALModel, "ISLOCAL");
-            Library.SyncAjaxCallerData("/XMII/Runner?Transaction=DeCecco/Transactions/GetAllReparti&Content-Type=text/json&OutputParameter=JSON", this.DoNothing.bind(this), this.RefreshPage.bind(this));
+            if (this.ISLOCAL !== 1) {
+                Library.SyncAjaxCallerData("/XMII/Runner?Transaction=DeCecco/Transactions/GetAllReparti&Content-Type=text/json&OutputParameter=JSON", this.DoNothing.bind(this), this.RefreshPage.bind(this));
+            }
         },
         onToPianiPage: function () {
             var link;
@@ -48,7 +55,8 @@ sap.ui.define([
             if (this.ISLOCAL === 1) {
                 link = "model/linee_riepilogo1.json";
             } else {
-                MessageToast.show("Non ancora disponibile", {duration: 3000});
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetInfoSinottico&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+//                MessageToast.show("Non ancora disponibile", {duration: 3000});
             }
             Library.AjaxCallerData(link, this.SUCCESSModelLinee.bind(this));
             sap.ui.getCore().setModel(this.ModelLinee, "linee");

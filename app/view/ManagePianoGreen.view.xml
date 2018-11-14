@@ -88,7 +88,8 @@
                                                                                         </ColumnListItem>
                                                                                     </items>
                                                                                 </Table>    
-                                                                            </ScrollContainer> 
+                                                                                <Button id="msgButton" width="80%" icon="sap-icon://message-popup" class="messageButton" text="Log di Sistema e Messaggi" press="ShowMessaggi"/>
+                                                                            </ScrollContainer>
                                                                         </VBox>
                                                                     </VBox>
                                                                 </VBox>

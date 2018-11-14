@@ -121,6 +121,7 @@ sap.ui.define([
             var std = Jdata.SKUstandard;
             bck = Library.RecursiveJSONComparison(std, bck, "attributi");
             bck = Library.RecursiveParentExpansion(bck);
+            bck = Library.RecursiveSelectReordering(bck);
             this.ModelSKU.setData(bck);
             this.getView().setModel(this.ModelSKU, "SKU");
             setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
@@ -396,6 +397,7 @@ sap.ui.define([
 
 //         -> PULSANTE AGGIUNTA BATCH
         AddBatch: function (event) {
+            this.linea_id = Library.GetLineaID(event.getSource().getBindingContext("linea").sPath, this.getView().getModel("linea"));
             var path = event.getSource().getBindingContext("linea").sPath.split("/");
             var index = Number(path[path.indexOf("linee") + 1]);
             var AddButton = this.getView().byId("managePianoTable").getItems()[index].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
@@ -451,6 +453,9 @@ sap.ui.define([
         },
 //              - DROPDOWN FORMATI
         CaricaFormati: function (event) {
+            if (event.getSource().getBindingContext("linea")) {
+                this.linea_id = Library.GetLineaID(event.getSource().getBindingContext("linea").sPath, this.getView().getModel("linea"));
+            }
             var link;
             var that = this;
             var SelectBox = event.getSource();
@@ -495,6 +500,9 @@ sap.ui.define([
         },
 //              - DROPDOWN CONFEZIONI
         CaricaConfezionamenti: function (event) {
+            if (event.getSource().getBindingContext("linea")) {
+                this.linea_id = Library.GetLineaID(event.getSource().getBindingContext("linea").sPath, this.getView().getModel("linea"));
+            }
             var link, formato;
             var that = this;
             var SelectBox = event.getSource();
@@ -640,6 +648,9 @@ sap.ui.define([
                 obj.pianodiconfezionamento = "";
                 obj.lineaId = "";
                 obj.batchId = "";
+                if (row_binded.batchID) {
+                    obj.batchId = row_binded.batchID;
+                }
                 obj.sequenza = "";
                 obj.quintali = "";
                 obj.cartoni = "";
@@ -1072,6 +1083,15 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
+        AlternativeSelectionChange: function (event) {
+            var selectObj = event.getSource();
+            var path = selectObj.getBindingContext("SKU").sPath;
+            var itemList = this.ModelSKU.getProperty(path).value;
+            var ID = selectObj.getSelectedKey();
+            for (var i = 0;i < itemList.length; i++) {
+                itemList[i].isSelected = (itemList[i].ID === ID) ? "1" : "0";
+            }
+        },
         ConfermaModifiche: function () {
             var rowPath = this.row.getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
@@ -1079,9 +1099,10 @@ sap.ui.define([
             if (row_binded.batchID) {
                 idBatch = row_binded.batchID;
             }
+            var xmlSelections = Library.XMLSelectionsBuilder(this.ModelSKU, idBatch);
             var xmlInsert = this.BuildXMLForInsertBatch();
             var xmlModify = Library.XMLSetupUpdatesCT(this.ModelParametri.getData(), idBatch);
-            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsert_Change&Content-Type=text/json&xmlinsert=" + xmlInsert + "&xmlchange=" + xmlModify + "&OutputParameter=JSON";
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsert_Change&Content-Type=text/json&xmlinsert=" + xmlInsert + "&xmlchange=" + xmlModify + "&xmlalternative=" + xmlSelections + "&OutputParameter=JSON";
             Library.SyncAjaxCallerData(link, this.SUCCESSConfermaModifiche.bind(this));
         },
         SUCCESSConfermaModifiche: function (Jdata) {
@@ -1189,7 +1210,7 @@ sap.ui.define([
             this.getView().setModel(this.ModelParametri, "ModelParametri");
         },
         TreeTableRowClickExpander: function (event) {
-            var txt, model;
+            var txt, model, isArray;
             if (event.getSource().getId().indexOf("SKU_TT") > -1) {
                 model = this.ModelSKU;
             } else {
@@ -1209,7 +1230,8 @@ sap.ui.define([
                     break;
                 case "1":
                     txt = model.getProperty(path).value;
-                    if (txt !== "") {
+                    isArray = model.getProperty(path).isArray;
+                    if (txt !== "" && isArray === 0) {
                         MessageToast.show(txt, {duration: 10000});
                     }
                     break;

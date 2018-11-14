@@ -1,0 +1,112 @@
+<?xml version="1.0" standalone="no"?>
+<svg viewBox="0 0 1024 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" stroke-linecap="round" stroke-linejoin="round" fill-rule="evenodd" xml:space="preserve" >
+<defs >
+<clipPath id="clipId0" >
+<path d="M0,768 1024,768 1024,0 0,0 z" />
+</clipPath>
+<font id="ROMANT.SHX" >
+<font-face font-family="ROMANT.SHX.shx" />
+<glyph unicode="M" d="M4,0 4,21 12,0 20,21 20,0 " horiz-adv-x="24" vert-adv-y="34" />
+<glyph unicode="a" d="M15,11 13,13 11,14 8,14 6,13 4,11 3,8 3,6 4,3 6,1 8,0 11,0 13,1 15,3 M15,14 15,0 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="g" d="M6,-6 8,-7 11,-7 13,-6 14,-5 15,-2 15,14 M15,11 13,13 11,14 8,14 6,13 4,11 3,8 3,6 4,3 6,1 8,0 11,0 13,1 15,3 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="z" d="M3,14 14,14 3,0 14,0 " horiz-adv-x="17" vert-adv-y="34" />
+<glyph unicode="i" d="M4,22 5,21 4,20 3,21 4,22 M4,14 4,0 " horiz-adv-x="8" vert-adv-y="34" />
+<glyph unicode="n" d="M4,14 4,0 M4,10 7,13 9,14 12,14 14,13 15,10 15,0 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="o" d="M4,3 3,6 3,8 4,11 6,13 8,14 11,14 13,13 15,11 16,8 16,6 15,3 13,1 11,0 8,0 6,1 4,3 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="C" d="M18,5 17,3 15,1 13,0 9,0 7,1 5,3 4,5 3,8 3,13 4,16 5,18 7,20 9,21 13,21 15,20 17,18 18,16 " horiz-adv-x="21" vert-adv-y="34" />
+<glyph unicode="." d="M5,0 6,1 5,2 4,1 5,0 " horiz-adv-x="10" vert-adv-y="34" />
+<glyph unicode="P" d="M4,0 4,21 13,21 16,20 17,19 18,17 18,14 17,12 16,11 13,10 4,10 " horiz-adv-x="21" vert-adv-y="34" />
+<glyph unicode="D" d="M4,0 4,21 11,21 14,20 16,18 17,16 18,13 18,8 17,5 16,3 14,1 11,0 4,0 " horiz-adv-x="21" vert-adv-y="34" />
+<glyph unicode="B" d="M4,0 4,21 13,21 16,20 17,19 18,17 18,15 17,13 16,12 13,11 4,11 13,11 16,10 17,9 18,7 18,4 17,2 16,1 13,0 4,0 " horiz-adv-x="21" vert-adv-y="34" />
+<glyph unicode="O" d="M9,0 7,1 5,3 4,5 3,8 3,13 4,16 5,18 7,20 9,21 13,21 15,20 17,18 18,16 19,13 19,8 18,5 17,3 15,1 13,0 9,0 " horiz-adv-x="22" vert-adv-y="34" />
+<glyph unicode="N" d="M4,0 4,21 18,0 18,21 " horiz-adv-x="22" vert-adv-y="34" />
+<glyph unicode="F" d="M4,0 4,21 17,21 M4,11 12,11 " horiz-adv-x="18" vert-adv-y="34" />
+<glyph unicode="I" d="M4,21 4,0 " horiz-adv-x="8" vert-adv-y="34" />
+<glyph unicode="G" d="M18,16 17,18 15,20 13,21 9,21 7,20 5,18 4,16 3,13 3,8 4,5 5,3 7,1 9,0 13,0 15,1 17,3 18,5 18,8 13,8 " horiz-adv-x="21" vert-adv-y="34" />
+<glyph unicode="L" d="M4,21 4,0 16,0 " horiz-adv-x="17" vert-adv-y="34" />
+<glyph unicode="S" d="M3,3 5,1 8,0 12,0 15,1 17,3 17,6 16,8 15,9 13,10 7,12 5,13 4,14 3,16 3,18 5,20 8,21 12,21 15,20 17,18 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="V" d="M1,21 9,0 17,21 " horiz-adv-x="18" vert-adv-y="34" />
+<glyph unicode="R" d="M4,0 4,21 13,21 16,20 17,19 18,17 18,15 17,13 16,12 13,11 4,11 M11,11 18,0 " horiz-adv-x="21" vert-adv-y="34" />
+<glyph unicode=" " horiz-adv-x="21" vert-adv-y="30" />
+<glyph unicode="1" d="M6,17 8,18 11,21 11,0 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="5" d="M3,4 4,2 5,1 8,0 11,0 14,1 16,3 17,6 17,8 16,11 14,13 11,14 8,14 5,13 4,12 5,21 15,21 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="0" d="M11,0 14,1 16,4 17,9 17,12 16,17 14,20 11,21 9,21 6,20 4,17 3,12 3,9 4,4 6,1 9,0 11,0 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="U" d="M4,21 4,6 5,3 7,1 10,0 12,0 15,1 17,3 18,6 18,21 " horiz-adv-x="22" vert-adv-y="34" />
+<glyph unicode="A" d="M1,0 9,21 17,0 M4,7 14,7 " horiz-adv-x="18" vert-adv-y="34" />
+<glyph unicode="r" d="M4,14 4,0 M4,8 5,11 7,13 9,14 12,14 " horiz-adv-x="13" vert-adv-y="34" />
+<glyph unicode="u" d="M4,14 4,4 5,1 7,0 10,0 12,1 15,4 M15,14 15,0 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="p" d="M4,14 4,-7 M4,11 6,13 8,14 11,14 13,13 15,11 16,8 16,6 15,3 13,1 11,0 8,0 6,1 4,3 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="9" d="M4,3 5,1 8,0 10,0 13,1 15,4 16,9 16,14 15,18 13,20 10,21 9,21 6,20 4,18 3,15 3,14 4,11 6,9 9,8 10,8 13,9 15,11 16,14 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="2" d="M4,16 4,17 5,19 6,20 8,21 12,21 14,20 15,19 16,17 16,15 15,13 13,10 3,0 17,0 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="3" d="M5,21 16,21 10,13 13,13 15,12 16,11 17,8 17,6 16,3 14,1 11,0 8,0 5,1 4,2 3,4 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="4" d="M13,0 13,21 3,7 18,7 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="8" d="M8,0 12,0 15,1 16,2 17,4 17,7 16,9 14,11 11,12 7,13 5,14 4,16 4,18 5,20 8,21 12,21 15,20 16,18 16,16 15,14 13,13 9,12 6,11 4,9 3,7 3,4 4,2 5,1 8,0 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="+" d="M13,18 13,0 M4,9 22,9 " horiz-adv-x="26" vert-adv-y="34" />
+<glyph unicode="f" d="M5,0 5,17 6,20 8,21 10,21 M2,14 9,14 " horiz-adv-x="12" vert-adv-y="34" />
+<glyph unicode="s" d="M3,3 4,1 7,0 10,0 13,1 14,3 14,4 13,6 11,7 6,8 4,9 3,11 4,13 7,14 10,14 13,13 14,11 " horiz-adv-x="17" vert-adv-y="34" />
+<glyph unicode="-" d="M4,9 22,9 " horiz-adv-x="26" vert-adv-y="34" />
+<glyph unicode="6" d="M16,18 15,20 12,21 10,21 7,20 5,17 4,12 4,7 5,3 7,1 10,0 11,0 14,1 16,3 17,6 17,7 16,10 14,12 11,13 10,13 7,12 5,10 4,7 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="E" d="M17,0 4,0 4,21 17,21 M4,11 12,11 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="7" d="M7,0 17,21 3,21 " horiz-adv-x="20" vert-adv-y="34" />
+<glyph unicode="b" d="M4,21 4,0 M4,11 6,13 8,14 11,14 13,13 15,11 16,8 16,6 15,3 13,1 11,0 8,0 6,1 4,3 " horiz-adv-x="19" vert-adv-y="34" />
+<glyph unicode="T" d="M1,21 15,21 M8,21 8,0 " horiz-adv-x="16" vert-adv-y="34" />
+</font>
+</defs>
+<g clip-path="url(#clipId0)" fill="none" stroke="rgb(127,159,255)" stroke-width="0.05" >
+<text transform="matrix(1.08265 0 -0 1.08265 131.365 474.628)" font-size="1.28571" style="font-family: ROMANT.SHX" >Coppia 5</text>
+</g>
+<g clip-path="url(#clipId0)" fill="none" stroke="rgb(127,159,255)" stroke-width="0.25" >
+<polyline points="140.396,492.778 137.731,492.895 " />
+<polyline points="140.267,489.842 137.602,489.959 " />
+<polyline points="140.199,483.897 137.531,483.919 " />
+<polyline points="137.508,480.98 140.175,480.958 " />
+<polyline points="147.147,488.226 132.918,488.226 " />
+<polyline points="147.806,479.063 134.276,479.32 " />
+<polyline points="147.917,484.901 134.386,485.158 " />
+<polyline points="147.147,494.103 132.918,494.103 " />
+<polyline points="137.731,492.895 134.704,494.492 " />
+<polyline points="137.602,489.959 137.731,492.895 " />
+<polyline points="134.45,488.698 134.704,494.492 " />
+<polyline points="137.602,489.959 134.45,488.698 " />
+<polyline points="134.403,479.575 134.45,485.374 " />
+<polyline points="137.508,480.98 137.531,483.919 " />
+<polyline points="137.531,483.919 134.45,485.374 " />
+<polyline points="137.508,480.98 134.403,479.575 " />
+<polyline points="132.918,494.103 132.918,488.226 " />
+<polyline points="134.276,479.32 134.386,485.158 " />
+<polyline points="140.267,489.842 140.396,492.778 " />
+<polyline points="140.175,480.958 140.199,483.897 " />
+<polyline points="147.147,494.103 147.147,488.226 " />
+<polyline points="147.806,479.063 147.917,484.901 " />
+<polyline points="139.731,454.768 137.066,454.891 " />
+<polyline points="139.868,457.703 137.202,457.827 " />
+<polyline points="136.44,464.409 139.101,464.228 " />
+<polyline points="147.795,452.848 134.262,452.848 " />
+<polyline points="147.795,458.687 134.262,458.687 " />
+<polyline points="147.657,462.209 134.128,462.527 " />
+<polyline points="136.639,467.341 139.301,467.16 " />
+<polyline points="147.795,468.044 134.266,468.362 " />
+<polyline points="137.066,454.891 137.202,457.827 " />
+<polyline points="133.91,453.602 137.066,454.891 " />
+<polyline points="134.262,458.687 134.262,452.848 " />
+<polyline points="133.91,453.602 134.179,459.402 " />
+<polyline points="134.179,459.402 137.202,457.827 " />
+<polyline points="136.44,464.409 133.264,463.222 " />
+<polyline points="136.639,467.341 133.65,468.978 " />
+<polyline points="133.256,463.191 133.65,468.978 " />
+<polyline points="134.128,462.527 134.266,468.362 " />
+<polyline points="136.44,464.409 136.639,467.341 " />
+<polyline points="147.795,458.687 147.795,452.848 " />
+<polyline points="139.731,454.768 139.868,457.703 " />
+<polyline points="147.657,462.209 147.795,468.044 " />
+<polyline points="139.101,464.228 139.301,467.16 " />
+<polyline points="147.408,434.443 133.488,434.443 " />
+<polyline points="147.408,428.721 133.488,428.721 " />
+<polyline points="136.35,430.345 139.018,430.345 " />
+<polyline points="136.35,433.283 139.018,433.283 " />
+<polyline points="136.35,445.366 139.018,445.366 " />
+<polyline points="136.35,448.305 139.018,448.305 " />
+<polyline points="147.795,443.916 134.262,443.916 " />
+<polyline points="147.795,449.755 134.262,449.755 " />
+</g>
+</svg>

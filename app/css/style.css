@@ -172,6 +172,29 @@
 
 /*PIANO ATTUALE*/
 
+.messageButton .sapMBtnInner {
+    background: white;
+    color: #003A6B;
+    border-radius: 10px;
+    border-color: #003A6B;
+    width: 117%;
+    left: 0.5rem;
+}
+.messageButton .sapMBtnIcon {
+    color: #003A6B;
+}
+.newMessageButton .sapMBtnInner {
+    background: #FFD300;
+    color: #003A6B;
+    border-radius: 10px;
+    border-color: #003A6B;
+    width: 117%;
+    left: 0.5rem;
+}
+.newMessageButton .sapMBtnIcon {
+    color: #003A6B;
+}
+
 .headerTabella .sapMListTbl th {
     border: 0px;
     bottom: 0.1rem;
@@ -517,6 +540,25 @@
     font-size: 30pt;
     color : #003A6B;
 }
+.shiftDown {
+    margin: 1.5rem;
+}
+.textCT {
+    color: #A71930;
+}
+.textOP {
+    color: #003A6B;
+}
+.textSelect .sapMSltLabel{
+    font-size: 0.875rem;
+    color : black;
+    font-family: Arial;
+}
+.sapMSelectListItemBase{
+    font-size: 0.875rem !important;
+    color : black;
+    font-family: Arial;
+}
 .TextTitlePosition {
     top: 4rem; 
 }
@@ -759,6 +801,12 @@
 .BatchSchedulato .sapMBtnIcon {
     color: #003A6B;
 }
+.BatchError .sapMInputBaseInner {
+    background-color: rgba(167,25,48,0.6);
+}
+.BatchWarning .sapMInputBaseInner {
+    background-color: rgba(255,211,0,1);
+}
 /*CSS PER LA TABELLA DI GESTIONE DEI FERMI */
 .alternateRowColors tbody tr:nth-child(even) {
     background: #efeff5;
@@ -854,9 +902,91 @@
     color: #003A6B !important;
 }
 
+/* SINOTTICO */
 
+.shiftImage {
+    padding-top: 5rem;
+}
 
+.buttonSinottico .sapMBtnInner {
+    font-family: Arial;
+    font-size: 20pt;
+    border-radius: 10px;
+    border: 1px solid #003A6B;
+}
 
+.MarcatoreSX {
+    bottom: 25rem;
+    left: 3.5rem;
+}
+.MarcatoreDX {
+    right: 8.5rem;
+    bottom: 1.5rem;
+}
+.PackItalSX {
+    bottom: 22.5rem;
+    right: 6rem;
+}
+.PackItalDX {
+    bottom: 4.5rem;
+    right: 16rem;
+}
+.Scatolatrice {
+    bottom: 25rem;
+    left: 12rem;
+}
+.Etichettatrice {
+    bottom: 6.5rem;
+    left: 22rem;
+}
+
+.buttonGood .sapMBtnInner {
+    color: #003A6B;
+    text-shadow: 0 0 0;
+    background: #7CA295;
+}
+
+.buttonWarning .sapMBtnInner {
+    color: #003A6B;
+    text-shadow: 0 0 0;
+    background: #FFD300;
+}
+
+.buttonError .sapMBtnInner {
+    color: white;
+    text-shadow: 0 0 0;
+    background: #A71930;
+}
+
+.bordoSinBluL {
+    border-left: 1px solid #003A6B;
+}
+.bordoSinBluR {
+    border-right: 1px solid #003A6B;
+}
+.bordoSinBluT {
+    border-top: 1px solid #003A6B;
+}
+.bordoSinBluB {
+    border-bottom: 1px solid #003A6B;
+}
+.bordoSinBlu {
+    border: 1px solid #003A6B;
+}
+
+.SPCButtonsDimensionsSin .sapMBtnInner {
+    position: relative;
+    border: 0px;
+    border-radius: 0px;
+    height: 2.5rem;
+    bottom: 0.25rem;
+}
+.SPCButtonsDimensionsSin .sapMBtnContent {
+    position: absolute;
+    left: 39%;
+    top: 15%;
+    font-size: 13pt;
+}
 
 
 

@@ -4,6 +4,9 @@ sap.ui.define([
 ], function (JSONModel) {
     return {
         exp: null,
+        tempPath: null,
+        dataXML: null,
+        vecs: null,
 // FUNZIONI TEMPORALI 
         roundTo: function (value, decimalpositions) {
             var i = value * Math.pow(10, decimalpositions);
@@ -148,6 +151,17 @@ sap.ui.define([
                 oCloseButton.setVisible(false);
             }
             tabContainer.getAggregation("_tabStrip").getAggregation("_select").setVisible(false);
+        },
+        GetLineaID: function (address, model) {
+            var vec_path = address.split("/");
+            if (address[0] === "/") {
+                vec_path.shift();
+            }
+            var path_linea = "";
+            for (var i = 0;i < 2; i++) {
+                path_linea += "/" + vec_path[i];
+            }
+            return model.getProperty(path_linea).lineaID;
         },
         AjaxCallerVoid: function (address, Func) {
             var req = jQuery.ajax({
@@ -304,6 +318,58 @@ sap.ui.define([
             }
             return json;
         },
+        RecursiveJSONSelectPathFinder: function (json) {
+            for (var key in json) {
+                if (key !== "value" && typeof json[key] === "object") {
+                    this.tempPath += "." + key;
+                    json[key] = this.RecursiveJSONSelectPathFinder(json[key]);
+                } else if (key === "value" && typeof json[key] === "object") {
+                    this.vecs.push(json[key]);
+                    this.tempPath = this.AppendNewPath(this.tempPath);
+                }
+            }
+            this.tempPath = this.DeleteLastLevel(this.tempPath);
+            return json;
+        },
+        DeleteLastLevel: function (str) {
+            var ind;
+            if (str.slice(str.length - 2, str.length) !== "<>") {
+                ind = str.lastIndexOf(".");
+                str = str.slice(0, ind);
+            }
+            return str;
+        },
+        AppendNewPath: function (str) {
+            var ind = (str.lastIndexOf("<>") === -1) ? 0 : (str.lastIndexOf("<>") + 2);
+            str += "<>" + str.slice(ind, str.length);
+            return str;
+        },
+        RecursiveSelectReordering: function (json) {
+            for (var key in json) {
+                if (key !== "value" && typeof json[key] === "object") {
+                    json[key] = this.RecursiveSelectReordering(json[key]);
+                } else if (key === "value" && typeof json[key] === "object") {
+                    json[key] = this.ReorderSelect(json[key]);
+                }
+            }
+            return json;
+        },
+        ReorderSelect: function (array) {
+            var ordered = [];
+            var i, index;
+            for (i = 0;i < array.length; i++) {
+                if (array[i].isSelected === "1") {
+                    index = i;
+                }
+            }
+            ordered.push(array[index]);
+            for (i = 0;i < array.length; i++) {
+                if (i !== index) {
+                    ordered.push(array[i]);
+                }
+            }
+            return ordered;
+        },
         RecursiveJSONChangesFinder: function (setup) {
             var temp = {};
             for (var key in setup) {
@@ -377,6 +443,55 @@ sap.ui.define([
                     '<grammatura>' + obj.grammatura + '</grammatura>' +
                     '<tipologia>' + obj.tipologia + '</tipologia>';
             return this.EncodeForUri(top + parameters + bottom);
+        },
+        XMLSelectionsBuilder: function (SKU, idBatch) {
+            var i, j, k, temp;
+            var JSON = SKU.getData();
+            var heading = "<Alternative>" +
+                    "<SKUID>" + "" + "</SKUID>" +
+                    "<BatchID>" + idBatch + "</BatchID>" +
+                    "<AlternativeList>";
+            var bottom = "</AlternativeList>" +
+                    "</Alternative>";
+            this.vecs = [];
+            this.tempPath = "";
+            JSON = this.RecursiveJSONSelectPathFinder(JSON);
+            this.tempPath = this.tempPath.split("<>").slice(0, -1);
+            var paths = [];
+            for (i = 0; i < this.tempPath.length; i++) {
+                temp = this.tempPath[i].split(".");
+                temp.shift();
+                paths.push(temp);
+            }
+            var padri = [];
+            var nodi = [];
+            var ramiID = [];
+            var foglieID = [];
+            for (i = 0; i < paths.length; i++) {
+                temp = "";
+                for (j = 0; j < 4; j++) {
+                    temp += "/" + paths[i][j];
+                }
+                padri.push(SKU.getProperty(temp).name);
+                for (j = 4; j < 6; j++) {
+                    temp += "/" + paths[i][j];
+                }
+                nodi.push(SKU.getProperty(temp).name);
+                for (j = 6; j < paths[i].length; j++) {
+                    temp += "/" + paths[i][j];
+                }
+                ramiID.push(SKU.getProperty(temp).ramoID);
+                for (k = 0;k < SKU.getProperty(temp).value.length; k++) {
+                    if (SKU.getProperty(temp).value[k].isSelected === "1") {
+                        foglieID.push(SKU.getProperty(temp).value[k].ID);
+                    }
+                }
+            }
+            var body = "";
+            for (i = 0;i < paths.length; i++) {
+                body += "<Alternativa><Padre>" + padri[i] + "</Padre><Nodo>" + nodi[i] + "</Nodo><RamoID>" + ramiID[i] + "</RamoID><FogliaID>" + foglieID[i] + "</FogliaID></Alternativa>";
+            }
+            return this.EncodeForUri(heading + body + bottom);
         },
         XMLSetupUpdates: function (setup, idLinea, idSKU) {
             var heading = "<Parameters>" +

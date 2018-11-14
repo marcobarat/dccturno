@@ -28,7 +28,8 @@
                                             selectionMode="None"
                                             enableSelectAll="false"
                                             enableColumnReordering="false"
-                                            visibleRowCount="17"
+                                            rowHeight="50px"
+                                            visibleRowCount="9"
                                             cellClick="TreeTableRowClickExpander"
                                             collapseRecursive="true"
                                             app:mydata="SKU_TT">
@@ -51,7 +52,11 @@
                                                     <Label text="VALORE"/>
                                                     <t:template>
                                                         <HBox>
-                                                            <wt:StyleTextTreeTableValue text="{SKU>value}" diff="{SKU>expand}" maxLines="1" tooltip="{SKU>value}"/>
+                                                            <wt:StyleTextTreeTableValue text="{= ${SKU>isArray} ? '': ${SKU>value}}" maxLength="20" diff="{SKU>expand}" maxLines="2" visible="{= !${SKU>isArray}}"/>
+                                                            <Select change="AlternativeSelectionChange" width="300px" class="textSelect" items="{path: 'SKU>value'}" visible="{= ${SKU>isArray} === 1}">
+                                                                <core:Item key="{SKU>ID}" text="{SKU>alternativa}" />
+                                                            </Select>
+                                                            <!--<wt:StyleTextTreeTableValue text="{SKU>value}" diff="{SKU>expand}" maxLines="1" tooltip="{SKU>value}"/> selectedKey="{SKU>value/0/alternativa}"-->
                                                         </HBox>
                                                     </t:template>
                                                 </t:Column>
