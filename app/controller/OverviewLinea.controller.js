@@ -7,9 +7,13 @@ sap.ui.define([
     "use strict";
     return Controller.extend("myapp.controller.OverviewLinea", {
         ModelSinottico: sap.ui.getCore().getModel("ModelSinottico"),
+        ModelAllarmi: new JSONModel(),
         STOP: null,
         BusyDialog: new sap.m.BusyDialog(),
         TIMER: null,
+        AlarmDialog: null,
+        Counter: null,
+        macchinaId: null,
 //  FUNZIONI D'INIZIALIZZAZIONE      
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -26,19 +30,8 @@ sap.ui.define([
                         button = new sap.m.Button({
                             id: this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID,
                             text: this.ModelSinottico.getData()[i].Macchine[j].nome,
-                            press: "ciao"});
+                            press: [this.ShowParameters, this]});
                         button.addStyleClass("buttonSinottico");
-                        switch (this.ModelSinottico.getData()[i].Macchine[j].stato) {
-                            case "Good":
-                                button.addStyleClass("buttonGood");
-                                break;
-                            case "Warning":
-                                button.addStyleClass("buttonWarning");
-                                break;
-                            case "Error":
-                                button.addStyleClass("buttonError");
-                                break;
-                        }
                         button.addStyleClass(this.ModelSinottico.getData()[i].Macchine[j].class);
                         tab.addContent(button);
                     }
@@ -52,56 +45,84 @@ sap.ui.define([
             }
             TabContainer.setSelectedItem(tab);
             Library.RemoveClosingButtons.bind(this)("schemaLineeContainer");
-
-//            clearInterval(this.TIMER);
-//            this.STOP = 0;
-//            this.ModelLinee = sap.ui.getCore().getModel("linee");
-//            this.getView().setModel(this.ModelLinee, "linee");
-//            this.RefreshFunction(100);
-//            var that = this;
-//            this.TIMER = setInterval(function () {
-//                try {
-//                    that.RefreshCounter++;
-//                    if (that.STOP === 0 && that.RefreshCounter >= 10) {
-//                        that.RefreshFunction();
-//                    }
-//                } catch (e) {
-//                    console.log(e);
-//                }
-//            }, 1000);
         },
-//  FUNZIONI DI REFRESH
-        RefreshFunction: function (msec) {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
+        ShowParameters: function (event) {
+            clearInterval(this.TIMER);
+            this.STOP = 0;
+            this.AlarmDialog = this.getView().byId("allarmiMacchina");
+            if (!this.AlarmDialog) {
+                this.AlarmDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AllarmiMacchina", this);
+                this.getView().addDependent(this.AlarmDialog);
+            }
+            this.macchinaID = this.getRandom();
+            this.AlarmDataCaller();
+            this.AlarmDialog.open();
+            var that = this;
+            this.TIMER = setInterval(function () {
+                try {
+                    that.Counter++;
+                    if (that.STOP === 0 && that.Counter >= 10) {
+                        that.AlarmRefresh();
+                    }
+                } catch (e) {
+                    console.log(e);
+                }
+            }, 1000);
         },
-        RefreshCall: function () {
+        AlarmRefresh: function (msec) {
+            this.Counter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.AlarmDataCaller.bind(this), msec);
+        },
+        AlarmDataCaller: function () {
             var link;
-            if (this.ISLOCAL === 1) {
-                link = "model/linee_riepilogo.json";
-            } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/InCombo/GetOverviewPdcAttualeForTiles&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&RepartoID=" + this.RepartoID + "&OutputParameter=JSON";
+            if (this.AlarmDialog) {
+                if (this.AlarmDialog.isOpen()) {
+                    if (this.ISLOCAL !== 1) {
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAlarmsFromMacchinaLineaID&Content-Type=text/json&MacchinaID=" + this.macchinaID + "&OutputParameter=JSON";
+                    }
+                }
+                Library.SyncAjaxCallerData(link, this.SUCCESSParametersReceived.bind(this));
             }
-            Library.SyncAjaxCallerData(link, this.RefreshModelLinee.bind(this));
         },
-        RefreshModelLinee: function (Jdata) {
+        SUCCESSParametersReceived: function (Jdata) {
+            this.ModelAllarmi.setData(Jdata);
+            this.getView().setModel(this.ModelAllarmi, "allarmi");
             if (this.STOP === 0) {
-                this.ModelLinee.setData(Jdata);
-                this.ModelLinee.refresh(true);
-                this.getView().setModel(this.ModelLinee, "linee");
-                this.LineButtonStyle();
-                this.BarColorCT(this.ModelLinee.getData());
-                this.checkCells();
-                this.RefreshFunction(10000);
+                this.Counter = 0;
             }
         },
-
+        //  FUNZIONI DI REFRESH
+        CloseDialog: function () {
+            this.STOP = 1;
+            clearInterval(this.Timer);
+            this.AlarmDialog.close();
+        },
+        getRandom: function () {
+            var val = Math.floor(4 * Math.random());
+            switch (val) {
+                case 0:
+                    return "9";
+                case 1:
+                    return "10";
+                case 2:
+                    return "13";
+                default:
+                    return "32";
+            }
+        },
         UpdateButtons: function () {
-            var i, j, tab, button;
+            var i, j, k, button;
+            var classes = ["buttonGood", "buttonWarning", "buttonError"];
             var TabContainer = this.getView().byId("schemaLineeContainer");
             for (i = 0; i < TabContainer.getItems().length; i++) {
-                tab = TabContainer.getItems()[i];
                 for (j = 0; j < this.ModelSinottico.getData()[i].Macchine.length; j++) {
                     button = sap.ui.getCore().byId(this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID);
+                    for (k = 0; k < classes.length; k++) {
+                        button.removeStyleClass(classes[k]);
+                    }
                     switch (this.ModelSinottico.getData()[i].Macchine[j].stato) {
                         case "Good":
                             button.addStyleClass("buttonGood");

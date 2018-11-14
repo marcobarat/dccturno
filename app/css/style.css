@@ -446,13 +446,19 @@
     margin: 0pt !important;  
 }
 .sapMBtnLinea .sapMBtnText .sapMBtnContent {
-    line-height: 1.8rem; 
+    line-height: 1.8rem;
+    text-shadow: 0 0 0 ;
+}
+.sapMBtnLinea .sapMBtnInner {
+    height: 2rem;
+    box-sizing: content-box;
 }
 .LineeMPI.sapMPI {
     position: relative;
     border: 0px !important;
     padding: 0px !important;
     margin: 0px !important;
+    height: 2.65rem;
 }
 .LineeMPI.sapMPI .sapMPIBar .sapMPIText {
     color: #003A6B; 
@@ -570,8 +576,8 @@
 .colorPage {
     background-color: white;
 }
-.blueText .sapMText {
-    color: #003A6B;
+.blueText {
+    color: #003A6B !important;
 }
 .redText {
     color: #A71930;
@@ -669,9 +675,9 @@
 .cellePiani {
     height: 50px;
 }
-.cellePiani .sapMListTblCell{
+/*.cellePiani .sapMListTblCell{
     padding: 0.1rem !important;
-}
+}*/
 .cellePiani .sapMInput {
     width: 100% !important;
     height: 100% !important;
@@ -904,6 +910,133 @@
 
 /* SINOTTICO */
 
+.LineeMPI .sapMPIBarPositive {
+    background: #7CA295;
+    border-right: 1px solid #003A6B;
+}
+.LineeMPI .sapMPIBarNegative{
+    background: #d47600;
+    border-right: 1px solid #003A6B;
+}
+.LineeMPI .sapMPIBarCritical {
+    background: #FFD300;
+    border-right: 1px solid #003A6B;
+}
+.LineeMPI .sapMPIBarNeutral {
+    background: white;
+    border-right: 1px solid #003A6B;
+}
+
+
+.bordoBluSin {
+    border: solid 1px #003A6B;
+}
+.bordoBluSinL {
+    border-left: 1px solid #003A6B;
+}
+.bordoBluSinR {
+    border-right: 1px solid #003A6B;
+}
+.bordoBluSinB {
+    border-bottom: 1px solid #003A6B;
+}
+.bordoBluSinT {
+    border-top: 1px solid #003A6B;
+}
+
+.ProgressBarFixSin {
+    height: 3rem;
+    border: none;
+    padding: 0px;
+    margin: 0.1px;
+}
+.ProgressBarFixSin .sapMPIText {
+    font-size: 20pt;
+    color : #003A6B;
+    font-family: Arial;
+    font-weight: normal;
+}
+.SPCButtonsDimensionsSin .sapMBtnInner {
+    position: relative;
+    border: 0px;
+    border-radius: 0px;
+    height: 2.65rem;
+    bottom: 0.25rem;
+}
+.SPCButtonsDimensionsSin .sapMBtnContent {
+    position: absolute;
+    left: 36%;
+    top: 7%;
+    font-size: 11pt;
+}
+.SPCButtonColorGreenSin .sapMBtnInner {
+    background: #7CA295; 
+}
+.SPCButtonEmptySin .sapMBtnInner {
+    background: white; 
+}
+.SPCButtonColorYellowSin .sapMBtnInner {
+    background: #FFD300;
+}
+.SPCButtonPhase1Sin .sapMBtnIcon {
+    position: absolute;
+    max-height: 100%;
+    height: 90%;
+    width: 65%;
+    left: 23%;
+    top: 5%;
+}
+.LineaDispoSin .sapMBtnInner{
+    border: solid 5px #7CA295;
+    border-radius: 0%;
+}
+.LineaNonDispoSin .sapMBtnInner{
+    border: solid 5px #A71930;
+    border-radius: 0%;
+}
+.LineaVuotaSin .sapMBtnInner{
+    background: white;
+    color: #003A6B;
+}
+.LineaVuotaSin:hover> .sapMBtnInner:hover{
+    background: white;
+    color: #003A6B;
+}
+.LineaAttrezzaggioSin .sapMBtnInner{
+    background: #FFD300;
+    color: #003A6B;
+}
+.LineaAttrezzaggioSin:hover> .sapMBtnInner:hover{
+    background: #FFD300;
+    color: #003A6B;
+}
+.LineaLavorazioneSin .sapMBtnInner{
+    background: #7CA295;
+    color: #003A6B;
+}
+.LineaLavorazioneSin:hover> .sapMBtnInner:hover{
+    background: #7CA295;
+    color: #003A6B;
+}
+.LineaFermoSin .sapMBtnInner{
+    background: #A71930;
+    color: white;
+}
+.LineaFermoSin:hover> .sapMBtnInner:hover{
+    background: #A71930;
+    color: white;
+}
+.LineaSvuotamentoSin .sapMBtnInner{
+    background: #5E3032;
+    color: white;
+}
+.LineaSvuotamentoSin:hover> .sapMBtnInner:hover{
+    background: #5E3032;
+    color: white;
+}
+
+
+
 .shiftImage {
     padding-top: 5rem;
 }
@@ -972,20 +1105,6 @@
 }
 .bordoSinBlu {
     border: 1px solid #003A6B;
-}
-
-.SPCButtonsDimensionsSin .sapMBtnInner {
-    position: relative;
-    border: 0px;
-    border-radius: 0px;
-    height: 2.5rem;
-    bottom: 0.25rem;
-}
-.SPCButtonsDimensionsSin .sapMBtnContent {
-    position: absolute;
-    left: 39%;
-    top: 15%;
-    font-size: 13pt;
 }
 
 

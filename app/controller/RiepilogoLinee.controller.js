@@ -16,7 +16,6 @@ sap.ui.define([
         RepartoID: 1,
         TIMER: null,
         SPCDialog: null,
-        SPCDialogFiller: null,
         STOPSPC: null,
         SPCCounter: null,
         ModelSPCData: new JSONModel({}),
@@ -60,9 +59,9 @@ sap.ui.define([
         },
         RefreshModelLinee: function (Jdata) {
             if (this.STOP === 0) {
-                for (var i = 0;i < Jdata.corta.length; i++) {
-                    Jdata.corta[i].avanzamento = (Number(Jdata.corta[i].avanzamento)*100 >= 100) ? 100 : Number(Jdata.corta[i].avanzamento)*100;
-                    Jdata.corta[i].perc_avanzamento = String(Math.round(Jdata.corta[i].avanzamento * 100)/100) + "%";
+                for (var i = 0; i < Jdata.corta.length; i++) {
+                    Jdata.corta[i].avanzamento = (Number(Jdata.corta[i].avanzamento) * 100 >= 100) ? 100 : Number(Jdata.corta[i].avanzamento) * 100;
+                    Jdata.corta[i].perc_avanzamento = String(Math.round(Jdata.corta[i].avanzamento * 100) / 100) + "%";
                 }
                 this.ModelLinee.setData(Jdata);
                 this.ModelLinee.refresh(true);
@@ -87,18 +86,16 @@ sap.ui.define([
         SUCCESSGoToSinottico: function (Jdata) {
             var i, j, temp;
             var Macchine = ["Marcatore SX", "Marcatore DX", "PackItal SX", "PackItal DX", "Scatolatrice", "Etichettatrice"];
-            for (i = 0;i < Jdata.length; i++) {
+            for (i = 0; i < Jdata.length; i++) {
                 Jdata[i].IMG = Jdata[i].Descrizione.toLowerCase().split(" ").join("_") + ".png";
                 Jdata[i].IsSelected = (Jdata[i].LineaID === this.IDSelected) ? "1" : "0";
                 Jdata[i].Macchine = [];
-                //Jdata[i].Classes = [];
-                for (j = 0;j < Macchine.length; j++) {
+                for (j = 0; j < Macchine.length; j++) {
                     temp = {};
                     temp.nome = Macchine[j];
-                    temp.stato = "Good";
+                    temp.stato = this.getRandom();
                     temp.class = Macchine[j].split(" ").join("");
                     Jdata[i].Macchine.push(temp);
-                    //Jdata[i].Classes.push(Jdata[i].Macchine[j].split(" ").join(""));
                 }
             }
             this.ModelSinottico.setData(Jdata);
@@ -106,17 +103,27 @@ sap.ui.define([
             this.getView().setModel(this.ModelSinottico, "ModelSinottico");
             this.getOwnerComponent().getRouter().navTo("OverviewLinea");
         },
+        getRandom: function () {
+            var val = Math.floor(3*Math.random());
+            switch (val) {
+                case 0:
+                    return "Good";
+                case 1:
+                    return "Warning";
+                default:
+                    return "Error";
+            }
+        },
         //         -> PULSANTI SPC CON REFRESH
         SPCGraph: function (event) {
             this.STOPSPC = 0;
             clearInterval(this.SPCTimer);
             this.SPCCounter = 5;
-            this.pathLinea = event.getSource().getBindingContext("linea").sPath;
+            this.pathLinea = event.getSource().getBindingContext("linee").sPath;
             this.indexSPC = Number(event.getSource().data("mydata"));
-            this.idBatch = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].IDbatchAttivo;
-            this.idLinea = this.ModelLinea.getProperty(this.pathLinea).lineaID;
-            this.ParametroID = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].parametroId;
-            this.DescrizioneParametro = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].descrizioneParametro;
+            this.idLinea = this.ModelLinee.getProperty(this.pathLinea).lineaID;
+            this.ParametroID = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].parametroId;
+            this.DescrizioneParametro = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].descrizioneParametro;
             this.SPCDialog = this.getView().byId("SPCWindow");
             if (!this.SPCDialog) {
                 this.SPCDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.SPCWindow", this);
@@ -138,9 +145,9 @@ sap.ui.define([
         },
         SUCCESSSPCDataLoad: function (Jdata) {
             var isEmpty;
-            this.Allarme = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
-            this.Fase = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
-            this.Avanzamento = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
+            this.Allarme = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
+            this.Fase = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
             if (Jdata.valori === "") {
                 isEmpty = 1;
             } else {
@@ -178,42 +185,192 @@ sap.ui.define([
                 }
             }
         },
-
+        //      FUNZIONI SPC    
+        SPCDialogFiller: function (discr) {
+            var textHeader = this.getView().byId("headerSPCWindow");
+            textHeader.setText(String(this.DescrizioneParametro));
+            var samplingHeader = this.getView().byId("samplingSPC");
+            if (Number(this.Fase) === 1) {
+                samplingHeader.setText("Campionamento in corso: " + String(this.Avanzamento) + "/50");
+            } else {
+                samplingHeader.setText("");
+            }
+            if (discr !== 1) {
+                var plotBox = this.getView().byId("plotBox");
+                var alarmButton = this.getView().byId("alarmButton");
+                if (Number(this.Fase) === 2 && Number(this.Allarme) === 1) {
+                    alarmButton.setEnabled(true);
+                    alarmButton.removeStyleClass("chiudiButton");
+                    alarmButton.addStyleClass("allarmeButton");
+                } else {
+                    alarmButton.setEnabled(false);
+                    alarmButton.removeStyleClass("allarmeButton");
+                    alarmButton.addStyleClass("chiudiButton");
+                }
+                if (!((Number(this.Fase) === 1) && (this.ModelSPCData.getData().valori.length < 50))) {
+                    var data = this.ModelSPCData.getData();
+                    var result = this.PrepareDataToPlot(data, this.Fase);
+                    var ID = jQuery.sap.byId(plotBox.getId()).get(0);
+                    Plotly.newPlot(ID, result.dataPlot, result.layout);
+                }
+            }
+        },
+        RemoveAlarm: function () {
+            this.STOPSPC = 1;
+            clearInterval(this.SPCTimer);
+            var alarmButton = this.getView().byId("alarmButton");
+            alarmButton.setEnabled(false);
+            alarmButton.removeStyleClass("allarmeButton");
+            alarmButton.addStyleClass("chiudiButton");
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ResetSPCAlarm&Content-Type=text/json&BatchID=" + this.idBatch + "&ParametroID=" + this.ParametroID;
+            Library.AjaxCallerVoid(link, this.RefreshFunction.bind(this));
+            this.CloseSPCDialog();
+        },
+        CloseSPCDialog: function () {
+            this.STOPSPC = 1;
+            clearInterval(this.SPCTimer);
+            this.SPCDialog.close();
+        },
+        ParseSPCData: function (data, char) {
+            for (var key in data) {
+                data[key] = data[key].split(char);
+                for (var i = data[key].length - 1; i >= 0; i--) {
+                    if (data[key][i] === "") {
+                        data[key].splice(i, 1);
+                    } else {
+                        if (key !== "time") {
+                            data[key][i] = Number(data[key][i]);
+                        }
+                    }
+                }
+            }
+            return data;
+        },
+        Phase1: function (data) {
+            data.MR = [];
+            var avg = 0;
+            var i, temp;
+            data.MR.push(0);
+            for (i = 0; i < data.valori.length - 1; i++) {
+                temp = Math.abs(data.valori[i + 1] - data.valori[i]);
+                data.MR.push(temp);
+                avg += temp;
+            }
+            avg /= (data.MR.length);
+            data.MRBound = [];
+            for (i = 0; i < data.MR.length; i++) {
+                data.MRBound.push(3.267 * avg);
+            }
+            data.MRTime = JSON.parse(JSON.stringify(data.time));
+            return data;
+        },
+        PrepareDataToPlot: function (Jdata, fase) {
+            var dataPlot, layout;
+            var valori = {
+                x: Jdata.time,
+                y: Jdata.valori,
+                type: 'scatter',
+                line: {color: 'rgb(0,58,107)', width: 1}
+            };
+            var limSup = {
+                x: Jdata.time,
+                y: Jdata.limSup,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            var limInf = {
+                x: Jdata.time,
+                y: Jdata.limInf,
+                type: 'scatter',
+                line: {color: 'rgb(167,25,48)', width: 1}
+            };
+            dataPlot = [valori, limSup, limInf];
+            layout = {
+                showlegend: false,
+                autosize: true,
+                xaxis: {
+                    showgrid: true,
+                    zeroline: false
+                },
+                yaxis: {
+                    showgrid: true,
+                    zeroline: false
+                }
+            };
+            if (fase === "1") {
+                var MR = {
+                    x: Jdata.MRTime,
+                    y: Jdata.MR,
+                    xaxis: 'x2',
+                    yaxis: 'y2',
+                    type: 'scatter',
+                    line: {color: 'rgb(0,58,107)', width: 1}
+                };
+                var MRBound = {
+                    x: Jdata.MRTime,
+                    y: Jdata.MRBound,
+                    xaxis: 'x2',
+                    yaxis: 'y2',
+                    type: 'scatter',
+                    line: {color: 'rgb(167,25,48)', width: 1}
+                };
+                dataPlot.push(MR);
+                dataPlot.push(MRBound);
+                layout.yaxis.domain = [0.6, 1];
+                layout.xaxis2 = {};
+                layout.yaxis2 = {};
+                layout.xaxis2.anchor = "y2";
+                layout.yaxis2.domain = [0, 0.4];
+            } else {
+                if (Number(this.Allarme) === 0) {
+                    layout.xaxis.linecolor = "rgb(124,162,149)";
+                    layout.yaxis.linecolor = "rgb(124,162,149)";
+                } else {
+                    layout.xaxis.linecolor = "rgb(255,211,0)";
+                    layout.yaxis.linecolor = "rgb(255,211,0)";
+                }
+                layout.xaxis.linewidth = 4;
+                layout.xaxis.mirror = true;
+                layout.yaxis.linewidth = 4;
+                layout.yaxis.mirror = true;
+            }
+            return {dataPlot: dataPlot, layout: layout};
+        },
         //        ************************ GESTIONE STILE PULSANTE DI LINEA ************************    
         LineButtonStyle: function () {
-            var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
+            var classes = ["LineaDispoSin", "LineaNonDispoSin", "LineaVuotaSin", "LineaAttrezzaggioSin", "LineaLavorazioneSin", "LineaFermoSin", "LineaSvuotamentoSin"];
             var data = this.ModelLinee.getData().corta;
             var button;
             var state;
             for (var i = 0; i < data.length; i++) {
-                button = this.getView().byId("linee").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0];
+                button = this.getView().byId("lineeCorta").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0];
                 for (var k = 0; k < classes.length; k++) {
                     button.removeStyleClass(classes[k]);
                 }
                 state = data[i].statoLinea.split(".");
                 switch (state[0]) {
                     case "Disponibile":
-                        button.addStyleClass("LineaDispo");
+                        button.addStyleClass("LineaDispoSin");
                         break;
                     case "Nondisponibile":
-                        button.addStyleClass("LineaNonDispo");
+                        button.addStyleClass("LineaNonDispoSin");
                         break;
                 }
                 switch (state[1]) {
                     case "Vuota":
-                        button.addStyleClass("LineaVuota");
+                        button.addStyleClass("LineaVuotaSin");
                         break;
                     case "Attrezzaggio":
-                        button.addStyleClass("LineaAttrezzaggio");
+                        button.addStyleClass("LineaAttrezzaggioSin");
                         break;
                     case "Lavorazione":
-                        button.addStyleClass("LineaLavorazione");
+                        button.addStyleClass("LineaLavorazioneSin");
                         break;
                     case "Fermo":
-                        button.addStyleClass("LineaFermo");
+                        button.addStyleClass("LineaFermoSin");
                         break;
                     case "Svuotamento":
-                        button.addStyleClass("LineaSvuotamento");
+                        button.addStyleClass("LineaSvuotamentoSin");
                         break;
                 }
             }
@@ -228,7 +385,7 @@ sap.ui.define([
                     } else {
                         data.corta[i].avanzamento = Number(data.corta[i].avanzamento);
                     }
-                    progressBar = this.getView().byId("linee").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0];
+                    progressBar = this.getView().byId("lineeCorta").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0];
                     switch (data.corta[i].barColor) {
                         case "yellow":
                             progressBar.setState("Warning");
@@ -249,12 +406,12 @@ sap.ui.define([
         },
         //      GESTIONE STILE SPC
         SPCColorCT: function (data) {
-            var CSS_classesButton = ["SPCButtonColorGreen", "SPCButtonColorYellow", "SPCButtonPhase1", "SPCButtonContent", "DualSPCButtonContent", "SPCButtonEmpty"];
+            var CSS_classesButton = ["SPCButtonColorGreenSin", "SPCButtonColorYellowSin", "SPCButtonPhase1Sin", "SPCButtonContentSin", "DualSPCButtonContentSin", "SPCButtonEmptySin"];
             var SPCButton;
             if (data.corta.length > 0) {
                 for (var i = 0; i < data.corta.length; i++) {
                     for (var j = 0; j < data.corta[i].SPC.length; j++) {
-                        SPCButton = this.getView().byId("linee").getItems()[0].getCells()[0].getItems()[0].getItems()[j+2].getItems()[0];
+                        SPCButton = this.getView().byId("lineeCorta").getItems()[i].getCells()[0].getItems()[0].getItems()[j + 2].getItems()[0];
                         for (var k = 0; k < CSS_classesButton.length; k++) {
                             SPCButton.removeStyleClass(CSS_classesButton[k]);
                         }
@@ -273,22 +430,22 @@ sap.ui.define([
                                     SPCButton.setIcon("img/triangolo_buco.png");
                                 }
                                 SPCButton.setText(data.corta[i].SPC[j].numeroCampionamenti);
-                                SPCButton.addStyleClass("SPCButtonPhase1");
-                                SPCButton.addStyleClass("SPCButtonColorYellow");
+                                SPCButton.addStyleClass("SPCButtonPhase1Sin");
+                                SPCButton.addStyleClass("SPCButtonColorYellowSin");
                                 break;
                             case "2":
                                 SPCButton.setEnabled(true);
                                 SPCButton.setIcon("");
                                 SPCButton.setText("");
                                 if (data.corta[i].SPC[j].allarme === "0") {
-                                    SPCButton.addStyleClass("SPCButtonColorGreen");
+                                    SPCButton.addStyleClass("SPCButtonColorGreenSin");
                                 } else if (data.corta[i].SPC[j].allarme === "1") {
-                                    SPCButton.addStyleClass("SPCButtonColorYellow");
+                                    SPCButton.addStyleClass("SPCButtonColorYellowSin");
                                 }
                                 break;
                             default:
                                 SPCButton.setText("");
-                                SPCButton.addStyleClass("SPCButtonEmpty");
+                                SPCButton.addStyleClass("SPCButtonEmptySin");
                                 SPCButton.setIcon("");
                                 SPCButton.setEnabled(false);
                                 break;
@@ -298,7 +455,7 @@ sap.ui.define([
             }
         },
         CheckCells: function () {
-            var oItems = this.getView().byId("linee").getItems();
+            var oItems = this.getView().byId("lineeCorta").getItems();
             for (var i = 0; i < oItems.length; i++) {
                 var cellText = oItems[i].getCells()[0].getItems()[1].getItems()[3];
                 var cellBugged = oItems[i].getCells()[0].getItems()[1].getItems()[2];
