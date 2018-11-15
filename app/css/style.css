@@ -182,6 +182,7 @@
 }
 .messageButton .sapMBtnIcon {
     color: #003A6B;
+    padding-top:1.2rem;
 }
 .newMessageButton .sapMBtnInner {
     background: #FFD300;

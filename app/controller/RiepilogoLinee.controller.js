@@ -78,7 +78,7 @@ sap.ui.define([
             this.IDSelected = this.ModelLinee.getProperty(path).lineaID;
             var link;
             if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllLinee&Content-Type=text/json&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoLineeNew&Content-Type=text/json&OutputParameter=JSON";
             }
             Library.SyncAjaxCallerData(link, this.SUCCESSGoToSinottico.bind(this));
             this.getOwnerComponent().getRouter().navTo("OverviewLinea");
@@ -90,21 +90,53 @@ sap.ui.define([
                 Jdata[i].IMG = Jdata[i].Descrizione.toLowerCase().split(" ").join("_") + ".png";
                 Jdata[i].IsSelected = (Jdata[i].LineaID === this.IDSelected) ? "1" : "0";
                 Jdata[i].Macchine = [];
+//                this.SetNameMacchine(Jdata[i]);
                 for (j = 0; j < Macchine.length; j++) {
+//                for (j = 0; j < Jdata[i].Macchine.length; j++) {
                     temp = {};
                     temp.nome = Macchine[j];
                     temp.stato = this.getRandom();
                     temp.class = Macchine[j].split(" ").join("");
                     Jdata[i].Macchine.push(temp);
+//                    Jdata[i].Macchine[j].class = Jdata[i].Macchine[j].nome.split(" ").join("");
                 }
+//                this.ReorderMacchine(Jdata[i]);
             }
             this.ModelSinottico.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelSinottico, "ModelSinottico");
             this.getView().setModel(this.ModelSinottico, "ModelSinottico");
             this.getOwnerComponent().getRouter().navTo("OverviewLinea");
         },
+        SetNameMacchine: function (data_linea) {
+            var names = ["Markem", "Etichettatrice", "Packital", "Scatolatrice"];
+            for (var i = 0; i < data_linea.Macchine.length; i++) {
+                for (var j = 0; j < names.length; j++) {
+                    if (data_linea.Macchine[i].nome.indexOf(names[j]) > -1) {
+                        switch (names[j]) {
+                            case "Markem":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
+                                break;
+                            case "Packital":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
+                                break;
+                            case "Etichettatrice":
+                                data_linea.Macchine[i].nome = "Etichettatrice";
+                                break;
+                            case "Scatolatrice":
+                                data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                        }
+                    }
+                }
+            }
+        },
+//        ReorderMacchine: function (data) {
+//            var Macchine = ["Marcatore SX", "Marcatore DX", "PackItal SX", "PackItal DX", "Scatolatrice", "Etichettatrice"];
+//            var temp = [];
+//            for (var i = 0;i < )
+//        },
         getRandom: function () {
-            var val = Math.floor(3*Math.random());
+            var val = Math.floor(3 * Math.random());
             switch (val) {
                 case 0:
                     return "Good";

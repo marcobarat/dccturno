@@ -47,8 +47,10 @@ sap.ui.define([
             Library.RemoveClosingButtons.bind(this)("schemaLineeContainer");
         },
         ShowParameters: function (event) {
+            this.BusyDialog.open();
             clearInterval(this.TIMER);
             this.STOP = 0;
+            this.Counter = 10;
             this.AlarmDialog = this.getView().byId("allarmiMacchina");
             if (!this.AlarmDialog) {
                 this.AlarmDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AllarmiMacchina", this);
@@ -93,12 +95,14 @@ sap.ui.define([
             if (this.STOP === 0) {
                 this.Counter = 0;
             }
+            this.BusyDialog.close();
         },
         //  FUNZIONI DI REFRESH
         CloseDialog: function () {
             this.STOP = 1;
             clearInterval(this.Timer);
             this.AlarmDialog.close();
+            this.getView().setModel(new JSONModel(), "allarmi");
         },
         getRandom: function () {
             var val = Math.floor(4 * Math.random());
