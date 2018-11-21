@@ -183,7 +183,7 @@ sap.ui.define([
                 this.pdcID = Jdata.pdcId;
                 if (this.STOP === 0) {
                     Jdata = this.BarColorCT(Jdata);
-                    this.SPCColorCT(Jdata);
+//                    this.SPCColorCT(Jdata);
                     var temp = JSON.parse(JSON.stringify(this.ModelLinea.getData()));
                     if (Jdata.isRidotta === "0") {
                         this.ModelLinea.getData().linee = this.ModelFullUpdate(Jdata.linee, temp.linee);
@@ -193,10 +193,10 @@ sap.ui.define([
                     this.ModelLinea.setData(this.ModelLinea.getData());
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
-                    this.NewMessage();
+//                    this.NewMessage();
                     this.SettingsButtonColor();
                     this.SequenceErrorColor();
-                    this.LineButtonStyle();
+//                    this.LineButtonStyle();
                     this.RefreshCounter = 0;
                 }
             }
@@ -313,10 +313,10 @@ sap.ui.define([
                 });
                 var data = this.ModelLinea.getData();
                 data = this.BarColorCT(data);
-                this.SPCColorCT(data);
+//                this.SPCColorCT(data);
                 this.ModelLinea.setData(data);
                 this.SettingsButtonColor();
-                this.LineButtonStyle();
+//                this.LineButtonStyle();
                 this.getView().setModel(this.ModelLinea, "linea");
             }
         },
@@ -343,6 +343,7 @@ sap.ui.define([
 //                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
 //            }
             this.oDialog.open();
+            this.oDialog.setBusy(true);
             this.RefreshLogCounter = 5;
             var that = this;
             this.NDTIMER = setInterval(function () {
@@ -375,6 +376,7 @@ sap.ui.define([
                     }
                     this.ModelCause.setData(data);
                     this.getView().setModel(this.ModelCause, "fermiprogrammati");
+                    this.oDialog.setBusy(false);
                     if (this.STOPLOG === 0) {
                         this.RefreshLogCounter = 0;
                     }
@@ -472,6 +474,7 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
             this.oDialog.open();
+            this.oDialog.setBusy(true);
             this.RefreshMsgCounter = 2;
             var that = this;
             this.SMTIMER = setInterval(function () {
@@ -486,32 +489,32 @@ sap.ui.define([
             }, 1000);
             Library.RemoveClosingButtons.bind(this)("MessageContainer");
         },
-        ColorTableText: function (event, Table) {
-            var View, classCol, i, j, k;
-            var classes = ["textCT", "textOP"];
-            if (typeof Table === "undefined") {
-                View = this.getView().byId(event.getSource().data("mydata"));
-            } else {
-                View = this.getView().byId(Table);
-            }
-            if (View.getId().indexOf("sistema") > -1) {
-                for (i = 0; i < View.getRows().length; i++) {
-                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
-                        View.getRows()[i].getCells()[j].addStyleClass("textCT");
-                    }
-                }
-            } else {
-                for (i = 0; i < View.getRows().length; i++) {
-                    classCol = (View.getRows()[i].getCells()[1].getProperty("text").indexOf("CAPOTURNO") > -1) ? "textCT" : "textOP";
-                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
-                        for (k = 0;k < classes.length; k++) {
-                            View.getRows()[i].getCells()[j].removeStyleClass(classes[k]);
-                        }
-                        View.getRows()[i].getCells()[j].addStyleClass(classCol);
-                    }
-                }
-            }
-        },
+//        ColorTableText: function (event, Table) {
+//            var View, classCol, i, j, k;
+//            var classes = ["textCT", "textOP"];
+//            if (typeof Table === "undefined") {
+//                View = this.getView().byId(event.getSource().data("mydata"));
+//            } else {
+//                View = this.getView().byId(Table);
+//            }
+//            if (View.getId().indexOf("sistema") > -1) {
+//                for (i = 0; i < View.getRows().length; i++) {
+//                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
+//                        View.getRows()[i].getCells()[j].addStyleClass("textCT");
+//                    }
+//                }
+//            } else {
+//                for (i = 0; i < View.getRows().length; i++) {
+//                    classCol = (View.getRows()[i].getCells()[1].getProperty("text").indexOf("CAPOTURNO") > -1) ? "textCT" : "textOP";
+//                    for (j = 0; j < View.getRows()[i].getCells().length; j++) {
+//                        for (k = 0;k < classes.length; k++) {
+//                            View.getRows()[i].getCells()[j].removeStyleClass(classes[k]);
+//                        }
+//                        View.getRows()[i].getCells()[j].addStyleClass(classCol);
+//                    }
+//                }
+//            }
+//        },
         SUCCESSMessaggi: function (Jdata) {
             this.BusyDialog.open();
             var temp, i;
@@ -528,11 +531,12 @@ sap.ui.define([
                     }
                     this.ModelMessaggi.setData(Jdata);
                     this.getView().setModel(this.ModelMessaggi, "messaggi");
+                    this.oDialog.setBusy(false);
                     if (this.STOPMSG === 0) {
                         this.RefreshMsgCounter = 0;
                     }
-                    this.ColorTableText(null, "sistemaTable");
-                    this.ColorTableText(null, "chatTable");
+//                    this.ColorTableText(null, "sistemaTable");
+//                    this.ColorTableText(null, "chatTable");
                 }
             }
         },
@@ -551,6 +555,7 @@ sap.ui.define([
             Library.SyncAjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
         },
         DestroyDialogMsg: function () {
+            this.ModelMessaggi.setData({});
             clearInterval(this.SMTIMER);
             this.BusyDialog.close();
             this.STOPMSG = 1;
@@ -1356,7 +1361,7 @@ sap.ui.define([
         },
 //      GESTIONE STILE PROGRESS BAR        
         BarColorCT: function (data) {
-            var progressBar;
+//            var progressBar;
             if (data.linee.length > 0) {
                 for (var i = 0; i < data.linee.length; i++) {
                     if (Number(data.linee[i].avanzamento) >= 100) {
@@ -1364,21 +1369,21 @@ sap.ui.define([
                     } else {
                         data.linee[i].avanzamento = Number(data.linee[i].avanzamento);
                     }
-                    progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
-                    switch (data.linee[i].barColor) {
-                        case "yellow":
-                            progressBar.setState("Warning");
-                            break;
-                        case "green":
-                            progressBar.setState("Success");
-                            break;
-                        case "orange":
-                            progressBar.setState("Error");
-                            break;
-                    }
-                    if (data.linee[i].statolinea === "Disponibile.Fermo" || data.linee[i].statolinea === "Disponibile.Svuotamento") {
-                        progressBar.setState("None");
-                    }
+//                    progressBar = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
+//                    switch (data.linee[i].barColor) {
+//                        case "yellow":
+//                            progressBar.setState("Warning");
+//                            break;
+//                        case "green":
+//                            progressBar.setState("Success");
+//                            break;
+//                        case "orange":
+//                            progressBar.setState("Error");
+//                            break;
+//                    }
+//                    if (data.linee[i].statolinea === "Disponibile.Fermo" || data.linee[i].statolinea === "Disponibile.Svuotamento") {
+//                        progressBar.setState("None");
+//                    }
                 }
             }
             return data;

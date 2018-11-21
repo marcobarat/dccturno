@@ -1,6 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:c="sap.ui.commons" xmlns="sap.m"
           xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
-          xmlns:cus="myapp.control"
+          xmlns:wt="myapp.control"
           xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
           controllerName="myapp.controller.RiepilogoLinee">
     <Page id="RiepilogoLineePage" class="colorPage" showHeader="false">
@@ -54,32 +54,47 @@
                                             <VBox>
                                                 <HBox width="100%" height="44px" class="bordoBluSin">
                                                     <VBox width="30%" height="100%" class="bordoBluSinR">
-                                                        <Button
+                                                        <wt:CustomButtonLinea
+                                                            width="100%"
+                                                            text="{linee>linea}"
+                                                            stato="{linee>statoLinea}"
+                                                            class="sapMBtnLinea"
+                                                            press="GoToSinottico"/>
+                                                        <!--                                                        <Button
                                                             width="100%"
                                                             text="{linee>linea}"
                                                             class="sapMBtnLinea LineaVuota LineaNonDispo"
                                                             press="GoToSinottico">
-                                                        </Button>
+                                                        </Button>-->
                                                     </VBox>
                                                 
                                                     <VBox width="50%" class="bordoBluSinR">
-                                                        <ProgressIndicator
+                                                        <wt:CustomProgressIndicator
+                                                            class="LineeMPI"
+                                                            percentValue="{linee>avanzamento}"
+                                                            displayValue="{linee>perc_avanzamento}"
+                                                            showValue="true"
+                                                            width="100%"
+                                                            stato="{linee>barColor}"/>
+                                                        <!--                                                        <ProgressIndicator
                                                             class="LineeMPI"
                                                             showValue="true"
                                                             barColor="{linee>barColor}"
                                                             width="100%"
                                                             percentValue="{linee>avanzamento}"
                                                             displayValue="{linee>perc_avanzamento}">
-                                                        </ProgressIndicator>
+                                                        </ProgressIndicator>-->
                                                     </VBox>
                                                     <VBox width="10%" height="100%" class="bordoBluSinR">
-                                                        <Button enabled="false" width="100%" class="SPCButtonsDimensionsSin SPCButtonEmpty" press="SPCGraph" app:mydata="0"/>
+                                                        <wt:CustomButtonSPC enabled="false" width="100%" class="SPCButtonsDimensionsSin SPCButtonEmpty" fase="{linee>SPC/0/fase}" nCamp="{linee>SPC/0/numeroCampionamenti}" allarme="{linee>SPC/0/allarme}" press="SPCGraph" app:mydata="0"/>
+                                                        <!--<Button enabled="false" width="100%" class="SPCButtonsDimensionsSin SPCButtonEmpty" press="SPCGraph" app:mydata="0"/>-->
                                                     </VBox>
                                                     <VBox width="10%" height="100%">
-                                                        <Button enabled="false" width="100%" class="SPCButtonsDimensionsSin SPCButtonEmpty" press="SPCGraph" app:mydata="1"/>
+                                                        <wt:CustomButtonSPC enabled="false" width="100%" class="SPCButtonsDimensionsSin SPCButtonEmpty" fase="{linee>SPC/1/fase}" nCamp="{linee>SPC/1/numeroCampionamenti}" allarme="{linee>SPC/1/allarme}" press="SPCGraph" app:mydata="1"/>
+                                                        <!--<Button enabled="false" width="100%" class="SPCButtonsDimensionsSin SPCButtonEmpty" press="SPCGraph" app:mydata="1"/>-->
                                                     </VBox>
                                                 </HBox>
-<!--                                                <HBox height="40%" width="100%" class="bordoBluSinL bordoBluSinB bordoBluSinR">
+                                                <!--                                                <HBox height="40%" width="100%" class="bordoBluSinL bordoBluSinB bordoBluSinR">
                                                     <VBox width="15%" class="paddingVBox textVBox bordoBluSinR colorPage"> 
                                                         <Text text="Disponibilità" class="blueText"/>
                                                     </VBox>

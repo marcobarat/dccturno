@@ -27,6 +27,7 @@ sap.ui.define([
             oRouter.getRoute("RiepilogoLinee").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function () {
+            this.getView().byId("RiepilogoLineePage").setBusy(false);
             clearInterval(this.TIMER);
             this.STOP = 0;
             this.ModelLinee = sap.ui.getCore().getModel("linee");
@@ -59,6 +60,7 @@ sap.ui.define([
         },
         RefreshModelLinee: function (Jdata) {
             if (this.STOP === 0) {
+                this.RefreshCounter = 0;
                 for (var i = 0; i < Jdata.corta.length; i++) {
                     Jdata.corta[i].avanzamento = (Number(Jdata.corta[i].avanzamento) * 100 >= 100) ? 100 : Number(Jdata.corta[i].avanzamento) * 100;
                     Jdata.corta[i].perc_avanzamento = String(Math.round(Jdata.corta[i].avanzamento * 100) / 100) + "%";
@@ -66,63 +68,66 @@ sap.ui.define([
                 this.ModelLinee.setData(Jdata);
                 this.ModelLinee.refresh(true);
                 this.getView().setModel(this.ModelLinee, "linee");
-                this.LineButtonStyle();
+//                this.LineButtonStyle();
                 this.BarColorCT(this.ModelLinee.getData());
-                this.SPCColorCT(this.ModelLinee.getData());
+//                this.SPCColorCT(this.ModelLinee.getData());
                 this.CheckCells();
-                this.RefreshFunction(10000);
+//                this.RefreshFunction(10000);
             }
         },
         GoToSinottico: function (event) {
+            this.getView().byId("RiepilogoLineePage").setBusy(true);
+            this.BusyDialog.open();
             var path = event.getSource().getBindingContext("linee").getPath();
             this.IDSelected = this.ModelLinee.getProperty(path).lineaID;
             var link;
             if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoLineeNew&Content-Type=text/json&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoLineeGood&Content-Type=text/json&OutputParameter=JSON";
             }
             Library.SyncAjaxCallerData(link, this.SUCCESSGoToSinottico.bind(this));
-            this.getOwnerComponent().getRouter().navTo("OverviewLinea");
         },
         SUCCESSGoToSinottico: function (Jdata) {
             var i, j, temp;
-            var Macchine = ["Marcatore SX", "Marcatore DX", "PackItal SX", "PackItal DX", "Scatolatrice", "Etichettatrice"];
+//            var Macchine = ["Marcatore SX", "Marcatore DX", "PackItal SX", "PackItal DX", "Scatolatrice", "Etichettatrice"];
             for (i = 0; i < Jdata.length; i++) {
                 Jdata[i].IMG = Jdata[i].Descrizione.toLowerCase().split(" ").join("_") + ".png";
                 Jdata[i].IsSelected = (Jdata[i].LineaID === this.IDSelected) ? "1" : "0";
-                Jdata[i].Macchine = [];
-//                this.SetNameMacchine(Jdata[i]);
-                for (j = 0; j < Macchine.length; j++) {
-//                for (j = 0; j < Jdata[i].Macchine.length; j++) {
-                    temp = {};
-                    temp.nome = Macchine[j];
-                    temp.stato = this.getRandom();
-                    temp.class = Macchine[j].split(" ").join("");
-                    Jdata[i].Macchine.push(temp);
-//                    Jdata[i].Macchine[j].class = Jdata[i].Macchine[j].nome.split(" ").join("");
+//                Jdata[i].Macchine = [];
+                this.SetNameMacchine(Jdata[i]);
+//                for (j = 0; j < Macchine.length; j++) {
+                for (j = 0; j < Jdata[i].Macchine.length; j++) {
+//                    temp = {};
+//                    temp.nome = Macchine[j];
+//                    temp.stato = this.getRandom();
+//                    temp.class = Macchine[j].split(" ").join("");
+//                    Jdata[i].Macchine.push(temp);
+                    Jdata[i].Macchine[j].class = Jdata[i].Macchine[j].nome.split(" ").join("");
                 }
-//                this.ReorderMacchine(Jdata[i]);
             }
             this.ModelSinottico.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelSinottico, "ModelSinottico");
             this.getView().setModel(this.ModelSinottico, "ModelSinottico");
+            clearInterval(this.TIMER);
+            this.STOP = 1;
+            this.BusyDialog.close();
             this.getOwnerComponent().getRouter().navTo("OverviewLinea");
         },
         SetNameMacchine: function (data_linea) {
-            var names = ["Markem", "Etichettatrice", "Packital", "Scatolatrice"];
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
             for (var i = 0; i < data_linea.Macchine.length; i++) {
                 for (var j = 0; j < names.length; j++) {
-                    if (data_linea.Macchine[i].nome.indexOf(names[j]) > -1) {
+                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
                         switch (names[j]) {
-                            case "Markem":
+                            case "marcatore":
                                 data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
                                 break;
-                            case "Packital":
+                            case "controllo peso":
                                 data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
                                 break;
-                            case "Etichettatrice":
+                            case "etichettatrice":
                                 data_linea.Macchine[i].nome = "Etichettatrice";
                                 break;
-                            case "Scatolatrice":
+                            case "scatolatrice":
                                 data_linea.Macchine[i].nome = "Scatolatrice";
                                 break;
                         }
@@ -130,11 +135,6 @@ sap.ui.define([
                 }
             }
         },
-//        ReorderMacchine: function (data) {
-//            var Macchine = ["Marcatore SX", "Marcatore DX", "PackItal SX", "PackItal DX", "Scatolatrice", "Etichettatrice"];
-//            var temp = [];
-//            for (var i = 0;i < )
-//        },
         getRandom: function () {
             var val = Math.floor(3 * Math.random());
             switch (val) {
@@ -409,7 +409,7 @@ sap.ui.define([
         },
 //        ************************ GESTIONE STILE PROGRESS INDICATOR ************************     
         BarColorCT: function (data) {
-            var progressBar;
+//            var progressBar;
             if (data.corta.length > 0) {
                 for (var i = 0; i < data.corta.length; i++) {
                     if (Number(data.corta[i].avanzamento) >= 100) {
@@ -417,21 +417,21 @@ sap.ui.define([
                     } else {
                         data.corta[i].avanzamento = Number(data.corta[i].avanzamento);
                     }
-                    progressBar = this.getView().byId("lineeCorta").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0];
-                    switch (data.corta[i].barColor) {
-                        case "yellow":
-                            progressBar.setState("Warning");
-                            break;
-                        case "green":
-                            progressBar.setState("Success");
-                            break;
-                        case "orange":
-                            progressBar.setState("Error");
-                            break;
-                    }
-                    if (data.corta[i].statolinea === "Disponibile.Fermo") {
-                        progressBar.setState("None");
-                    }
+//                    progressBar = this.getView().byId("lineeCorta").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0];
+//                    switch (data.corta[i].barColor) {
+//                        case "yellow":
+//                            progressBar.setState("Warning");
+//                            break;
+//                        case "green":
+//                            progressBar.setState("Success");
+//                            break;
+//                        case "orange":
+//                            progressBar.setState("Error");
+//                            break;
+//                    }
+//                    if (data.corta[i].statolinea === "Disponibile.Fermo") {
+//                        progressBar.setState("None");
+//                    }
                 }
             }
             return data;

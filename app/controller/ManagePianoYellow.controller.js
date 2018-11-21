@@ -165,7 +165,7 @@ sap.ui.define([
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
                     this.SettingsButtonColor();
-                    this.LineButtonStyle();
+//                    this.LineButtonStyle();
                     this.RefreshCounter = 0;
                 }
             }
@@ -241,7 +241,7 @@ sap.ui.define([
                     that.ModelLinea.setData(Jdata);
                 });
                 this.SettingsButtonColor();
-                this.LineButtonStyle();
+//                this.LineButtonStyle();
                 this.getView().setModel(this.ModelLinea, "linea");
             }
         },
@@ -268,6 +268,7 @@ sap.ui.define([
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
             }
             this.oDialog.open();
+            this.oDialog.setBusy(true);
             this.RefreshLogCounter = 5;
             var that = this;
             this.NDTIMER = setInterval(function () {
@@ -300,6 +301,7 @@ sap.ui.define([
                     }
                     this.ModelCause.setData(data);
                     this.getView().setModel(this.ModelCause, "fermiprogrammati");
+                    this.oDialog.setBusy(false);
                     if (this.STOPLOG === 0) {
                         this.RefreshLogCounter = 0;
                     }
