@@ -1147,6 +1147,10 @@
 .isWarning {
     background: rgba(255,211,0, 0.3);
 }
+.sapUiTableColCell .sapUiLbl {
+    text-align: center !important;
+    color: #003A6B;
+}
 .causale {
     position: absolute;
     bottom: -4rem;

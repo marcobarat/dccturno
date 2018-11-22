@@ -3,9 +3,10 @@ sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     'myapp/control/CustomTextAlarms',
+    'myapp/control/CustomButtonSin',
     'myapp/controller/Library',
     'sap/m/MessageToast'
-], function (jQuery, Controller, JSONModel, CustomTextAlarms, Library, MessageToast) {
+], function (jQuery, Controller, JSONModel, CustomTextAlarms, CustomButtonSin, Library, MessageToast) {
     "use strict";
     return Controller.extend("myapp.controller.OverviewLinea", {
         ModelSinottico: sap.ui.getCore().getModel("ModelSinottico"),
@@ -36,9 +37,10 @@ sap.ui.define([
                 tab = TabContainer.getItems()[i];
                 if (!sap.ui.getCore().byId(this.ModelSinottico.getData()[i].Macchine[0].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID)) {
                     for (j = 0; j < this.ModelSinottico.getData()[i].Macchine.length; j++) {
-                        button = new sap.m.Button({
+                        button = new CustomButtonSin({
                             id: this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID,
                             text: this.ModelSinottico.getData()[i].Macchine[j].nome,
+                            stato: this.ModelSinottico.getData()[i].Macchine[j].stato,
                             press: [this.ShowParameters, this]});
                         button.addStyleClass("buttonSinottico");
                         button.addStyleClass(this.ModelSinottico.getData()[i].Macchine[j].class);
@@ -46,7 +48,7 @@ sap.ui.define([
                     }
                 }
             }
-            this.UpdateButtons();
+//            this.UpdateButtons();
             for (i = 0; i < TabContainer.getItems().length; i++) {
                 if (this.ModelSinottico.getData()[i].IsSelected === "1") {
                     tab = TabContainer.getItems()[i];
@@ -95,7 +97,7 @@ sap.ui.define([
                 this.ModelSinottico.setData(Jdata);
                 this.ModelSinottico.refresh(true);
                 this.getView().setModel(this.ModelSinottico, "ModelSinottico");
-                this.UpdateButtons();
+//                this.UpdateButtons();
 //                this.RefreshFunction(10000);
             }
         },
@@ -142,9 +144,8 @@ sap.ui.define([
                     this.AlarmDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.AllarmiMacchina", this);
                     this.getView().addDependent(this.AlarmDialog);
                 }
-                this.AlarmDataCaller();
                 this.AlarmDialog.open();
-                this.AlarmDialog.setBusy(true);
+                this.AlarmDataCaller();
                 var that = this;
                 this.AlarmTIMER = setInterval(function () {
                     try {
@@ -207,7 +208,6 @@ sap.ui.define([
                 if (this.AlarmSTOP === 0) {
                     this.AlarmCounter = 0;
                 }
-                this.AlarmDialog.setBusy(false);
                 Library.RemoveClosingButtons.bind(this)("allarmiContainer");
             } else {
                 this.AlarmDialog.setBusy(false);
@@ -306,7 +306,9 @@ sap.ui.define([
                     text = sap.ui.getCore().byId("textCausale");
                 }
                 text.addStyleClass("causale");
-                sap.ui.getCore().byId("allarmiTab").addContent(text);
+                if (sap.ui.getCore().byId("allarmiTab")) {
+                    sap.ui.getCore().byId("allarmiTab").addContent(text);
+                }
             } else {
                 text = sap.ui.getCore().byId("textCausale");
                 if (text) {
