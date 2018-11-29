@@ -39,8 +39,8 @@ sap.ui.define([
                     for (j = 0; j < this.ModelSinottico.getData()[i].Macchine.length; j++) {
                         button = new CustomButtonSin({
                             id: this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID,
-                            text: this.ModelSinottico.getData()[i].Macchine[j].nome,
-                            stato: this.ModelSinottico.getData()[i].Macchine[j].stato,
+                            text: "{ModelSinottico>/" + i + "/Macchine/" + j + "/nome}",
+                            stato: "{ModelSinottico>/" + i + "/Macchine/" + j + "/stato}",
                             press: [this.ShowParameters, this]});
                         button.addStyleClass("buttonSinottico");
                         button.addStyleClass(this.ModelSinottico.getData()[i].Macchine[j].class);
@@ -62,7 +62,7 @@ sap.ui.define([
             this.TIMER = setInterval(function () {
                 try {
                     that.Counter++;
-                    if (that.STOP === 0 && that.Counter >= 20) {
+                    if (that.STOP === 0 && that.Counter >= 10) {
                         that.RefreshFunction();
                     }
                 } catch (e) {
@@ -190,6 +190,7 @@ sap.ui.define([
                 var causale = Jdata.causaleAllarme;
                 var i;
                 for (i = 0; i < Jdata.parametri.length; i++) {
+//                    Jdata.parametri[i].valore = this.GestioneMigliaia(Jdata.parametri[i].valore);
                     if (Jdata.parametri[i].isAllarme === "0") {
                         parametri.push(Jdata.parametri[i]);
                     } else {
@@ -200,6 +201,7 @@ sap.ui.define([
                         allarmi.push(Jdata.parametri[i]);
                     }
                 }
+                allarmi.sort(this.CompareSort);
                 this.ModelAllarmi.setData({"causale": causale, "allarmi": allarmi});
                 this.ModelParametri.setData(parametri);
                 this.TabsIntelligence();
@@ -214,6 +216,16 @@ sap.ui.define([
                 this.CloseDialog();
                 MessageToast.show(Jdata.errorMessage, {width: "25em", duration: "3000"});
             }
+        },
+        CompareSort: function (a, b) {
+            if (a.valore > b.valore)
+                return -1;
+            if (a.valore < b.valore)
+                return 1;
+            return 0;
+        },
+        GestioneMigliaia: function (val) {
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
         },
         TabsIntelligence: function () {
             var container = this.getView().byId("allarmiContainer");
@@ -230,15 +242,17 @@ sap.ui.define([
                         enableColumnReordering: false,
                         enableSelectAll: false,
                         ariaLabelledBy: "title",
-                        visibleRowCount: 12,
+                        visibleRowCount: 14,
                         columns: [
                             new sap.ui.table.Column({
                                 label: "Allarme",
-                                hAlign: "Center",
+                                hAlign: "Left",
                                 vAlign: "Middle",
+                                width: "70%",
                                 resizable: false,
                                 template: new CustomTextAlarms({
                                     text: "{allarmi>parametro}",
+                                    tooltip: "{allarmi>parametro}",
                                     maxLines: 1,
                                     isAlarm: "{allarmi>isAllarme}",
                                     isBlock: "{allarmi>isBloccante}",
@@ -247,52 +261,69 @@ sap.ui.define([
                                 label: "Valore",
                                 hAlign: "Center",
                                 vAlign: "Middle",
+                                width: "15%",
                                 resizable: false,
                                 template: new CustomTextAlarms({
                                     text: "{allarmi>valore}",
+                                    tooltip: "{allarmi>valore}",
+                                    maxLines: 1,
+                                    isAlarm: "{allarmi>isAllarme}",
+                                    isBlock: "{allarmi>isBloccante}",
+                                    isActive: "{allarmi>isActive}"})}),
+                            new sap.ui.table.Column({
+                                label: "Tag Kepware",
+                                hAlign: "Center",
+                                vAlign: "Middle",
+                                width: "15%",
+                                resizable: false,
+                                template: new CustomTextAlarms({
+                                    text: "{allarmi>tag}",
+                                    tooltip: "{allarmi>tag}",
                                     maxLines: 1,
                                     isAlarm: "{allarmi>isAllarme}",
                                     isBlock: "{allarmi>isBloccante}",
                                     isActive: "{allarmi>isActive}"})})
                         ]
                     });
+                    Table.addStyleClass("fontTable");
+                    Table.addStyleClass("labelTable");
                     Item.addContent(Table);
                     container.addItem(Item);
                     container.setSelectedItem(Item);
                 }
-                if (this.macchina === "Scatolatrice") {
-                    if (!sap.ui.getCore().byId("scatoTab")) {
-                        var ItemScato = new sap.m.TabContainerItem({id: "scatoTab"});
-                        var name_linea = sap.ui.getCore().byId(this.getView().byId("schemaLineeContainer").getSelectedItem()).getName();
-                        ItemScato.setName("Sinottico");
-                        var flexy = (!sap.ui.getCore().byId("sinotticoFlex")) ? new sap.m.FlexBox({id: "sinotticoFlex", alignItems: "Start", justifyContent: "Center"}) : sap.ui.getCore().byId("sinotticoFlex");
-                        var img = (!sap.ui.getCore().byId("sinotticoScat")) ? new sap.m.Image({id: "sinotticoScat", height: "30rem"}) : sap.ui.getCore().byId("sinotticoScat");
-                        img.setSrc("img/" + name_linea.toLowerCase().split(" ").join("_") + "_scatolatrice.png");
-                        flexy.addItem(img);
-                        ItemScato.addContent(flexy);
-                        container.addItem(ItemScato);
-                        container.setSelectedItem(ItemScato);
-                    }
-                } else {
-                    if (sap.ui.getCore().byId("scatoTab")) {
-                        container.removeItem(sap.ui.getCore().byId("scatoTab"));
-                        sap.ui.getCore().byId("sinotticoScat").destroy();
-                        sap.ui.getCore().byId("sinotticoFlex").destroy();
-                        sap.ui.getCore().byId("scatoTab").destroy();
-                    }
-                }
+//                if (this.macchina === "Scatolatrice") {
+//                    if (!sap.ui.getCore().byId("scatoTab")) {
+//                        var ItemScato = new sap.m.TabContainerItem({id: "scatoTab"});
+//                        var name_linea = sap.ui.getCore().byId(this.getView().byId("schemaLineeContainer").getSelectedItem()).getName();
+//                        ItemScato.setName("Sinottico");
+//                        var flexy = (!sap.ui.getCore().byId("sinotticoFlex")) ? new sap.m.FlexBox({id: "sinotticoFlex", alignItems: "Start", justifyContent: "Center"}) : sap.ui.getCore().byId("sinotticoFlex");
+//                        var img = (!sap.ui.getCore().byId("sinotticoScat")) ? new sap.m.Image({id: "sinotticoScat", height: "30rem"}) : sap.ui.getCore().byId("sinotticoScat");
+//                        img.setSrc("img/" + name_linea.toLowerCase().split(" ").join("_") + "_scatolatrice.png");
+//                        flexy.addItem(img);
+//                        ItemScato.addContent(flexy);
+//                        container.addItem(ItemScato);
+//                        container.setSelectedItem(ItemScato);
+//                    }
+//                } else {
+//                    if (sap.ui.getCore().byId("scatoTab")) {
+//                        container.removeItem(sap.ui.getCore().byId("scatoTab"));
+//                        sap.ui.getCore().byId("sinotticoScat").destroy();
+//                        sap.ui.getCore().byId("sinotticoFlex").destroy();
+//                        sap.ui.getCore().byId("scatoTab").destroy();
+//                    }
+//                }
             } else {
                 if (sap.ui.getCore().byId("allarmiTab")) {
                     container.removeItem(sap.ui.getCore().byId("allarmiTab"));
                     sap.ui.getCore().byId("allarmiTable").destroy();
                     sap.ui.getCore().byId("allarmiTab").destroy();
                 }
-                if (sap.ui.getCore().byId("scatoTab")) {
-                    container.removeItem(sap.ui.getCore().byId("scatoTab"));
-                    sap.ui.getCore().byId("sinotticoScat").destroy();
-                    sap.ui.getCore().byId("sinotticoFlex").destroy();
-                    sap.ui.getCore().byId("scatoTab").destroy();
-                }
+//                if (sap.ui.getCore().byId("scatoTab")) {
+//                    container.removeItem(sap.ui.getCore().byId("scatoTab"));
+//                    sap.ui.getCore().byId("sinotticoScat").destroy();
+//                    sap.ui.getCore().byId("sinotticoFlex").destroy();
+//                    sap.ui.getCore().byId("scatoTab").destroy();
+//                }
             }
             var text;
             if (causale !== "") {

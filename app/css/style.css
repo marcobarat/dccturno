@@ -532,6 +532,54 @@
 .marginPanel {
     margin-right: 10%; 
 }
+
+.sapMBtnLineaLong .sapMBtn {
+    height: 100%; 
+    padding: 0pt !important;
+    margin: 0pt !important;  
+}
+.sapMBtnLineaLong .sapMBtnBase {
+    height: 100%; 
+    padding: 0pt !important;
+    margin: 0pt !important;  
+}
+.sapMBtnLineaLong .sapMBtnText .sapMBtnContent {
+    line-height: 1.8rem;
+    text-shadow: 0 0 0;
+    font-size: 20pt;
+    padding-top: 0.2rem;
+}
+.sapMBtnLineaLong .sapMBtnInner {
+    height: 2.3rem;
+    bottom: 0.3rem;
+    width: 11.1rem;
+    box-sizing: content-box;
+}
+.LineeMPILong {
+    position: relative;
+    border: 0px !important;
+    padding: 0px !important;
+    margin: 0rem !important;
+    height: 2.9rem;
+    bottom: 0.05rem;
+}
+/*.LineeMPILong .sapMPI {
+    color: #003A6B; 
+    background-color: transparent !important;
+    position: absolute !important;
+    right: 0px; 
+}*/
+
+.LineeMPILong .sapMPIText {
+    color: #003A6B; 
+    background-color: transparent !important;
+    position: absolute !important;
+    right: 0rem; 
+    padding-right: 0.5rem;
+    padding-top: 0.3rem;
+    font-size: 20pt;
+}
+
 /*----------------------------------------
 ----------------------------------------
 ----------------------------------------*/
@@ -988,14 +1036,18 @@
     position: relative;
     border: 0px;
     border-radius: 0px;
-    height: 2.65rem;
-    bottom: 0.25rem;
+    height: 2.9rem;
+    bottom: 0.3rem;
+    width: 6.6rem;
 }
 .SPCButtonsDimensionsSin .sapMBtnContent {
     position: absolute;
-    left: 36%;
-    top: 7%;
+    left: 40.5%;
+    top: 10%;
     font-size: 11pt;
+}
+.SPCCorrection .sapMBtnInner {
+    width: 6.65rem;
 }
 .SPCButtonColorGreenSin .sapMBtnInner {
     background: #7CA295; 
@@ -1147,9 +1199,22 @@
 .isWarning {
     background: rgba(255,211,0, 0.3);
 }
-.sapUiTableColCell .sapUiLbl {
+.labelTable .sapUiTableColCell .sapUiLbl {
     text-align: center !important;
     color: #003A6B;
+    font-size: 15pt !important;
+    line-height: 18pt;
+}
+.labelTable .sapMLabel {
+    text-align: center !important;
+    color: #003A6B;
+    font-size: 15pt !important;
+    line-height: 18pt;
+}
+.labelTable .sapUiTableColCell, .sapUiTableColRowHdrIco {
+    text-align: center !important;
+    color: #003A6B;
+    font-size: 15pt !important;
 }
 .causale {
     position: absolute;
@@ -1160,8 +1225,13 @@
     color: #A71930;
 }
 
+.shiftDownContent {
+    top: 4rem;
+}
 
-
+.fontTable .sapMText {
+    font-size: 15pt;
+}
 
 
 

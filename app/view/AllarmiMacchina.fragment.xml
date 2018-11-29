@@ -6,9 +6,9 @@
     xmlns:wt="myapp.control" 
     controllerName="myapp.controller.OverviewLinea"
     xmlns:t="sap.ui.table">
-    <Dialog contentWidth="1000px" contentHeight="600px" horizontalScrolling="false" afterClose="DestroyDialog" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu"  id="allarmiMacchina">
+    <Dialog contentWidth="80rem" contentHeight="40rem" horizontalScrolling="false" afterClose="DestroyDialog" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu"  id="allarmiMacchina">
         <VBox height="100%" width="100%">
-            <VBox height="90%" width="100%">
+            <VBox height="36rem" width="100%">
                 <VBox height="100%" width="100%">
                     <TabContainer id="allarmiContainer">
                         <items>    
@@ -16,23 +16,31 @@
                                 <content>
                                     <t:Table
                                         enableColumnReordering="false"
+                                        class="fontTable labelTable"
                                         selectionMode="None"
                                         visibleRowCount="16"
                                         rows="{parametri>/}"
                                         id="parametriTable">
                                         <t:columns>
-                                            <t:Column hAlign="Center" vAlign="Middle" width="50%">
-                                                <Label text="Parametro"/>
+                                            <t:Column hAlign="Left" vAlign="Middle" width="45%">
+                                                <Label text="Parametro" vAlign="Middle"/>
                                                 <t:template>
-                                                    <Text text="{parametri>parametro}" maxLines="1"/>
+                                                    <Text text="{parametri>parametro}" tooltip="{parametri>parametro}" maxLines="1"/>
                                                 </t:template>
                                             </t:Column>
-                                            <t:Column hAlign="Center" vAlign="Middle" width="50%">
+                                            <t:Column hAlign="Center" vAlign="Middle" width="40%">
                                                 <Label text="Valore"/>
                                                 <t:template>
-                                                    <Text text="{parametri>valore}" maxLines="1"/>
+                                                    <Text text="{parametri>valore}" tooltip="{parametri>valore}" maxLines="1"/>
                                                 </t:template>
                                             </t:Column>
+                                            <t:Column hAlign="Center" vAlign="Middle" width="15%">
+                                                <Label text="Tag Kepware"/>
+                                                <t:template>
+                                                    <Text text="{parametri>tag}" tooltip="{parametri>tag}" maxLines="1"/>
+                                                </t:template>
+                                            </t:Column>
+                                            
                                         </t:columns>
                                     </t:Table>
                                 </content>

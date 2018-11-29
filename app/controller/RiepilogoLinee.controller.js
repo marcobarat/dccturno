@@ -61,17 +61,27 @@ sap.ui.define([
         RefreshModelLinee: function (Jdata) {
             if (this.STOP === 0) {
                 this.RefreshCounter = 0;
-                for (var i = 0; i < Jdata.corta.length; i++) {
-                    Jdata.corta[i].avanzamento = (Number(Jdata.corta[i].avanzamento) * 100 >= 100) ? 100 : Number(Jdata.corta[i].avanzamento) * 100;
-                    Jdata.corta[i].perc_avanzamento = String(Math.round(Jdata.corta[i].avanzamento * 100) / 100) + "%";
+                for (var i = 0; i < Jdata.length; i++) {
+                    for (var j = 0; j < Jdata[i].Linee.length; j++) {
+                        Jdata[i].Linee[j].avanzamento = (Number(Jdata[i].Linee[j].avanzamento) * 100 >= 100) ? 100 : Number(Jdata[i].Linee[j].avanzamento) * 100;
+                        Jdata[i].Linee[j].perc_avanzamento = String(Math.round(Number(Jdata[i].Linee[j].avanzamento)));
+                        Jdata[i].Linee[j].destinazione = (Jdata[i].Linee[j].destinazione === "---") ? "" : Jdata[i].Linee[j].destinazione;
+                        Jdata[i].Linee[j].IMG = String(Number(Jdata[i].Linee[j].formato.replace(/\D/g, ""))) + ".jpg";
+                        Jdata[i].Linee[j].cartoniProdotti = String(Math.round(Number(Jdata[i].Linee[j].cartoniProdotti)));
+                        Jdata[i].Linee[j].cartoniResidui = String(Math.round(Number(Jdata[i].Linee[j].cartoniResidui)));
+                        Jdata[i].Linee[j].disponibilita = String(Math.round(Number(Jdata[i].Linee[j].disponibilita.slice(0,Jdata[i].Linee[j].disponibilita.length-1))));
+                        Jdata[i].Linee[j].efficienza = String(Math.round(Number(Jdata[i].Linee[j].efficienza.slice(0,Jdata[i].Linee[j].efficienza.length-1))));
+                    }
                 }
                 this.ModelLinee.setData(Jdata);
                 this.ModelLinee.refresh(true);
                 this.getView().setModel(this.ModelLinee, "linee");
+                sap.ui.getCore().setModel(this.ModelLinee, "linee");
+                Library.RemoveClosingButtons.bind(this)("schemaLineeContainer");
 //                this.LineButtonStyle();
                 this.BarColorCT(this.ModelLinee.getData());
 //                this.SPCColorCT(this.ModelLinee.getData());
-                this.CheckCells();
+//                this.CheckCells();
 //                this.RefreshFunction(10000);
             }
         },
@@ -410,13 +420,14 @@ sap.ui.define([
 //        ************************ GESTIONE STILE PROGRESS INDICATOR ************************     
         BarColorCT: function (data) {
 //            var progressBar;
-            if (data.corta.length > 0) {
-                for (var i = 0; i < data.corta.length; i++) {
-                    if (Number(data.corta[i].avanzamento) >= 100) {
-                        data.corta[i].avanzamento = 100;
-                    } else {
-                        data.corta[i].avanzamento = Number(data.corta[i].avanzamento);
-                    }
+            for (var j = 0; j < data.length; j++) {
+                if (data[j].length > 0) {
+                    for (var i = 0; i < data[j].length; i++) {
+                        if (Number(data[j].Linee[i].avanzamento) >= 100) {
+                            data[j].Linee[i].avanzamento = 100;
+                        } else {
+                            data[j].Linee[i].avanzamento = Number(data[j].Linee[i].avanzamento);
+                        }
 //                    progressBar = this.getView().byId("lineeCorta").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0];
 //                    switch (data.corta[i].barColor) {
 //                        case "yellow":
@@ -432,6 +443,7 @@ sap.ui.define([
 //                    if (data.corta[i].statolinea === "Disponibile.Fermo") {
 //                        progressBar.setState("None");
 //                    }
+                    }
                 }
             }
             return data;
