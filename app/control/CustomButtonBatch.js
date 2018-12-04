@@ -4,7 +4,7 @@ sap.ui.define([
     'jquery.sap.global'
 ], function (Control, Button, jQuery) {
     "use strict";
-    return Button.extend("myapp.control.CustomButtonSettings", {
+    return Button.extend("myapp.control.CustomButtonBatch", {
 
         metadata: {
             //eventi 
@@ -15,30 +15,23 @@ sap.ui.define([
                 }
             },
             properties: {
-                stato: {type: "string", defaultValue: ""}
+                stato: {type: "string", defaultValue: "0"}
             }
         },
         renderer: {},
 
         onAfterRendering: function () {
-            var classes = ["BatchInMacchina", "BatchInAttesa", "BatchTrasferito", "BatchSchedulato"];
+            var classes = ["BatchError", "BatchWarning"];
             var stato = this.getStato();
             for (var k = 0; k < classes.length; k++) {
                 this.removeStyleClass(classes[k]);
             }
             switch (stato) {
-                case 'In lavorazione':
-                case 'Attrezzaggio':
-                    this.addStyleClass("BatchInMacchina");
+                case '1':
+                    this.addStyleClass("BatchError");
                     break;
-                case 'Attesa presa in carico':
-                    this.addStyleClass("BatchTrasferito");
-                    break;
-                case 'Schedulato':
-                    this.addStyleClass("BatchSchedulato");
-                    break;
-                default:
-                    this.addStyleClass("BatchInAttesa");
+                case '2':
+                    this.addStyleClass("BatchWarning");
                     break;
             }
         }

@@ -40,7 +40,6 @@
                                                     <Text text="{parametri>tag}" tooltip="{parametri>tag}" maxLines="1"/>
                                                 </t:template>
                                             </t:Column>
-                                            
                                         </t:columns>
                                     </t:Table>
                                 </content>

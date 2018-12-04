@@ -34,6 +34,7 @@ sap.ui.define([
         turnoPath: null,
         data_json: {},
         getDialog: null,
+        BusyDialog: new sap.m.BusyDialog(),
 
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
@@ -71,6 +72,7 @@ sap.ui.define([
 //        
 //         -> CREA REPORT
         CreateReport: function () {
+            this.BusyDialog.open();
             if (!this.getView().byId("reportButton").getEnabled()) {
                 var link;
                 if (this.ISLOCAL === 1) {
@@ -93,15 +95,18 @@ sap.ui.define([
             sap.ui.getCore().setModel(this.ModelOEE, "ReportOEE");
             this.getView().setModel(this.ModelOEE, "ReportOEE");
             this.RendiInformazioniVisibili();
+            this.BusyDialog.close();
         },
 //         -> MOSTRA REPORT
         ShowReport: function () {
+            this.BusyDialog.open();
             var that = this;
             this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             this.getOwnerComponent().getRouter().navTo("Report", {turnoPath: that.turnoPath, pianoPath: that.pianoPath});
         },
 //         -> CHIUSURA PIANO
         ConfermaChiusuraPiano: function () {
+            this.BusyDialog.open();
             if (this.ISLOCAL === 1) {
                 this.SUCCESSConfermaChiusura();
             } else {
@@ -114,9 +119,11 @@ sap.ui.define([
             this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("piani");
+            this.BusyDialog.close();
         },
 //         -> PULSANTE D'USCITA
         BackToPiani: function () {
+            this.BusyDialog.open();
             this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("piani", true);

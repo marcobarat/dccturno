@@ -156,10 +156,16 @@ sap.ui.define([
             clearInterval(this.TIMER);
             this.STOP = 1;
             for (var i = 0; i < Jdata.linee.length; i++) {
+                Jdata.linee[i].addButton = true;
                 if (Number(Jdata.linee[i].avanzamento) >= 100) {
                     Jdata.linee[i].avanzamento = 100;
                 } else {
                     Jdata.linee[i].avanzamento = Number(Jdata.linee[i].avanzamento);
+                }
+                for (var j = 0;j < Jdata.linee[i].batchlist.length; j++) {
+                    if (Jdata.linee[i].batchlist[j].erroreBatch === "1") {
+                        Jdata.linee[i].batchlist[j].sequenza = "ERR";
+                    }
                 }
             }
             this.ModelLinea.setData(Jdata);
@@ -173,6 +179,9 @@ sap.ui.define([
         SUCCESSTurnoApertoFuturo: function (Jdata) {
             clearInterval(this.TIMER);
             this.STOP = 1;
+            for (var i = 0; i < Jdata.linee.length; i++) {
+                Jdata.linee[i].addButton = true;
+            }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");
             this.PDCParameters.pdc = Jdata.pdcId;
@@ -183,6 +192,7 @@ sap.ui.define([
         },
         BackToMain: function () {
             clearInterval(this.TIMER);
+            this.BusyDialog.open();
             this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("Main");
         }

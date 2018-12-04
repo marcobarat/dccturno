@@ -20,6 +20,7 @@ sap.ui.define([
         StabilimentoID: null,
         pdcID: null,
         repartoID: null,
+        BusyDialog: new sap.m.BusyDialog(),
         rowHTML: null,
         onInit: function () {
             this.ModelGuasti.setSizeLimit("1000");
@@ -234,6 +235,7 @@ sap.ui.define([
                     });
         },
         onBackNav: function () {
+            this.BusyDialog.open();
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDpassato&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
             Library.AjaxCallerData(link, this.SUCCESSTurnoChiuso.bind(this));
         },

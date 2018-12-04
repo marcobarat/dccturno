@@ -20,6 +20,7 @@ sap.ui.define([
         repartoID: null,
         linea_id: null,
         confezione: null,
+        numeroLinee: null,
         grammatura: null,
         row: null,
         linea: null,
@@ -124,6 +125,8 @@ sap.ui.define([
             bck = Library.RecursiveSelectReordering(bck);
             this.ModelSKU.setData(bck);
             this.getView().setModel(this.ModelSKU, "SKU");
+            this.BusyDialog.close();
+            this.oDialog.setBusy(false);
             setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
         },
 //        FUNZIONI DI REFRESH
@@ -146,7 +149,7 @@ sap.ui.define([
                 IsRidotta = "0";
             }
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&IsRidotta=" + IsRidotta + "&OutputParameter=JSON";
-            Library.SyncAjaxCallerData(link, this.RefreshDataSet.bind(this));
+            Library.AjaxCallerData(link, this.RefreshDataSet.bind(this));
         },
         RefreshDataSet: function (Jdata) {
             if (this.ISLOCAL !== 1) {
@@ -164,8 +167,6 @@ sap.ui.define([
                     this.ModelLinea.setData(this.ModelLinea.getData());
                     this.getView().setModel(this.ModelLinea, "linea");
                     sap.ui.getCore().setModel(this.ModelLinea, "linee");
-                    this.SettingsButtonColor();
-//                    this.LineButtonStyle();
                     this.RefreshCounter = 0;
                 }
             }
@@ -206,12 +207,8 @@ sap.ui.define([
 //        
 //         -> PULSANTE D'USCITA
         BackToPiani: function () {
+            this.BusyDialog.open();
             clearInterval(this.TIMER);
-            var AddButton;
-            for (var i = 0; i < this.ModelLinea.getData().linee.length; i++) {
-                AddButton = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[0].getItems()[0].getItems()[1].getItems()[0];
-                AddButton.setEnabled(true);
-            }
             this.DeleteUncompleteBatches();
             this.STOP = 1;
             this.getView().byId("ManageIconTabBar").setSelectedKey("1");
@@ -232,16 +229,16 @@ sap.ui.define([
         },
 //         -> CAMBIO REPARTO
         ChangeReparto: function (event) {
+            this.BusyDialog.open();
             var link;
             var that = this;
             this.repartoID = event.getParameters().key;
             if (this.ISLOCAL !== 1) {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetPdcFromPdcIDandRepartoIDfuturo&Content-Type=text/json&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&IsRidotta=0&OutputParameter=JSON";
-                Library.SyncAjaxCallerData(link, function (Jdata) {
+                Library.AjaxCallerData(link, function (Jdata) {
                     that.ModelLinea.setData(Jdata);
+                    that.BusyDialog.close();
                 });
-                this.SettingsButtonColor();
-//                this.LineButtonStyle();
                 this.getView().setModel(this.ModelLinea, "linea");
             }
         },
@@ -326,7 +323,7 @@ sap.ui.define([
             } else {
                 link = link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
             }
-            Library.SyncAjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
+            Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
         },
         DestroyDialog: function () {
             clearInterval(this.NDTIMER);
@@ -418,6 +415,7 @@ sap.ui.define([
             obj.destinazione = last_batch.destinazione;
             obj.secondiPerPezzo = last_batch.secondiPerPezzo;
             obj.pezziCartone = last_batch.pezziCartone;
+            obj.numeroLinee = last_batch.numeroLinee;
             obj.modifyBatch = 1;
             obj.SKUCodiceInterno = last_batch.SKUCodiceInterno;
             linea.batchlist.push(obj);
@@ -589,6 +587,7 @@ sap.ui.define([
                 oRow.getCells()[3].setEnabled(true);
                 row_binded.pezziCartone = Number(Jdata.pezziCartone);
                 row_binded.secondiPerPezzo = Number(Jdata.secondiPerPezzo);
+                row_binded.numeroLinee = Number(Jdata.numeroLinee);
             } else {
                 oRow.getCells()[4].setEnabled(false);
                 oRow.getCells()[5].setEnabled(false);
@@ -603,6 +602,7 @@ sap.ui.define([
         },
 //              - BUTTON DESTINAZIONE
         ModifyBatchDetails: function (event) {
+            this.BusyDialog.open();
             var oRow;
             if (event) {
                 this.ModelLinea.getProperty(event.getSource().getBindingContext("linea").getPath()).modifyBatch = 1;
@@ -662,9 +662,11 @@ sap.ui.define([
                 obj.tipologia = row_binded.confezione;
                 obj.grammatura = row_binded.grammatura;
                 obj.destinazione = row_binded.destinazione;
+                var that = this;
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
-                Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this), function (error) {
+                Library.AjaxCallerData(link, this.SUCCESSSKU.bind(this), function (error) {
                     console.log(error);
+                    that.BusyDialog.close();
                 });
                 this.oDialog = oView.byId("modificaAttributi");
                 if (!this.oDialog) {
@@ -676,6 +678,7 @@ sap.ui.define([
                 this.getView().byId("cliente_SKU").setValue(oRow.getCells()[3].getText());
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
+                this.oDialog.setBusy(true);
             }
         },
 //              - INPUT QLI, CARTONI E ORE
@@ -747,6 +750,7 @@ sap.ui.define([
             row_binded.modifyBatch = 1;
             this.pezzi_cartone = row_binded.pezziCartone;
             this.tempo_ciclo = row_binded.secondiPerPezzo;
+            this.numeroLinee = row_binded.numeroLinee;
             var grammatura, numero_pezzi, cartoni, ore, quintali;
             var oValueChanged = event.getParameter("value");
             var oCellChanged = event.getSource();
@@ -756,18 +760,18 @@ sap.ui.define([
                 numero_pezzi = (oValueChanged * 100) / (grammatura / 1000);
                 cartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
                 oRow.getCells()[5].setValue(cartoni);
-                ore = Math.floor(numero_pezzi * this.tempo_ciclo);
+                ore = Math.floor((numero_pezzi * this.tempo_ciclo) / this.numeroLinee);
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[5]) {
                 numero_pezzi = oValueChanged * this.pezzi_cartone;
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
-                ore = Math.floor(numero_pezzi * this.tempo_ciclo);
+                ore = Math.floor((numero_pezzi * this.tempo_ciclo) / this.numeroLinee);
                 oRow.getCells()[6].setValue(Library.SecondsToStandard(ore));
             }
             if (oCellChanged === oRow.getCells()[6]) {
-                numero_pezzi = (Library.standardToMinutes(oValueChanged) * 60) / this.tempo_ciclo;
+                numero_pezzi = ((Library.standardToMinutes(oValueChanged) * 60) / this.tempo_ciclo) * this.numeroLinee;
                 cartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
                 quintali = (numero_pezzi * grammatura) / 100000;
                 oRow.getCells()[4].setValue(Library.roundTo(quintali, 2));
@@ -841,15 +845,17 @@ sap.ui.define([
                 if (Number(this.ISLOCAL) === 1) {
                     oRow.getCells()[7].setVisible(false);
                 } else {
+                    this.BusyDialog.open();
                     this.rowBinded = row_binded;
                     link = "/XMII/Runner?Transaction=DeCecco/Transactions/InsertUpdateBatch&Content-Type=text/json&xml=" + doc_xml + "&OutputParameter=JSON";
-                    Library.SyncAjaxCallerData(link, function (Jdata) {
+                    Library.AjaxCallerData(link, function (Jdata) {
                         if (Number(Jdata.error) === 0) {
                             that.rowBinded.modifyBatch = 0;
                             that.RefreshFunction(0, "0");
                         } else {
                             MessageToast.show(Jdata.errorMessage, {duration: 180});
                         }
+                        that.BusyDialog.close();
                     });
                     var path = event.getSource().getBindingContext("linea").sPath.split("/");
                     var index = Number(path[path.indexOf("linee") + 1]);
@@ -862,6 +868,7 @@ sap.ui.define([
         },
 //              - ANNULLA CONFERMA/INSERISCI BATCH
         UndoBatchCreation: function (event) {
+            this.BusyDialog.open();
             this.oButton = event.getSource();
             var Path = event.getSource().getBindingContext("linea").sPath;
             var PathArray = Path.split("/");
@@ -872,7 +879,7 @@ sap.ui.define([
             if (row_binded.batchID && !row_binded.statoBatch) {
                 AddButton.setEnabled(true);
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/CancellazioneBatch&Content-Type=text/json&BatchID=" + row_binded.batchID + "&LineaID=" + this.linea_id + "&OutputParameter=JSON";
-                Library.SyncAjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
+                Library.AjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
             } else {
                 if (row_binded.batchID) {
                     row_binded.modifyBatch = 0;
@@ -881,6 +888,7 @@ sap.ui.define([
                     AddButton.setEnabled(true);
                 }
                 this.RefreshFunction(0, "0");
+                this.BusyDialog.close();
             }
         },
 //        >>>>>>>>>>>>>>>>>> FUNZIONI DI SUPPORTO <<<<<<<<<<<<<<<<<<
@@ -897,45 +905,6 @@ sap.ui.define([
             }
             return bck;
         },
-//      GESTIONE STILE PULSANTE LINEA
-        LineButtonStyle: function () {
-            var classes = ["LineaDispo", "LineaNonDispo", "LineaVuota", "LineaAttrezzaggio", "LineaLavorazione", "LineaFermo", "LineaSvuotamento"];
-            var data = this.ModelLinea.getData();
-            var button;
-            var state;
-            for (var i = 0; i < data.linee.length; i++) {
-                button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0].getItems()[0];
-                for (var k = 0; k < classes.length; k++) {
-                    button.removeStyleClass(classes[k]);
-                }
-                state = data.linee[i].statolinea.split(".");
-                switch (state[0]) {
-                    case 'Disponibile':
-                        button.addStyleClass("LineaDispo");
-                        break;
-                    case 'NonDisponibile':
-                        button.addStyleClass("LineaNonDispo");
-                        break;
-                }
-                switch (state[1]) {
-                    case "Vuota":
-                        button.addStyleClass("LineaVuota");
-                        break;
-                    case "Attrezzaggio":
-                        button.addStyleClass("LineaAttrezzaggio");
-                        break;
-                    case "Lavorazione":
-                        button.addStyleClass("LineaLavorazione");
-                        break;
-                    case "Fermo":
-                        button.addStyleClass("LineaFermo");
-                        break;
-                    case "Svuotamento":
-                        button.addStyleClass("LineaSvuotamento");
-                        break;
-                }
-            }
-        },
 //       ************************ TABELLA 80% DI DESTRA ************************
 
         DeleteUncompleteBatches: function () {
@@ -946,28 +915,6 @@ sap.ui.define([
                     if (model[i].batchlist[j].batchID && !model[i].batchlist[j].statoBatch) {
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/CancellazioneBatch&Content-Type=text/json&BatchID=" + model[i].batchlist[j].batchID + "&LineaID=" + model[i].lineaID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSCancellazioneBatch.bind(this));
-                    }
-                }
-            }
-        },
-        //      GESTIONE STILE PULSANTE IMPOSTAZIONI BATCH
-        SettingsButtonColor: function () {
-            var classes = ["BatchSchedulato", "BatchInAttesa"];
-            var data = this.ModelLinea.getData();
-            var button;
-            for (var i = 0; i < data.linee.length; i++) {
-                for (var j = 0; j < data.linee[i].batchlist.length; j++) {
-                    button = this.getView().byId("managePianoTable").getItems()[i].getCells()[0].getItems()[0].getItems()[1].getItems()[0].getItems()[1].getItems()[1].getContent()[0].getItems()[j].getCells()[7].getItems()[0].getItems()[0].getItems()[0];
-                    for (var k = 0; k < classes.length; k++) {
-                        button.removeStyleClass(classes[k]);
-                    }
-                    switch (data.linee[i].batchlist[j].statoBatch) {
-                        case 'Schedulato':
-                            button.addStyleClass("BatchSchedulato");
-                            break;
-                        default:
-                            button.addStyleClass("BatchInAttesa");
-                            break;
                     }
                 }
             }
@@ -1022,6 +969,7 @@ sap.ui.define([
         },
         ChangeSKU: function () {
 //            var array_confezione;
+            this.BusyDialog.open();
             if (this.ISLOCAL !== 1) {
 //                if (this.getView().byId("confezione_SKU").getSelectedItem() !== null) {
 //                    array_confezione = this.getView().byId("confezione_SKU").getSelectedItem().getKey().split(" ");
@@ -1042,7 +990,7 @@ sap.ui.define([
                 obj.tipologia = this.confezione;
                 obj.grammatura = this.grammatura;
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
-                Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this));
+                Library.AjaxCallerData(link, this.SUCCESSSKU.bind(this));
             }
         },
         EnableDestinazioni: function () {
@@ -1090,11 +1038,12 @@ sap.ui.define([
             var path = selectObj.getBindingContext("SKU").sPath;
             var itemList = this.ModelSKU.getProperty(path).value;
             var ID = selectObj.getSelectedKey();
-            for (var i = 0;i < itemList.length; i++) {
+            for (var i = 0; i < itemList.length; i++) {
                 itemList[i].isSelected = (itemList[i].ID === ID) ? "1" : "0";
             }
         },
         ConfermaModifiche: function () {
+            this.BusyDialog.open();
             var rowPath = this.row.getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
             var idBatch = "";
@@ -1105,15 +1054,17 @@ sap.ui.define([
             var xmlInsert = this.BuildXMLForInsertBatch();
             var xmlModify = Library.XMLSetupUpdatesCT(this.ModelParametri.getData(), idBatch);
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboInsert_Change&Content-Type=text/json&xmlinsert=" + xmlInsert + "&xmlchange=" + xmlModify + "&xmlalternative=" + xmlSelections + "&OutputParameter=JSON";
-            Library.SyncAjaxCallerData(link, this.SUCCESSConfermaModifiche.bind(this));
+            Library.AjaxCallerData(link, this.SUCCESSConfermaModifiche.bind(this));
         },
         SUCCESSConfermaModifiche: function (Jdata) {
+            this.BusyDialog.close();
             if (Number(Jdata.error) === 0) {
                 var rowPath = this.row.getBindingContext("linea").sPath;
                 var row_binded = this.getView().getModel("linea").getProperty(rowPath);
                 row_binded.batchID = Jdata.NewBatchID;
                 row_binded.pezziCartone = Jdata.JSONinfo.pezziCartone;
                 row_binded.secondiPerPezzo = Jdata.JSONinfo.secondiPerPezzo;
+                row_binded.numeroLinee = Jdata.JSONinfo.numeroLinee;
                 this.row.getCells()[1].setValue(this.getView().byId("formato_SKU").getValue());
                 this.row.getCells()[2].destroyItems();
                 this.row.getCells()[2].setValue(this.getView().byId("confezione_SKU").getValue());
@@ -1283,6 +1234,7 @@ sap.ui.define([
 
         },
         ShowBatchDetails: function () {
+            this.BusyDialog.open();
             var Path = this.oButton.getBindingContext("linea").sPath;
             var pathArray = Path.split("/");
             var linea_path = "/linee/" + pathArray[pathArray.indexOf("linee") + 1] + "/";
@@ -1307,7 +1259,7 @@ sap.ui.define([
                 obj.grammatura = row_binded.grammatura;
                 obj.destinazione = row_binded.destinazione;
                 var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetSKUFromFiltered&Content-Type=text/json&xml=" + Library.createXMLBatch(obj) + "&OutputParameter=JSON";
-                Library.SyncAjaxCallerData(link, this.SUCCESSSKU.bind(this));
+                Library.AjaxCallerData(link, this.SUCCESSSKU.bind(this));
                 this.oDialog = oView.byId("visualizzaAttributi");
                 if (!this.oDialog) {
                     this.oDialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.visualizzaAttributi", this);
@@ -1315,6 +1267,7 @@ sap.ui.define([
                 }
                 Library.RemoveClosingButtons.bind(this)("attributiContainer");
                 this.oDialog.open();
+                this.oDialog.setBusy(true);
             }
         },
         SUCCESSTrasferimentoSchedulato: function (Jdata) {

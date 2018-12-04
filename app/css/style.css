@@ -552,7 +552,7 @@
 .sapMBtnLineaLong .sapMBtnInner {
     height: 2.3rem;
     bottom: 0.3rem;
-    width: 11.1rem;
+    /*width: 11.1rem;*/
     box-sizing: content-box;
 }
 .LineeMPILong {
@@ -730,7 +730,7 @@
 .buttonLineaDimension .sapMBtnInner {
     bottom: 0.25rem;
     height: 3.45em;
-    width: 16.6rem;
+    /*width: 16.6rem;*/
     text-shadow: 0 0 0;
 }
 .buttonLineaDimension .sapMBtnInner .sapMBtnContent{
@@ -843,7 +843,7 @@
     height: 3.1rem;
     bottom: 0.25rem;
     border-radius: 0px;
-    width: 6.5rem;
+    /*width: 6.5rem;*/
     border: 0px;
     text-shadow: 0 0 0;
 }
@@ -883,10 +883,17 @@
 .BatchSchedulato .sapMBtnIcon {
     color: #003A6B;
 }
-.BatchError .sapMInputBaseInner {
-    background-color: rgba(167,25,48,0.6);
+.BatchError * {
+    background: #ffd300;
+    text-shadow: 0 0 0;
 }
-.BatchWarning .sapMInputBaseInner {
+.BatchWarning *{
+    background-color: rgba(255,211,0,1) !important;
+}
+.BatchErrorRow {
+    background-color: rgba(167,25,48,0.6) !important;
+}
+.BatchWarningRow {
     background-color: rgba(255,211,0,1);
 }
 /*CSS PER LA TABELLA DI GESTIONE DEI FERMI */
@@ -1038,7 +1045,7 @@
     border-radius: 0px;
     height: 2.9rem;
     bottom: 0.3rem;
-    width: 6.6rem;
+    /*width: 6.6rem;*/
 }
 .SPCButtonsDimensionsSin .sapMBtnContent {
     position: absolute;
@@ -1047,7 +1054,7 @@
     font-size: 11pt;
 }
 .SPCCorrection .sapMBtnInner {
-    width: 6.65rem;
+    /*width: 6.65rem;*/
 }
 .SPCButtonColorGreenSin .sapMBtnInner {
     background: #7CA295; 

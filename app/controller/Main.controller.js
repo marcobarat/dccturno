@@ -15,6 +15,7 @@ sap.ui.define([
         ModelTiles: new JSONModel({}),
         StabilimentoID: 1,
         RepartoID: 1,
+        BusyDialog: new sap.m.BusyDialog(),
         
         onInit: function () {
 
@@ -31,6 +32,7 @@ sap.ui.define([
             }
         },
         onToPianiPage: function () {
+            this.BusyDialog.open();
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/JSON_Reparti.json";
@@ -51,12 +53,12 @@ sap.ui.define([
             this.getOwnerComponent().getRouter().navTo("piani");
         },
         onSinotticiPage: function () {
+            this.BusyDialog.open();
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/linee_riepilogo1.json";
             } else {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetInfoSinottico&Content-Type=text/json&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-//                MessageToast.show("Non ancora disponibile", {duration: 3000});
             }
             Library.AjaxCallerData(link, this.SUCCESSModelLinee.bind(this));
             sap.ui.getCore().setModel(this.ModelLinee, "linee");

@@ -103,7 +103,7 @@
                                                                             <HBox>
                                                                                 <VBox height="100%" width="90%" class="bordoBluT"/>
                                                                                 <VBox height="100%" width="10%" class="bordoBluL bordoBluR bordoBluT">
-                                                                                    <Button icon="sap-icon://add" press="AddBatch" width="100%" class="AddButton"/>
+                                                                                    <Button icon="sap-icon://add" press="AddBatch" width="100%" class="AddButton" enabled="{linea>addButton}"/>
                                                                                 </VBox>
                                                                             </HBox>
                                                                         </VBox>
@@ -167,7 +167,7 @@
                                                                                                 <VBox height="100%" width="100%">
                                                                                                     <HBox height="100%" width="100%">
                                                                                                         <VBox height="100%" width="100%">
-                                                                                                            <Button icon="sap-icon://action-settings" press="BatchSettings" width="100%" visible="{= ${linea>modifyBatch} === 1 ? false : true}"/>
+                                                                                                            <wt:CustomButtonSettings icon="sap-icon://action-settings" press="BatchSettings" width="100%" stato="{linea>statoBatch}" visible="{= ${linea>modifyBatch} === 1 ? false : true}"/>
                                                                                                             <HBox>
                                                                                                                 <VBox height="100%" width="50%">
                                                                                                                     <Button icon="sap-icon://accept" class="StileV" press="InsertNewBatch" width="50%" visible="{= ${linea>modifyBatch} === 1 ? true : false}"/>

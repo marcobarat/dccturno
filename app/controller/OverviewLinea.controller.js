@@ -48,7 +48,6 @@ sap.ui.define([
                     }
                 }
             }
-//            this.UpdateButtons();
             for (i = 0; i < TabContainer.getItems().length; i++) {
                 if (this.ModelSinottico.getData()[i].IsSelected === "1") {
                     tab = TabContainer.getItems()[i];
@@ -56,14 +55,14 @@ sap.ui.define([
             }
             TabContainer.setSelectedItem(tab);
             Library.RemoveClosingButtons.bind(this)("schemaLineeContainer");
-
-            this.RefreshFunction(100);
+            this.Counter = 10;
             var that = this;
             this.TIMER = setInterval(function () {
                 try {
                     that.Counter++;
                     if (that.STOP === 0 && that.Counter >= 10) {
                         that.RefreshFunction();
+//                        that.BusyDialog.open();
                     }
                 } catch (e) {
                     console.log(e);
@@ -80,7 +79,7 @@ sap.ui.define([
             if (this.ISLOCAL !== 1) {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoLineeGood&Content-Type=text/json&OutputParameter=JSON";
             }
-            Library.SyncAjaxCallerData(link, this.RefreshModelSinottico.bind(this));
+            Library.AjaxCallerData(link, this.RefreshModelSinottico.bind(this));
         },
         RefreshModelSinottico: function (Jdata) {
             var i, j;
@@ -97,8 +96,6 @@ sap.ui.define([
                 this.ModelSinottico.setData(Jdata);
                 this.ModelSinottico.refresh(true);
                 this.getView().setModel(this.ModelSinottico, "ModelSinottico");
-//                this.UpdateButtons();
-//                this.RefreshFunction(10000);
             }
         },
         SetNameMacchine: function (data_linea) {
@@ -124,7 +121,6 @@ sap.ui.define([
                 }
             }
         },
-
         ShowParameters: function (event) {
             var path = event.getSource().getBindingContext("ModelSinottico").getPath();
             this.macchina = event.getSource().getProperty("text");
@@ -136,6 +132,7 @@ sap.ui.define([
                 }
             }
             if (stato !== "") {
+                this.STOP = 1;
                 clearInterval(this.AlarmTIMER);
                 this.AlarmSTOP = 0;
                 this.AlarmCounter = 10;
@@ -145,12 +142,13 @@ sap.ui.define([
                     this.getView().addDependent(this.AlarmDialog);
                 }
                 this.AlarmDialog.open();
+                this.AlarmDialog.setBusy(true);
                 this.AlarmDataCaller();
                 var that = this;
                 this.AlarmTIMER = setInterval(function () {
                     try {
                         that.AlarmCounter++;
-                        if (that.AlarmSTOP === 0 && that.AlarmCounter >= 5) {
+                        if (that.AlarmSTOP === 0 && that.AlarmCounter >= 10) {
                             that.AlarmRefresh();
                         }
                     } catch (e) {
@@ -175,7 +173,7 @@ sap.ui.define([
                     if (this.ISLOCAL !== 1) {
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAlarmsFromMacchinaLineaID&Content-Type=text/json&MacchinaID=" + this.macchinaID + "&OutputParameter=JSON";
                     }
-                    Library.SyncAjaxCallerData(link, this.SUCCESSParametersReceived.bind(this), this.FAILUREParametersReceived.bind(this));
+                    Library.AjaxCallerData(link, this.SUCCESSParametersReceived.bind(this), this.FAILUREParametersReceived.bind(this));
                 }
             }
         },
@@ -184,13 +182,13 @@ sap.ui.define([
             MessageToast.show("La macchina è spenta o non raggiungibile", {width: "25em"});
         },
         SUCCESSParametersReceived: function (Jdata) {
+            this.AlarmDialog.setBusy(false);
             if (Jdata.error === "0") {
                 var parametri = [];
                 var allarmi = [];
                 var causale = Jdata.causaleAllarme;
                 var i;
                 for (i = 0; i < Jdata.parametri.length; i++) {
-//                    Jdata.parametri[i].valore = this.GestioneMigliaia(Jdata.parametri[i].valore);
                     if (Jdata.parametri[i].isAllarme === "0") {
                         parametri.push(Jdata.parametri[i]);
                     } else {
@@ -201,7 +199,7 @@ sap.ui.define([
                         allarmi.push(Jdata.parametri[i]);
                     }
                 }
-                allarmi.sort(this.CompareSort);
+                allarmi = this.SortAlarms(allarmi);
                 this.ModelAllarmi.setData({"causale": causale, "allarmi": allarmi});
                 this.ModelParametri.setData(parametri);
                 this.TabsIntelligence();
@@ -217,15 +215,25 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {width: "25em", duration: "3000"});
             }
         },
-        CompareSort: function (a, b) {
-            if (a.valore > b.valore)
-                return -1;
-            if (a.valore < b.valore)
-                return 1;
-            return 0;
-        },
-        GestioneMigliaia: function (val) {
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+        SortAlarms: function (arr) {
+            var res = [];
+            var i;
+            for (i = 0;i < arr.length; i++) {
+                if (arr[i].valore === "1" && arr[i].isBloccante === "1") {
+                    res.push(arr[i]);
+                }
+            }
+            for (i = 0;i < arr.length; i++) {
+                if (arr[i].valore === "1" && arr[i].isBloccante === "0") {
+                    res.push(arr[i]);
+                }
+            }
+            for (i = 0;i < arr.length; i++) {
+                if (arr[i].valore === "0") {
+                    res.push(arr[i]);
+                }
+            }
+            return res;
         },
         TabsIntelligence: function () {
             var container = this.getView().byId("allarmiContainer");
@@ -291,39 +299,12 @@ sap.ui.define([
                     container.addItem(Item);
                     container.setSelectedItem(Item);
                 }
-//                if (this.macchina === "Scatolatrice") {
-//                    if (!sap.ui.getCore().byId("scatoTab")) {
-//                        var ItemScato = new sap.m.TabContainerItem({id: "scatoTab"});
-//                        var name_linea = sap.ui.getCore().byId(this.getView().byId("schemaLineeContainer").getSelectedItem()).getName();
-//                        ItemScato.setName("Sinottico");
-//                        var flexy = (!sap.ui.getCore().byId("sinotticoFlex")) ? new sap.m.FlexBox({id: "sinotticoFlex", alignItems: "Start", justifyContent: "Center"}) : sap.ui.getCore().byId("sinotticoFlex");
-//                        var img = (!sap.ui.getCore().byId("sinotticoScat")) ? new sap.m.Image({id: "sinotticoScat", height: "30rem"}) : sap.ui.getCore().byId("sinotticoScat");
-//                        img.setSrc("img/" + name_linea.toLowerCase().split(" ").join("_") + "_scatolatrice.png");
-//                        flexy.addItem(img);
-//                        ItemScato.addContent(flexy);
-//                        container.addItem(ItemScato);
-//                        container.setSelectedItem(ItemScato);
-//                    }
-//                } else {
-//                    if (sap.ui.getCore().byId("scatoTab")) {
-//                        container.removeItem(sap.ui.getCore().byId("scatoTab"));
-//                        sap.ui.getCore().byId("sinotticoScat").destroy();
-//                        sap.ui.getCore().byId("sinotticoFlex").destroy();
-//                        sap.ui.getCore().byId("scatoTab").destroy();
-//                    }
-//                }
             } else {
                 if (sap.ui.getCore().byId("allarmiTab")) {
                     container.removeItem(sap.ui.getCore().byId("allarmiTab"));
                     sap.ui.getCore().byId("allarmiTable").destroy();
                     sap.ui.getCore().byId("allarmiTab").destroy();
                 }
-//                if (sap.ui.getCore().byId("scatoTab")) {
-//                    container.removeItem(sap.ui.getCore().byId("scatoTab"));
-//                    sap.ui.getCore().byId("sinotticoScat").destroy();
-//                    sap.ui.getCore().byId("sinotticoFlex").destroy();
-//                    sap.ui.getCore().byId("scatoTab").destroy();
-//                }
             }
             var text;
             if (causale !== "") {
@@ -349,6 +330,10 @@ sap.ui.define([
         },
         //  FUNZIONI DI REFRESH
         CloseDialog: function () {
+            this.STOP = 0;
+            this.ModelAllarmi.setData({});
+            this.ModelParametri.setData({});
+            this.RefreshFunction();
             this.AlarmSTOP = 1;
             clearInterval(this.Timer);
             this.AlarmDialog.setBusy(false);
@@ -368,33 +353,9 @@ sap.ui.define([
                     return "32";
             }
         },
-        UpdateButtons: function () {
-            var i, j, k, button;
-            var classes = ["buttonGood", "buttonWarning", "buttonError"];
-            var TabContainer = this.getView().byId("schemaLineeContainer");
-            for (i = 0; i < TabContainer.getItems().length; i++) {
-                for (j = 0; j < this.ModelSinottico.getData()[i].Macchine.length; j++) {
-                    button = sap.ui.getCore().byId(this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID);
-                    for (k = 0; k < classes.length; k++) {
-                        button.removeStyleClass(classes[k]);
-                    }
-                    switch (this.ModelSinottico.getData()[i].Macchine[j].stato) {
-                        case "Good":
-                            button.addStyleClass("buttonGood");
-                            break;
-                        case "Warning":
-                            button.addStyleClass("buttonWarning");
-                            break;
-                        case "Error":
-                            button.addStyleClass("buttonError");
-                            break;
-                    }
-                }
-            }
-        },
-
         BackToRiepilogo: function () {
             clearInterval(this.TIMER);
+            this.BusyDialog.open();
             this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("RiepilogoLinee");
         }
