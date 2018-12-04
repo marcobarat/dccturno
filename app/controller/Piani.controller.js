@@ -195,6 +195,7 @@ sap.ui.define([
             this.BusyDialog.open();
             this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("Main");
+            this.BusyDialog.close();
         }
     });
     return PianiController;

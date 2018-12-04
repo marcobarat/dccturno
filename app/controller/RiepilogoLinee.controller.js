@@ -392,9 +392,11 @@ sap.ui.define([
         },
         BackToMain: function () {
             clearInterval(this.TIMER);
+            this.getView().byId("RiepilogoLineePage").setBusy(true);
             this.BusyDialog.open();
             this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("Main");
+            this.BusyDialog.close();
         }
     });
 });

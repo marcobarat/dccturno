@@ -46,6 +46,7 @@ sap.ui.define([
             oRouter.getRoute("managePianoGrey").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            this.getView().byId("managePianoGrey").setBusy(false);
             this.getDialog = sap.ui.getCore().byId("GlobalBusyDialog");
             this.getDialog.close();
             this.StabilimentoID = sap.ui.getCore().getModel("stabilimento").getData().StabilimentoID;
@@ -99,10 +100,12 @@ sap.ui.define([
         },
 //         -> MOSTRA REPORT
         ShowReport: function () {
+            this.getView().byId("managePianoGrey").setBusy(true);
             this.BusyDialog.open();
             var that = this;
             this.getView().byId("ManageIconTabBar").setSelectedKey("1");
             this.getOwnerComponent().getRouter().navTo("Report", {turnoPath: that.turnoPath, pianoPath: that.pianoPath});
+            this.BusyDialog.close();
         },
 //         -> CHIUSURA PIANO
         ConfermaChiusuraPiano: function () {
@@ -129,6 +132,7 @@ sap.ui.define([
             oRouter.navTo("piani", true);
             this.getView().byId("chiusuraPiano").setEnabled(false);
             this.RemoveReport();
+            this.BusyDialog.close();
         },
 //         -> CAMBIO REPARTO
         ChangeReparto: function (event) {

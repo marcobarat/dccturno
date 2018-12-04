@@ -51,6 +51,7 @@ sap.ui.define([
             this.ModelReparti.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelReparti, "reparti");
             this.getOwnerComponent().getRouter().navTo("piani");
+            this.BusyDialog.close();
         },
         onSinotticiPage: function () {
             this.BusyDialog.open();
@@ -66,6 +67,7 @@ sap.ui.define([
         SUCCESSModelLinee: function (Jdata) {
             this.ModelLinee.setData(Jdata);
             this.getOwnerComponent().getRouter().navTo("RiepilogoLinee");
+            this.BusyDialog.close();
         }
     });
     return MainController;

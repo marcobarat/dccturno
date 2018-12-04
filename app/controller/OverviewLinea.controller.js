@@ -358,6 +358,7 @@ sap.ui.define([
             this.BusyDialog.open();
             this.STOP = 1;
             this.getOwnerComponent().getRouter().navTo("RiepilogoLinee");
+            this.BusyDialog.close();
         }
     });
 });

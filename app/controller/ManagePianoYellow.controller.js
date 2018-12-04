@@ -73,6 +73,7 @@ sap.ui.define([
             oRouter.getRoute("managePianoYellow").attachPatternMatched(this.URLChangeCheck, this);
         },
         URLChangeCheck: function (event) {
+            this.getView().byId("managePianoYellow").setBusy(false);
             clearInterval(this.TIMER);
             this.getDialog = sap.ui.getCore().byId("GlobalBusyDialog");
             this.getDialog.close();
@@ -207,6 +208,7 @@ sap.ui.define([
 //        
 //         -> PULSANTE D'USCITA
         BackToPiani: function () {
+            this.getView().byId("managePianoYellow").setBusy(true);
             this.BusyDialog.open();
             clearInterval(this.TIMER);
             this.DeleteUncompleteBatches();
@@ -220,6 +222,7 @@ sap.ui.define([
                 var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
                 oRouter.navTo("overview", true);
             }
+            this.BusyDialog.close();
         },
 //         -> PULSANTE AGGIORNA
         RefreshButton: function () {

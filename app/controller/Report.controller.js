@@ -245,6 +245,7 @@ sap.ui.define([
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("managePianoGrey", {turnoPath: this.turnoPath, pianoPath: this.pianoPath});
             this.ModelLinea.refresh(true);
+            this.BusyDialog.close();
         }
     });
 });
