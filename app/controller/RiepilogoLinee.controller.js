@@ -46,9 +46,14 @@ sap.ui.define([
                 }
             }, 1000);
         },
-//  FUNZIONI DI REFRESH
+        
+//        ------------------------------------------------------
+//        --------------- FUNZIONI DI REFRESH ------------------
+//        ------------------------------------------------------
+
+
         RefreshFunction: function (msec) {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
+            setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
             var link;
@@ -83,6 +88,11 @@ sap.ui.define([
                 this.BarColorCT(this.ModelLinee.getData());
             }
         },
+        
+//        ------------------------------------------------------
+//        ---------------- PULSANTE SINOTTICO ------------------
+//        ------------------------------------------------------
+        
         GoToSinottico: function (event) {
             this.getView().byId("RiepilogoLineePage").setBusy(true);
             this.BusyDialog.open();
@@ -112,41 +122,12 @@ sap.ui.define([
             this.BusyDialog.close();
             this.getOwnerComponent().getRouter().navTo("OverviewLinea");
         },
-        SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
-            for (var i = 0; i < data_linea.Macchine.length; i++) {
-                for (var j = 0; j < names.length; j++) {
-                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
-                        switch (names[j]) {
-                            case "marcatore":
-                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
-                                break;
-                            case "controllo peso":
-                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
-                                break;
-                            case "etichettatrice":
-                                data_linea.Macchine[i].nome = "Etichettatrice";
-                                break;
-                            case "scatolatrice":
-                                data_linea.Macchine[i].nome = "Scatolatrice";
-                                break;
-                        }
-                    }
-                }
-            }
-        },
-        getRandom: function () {
-            var val = Math.floor(3 * Math.random());
-            switch (val) {
-                case 0:
-                    return "Good";
-                case 1:
-                    return "Warning";
-                default:
-                    return "Error";
-            }
-        },
-        //         -> PULSANTI SPC CON REFRESH
+
+//        ------------------------------------------------------
+//        ------------------- PULSANTI SPC ---------------------
+//        ------------------------------------------------------
+
+
         SPCGraph: function (event) {
             this.STOPSPC = 0;
             clearInterval(this.SPCTimer);
@@ -177,31 +158,6 @@ sap.ui.define([
                 }
             }, 1000);
         },
-        FixDescription: function (str) {
-            var prefix = (this.indexSPC === 0) ? "SX" : "DX";
-            return prefix + " - " + str.replace("[cg]", "[g]");
-        },
-        SUCCESSSPCDataLoad: function (Jdata) {
-            var isEmpty;
-            this.Allarme = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
-            this.Fase = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
-            this.Avanzamento = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
-            if (Jdata.valori === "") {
-                isEmpty = 1;
-            } else {
-                isEmpty = 0;
-                Jdata = this.ParseSPCData(Jdata, "#");
-                if (this.Fase === "1") {
-                    Jdata = this.Phase1(Jdata);
-                }
-                this.ModelSPCData.setProperty("/", Jdata);
-            }
-            this.SPCDialogFiller(isEmpty);
-            if (this.STOPSPC === 0) {
-                this.SPCCounter = 0;
-            }
-            this.SPCDialog.setBusy(false);
-        },
         SPCRefresh: function (msec) {
             this.SPCCounter = 0;
             if (typeof msec === "undefined") {
@@ -224,7 +180,75 @@ sap.ui.define([
                 }
             }
         },
-        //      FUNZIONI SPC    
+        SUCCESSSPCDataLoad: function (Jdata) {
+            var isEmpty;
+            this.Allarme = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
+            this.Fase = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelLinee.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
+            if (Jdata.valori === "") {
+                isEmpty = 1;
+            } else {
+                isEmpty = 0;
+                Jdata = this.ParseSPCData(Jdata, "#");
+                if (this.Fase === "1") {
+                    Jdata = this.Phase1(Jdata);
+                }
+                this.ModelSPCData.setProperty("/", Jdata);
+            }
+            this.SPCDialogFiller(isEmpty);
+            if (this.STOPSPC === 0) {
+                this.SPCCounter = 0;
+            }
+            this.SPCDialog.setBusy(false);
+        },
+        FixDescription: function (str) {
+            var prefix = (this.indexSPC === 0) ? "SX" : "DX";
+            return prefix + " - " + str.replace("[cg]", "[g]");
+        },
+
+//        ------------------------------------------------------
+//        --------------- FUNZIONI DI SUPPORTO -----------------
+//        ------------------------------------------------------
+        
+//        ******************** SINOTTICO *******************
+        
+        SetNameMacchine: function (data_linea) {
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
+            for (var i = 0; i < data_linea.Macchine.length; i++) {
+                for (var j = 0; j < names.length; j++) {
+                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
+                        switch (names[j]) {
+                            case "marcatore":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
+                                break;
+                            case "controllo peso":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
+                                break;
+                            case "etichettatrice":
+                                data_linea.Macchine[i].nome = "Etichettatrice";
+                                break;
+                            case "scatolatrice":
+                                data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                        }
+                    }
+                }
+            }
+        },
+//        getRandom: function () {
+//            var val = Math.floor(3 * Math.random());
+//            switch (val) {
+//                case 0:
+//                    return "Good";
+//                case 1:
+//                    return "Warning";
+//                default:
+//                    return "Error";
+//            }
+//        },
+    
+//        ******************** SPC *******************
+    
         SPCDialogFiller: function (discr) {
             var textHeader = this.getView().byId("headerSPCWindow");
             textHeader.setText(String(this.DescrizioneParametro));
@@ -375,7 +399,9 @@ sap.ui.define([
             }
             return {dataPlot: dataPlot, layout: layout};
         },
-//        ************************ GESTIONE STILE PROGRESS INDICATOR ************************     
+       
+//        ************************ GESTIONE STILE PROGRESS INDICATOR ************************
+
         BarColorCT: function (data) {
             for (var j = 0; j < data.length; j++) {
                 if (data[j].length > 0) {
@@ -390,6 +416,11 @@ sap.ui.define([
             }
             return data;
         },
+        
+//        ------------------------------------------------------
+//        ------------------- INTESTAZIONE ---------------------
+//        ------------------------------------------------------
+        
         BackToMain: function () {
             clearInterval(this.TIMER);
             this.getView().byId("RiepilogoLineePage").setBusy(true);

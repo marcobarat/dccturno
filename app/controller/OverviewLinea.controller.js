@@ -22,6 +22,8 @@ sap.ui.define([
         STOP: null,
         TIMER: null,
         Counter: null,
+        
+        
 //  FUNZIONI D'INIZIALIZZAZIONE      
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -70,7 +72,10 @@ sap.ui.define([
             }, 1000);
         },
 
-        //  FUNZIONI DI REFRESH
+//        ------------------------------------------------------
+//        ---------------- FUNZIONI DI REFRESH -----------------
+//        ------------------------------------------------------
+
         RefreshFunction: function (msec) {
             this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
         },
@@ -98,29 +103,11 @@ sap.ui.define([
                 this.getView().setModel(this.ModelSinottico, "ModelSinottico");
             }
         },
-        SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
-            for (var i = 0; i < data_linea.Macchine.length; i++) {
-                for (var j = 0; j < names.length; j++) {
-                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
-                        switch (names[j]) {
-                            case "marcatore":
-                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
-                                break;
-                            case "controllo peso":
-                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
-                                break;
-                            case "etichettatrice":
-                                data_linea.Macchine[i].nome = "Etichettatrice";
-                                break;
-                            case "scatolatrice":
-                                data_linea.Macchine[i].nome = "Scatolatrice";
-                                break;
-                        }
-                    }
-                }
-            }
-        },
+
+//        ------------------------------------------------------
+//        ------------------ POPUP PARAMETRI -------------------
+//        ------------------------------------------------------
+
         ShowParameters: function (event) {
             var path = event.getSource().getBindingContext("ModelSinottico").getPath();
             this.macchina = event.getSource().getProperty("text");
@@ -215,20 +202,64 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {width: "25em", duration: "3000"});
             }
         },
+        CloseDialog: function () {
+            this.STOP = 0;
+            this.ModelAllarmi.setData({});
+            this.ModelParametri.setData({});
+            this.RefreshFunction();
+            this.AlarmSTOP = 1;
+            clearInterval(this.Timer);
+            this.AlarmDialog.setBusy(false);
+            this.AlarmDialog.close();
+            this.getView().setModel(new JSONModel(), "allarmi");
+        },
+
+//        ------------------------------------------------------
+//        --------------- FUNZIONI DI SUPPORTO -----------------
+//        ------------------------------------------------------
+
+//        ********************** SINOTTICO ***********************
+
+        SetNameMacchine: function (data_linea) {
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
+            for (var i = 0; i < data_linea.Macchine.length; i++) {
+                for (var j = 0; j < names.length; j++) {
+                    if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
+                        switch (names[j]) {
+                            case "marcatore":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Marcatore SX" : "Marcatore DX";
+                                break;
+                            case "controllo peso":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "PackItal SX" : "PackItal DX";
+                                break;
+                            case "etichettatrice":
+                                data_linea.Macchine[i].nome = "Etichettatrice";
+                                break;
+                            case "scatolatrice":
+                                data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                        }
+                    }
+                }
+            }
+        },
+
+//        ********************** PARAMETRI ***********************
+
         SortAlarms: function (arr) {
             var res = [];
             var i;
-            for (i = 0;i < arr.length; i++) {
+            for (i = 0; i < arr.length; i++) {
                 if (arr[i].valore === "1" && arr[i].isBloccante === "1") {
                     res.push(arr[i]);
                 }
             }
-            for (i = 0;i < arr.length; i++) {
+            for (i = 0; i < arr.length; i++) {
                 if (arr[i].valore === "1" && arr[i].isBloccante === "0") {
                     res.push(arr[i]);
                 }
             }
-            for (i = 0;i < arr.length; i++) {
+            for (i = 0; i < arr.length; i++) {
                 if (arr[i].valore === "0") {
                     res.push(arr[i]);
                 }
@@ -328,18 +359,6 @@ sap.ui.define([
                 }
             }
         },
-        //  FUNZIONI DI REFRESH
-        CloseDialog: function () {
-            this.STOP = 0;
-            this.ModelAllarmi.setData({});
-            this.ModelParametri.setData({});
-            this.RefreshFunction();
-            this.AlarmSTOP = 1;
-            clearInterval(this.Timer);
-            this.AlarmDialog.setBusy(false);
-            this.AlarmDialog.close();
-            this.getView().setModel(new JSONModel(), "allarmi");
-        },
         getRandom: function () {
             var val = Math.floor(4 * Math.random());
             switch (val) {
@@ -353,7 +372,22 @@ sap.ui.define([
                     return "32";
             }
         },
+        
+//        ------------------------------------------------------
+//        ------------------- INTESTAZIONE ---------------------
+//        ------------------------------------------------------
+        
         BackToRiepilogo: function () {
+            var i, j, button;
+            var TabContainer = this.getView().byId("schemaLineeContainer");
+            for (i = 0; i < TabContainer.getItems().length; i++) {
+                for (j = 0; j < this.ModelSinottico.getData()[i].Macchine.length; j++) {
+                    button = sap.ui.getCore().byId(this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID);
+                    if (button) {
+                        button.destroy();
+                    }
+                }
+            }
             clearInterval(this.TIMER);
             this.BusyDialog.open();
             this.STOP = 1;

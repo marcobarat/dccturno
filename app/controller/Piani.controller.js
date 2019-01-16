@@ -162,11 +162,6 @@ sap.ui.define([
                 } else {
                     Jdata.linee[i].avanzamento = Number(Jdata.linee[i].avanzamento);
                 }
-                for (var j = 0;j < Jdata.linee[i].batchlist.length; j++) {
-                    if (Jdata.linee[i].batchlist[j].erroreBatch === "1") {
-                        Jdata.linee[i].batchlist[j].sequenza = "ERR";
-                    }
-                }
             }
             this.ModelLinea.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelLinea, "linee");

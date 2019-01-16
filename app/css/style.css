@@ -563,13 +563,6 @@
     height: 2.9rem;
     bottom: 0.05rem;
 }
-/*.LineeMPILong .sapMPI {
-    color: #003A6B; 
-    background-color: transparent !important;
-    position: absolute !important;
-    right: 0px; 
-}*/
-
 .LineeMPILong .sapMPIText {
     color: #003A6B; 
     background-color: transparent !important;
@@ -1239,73 +1232,7 @@
 .fontTable .sapMText {
     font-size: 15pt;
 }
-
-
-
-
-
-
-
-
-
-
-
-/*DA CONTROLLARE*/
-/*.lessOmbra .sapMBtnInner {
-    text-shadow: 0 0 0 #ffffff;
+.sapMMessageToast {
+    font-size: 24pt;
+    width: 60rem !important;
 }
-.tileLayout {
-    float: left;
-}
-.fix_b {
-    margin-bottom: 0px;
-}
-.centrati * {
-    width: 100% !important;
-    height: 100% !important;
-    background-color: green !important;
-    margin: 0 auto !important;  
-}
-.testo-grande *{
-    font-size: 150% !important;
-    text-align: center;
-    font-weight: bold;
-
-}
-.sapMStdTileTitle {
-    font-size: 200% !important;
-    text-align: center;
-    font-weight: bold;
-}
-.sapMStdTileTopRow{
-    height: 5rem !important;
-}
-.customTextFermo {
-    font-size: 15pt;
-    font-weight: bold;
-    text-align: center;
-}
-.borderButton .sapMBtnInner{
-    border: 1px solid #737373;
-}
-.borderMiddleTable .sapMListTbl th {
-    border: solid 1px;
-    color: #003A6B;
-}
-.RightVBox {
-    bottom: 0.4rem;
-}
-.SPCVBox {
-    width: 8% !important;
-    bottom: 0.1rem;
-    height: 3.2rem !important;
-}
-.styleVBoxLeftbottom {
-    bottom: 0rem;
-}
-.styleVBoxRightbottom {
-    bottom: 0.2rem;
-}
-.borderBoxRight {
-    border-right: 1.5px solid #003A6B;
-}*/

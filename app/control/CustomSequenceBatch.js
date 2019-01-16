@@ -28,11 +28,11 @@ sap.ui.define([
             }
             switch (stato) {
                 case '1':
-                    this.setValue("ERR");
+//                    this.setValue("ERR");
                     this.addStyleClass("BatchError");
                     break;
                 case '2':
-                    this.setValue("WRN");
+//                    this.setValue("WRN");
                     this.addStyleClass("BatchWarning");
                     break;
             }

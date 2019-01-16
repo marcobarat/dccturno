@@ -83,6 +83,7 @@ sap.ui.define([
         getDialog: null,
         TIMER: null,
         SMTIMER: null,
+
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.ModelGuasti.setSizeLimit("1000");
@@ -146,19 +147,11 @@ sap.ui.define([
                 }
             }, 1000);
         },
-        SUCCESSSKU: function (Jdata) {
-            var bck = Jdata.SKUattuale;
-            var std = Jdata.SKUstandard;
-            bck = Library.RecursiveJSONComparison(std, bck, "attributi");
-            bck = Library.RecursiveParentExpansion(bck);
-            bck = Library.RecursiveSelectReordering(bck);
-            this.ModelSKU.setData(bck);
-            this.getView().setModel(this.ModelSKU, "SKU");
-            this.BusyDialog.close();
-            this.oDialog.setBusy(false);
-            setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
-        },
-//        FUNZIONI DI REFRESH
+
+//        ------------------------------------------------------
+//        ---------------- FUNZIONI DI REFRESH -----------------
+//        ------------------------------------------------------
+
         RefreshFunction: function (msec, IsRidotta) {
             this.RefreshCounter = 0;
             if (typeof msec === "undefined") {
@@ -189,11 +182,6 @@ sap.ui.define([
                 if (this.STOP === 0) {
                     for (var i = 0; i < Jdata.linee.length; i++) {
                         Jdata.linee[i].SPC = Jdata.linee[i].SPC.reverse();
-                        for (var j = 0; j < Jdata.linee[i].batchlist.length; j++) {
-                            if (Jdata.linee[i].batchlist[j].erroreBatch === "1") {
-                                Jdata.linee[i].batchlist[j].sequenza = "ERR";
-                            }
-                        }
                     }
                     Jdata = this.BarColorCT(Jdata);
                     var temp = JSON.parse(JSON.stringify(this.ModelLinea.getData()));
@@ -208,72 +196,6 @@ sap.ui.define([
                     this.RefreshCounter = 0;
                 }
             }
-        },
-        ModelFullUpdate: function (newData, oldData) {
-            var oldIDs, newIDs, allIDs, j1, j2;
-            for (var i = 0; i < newData.length; i++) {
-                for (var key in newData[i]) {
-                    if (key === "batchlist") {
-                        oldIDs = this.GetBatchIDs(oldData[i][key]);
-                        newIDs = this.GetBatchIDs(newData[i][key]);
-                        allIDs = oldIDs.concat(newIDs);
-                        allIDs = allIDs.filter(this.OnlyUnique.bind(this));
-                        for (var j = 0; j < allIDs.length; j++) {
-                            if (oldIDs.indexOf(allIDs[j]) !== -1 && newIDs.indexOf(allIDs[j]) !== -1) {
-                                j1 = this.GetIndex(oldData[i][key], allIDs[j]);
-                                j2 = this.GetIndex(newData[i][key], allIDs[j]);
-                                if (typeof oldData[i][key][j1].modifyBatch === "undefined" || oldData[i][key][j1].modifyBatch !== 1) {
-                                    oldData[i][key][j1] = newData[i][key][j2];
-                                }
-                            } else if (oldIDs.indexOf(allIDs[j]) !== -1 && newIDs.indexOf(allIDs[j]) === -1) {
-                                j1 = this.GetIndex(oldData[i][key], allIDs[j]);
-                                if (typeof oldData[i][key][j1].modifyBatch === "undefined" || oldData[i][key][j1].modifyBatch !== 1) {
-                                    oldData[i][key].splice(j1, 1);
-                                }
-
-                            } else if (oldIDs.indexOf(allIDs[j]) === -1 && newIDs.indexOf(allIDs[j]) !== -1) {
-                                j2 = this.GetIndex(newData[i][key], allIDs[j]);
-                                oldData[i][key].push(newData[i][key][j2]);
-                            } else {
-                                console.log("Duuuude that's weird :/");
-                            }
-                        }
-                    } else {
-                        oldData[i][key] = newData[i][key];
-                    }
-                }
-            }
-            return oldData;
-        },
-        ModelPartialUpdate: function (newData, oldData, exceptions) {
-            for (var i = 0; i < newData.length; i++) {
-                for (var key in newData[i]) {
-                    if (exceptions.indexOf(key) === -1) {
-                        oldData[i][key] = newData[i][key];
-                    }
-                }
-            }
-            return oldData;
-        },
-        GetBatchIDs: function (batchlist) {
-            var IDs = [];
-            for (var i = 0; i < batchlist.length; i++) {
-                IDs.push(batchlist[i].batchID);
-            }
-            return IDs;
-        },
-        GetIndex: function (batchlist, ID) {
-            var index;
-            for (var i = 0; i < batchlist.length; i++) {
-                if (batchlist[i].batchID === ID) {
-                    index = i;
-                    break;
-                }
-            }
-            return index;
-        },
-        OnlyUnique: function (value, index, self) {
-            return self.indexOf(value) === index;
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
@@ -329,7 +251,7 @@ sap.ui.define([
 //        
 //        ************************ TABELLA 20% DI SINISTRA ************************
 //        
-//         -> PULSANTE DELLA LINEA
+//         -> PULSANTE DELLA LINEA, Apertura del popup per la gestione delle non disponibilità
         ShowStatoLinea: function (event) {
             clearInterval(this.NDTIMER);
             this.BusyDialog.open();
@@ -355,6 +277,22 @@ sap.ui.define([
                     console.log(e);
                 }
             }, 1000);
+        },
+        RefreshLogFunction: function (msec) {
+            this.RefreshLogCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.RefreshLogCall.bind(this), msec);
+        },
+        RefreshLogCall: function () {
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "";
+            } else {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
+            }
+            Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
         },
         SUCCESSFermiProgrammati: function (Jdata) {
             if (this.oDialog) {
@@ -386,22 +324,8 @@ sap.ui.define([
                 }
             }
         },
-        RefreshLogFunction: function (msec) {
-            this.RefreshLogCounter = 0;
-            if (typeof msec === "undefined") {
-                msec = 0;
-            }
-            setTimeout(this.RefreshLogCall.bind(this), msec);
-        },
-        RefreshLogCall: function () {
-            var link;
-            if (this.ISLOCAL === 1) {
-                link = "";
-            } else {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
-            }
-            Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
-        },
+        
+        
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
             var that = this;
@@ -460,6 +384,9 @@ sap.ui.define([
                 console.log(error);
             });
         },
+        
+        
+//         -> MESSAGGISTICA
         ShowMessaggi: function (event) {
             clearInterval(this.SMTIMER);
             this.BusyDialog.open();
@@ -487,6 +414,20 @@ sap.ui.define([
             }, 1000);
             Library.RemoveClosingButtons.bind(this)("MessageContainer");
         },
+        RefreshMsgFunction: function (msec) {
+            this.RefreshMsgCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.RefreshMsgCall.bind(this), msec);
+        },
+        RefreshMsgCall: function () {
+            var link;
+            if (this.ISLOCAL !== 1) {
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMessagesFromLineaIDOrigine&Content-Type=text/json&LineaID=" + this.linea_id + "&Origine=Capoturno&OutputParameter=JSON";
+            }
+            Library.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
+        },
         SUCCESSMessaggi: function (Jdata) {
             this.BusyDialog.open();
             var temp, i;
@@ -509,20 +450,6 @@ sap.ui.define([
                     }
                 }
             }
-        },
-        RefreshMsgFunction: function (msec) {
-            this.RefreshMsgCounter = 0;
-            if (typeof msec === "undefined") {
-                msec = 0;
-            }
-            setTimeout(this.RefreshMsgCall.bind(this), msec);
-        },
-        RefreshMsgCall: function () {
-            var link;
-            if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMessagesFromLineaIDOrigine&Content-Type=text/json&LineaID=" + this.linea_id + "&Origine=Capoturno&OutputParameter=JSON";
-            }
-            Library.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
         },
         DestroyDialogMsg: function () {
             this.ModelMessaggi.setData({});
@@ -585,31 +512,6 @@ sap.ui.define([
                 }
             }, 1000);
         },
-        FixDescription: function (str) {
-            var prefix = (this.indexSPC === 0) ? "SX" : "DX";
-            return prefix + " - " + str.replace("[cg]", "[g]");
-        },
-        SUCCESSSPCDataLoad: function (Jdata) {
-            var isEmpty;
-            this.Allarme = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
-            this.Fase = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
-            this.Avanzamento = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
-            if (Jdata.valori === "") {
-                isEmpty = 1;
-            } else {
-                isEmpty = 0;
-                Jdata = this.ParseSPCData(Jdata, "#");
-                if (this.Fase === "1") {
-                    Jdata = this.Phase1(Jdata);
-                }
-                this.ModelSPCData.setProperty("/", Jdata);
-            }
-            this.SPCDialogFiller(isEmpty);
-            if (this.STOPSPC === 0) {
-                this.SPCCounter = 0;
-            }
-            this.SPCDialog.setBusy(false);
-        },
         SPCRefresh: function (msec) {
             this.SPCCounter = 0;
             if (typeof msec === "undefined") {
@@ -632,6 +534,33 @@ sap.ui.define([
                 }
             }
         },
+        SUCCESSSPCDataLoad: function (Jdata) {
+            var isEmpty;
+            this.Allarme = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].allarme;
+            this.Fase = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].fase;
+            this.Avanzamento = this.ModelLinea.getProperty(this.pathLinea).SPC[this.indexSPC].avanzamento;
+            if (Jdata.valori === "") {
+                isEmpty = 1;
+            } else {
+                isEmpty = 0;
+                Jdata = this.ParseSPCData(Jdata, "#");
+                if (this.Fase === "1") {
+                    Jdata = this.Phase1(Jdata);
+                }
+                this.ModelSPCData.setProperty("/", Jdata);
+            }
+            this.SPCDialogFiller(isEmpty);
+            if (this.STOPSPC === 0) {
+                this.SPCCounter = 0;
+            }
+            this.SPCDialog.setBusy(false);
+        },
+        FixDescription: function (str) {
+            var prefix = (this.indexSPC === 0) ? "SX" : "DX";
+            return prefix + " - " + str.replace("[cg]", "[g]");
+        },
+        
+        
 //         -> PULSANTE AGGIUNTA BATCH
         AddBatch: function (event) {
             this.linea_id = Library.GetLineaID(event.getSource().getBindingContext("linea").sPath, this.getView().getModel("linea"));
@@ -660,6 +589,9 @@ sap.ui.define([
             Model.setData(oData);
             this.getView().setModel(Model, "linea");
         },
+        
+        
+        
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
         SEQChanged: function (event) {
@@ -689,6 +621,8 @@ sap.ui.define([
             row_binded.modifyBatch = 1;
             this.ModelLinea.refresh();
         },
+        
+        
 //              - DROPDOWN FORMATI
         CaricaFormati: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -736,6 +670,8 @@ sap.ui.define([
             oRow.getCells()[6].setEnabled(false);
             oRow.getCells()[7].setVisible(true);
         },
+        
+        
 //              - DROPDOWN CONFEZIONI
         CaricaConfezionamenti: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -838,6 +774,8 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
+        
+        
 //              - BUTTON DESTINAZIONE
         ModifyBatchDetails: function (event) {
             this.BusyDialog.open();
@@ -914,6 +852,8 @@ sap.ui.define([
                 this.oDialog.setBusy(true);
             }
         },
+        
+        
 //              - INPUT QLI, CARTONI E ORE
         QLIChanged: function (event) {
             this.ShowUpdateButton(event);
@@ -1012,6 +952,9 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
+        
+        
+        
 //              - IMPOSTAZIONI BATCH
         BatchSettings: function (event) {
             this.oButton = event.getSource();
@@ -1129,9 +1072,101 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
-//        >>>>>>>>>>>>>>>>>> FUNZIONI DI SUPPORTO <<<<<<<<<<<<<<<<<<
+        
+        
+//        ------------------------------------------------------
+//        ---------------- FUNZIONI DI SUPPORTO ----------------
+//        ------------------------------------------------------
+
+//       ************************ FUNZIONI CONDIVISE *************
+
+        SUCCESSSKU: function (Jdata) {
+            var bck = Jdata.SKUattuale;
+            var std = Jdata.SKUstandard;
+            bck = Library.RecursiveJSONComparison(std, bck, "attributi");
+            bck = Library.RecursiveParentExpansion(bck);
+            bck = Library.RecursiveSelectReordering(bck);
+            this.ModelSKU.setData(bck);
+            this.getView().setModel(this.ModelSKU, "SKU");
+            this.BusyDialog.close();
+            this.oDialog.setBusy(false);
+            setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
+        },
+
+//       ************************ FUNZIONE DI REFRESH *************
+
+//        Viene aggiornato tutto, tenendo però traccia dei cambiamenti che il CT sta eseguendo in tempo reale
+        ModelFullUpdate: function (newData, oldData) {
+            var oldIDs, newIDs, allIDs, j1, j2;
+            for (var i = 0; i < newData.length; i++) {
+                for (var key in newData[i]) {
+                    if (key === "batchlist") {
+                        oldIDs = this.GetBatchIDs(oldData[i][key]);
+                        newIDs = this.GetBatchIDs(newData[i][key]);
+                        allIDs = oldIDs.concat(newIDs);
+                        allIDs = allIDs.filter(this.OnlyUnique.bind(this));
+                        for (var j = 0; j < allIDs.length; j++) {
+                            if (oldIDs.indexOf(allIDs[j]) !== -1 && newIDs.indexOf(allIDs[j]) !== -1) {
+                                j1 = this.GetIndex(oldData[i][key], allIDs[j]);
+                                j2 = this.GetIndex(newData[i][key], allIDs[j]);
+                                if (typeof oldData[i][key][j1].modifyBatch === "undefined" || oldData[i][key][j1].modifyBatch !== 1) {
+                                    oldData[i][key][j1] = newData[i][key][j2];
+                                }
+                            } else if (oldIDs.indexOf(allIDs[j]) !== -1 && newIDs.indexOf(allIDs[j]) === -1) {
+                                j1 = this.GetIndex(oldData[i][key], allIDs[j]);
+                                if (typeof oldData[i][key][j1].modifyBatch === "undefined" || oldData[i][key][j1].modifyBatch !== 1) {
+                                    oldData[i][key].splice(j1, 1);
+                                }
+
+                            } else if (oldIDs.indexOf(allIDs[j]) === -1 && newIDs.indexOf(allIDs[j]) !== -1) {
+                                j2 = this.GetIndex(newData[i][key], allIDs[j]);
+                                oldData[i][key].push(newData[i][key][j2]);
+                            } else {
+                                console.log("Duuuude that's weird :/");
+                            }
+                        }
+                    } else {
+                        oldData[i][key] = newData[i][key];
+                    }
+                }
+            }
+            return oldData;
+        },
+//        Vengono aggiornati tutti i dati che non siano i batch, gli operatori e l'ultimo batch
+        ModelPartialUpdate: function (newData, oldData, exceptions) {
+            for (var i = 0; i < newData.length; i++) {
+                for (var key in newData[i]) {
+                    if (exceptions.indexOf(key) === -1) {
+                        oldData[i][key] = newData[i][key];
+                    }
+                }
+            }
+            return oldData;
+        },
+//        Funzioni di supporto
+        GetBatchIDs: function (batchlist) {
+            var IDs = [];
+            for (var i = 0; i < batchlist.length; i++) {
+                IDs.push(batchlist[i].batchID);
+            }
+            return IDs;
+        },
+        GetIndex: function (batchlist, ID) {
+            var index;
+            for (var i = 0; i < batchlist.length; i++) {
+                if (batchlist[i].batchID === ID) {
+                    index = i;
+                    break;
+                }
+            }
+            return index;
+        },
+        OnlyUnique: function (value, index, self) {
+            return self.indexOf(value) === index;
+        },
 
 //       ************************ TABELLA 20% DI SINISTRA ************************
+
         RecursiveTakeAllCause: function (bck) {
             for (var key in bck) {
                 if (typeof bck[key] === "object") {
@@ -1143,6 +1178,8 @@ sap.ui.define([
             }
             return bck;
         },
+        
+        
 //       ************************ TABELLA 80% DI DESTRA ************************
         SplitId: function (id, string) {
             var splitter = id.indexOf(string);
@@ -1314,6 +1351,8 @@ sap.ui.define([
             }
             return {dataPlot: dataPlot, layout: layout};
         },
+        
+        
 //      GESTIONE STILE PROGRESS BAR        
         BarColorCT: function (data) {
             if (data.linee.length > 0) {
@@ -1982,6 +2021,8 @@ sap.ui.define([
                     this.CreaFinestraInserimento(oText);
             }
         },
+        
+        
 //      **************** POPUP GESTIONE INTERVALLI MODIFICA CAUSALE ****************        
         CreaFinestraModificaCausale: function (text) {
             var oView = this.getView();
@@ -2027,6 +2068,8 @@ sap.ui.define([
             bBox2.addItem(selectMenu);
             this.oDialog.open();
         },
+        
+        
 //      **************** POPUP GESTIONE INTERVALLI MODIFICA TEMPI ****************  
         CreaFinestraModificaTempi: function (text) {
             var oView = this.getView();
@@ -2120,6 +2163,8 @@ sap.ui.define([
             oVBox2.addItem(oHBoxBottom);
             this.oDialog.open();
         },
+        
+        
 //      **************** POPUP GESTIONE INTERVALLI FRAZIONAMENTO **************** 
         CreaFinestraFrazionamento: function (text) {
             var oView = this.getView();
@@ -2223,6 +2268,8 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
+        
+        
 //      **************** POPUP GESTIONE INTERVALLI ELIMINAZIONE **************** 
         CreaFinestraEliminazione: function (text) {
             var oView = this.getView();
@@ -2289,6 +2336,8 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
+        
+        
 //      **************** POPUP GESTIONE INTERVALLI INSERIMENTO **************** 
         CreaFinestraInserimento: function (text) {
             var oView = this.getView();
@@ -2356,6 +2405,8 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
+        
+        
 //      **************** POPUP GESTIONE INTERVALLI AZIONI DI CONFERMA E DI ANNULLA **************** 
         DestroyDialog: function () {
             clearInterval(this.NDTIMER);
@@ -2494,10 +2545,10 @@ sap.ui.define([
                 return fine;
             }
         },
-//        -------------------------------------------------
-//        -------------------------------------------------
-//        -------------------------------------------------
-//        
+ 
+
+    
+    
 //      **************** POPUP CAUSALIZZAZIONE ****************
 
         ChangeCheckedCausa: function (event) {
@@ -2559,13 +2610,6 @@ sap.ui.define([
             this.getView().setModel(this.ModelCausali, "CausaliFermo");
             var oView = this.getView();
             this.onCloseDialog();
-//            var old_id = this.GetActiveCB();
-//            if (old_id !== 0) {
-//                var old_CB = sap.ui.getCore().byId(old_id);
-//                old_CB.setSelected(false);
-//                this.CheckFermo[old_id] = 0;
-//            }
-
             var dialog = this.getView().byId("CausalizzazioneFermoPanel");
             if (!dialog) {
                 dialog = sap.ui.xmlfragment(oView.getId(), "myapp.view.CausalizzazioneFermoPanel", this);

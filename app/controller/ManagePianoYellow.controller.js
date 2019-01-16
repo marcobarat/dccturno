@@ -118,19 +118,11 @@ sap.ui.define([
                 }
             }, 1000);
         },
-        SUCCESSSKU: function (Jdata) {
-            var bck = Jdata.SKUattuale;
-            var std = Jdata.SKUstandard;
-            bck = Library.RecursiveJSONComparison(std, bck, "attributi");
-            bck = Library.RecursiveParentExpansion(bck);
-            bck = Library.RecursiveSelectReordering(bck);
-            this.ModelSKU.setData(bck);
-            this.getView().setModel(this.ModelSKU, "SKU");
-            this.BusyDialog.close();
-            this.oDialog.setBusy(false);
-            setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
-        },
-//        FUNZIONI DI REFRESH
+
+//        ------------------------------------------------------
+//        ---------------- FUNZIONI DI REFRESH -----------------
+//        ------------------------------------------------------
+
         RefreshFunction: function (msec, IsRidotta) {
             this.RefreshCounter = 0;
             if (typeof msec === "undefined") {
@@ -171,32 +163,6 @@ sap.ui.define([
                     this.RefreshCounter = 0;
                 }
             }
-        },
-        ModelFullUpdate: function (newData, oldData) {
-            for (var i = 0; i < newData.length; i++) {
-                for (var key in newData[i]) {
-                    if (key === "batchlist") {
-                        for (var j = 0; j < newData[i][key].length; j++) {
-                            if (typeof oldData[i][key][j].modifyBatch === "undefined" || oldData[i][key][j].modifyBatch !== 1) {
-                                oldData[i][key][j] = newData[i][key][j];
-                            }
-                        }
-                    } else {
-                        oldData[i][key] = newData[i][key];
-                    }
-                }
-            }
-            return oldData;
-        },
-        ModelPartialUpdate: function (newData, oldData, exceptions) {
-            for (var i = 0; i < newData.length; i++) {
-                for (var key in newData[i]) {
-                    if (exceptions.indexOf(key) === -1) {
-                        oldData[i][key] = newData[i][key];
-                    }
-                }
-            }
-            return oldData;
         },
 //        -------------------------------------------------
 //        -------------------------------------------------
@@ -282,6 +248,22 @@ sap.ui.define([
                 }
             }, 1000);
         },
+        RefreshLogFunction: function (msec) {
+            this.RefreshLogCounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.RefreshLogCall.bind(this), msec);
+        },
+        RefreshLogCall: function () {
+            var link;
+            if (this.ISLOCAL === 1) {
+                link = "";
+            } else {
+                link = link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
+            }
+            Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
+        },
         SUCCESSFermiProgrammati: function (Jdata) {
             if (this.oDialog) {
                 if (this.oDialog.isOpen()) {
@@ -312,22 +294,6 @@ sap.ui.define([
                 }
             }
         },
-        RefreshLogFunction: function (msec) {
-            this.RefreshLogCounter = 0;
-            if (typeof msec === "undefined") {
-                msec = 0;
-            }
-            setTimeout(this.RefreshLogCall.bind(this), msec);
-        },
-        RefreshLogCall: function () {
-            var link;
-            if (this.ISLOCAL === 1) {
-                link = "";
-            } else {
-                link = link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllNonDisponibilitaFromPdcIDAndLineaID&Content-Type=text/json&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&OutputParameter=JSON";
-            }
-            Library.AjaxCallerData(link, this.SUCCESSFermiProgrammati.bind(this));
-        },
         DestroyDialog: function () {
             clearInterval(this.NDTIMER);
             this.BusyDialog.close();
@@ -337,6 +303,7 @@ sap.ui.define([
             this.RerenderTimePickers();
             this.ModelLinea.refresh();
         },
+        
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
             var that = this;
@@ -395,6 +362,7 @@ sap.ui.define([
                 console.log(error);
             });
         },
+        
 //       ************************ TABELLA 80% DI DESTRA ************************
 
 //         -> PULSANTE AGGIUNTA BATCH
@@ -425,6 +393,7 @@ sap.ui.define([
             Model.setData(oData);
             this.getView().setModel(Model, "linea");
         },
+        
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
         SEQChanged: function (event) {
@@ -452,8 +421,8 @@ sap.ui.define([
             var rowPath = event.getSource().getBindingContext("linea").sPath;
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
             row_binded.modifyBatch = 1;
-//            this.getView().getModel("linea").refresh();
         },
+        
 //              - DROPDOWN FORMATI
         CaricaFormati: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -501,6 +470,7 @@ sap.ui.define([
             oRow.getCells()[6].setEnabled(false);
             oRow.getCells()[7].setVisible(true);
         },
+        
 //              - DROPDOWN CONFEZIONI
         CaricaConfezionamenti: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -603,6 +573,7 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
+        
 //              - BUTTON DESTINAZIONE
         ModifyBatchDetails: function (event) {
             this.BusyDialog.open();
@@ -684,6 +655,7 @@ sap.ui.define([
                 this.oDialog.setBusy(true);
             }
         },
+        
 //              - INPUT QLI, CARTONI E ORE
         QLIChanged: function (event) {
             this.ShowUpdateButton(event);
@@ -782,6 +754,7 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
+        
 //              - IMPOSTAZIONI BATCH
         BatchSettings: function (event) {
             this.oButton = event.getSource();
@@ -813,6 +786,7 @@ sap.ui.define([
             this._menu.setModel(this.prova);
             this._menu.open(this._bKeyboard, this.oButton, eDock.BeginTop, eDock.BeginBottom, this.oButton);
         },
+        
 //              - CONFERMA/INSERISCI BATCH
         InsertNewBatch: function (event) {
             var PathLinea = event.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getBindingContext("linea").sPath;
@@ -869,6 +843,7 @@ sap.ui.define([
                 MessageToast.show("Non si possono inserire batch con zero quintali", {duration: 2000});
             }
         },
+        
 //              - ANNULLA CONFERMA/INSERISCI BATCH
         UndoBatchCreation: function (event) {
             this.BusyDialog.open();
@@ -894,7 +869,56 @@ sap.ui.define([
                 this.BusyDialog.close();
             }
         },
-//        >>>>>>>>>>>>>>>>>> FUNZIONI DI SUPPORTO <<<<<<<<<<<<<<<<<<
+
+//        ------------------------------------------------------
+//        ---------------- FUNZIONI DI SUPPORTO ----------------
+//        ------------------------------------------------------
+
+//       ************************ FUNZIONI CONDIVISE ************* 
+
+        SUCCESSSKU: function (Jdata) {
+            var bck = Jdata.SKUattuale;
+            var std = Jdata.SKUstandard;
+            bck = Library.RecursiveJSONComparison(std, bck, "attributi");
+            bck = Library.RecursiveParentExpansion(bck);
+            bck = Library.RecursiveSelectReordering(bck);
+            this.ModelSKU.setData(bck);
+            this.getView().setModel(this.ModelSKU, "SKU");
+            this.BusyDialog.close();
+            this.oDialog.setBusy(false);
+            setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
+        },
+
+//       ************************ FUNZIONE DI REFRESH *************
+
+//        Viene aggiornato tutto, tenendo però traccia dei cambiamenti che il CT sta eseguendo in tempo reale
+        ModelFullUpdate: function (newData, oldData) {
+            for (var i = 0; i < newData.length; i++) {
+                for (var key in newData[i]) {
+                    if (key === "batchlist") {
+                        for (var j = 0; j < newData[i][key].length; j++) {
+                            if (typeof oldData[i][key][j].modifyBatch === "undefined" || oldData[i][key][j].modifyBatch !== 1) {
+                                oldData[i][key][j] = newData[i][key][j];
+                            }
+                        }
+                    } else {
+                        oldData[i][key] = newData[i][key];
+                    }
+                }
+            }
+            return oldData;
+        },
+//        Vengono aggiornati tutti i dati che non siano i batch, gli operatori e l'ultimo batch
+        ModelPartialUpdate: function (newData, oldData, exceptions) {
+            for (var i = 0; i < newData.length; i++) {
+                for (var key in newData[i]) {
+                    if (exceptions.indexOf(key) === -1) {
+                        oldData[i][key] = newData[i][key];
+                    }
+                }
+            }
+            return oldData;
+        },
 
 //       ************************ TABELLA 20% DI SINISTRA ************************
         RecursiveTakeAllCause: function (bck) {
@@ -974,11 +998,6 @@ sap.ui.define([
 //            var array_confezione;
             this.BusyDialog.open();
             if (this.ISLOCAL !== 1) {
-//                if (this.getView().byId("confezione_SKU").getSelectedItem() !== null) {
-//                    array_confezione = this.getView().byId("confezione_SKU").getSelectedItem().getKey().split(" ");
-//                    this.grammatura = array_confezione[1].slice(0, array_confezione[1].length - 2);
-//                    this.confezione = array_confezione[0];
-//                }
                 var obj = {};
                 obj.destinazione = this.getView().byId("cliente_SKU").getValue();
                 obj.pianodiconfezionamento = "";
