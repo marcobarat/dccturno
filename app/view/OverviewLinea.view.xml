@@ -22,16 +22,13 @@
                     </HBox>
                 </HBox>
             </VBox>
-            <VBox height="75%" width="100%">
-                <TabContainer id="schemaLineeContainer" items="{path: 'ModelSinottico>/'}">
-                    <items>    
-                        <TabContainerItem name="{ModelSinottico>Descrizione}">
-                            <content>
-                                <Image src="img/{ModelSinottico>IMG}" width="100%" class="shiftImage"/>
-                            </content>
-                        </TabContainerItem>
-                    </items>
-                </TabContainer>
+            <VBox height="15%" width="100%">
+                <FlexBox alignItems="Start" justifyContent="Center">
+                    <Text text="{ModelSinottico>/Descrizione}" class="customTextTitle"/>
+                </FlexBox>
+            </VBox>
+            <VBox id="sinotticoVbox" height="50%" width="100%">
+                <Image src="img/{ModelSinottico>/IMG}" width="100%" class=""/>
             </VBox>
         </content>
     </Page>

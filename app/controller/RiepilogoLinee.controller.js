@@ -1,8 +1,9 @@
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
-    'myapp/controller/Library'
-], function (Controller, JSONModel, Library) {
+    'myapp/controller/Library',
+    'sap/m/MessageToast'
+], function (Controller, JSONModel, Library, MessageToast) {
     "use strict";
     return Controller.extend("myapp.controller.RiepilogoLinee", {
         ModelLinee: new JSONModel(),
@@ -16,12 +17,20 @@ sap.ui.define([
         RepartoID: 1,
         TIMER: null,
         SPCDialog: null,
+        SPCTimer: null,
         STOPSPC: null,
         SPCCounter: null,
+        OEEDialog: null,
+        STOPOEE: null,
+        OEECounter: null,
+        OEETimer: null,
         ModelSPCData: new JSONModel({}),
+        ModelOEE: new JSONModel({}),
+        ModelFermi: new JSONModel({}),
         indexSPC: null,
         IDSelected: null,
         batchID: null,
+        oDialog: null,
 //  FUNZIONI D'INIZIALIZZAZIONE      
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -46,11 +55,10 @@ sap.ui.define([
                 }
             }, 1000);
         },
-        
+
 //        ------------------------------------------------------
 //        --------------- FUNZIONI DI REFRESH ------------------
 //        ------------------------------------------------------
-
 
         RefreshFunction: function (msec) {
             setTimeout(this.RefreshCall.bind(this), msec);
@@ -76,8 +84,8 @@ sap.ui.define([
                         Jdata[i].Linee[j].IMG = String(Number(Jdata[i].Linee[j].formato.replace(/\D/g, ""))) + ".jpg";
                         Jdata[i].Linee[j].cartoniProdotti = String(Math.round(Number(Jdata[i].Linee[j].cartoniProdotti)));
                         Jdata[i].Linee[j].cartoniResidui = String(Math.round(Number(Jdata[i].Linee[j].cartoniResidui)));
-                        Jdata[i].Linee[j].disponibilita = String(Math.round(Number(Jdata[i].Linee[j].disponibilita.slice(0,Jdata[i].Linee[j].disponibilita.length-1))));
-                        Jdata[i].Linee[j].efficienza = String(Math.round(Number(Jdata[i].Linee[j].efficienza.slice(0,Jdata[i].Linee[j].efficienza.length-1))));
+                        Jdata[i].Linee[j].disponibilita = String(Math.round(Number(Jdata[i].Linee[j].disponibilita.slice(0, Jdata[i].Linee[j].disponibilita.length - 1))));
+                        Jdata[i].Linee[j].efficienza = String(Math.round(Number(Jdata[i].Linee[j].efficienza.slice(0, Jdata[i].Linee[j].efficienza.length - 1))));
                     }
                 }
                 this.ModelLinee.setData(Jdata);
@@ -88,11 +96,11 @@ sap.ui.define([
                 this.BarColorCT(this.ModelLinee.getData());
             }
         },
-        
+
 //        ------------------------------------------------------
 //        ---------------- PULSANTE SINOTTICO ------------------
 //        ------------------------------------------------------
-        
+
         GoToSinottico: function (event) {
             this.getView().byId("RiepilogoLineePage").setBusy(true);
             this.BusyDialog.open();
@@ -100,19 +108,17 @@ sap.ui.define([
             this.IDSelected = this.ModelLinee.getProperty(path).lineaID;
             var link;
             if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoLineeGood&Content-Type=text/json&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoByLineaID&Content-Type=text/json&LineaID=" + this.IDSelected + "&OutputParameter=JSON";
             }
             Library.AjaxCallerData(link, this.SUCCESSGoToSinottico.bind(this));
         },
         SUCCESSGoToSinottico: function (Jdata) {
-            var i, j;
-            for (i = 0; i < Jdata.length; i++) {
-                Jdata[i].IMG = Jdata[i].Descrizione.toLowerCase().split(" ").join("_") + ".png";
-                Jdata[i].IsSelected = (Jdata[i].LineaID === this.IDSelected) ? "1" : "0";
-                this.SetNameMacchine(Jdata[i]);
-                for (j = 0; j < Jdata[i].Macchine.length; j++) {
-                    Jdata[i].Macchine[j].class = Jdata[i].Macchine[j].nome.split(" ").join("");
-                }
+            var j;
+            Jdata.IMG = Jdata.Descrizione.toLowerCase().split(" ").join("_") + ".png";
+            Jdata.IsSelected = (Jdata.LineaID === this.IDSelected) ? "1" : "0";
+            this.SetNameMacchine(Jdata);
+            for (j = 0; j < Jdata.Macchine.length; j++) {
+                Jdata.Macchine[j].class = Jdata.Macchine[j].nome.split(" ").join("");
             }
             this.ModelSinottico.setData(Jdata);
             sap.ui.getCore().setModel(this.ModelSinottico, "ModelSinottico");
@@ -121,6 +127,109 @@ sap.ui.define([
             this.STOP = 1;
             this.BusyDialog.close();
             this.getOwnerComponent().getRouter().navTo("OverviewLinea");
+        },
+
+//        ------------------------------------------------------
+//        ------------------- PROGRESS BAR ---------------------
+//        ------------------------------------------------------
+
+        ShowOEE: function (event) {
+            this.STOPOEE = 0;
+            clearInterval(this.OEETimer);
+            this.OEECounter = 15;
+            this.pathLinea = event.getSource().getBindingContext("linee").sPath;
+            this.idLinea = this.ModelLinee.getProperty(this.pathLinea).lineaID;
+            var stato = this.ModelLinee.getProperty(this.pathLinea).statoLinea;
+            if (stato === "Disponibile.Lavorazione" || stato === "Disponibile.Fermo") {
+                this.batchID = this.ModelLinee.getProperty(this.pathLinea).batchID;
+                this.OEEDialog = this.getView().byId("oee");
+                if (!this.OEEDialog) {
+                    this.OEEDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.OEE", this);
+                    this.getView().addDependent(this.OEEDialog);
+                }
+                this.OEEDialog.open();
+                this.OEEDialog.setBusy(true);
+                this.OEEDataCaller();
+                var that = this;
+                this.OEETimer = setInterval(function () {
+                    try {
+                        that.OEECounter++;
+                        if (that.STOPOEE === 0 && that.OEECounter >= 15) {
+                            that.OEERefresh();
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }, 1000);
+            } else {
+                MessageToast.show("Statistiche di linea disponibili solo in lavorazione", {duration: 3000});
+            }
+        },
+        OEERefresh: function (msec) {
+            this.OEECounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.OEEDataCaller.bind(this), msec);
+        },
+        OEEDataCaller: function () {
+            if (this.OEEDialog) {
+                if (this.OEEDialog.isOpen()) {
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEE_SPCBatchInCorso&Content-Type=text/json&LineaID=" + this.idLinea + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSOEEDataLoad.bind(this), this.FAILUREOEEDataLoad.bind(this));
+                }
+            }
+        },
+        SUCCESSOEEDataLoad: function (Jdata) {
+            this.ModelOEE.setProperty("/", Jdata.OEE);
+            this.getView().setModel(this.ModelOEE, "ModelOEE");
+            sap.ui.getCore().setModel(this.ModelOEE, "ModelOEE");
+            this.OEEDialog.setBusy(false);
+        },
+        FAILUREOEEDataLoad: function () {
+            this.DestroyDialogOEE();
+            MessageToast.show("Connessione a DB fallita, riprovare", {duration: 3000});
+        },
+        DestroyDialogOEE: function () {
+            this.STOPOEE = 1;
+            clearInterval(this.OEETimer);
+            this.OEEDialog.destroy();
+        },
+
+//        --------------------------  POPUP FERMI  --------------------------
+
+        ShowFermi: function () {
+            this.oDialog = this.getView().byId("showFermi");
+            if (!this.oDialog) {
+                this.oDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.ShowFermi", this);
+                this.getView().addDependent(this.oDialog);
+            }
+            this.oDialog.open();
+            this.oDialog.setBusy(true);
+
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + this.batchID + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSShowFermi.bind(this), this.FAILUREShowFermi.bind(this));
+        },
+        SUCCESSShowFermi: function (Jdata) {
+            var data = Jdata.fermi;
+            var i;
+            for (i = 0; i < data.length; i++) {
+                data[i].inizio = data[i].inizio.split("T")[1];
+                data[i].fine = data[i].fine.split("T")[1];
+                data[i].durata = Library.MillisecsToStandard(Library.StandardToMillisecs(data[i].fine) - Library.StandardToMillisecs(data[i].inizio));
+            }
+            this.ModelFermi.setData(data);
+            this.getView().setModel(this.ModelFermi, "ModelFermi");
+            sap.ui.getCore().setModel(this.ModelFermi, "ModelFermi");
+            this.oDialog.setBusy(false);
+        },
+        FAILUREShowFermi: function () {
+            this.oDialog.setBusy(false);
+            this.DestroyDialogFermi();
+            MessageToast.show("Comunicazione a DB fallita, riprovare", {duration: 3000});
+        },
+        DestroyDialogFermi: function () {
+            this.oDialog.destroy();
         },
 
 //        ------------------------------------------------------
@@ -209,9 +318,9 @@ sap.ui.define([
 //        ------------------------------------------------------
 //        --------------- FUNZIONI DI SUPPORTO -----------------
 //        ------------------------------------------------------
-        
+
 //        ******************** SINOTTICO *******************
-        
+
         SetNameMacchine: function (data_linea) {
             var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
             for (var i = 0; i < data_linea.Macchine.length; i++) {
@@ -246,9 +355,9 @@ sap.ui.define([
 //                    return "Error";
 //            }
 //        },
-    
+
 //        ******************** SPC *******************
-    
+
         SPCDialogFiller: function (discr) {
             var textHeader = this.getView().byId("headerSPCWindow");
             textHeader.setText(String(this.DescrizioneParametro));
@@ -399,7 +508,7 @@ sap.ui.define([
             }
             return {dataPlot: dataPlot, layout: layout};
         },
-       
+
 //        ************************ GESTIONE STILE PROGRESS INDICATOR ************************
 
         BarColorCT: function (data) {
@@ -416,11 +525,11 @@ sap.ui.define([
             }
             return data;
         },
-        
+
 //        ------------------------------------------------------
 //        ------------------- INTESTAZIONE ---------------------
 //        ------------------------------------------------------
-        
+
         BackToMain: function () {
             clearInterval(this.TIMER);
             this.getView().byId("RiepilogoLineePage").setBusy(true);

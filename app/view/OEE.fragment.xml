@@ -1,0 +1,241 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:wt="myapp.control"
+    xmlns:core="sap.ui.core"
+    xmlns:u="sap.ui.unified"
+    xmlns:t="sap.ui.table"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Dialog horizontalScrolling="true" contentHeight="480px" contentWidth="1200px" afterClose="DestroyDialogOEE" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="oee">
+        <VBox height="100%" width="100%">
+            <VBox height="3%" width="100%"/>
+            <VBox height="47%" width="100%">
+                <HBox>
+                    <VBox height="100%" width="30%">
+                        <HBox>
+                            <VBox height="100%" width="10%"/>
+                            <VBox height="100%" width="90%">
+                                <VBox height="30%" width="100%">
+                                    <Text text="Valori consuntivi" class="OEEText underlineOEE"/>
+                                </VBox>
+                                <VBox height="10%" width="100%">
+                                    <Text/>
+                                </VBox>
+                                <VBox height="15%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/massaConsuntiva}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="15%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/tempoConsuntivo}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="15%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/cartoniConsuntivi}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="15%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/cartoniScartati}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                    <VBox height="100%" width="40%">
+                        <HBox>
+                            <VBox height="100%" width="47.5%">
+                                <VBox height="30%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text="OEE:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="10%" width="100%">
+                                    <Text/>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text=" Disponibilità:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text=" Produttività:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text=" Qualità:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="100%" width="5%"/>
+                            <VBox height="100%" width="19.5%">
+                                <VBox height="30%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text="{ModelOEE>/OEE}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="10%" width="100%">
+                                    <Text/>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text="{ModelOEE>/disponibilita}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text="{ModelOEE>/efficienza}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox justifyContent="End">
+                                        <Text text="{ModelOEE>/qualita}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                            <VBox height="100%" width="28%"/>
+                        </HBox>
+                    </VBox>
+                    <VBox height="100%" width="30%">
+                        <HBox>
+                            <VBox height="100%" width="35%"/>
+                            <VBox height="100%" width="65%">
+                                <VBox height="30%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="Valori residui" class="OEEText underlineOEE"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="10%" width="100%">
+                                    <Text/>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/massaResidua}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/tempoResiduo}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="20%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/cartoniResidui}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+            <VBox height="2%" width="100%"/>
+            <VBox height="4%" width="100%">
+                <FlexBox alignItems="Center" justifyContent="Center">
+                    <Link text="Report Fermi" class="OEEText underlineOEE" press="ShowFermi"/>
+                </FlexBox>
+            </VBox>
+            <VBox height="5%" width="100%"/>
+            <VBox height="29%" width="100%">
+                <HBox>
+                    <VBox height="100%" width="5%"/>
+                    <VBox height="100%" width="40%">
+                        <HBox>
+                            <VBox height="100%" width="59%">
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="End" justifyContent="End">
+                                        <Text text="Totale:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="End" justifyContent="End">
+                                        <Text text="Automatici:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="End" justifyContent="End">
+                                        <Text text="Da causalizzare:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="1%" width="100%">
+                                    <Text/>
+                                </VBox>
+                            </VBox>
+                            <VBox height="100%" width="4%"/>
+                            <VBox height="100%" width="39%">
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/tempoFermi}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/tempoTotaleFermiAutomatici}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                                        
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/tempoFermiAutomatici}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="1%" width="100%">
+                                    <Text/>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                    <VBox height="100%" width="10%"/>
+                    <VBox height="100%" width="40%">
+                        <HBox>
+                            <VBox height="100%" width="59%">
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="End" justifyContent="End">
+                                        <Text text="Attuale:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="End" justifyContent="End">
+                                        <Text text="Durata attrezzaggio:" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="33%" width="100%">
+                                </VBox>
+                                <VBox height="1%" width="100%">
+                                    <Text/>
+                                </VBox>
+                            </VBox>
+                            <VBox height="100%" width="4%"/>
+                            <VBox height="100%" width="39%">
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/tempoFermoAttuale}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                <VBox height="33%" width="100%">
+                                    <FlexBox alignItems="Start" justifyContent="Start">
+                                        <Text text="{ModelOEE>/tempoAttrezzaggio}" class="OEEText"/>
+                                    </FlexBox>
+                                </VBox>
+                                                        
+                                <VBox height="33%" width="100%">
+                                </VBox>
+                                <VBox height="1%" width="100%">
+                                    <Text/>
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                    <VBox height="100%" width="5%"/>
+                </HBox>
+            </VBox>
+            <VBox height="10%" width="100%">
+                <FlexBox alignItems="Start" justifyContent="Center">
+                    <Button text="Chiudi" width="10rem" press="DestroyDialogOEE" class="annullaButton"/>
+                </FlexBox>
+            </VBox>
+        </VBox>
+    </Dialog>
+</core:FragmentDefinition>

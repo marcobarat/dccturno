@@ -106,7 +106,8 @@
                                                                                     showValue="true"
                                                                                     width="100%"
                                                                                     height="3.05rem"
-                                                                                    class="ProgressBarFix"
+                                                                                    press="ShowOEE"
+                                                                                    class="ProgressBarFix handCursor"
                                                                                     stato="{linea>barColor}"/>
                                                                             </VBox>
                                                                             <VBox width="10%" height="100%" class="bordoBluR bordoBluT">

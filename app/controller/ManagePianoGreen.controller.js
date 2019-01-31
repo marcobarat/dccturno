@@ -41,6 +41,8 @@ sap.ui.define([
         ModelSKU: new JSONModel({}),
         ModelParametri: new JSONModel({}),
         ModelSPCData: new JSONModel({}),
+        ModelOEE: new JSONModel({}),
+        ModelFermi: new JSONModel({}),
         ModelTurni: null,
         ModelSKUstd: new JSONModel({}),
         ModelCause: new JSONModel({}),
@@ -53,8 +55,10 @@ sap.ui.define([
         STOPLOG: 0,
         STOPMSG: 0,
         STOPSPC: 0,
+        STOPOEE: 0,
         oButton: null,
         SPCDialog: null,
+        OEEDialog: null,
         Allarme: null,
         Fase: null,
         ParametroID: null,
@@ -71,11 +75,13 @@ sap.ui.define([
         numeroLinee: null,
         BusyDialog: new sap.m.BusyDialog(),
         Counter: null,
+        OEECounter: null,
         RefreshLogCounter: null,
         RefreshCounter: null,
         RefreshMsgCounter: null,
         SPCCounter: null,
         SPCTimer: null,
+        OEETimer: null,
         bckupSEQ: "",
         bckupQLI: "",
         bckupCRT: "",
@@ -83,6 +89,7 @@ sap.ui.define([
         getDialog: null,
         TIMER: null,
         SMTIMER: null,
+        batchID: null,
 
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
@@ -324,8 +331,7 @@ sap.ui.define([
                 }
             }
         },
-        
-        
+
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
             var that = this;
@@ -384,8 +390,7 @@ sap.ui.define([
                 console.log(error);
             });
         },
-        
-        
+
 //         -> MESSAGGISTICA
         ShowMessaggi: function (event) {
             clearInterval(this.SMTIMER);
@@ -481,6 +486,108 @@ sap.ui.define([
         },
 //       ************************ TABELLA 80% DI DESTRA ************************
 //        
+//        ------------------------------------------------------
+//        ------------------- PROGRESS BAR ---------------------
+//        ------------------------------------------------------
+
+        ShowOEE: function (event) {
+            this.STOPOEE = 0;
+            clearInterval(this.OEETimer);
+            this.OEECounter = 15;
+            this.pathLinea = event.getSource().getBindingContext("linea").sPath;
+            this.idLinea = this.ModelLinea.getProperty(this.pathLinea).lineaID;
+            var stato = this.ModelLinea.getProperty(this.pathLinea).statolinea;
+            if (stato === "Disponibile.Lavorazione" || stato === "Disponibile.Fermo") {
+                this.batchID = this.ModelLinea.getProperty(this.pathLinea).batchID;
+                this.OEEDialog = this.getView().byId("oee");
+                if (!this.OEEDialog) {
+                    this.OEEDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.OEE", this);
+                    this.getView().addDependent(this.OEEDialog);
+                }
+                this.OEEDialog.open();
+                this.OEEDialog.setBusy(true);
+                this.OEEDataCaller();
+                var that = this;
+                this.OEETimer = setInterval(function () {
+                    try {
+                        that.OEECounter++;
+                        if (that.STOPOEE === 0 && that.OEECounter >= 15) {
+                            that.OEERefresh();
+                        }
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }, 1000);
+            } else {
+                MessageToast.show("Statistiche di linea disponibili solo in lavorazione", {duration: 3000});
+            }
+        },
+        OEERefresh: function (msec) {
+            this.OEECounter = 0;
+            if (typeof msec === "undefined") {
+                msec = 0;
+            }
+            setTimeout(this.OEEDataCaller.bind(this), msec);
+        },
+        OEEDataCaller: function () {
+            if (this.OEEDialog) {
+                if (this.OEEDialog.isOpen()) {
+                    var link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEE_SPCBatchInCorso&Content-Type=text/json&LineaID=" + this.idLinea + "&OutputParameter=JSON";
+                    Library.AjaxCallerData(link, this.SUCCESSOEEDataLoad.bind(this), this.FAILUREOEEDataLoad.bind(this));
+                }
+            }
+        },
+        SUCCESSOEEDataLoad: function (Jdata) {
+            this.ModelOEE.setProperty("/", Jdata.OEE);
+            this.getView().setModel(this.ModelOEE, "ModelOEE");
+            sap.ui.getCore().setModel(this.ModelOEE, "ModelOEE");
+            this.OEEDialog.setBusy(false);
+        },
+        FAILUREOEEDataLoad: function () {
+            this.DestroyDialogOEE();
+            MessageToast.show("Connessione a DB fallita, riprovare", {duration: 3000});
+        },
+        DestroyDialogOEE: function () {
+            this.STOPOEE = 1;
+            clearInterval(this.OEETimer);
+            this.OEEDialog.destroy();
+        },
+
+//        --------------------------  POPUP FERMI  --------------------------
+
+        ShowFermi: function () {
+            this.oDialog = this.getView().byId("showFermi");
+            if (!this.oDialog) {
+                this.oDialog = sap.ui.xmlfragment(this.getView().getId(), "myapp.view.ShowFermi", this);
+                this.getView().addDependent(this.oDialog);
+            }
+            this.oDialog.open();
+            this.oDialog.setBusy(true);
+
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + this.batchID + "&OutputParameter=JSON";
+            Library.AjaxCallerData(link, this.SUCCESSShowFermi.bind(this), this.FAILUREShowFermi.bind(this));
+        },
+        SUCCESSShowFermi: function (Jdata) {
+            var data = Jdata.fermi;
+            var i;
+            for (i = 0; i < data.length; i++) {
+                data[i].inizio = data[i].inizio.split("T")[1];
+                data[i].fine = data[i].fine.split("T")[1];
+                data[i].durata = Library.MillisecsToStandard(Library.StandardToMillisecs(data[i].fine) - Library.StandardToMillisecs(data[i].inizio));
+            }
+            this.ModelFermi.setData(data);
+            this.getView().setModel(this.ModelFermi, "ModelFermi");
+            sap.ui.getCore().setModel(this.ModelFermi, "ModelFermi");
+            this.oDialog.setBusy(false);
+        },
+        FAILUREShowFermi: function () {
+            this.oDialog.setBusy(false);
+            this.DestroyDialogFermi();
+            MessageToast.show("Comunicazione a DB fallita, riprovare", {duration: 3000});
+        },
+        DestroyDialogFermi: function () {
+            this.oDialog.destroy();
+        },
 //         -> PULSANTI SPC CON REFRESH
         SPCGraph: function (event) {
             this.STOPSPC = 0;
@@ -559,8 +666,7 @@ sap.ui.define([
             var prefix = (this.indexSPC === 0) ? "SX" : "DX";
             return prefix + " - " + str.replace("[cg]", "[g]");
         },
-        
-        
+
 //         -> PULSANTE AGGIUNTA BATCH
         AddBatch: function (event) {
             this.linea_id = Library.GetLineaID(event.getSource().getBindingContext("linea").sPath, this.getView().getModel("linea"));
@@ -589,9 +695,7 @@ sap.ui.define([
             Model.setData(oData);
             this.getView().setModel(Model, "linea");
         },
-        
-        
-        
+
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
         SEQChanged: function (event) {
@@ -621,8 +725,7 @@ sap.ui.define([
             row_binded.modifyBatch = 1;
             this.ModelLinea.refresh();
         },
-        
-        
+
 //              - DROPDOWN FORMATI
         CaricaFormati: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -670,8 +773,7 @@ sap.ui.define([
             oRow.getCells()[6].setEnabled(false);
             oRow.getCells()[7].setVisible(true);
         },
-        
-        
+
 //              - DROPDOWN CONFEZIONI
         CaricaConfezionamenti: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -774,8 +876,7 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
-        
-        
+
 //              - BUTTON DESTINAZIONE
         ModifyBatchDetails: function (event) {
             this.BusyDialog.open();
@@ -852,8 +953,7 @@ sap.ui.define([
                 this.oDialog.setBusy(true);
             }
         },
-        
-        
+
 //              - INPUT QLI, CARTONI E ORE
         QLIChanged: function (event) {
             this.ShowUpdateButton(event);
@@ -952,9 +1052,7 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
-        
-        
-        
+
 //              - IMPOSTAZIONI BATCH
         BatchSettings: function (event) {
             this.oButton = event.getSource();
@@ -1072,8 +1170,7 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
-        
-        
+
 //        ------------------------------------------------------
 //        ---------------- FUNZIONI DI SUPPORTO ----------------
 //        ------------------------------------------------------
@@ -1178,8 +1275,7 @@ sap.ui.define([
             }
             return bck;
         },
-        
-        
+
 //       ************************ TABELLA 80% DI DESTRA ************************
         SplitId: function (id, string) {
             var splitter = id.indexOf(string);
@@ -1351,8 +1447,7 @@ sap.ui.define([
             }
             return {dataPlot: dataPlot, layout: layout};
         },
-        
-        
+
 //      GESTIONE STILE PROGRESS BAR        
         BarColorCT: function (data) {
             if (data.linee.length > 0) {
@@ -2021,8 +2116,7 @@ sap.ui.define([
                     this.CreaFinestraInserimento(oText);
             }
         },
-        
-        
+
 //      **************** POPUP GESTIONE INTERVALLI MODIFICA CAUSALE ****************        
         CreaFinestraModificaCausale: function (text) {
             var oView = this.getView();
@@ -2068,8 +2162,7 @@ sap.ui.define([
             bBox2.addItem(selectMenu);
             this.oDialog.open();
         },
-        
-        
+
 //      **************** POPUP GESTIONE INTERVALLI MODIFICA TEMPI ****************  
         CreaFinestraModificaTempi: function (text) {
             var oView = this.getView();
@@ -2163,8 +2256,7 @@ sap.ui.define([
             oVBox2.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-        
-        
+
 //      **************** POPUP GESTIONE INTERVALLI FRAZIONAMENTO **************** 
         CreaFinestraFrazionamento: function (text) {
             var oView = this.getView();
@@ -2268,8 +2360,7 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-        
-        
+
 //      **************** POPUP GESTIONE INTERVALLI ELIMINAZIONE **************** 
         CreaFinestraEliminazione: function (text) {
             var oView = this.getView();
@@ -2336,8 +2427,7 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-        
-        
+
 //      **************** POPUP GESTIONE INTERVALLI INSERIMENTO **************** 
         CreaFinestraInserimento: function (text) {
             var oView = this.getView();
@@ -2405,8 +2495,7 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-        
-        
+
 //      **************** POPUP GESTIONE INTERVALLI AZIONI DI CONFERMA E DI ANNULLA **************** 
         DestroyDialog: function () {
             clearInterval(this.NDTIMER);
@@ -2545,10 +2634,7 @@ sap.ui.define([
                 return fine;
             }
         },
- 
 
-    
-    
 //      **************** POPUP CAUSALIZZAZIONE ****************
 
         ChangeCheckedCausa: function (event) {

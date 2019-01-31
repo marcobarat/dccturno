@@ -22,8 +22,8 @@ sap.ui.define([
         STOP: null,
         TIMER: null,
         Counter: null,
-        
-        
+        idLinea: null,
+
 //  FUNZIONI D'INIZIALIZZAZIONE      
         onInit: function () {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
@@ -32,31 +32,22 @@ sap.ui.define([
         URLChangeCheck: function () {
             clearInterval(this.TIMER);
             this.STOP = 0;
-            var i, j, tab, button;
+            var j, vbox, button;
             this.getView().setModel(this.ModelSinottico, "ModelSinottico");
-            var TabContainer = this.getView().byId("schemaLineeContainer");
-            for (i = 0; i < TabContainer.getItems().length; i++) {
-                tab = TabContainer.getItems()[i];
-                if (!sap.ui.getCore().byId(this.ModelSinottico.getData()[i].Macchine[0].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID)) {
-                    for (j = 0; j < this.ModelSinottico.getData()[i].Macchine.length; j++) {
-                        button = new CustomButtonSin({
-                            id: this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID,
-                            text: "{ModelSinottico>/" + i + "/Macchine/" + j + "/nome}",
-                            stato: "{ModelSinottico>/" + i + "/Macchine/" + j + "/stato}",
-                            press: [this.ShowParameters, this]});
-                        button.addStyleClass("buttonSinottico");
-                        button.addStyleClass(this.ModelSinottico.getData()[i].Macchine[j].class);
-                        tab.addContent(button);
-                    }
+            vbox = this.getView().byId("sinotticoVbox");
+            this.idLinea = this.ModelSinottico.getData().LineaID;
+            if (!sap.ui.getCore().byId(this.ModelSinottico.getData().Macchine[0].nome.split(" ").join("") + "_" + this.ModelSinottico.getData().LineaID)) {
+                for (j = 0; j < this.ModelSinottico.getData().Macchine.length; j++) {
+                    button = new CustomButtonSin({
+                        id: this.ModelSinottico.getData().Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData().LineaID,
+                        text: "{ModelSinottico>/Macchine/" + j + "/nome}",
+                        stato: "{ModelSinottico>/Macchine/" + j + "/stato}",
+                        press: [this.ShowParameters, this]});
+                    button.addStyleClass("buttonSinottico");
+                    button.addStyleClass(this.ModelSinottico.getData().Macchine[j].class);
+                    vbox.addItem(button);
                 }
             }
-            for (i = 0; i < TabContainer.getItems().length; i++) {
-                if (this.ModelSinottico.getData()[i].IsSelected === "1") {
-                    tab = TabContainer.getItems()[i];
-                }
-            }
-            TabContainer.setSelectedItem(tab);
-            Library.RemoveClosingButtons.bind(this)("schemaLineeContainer");
             this.Counter = 10;
             var that = this;
             this.TIMER = setInterval(function () {
@@ -82,21 +73,18 @@ sap.ui.define([
         RefreshCall: function () {
             var link;
             if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoLineeGood&Content-Type=text/json&OutputParameter=JSON";
+                link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoByLineaID&Content-Type=text/json&LineaID=" + this.idLinea + "&OutputParameter=JSON";
             }
             Library.AjaxCallerData(link, this.RefreshModelSinottico.bind(this));
         },
         RefreshModelSinottico: function (Jdata) {
-            var i, j;
+            var j;
             if (this.STOP === 0) {
                 this.Counter = 0;
-                for (i = 0; i < Jdata.length; i++) {
-                    Jdata[i].IMG = Jdata[i].Descrizione.toLowerCase().split(" ").join("_") + ".png";
-                    Jdata[i].IsSelected = (Jdata[i].LineaID === this.IDSelected) ? "1" : "0";
-                    this.SetNameMacchine(Jdata[i]);
-                    for (j = 0; j < Jdata[i].Macchine.length; j++) {
-                        Jdata[i].Macchine[j].class = Jdata[i].Macchine[j].nome.split(" ").join("");
-                    }
+                Jdata.IMG = Jdata.Descrizione.toLowerCase().split(" ").join("_") + ".png";
+                this.SetNameMacchine(Jdata);
+                for (j = 0; j < Jdata.Macchine.length; j++) {
+                    Jdata.Macchine[j].class = Jdata.Macchine[j].nome.split(" ").join("");
                 }
                 this.ModelSinottico.setData(Jdata);
                 this.ModelSinottico.refresh(true);
@@ -372,20 +360,17 @@ sap.ui.define([
                     return "32";
             }
         },
-        
+
 //        ------------------------------------------------------
 //        ------------------- INTESTAZIONE ---------------------
 //        ------------------------------------------------------
-        
+
         BackToRiepilogo: function () {
-            var i, j, button;
-            var TabContainer = this.getView().byId("schemaLineeContainer");
-            for (i = 0; i < TabContainer.getItems().length; i++) {
-                for (j = 0; j < this.ModelSinottico.getData()[i].Macchine.length; j++) {
-                    button = sap.ui.getCore().byId(this.ModelSinottico.getData()[i].Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData()[i].LineaID);
-                    if (button) {
-                        button.destroy();
-                    }
+            var j, button;
+            for (j = 0; j < this.ModelSinottico.getData().Macchine.length; j++) {
+                button = sap.ui.getCore().byId(this.ModelSinottico.getData().Macchine[j].nome.split(" ").join("") + "_" + this.ModelSinottico.getData().LineaID);
+                if (button) {
+                    button.destroy();
                 }
             }
             clearInterval(this.TIMER);

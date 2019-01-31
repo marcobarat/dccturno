@@ -38,6 +38,10 @@ sap.ui.define([
                         break;
                 }
             }
+            this.addEventDelegate("press", {});
+        },
+        onclick: function () {
+            this.firePress();
         }
     });
 });

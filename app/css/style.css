@@ -227,6 +227,9 @@
     font-weight: normal;
     padding-top: 0.4rem;
 }
+.handCursor:hover {
+      cursor: pointer;
+}
 .SPCButtonsDimensions .sapMBtn {
     height: 3.1rem !important;
 }
@@ -578,6 +581,14 @@
 ----------------------------------------*/
 /*CLASSI CONDIVISE DA PIU' VIEW*/
 /* NO FOCUS DEI PULSANTI*/
+.OEEText {
+    font-size: 23pt;
+    color : #003A6B;
+    font-family: Arial;
+}
+.underlineOEE {
+    text-decoration: underline;
+}
 .textTop {
     font-size: 30pt;
     color : #003A6B;
@@ -1130,17 +1141,17 @@
 
 .MarcatoreSX {
     position: absolute;
-    top: 4rem;
+    bottom: 22rem;
     left: 3rem;
 }
 .MarcatoreDX {
     position: absolute;
     left: 3rem;
-    bottom: -1rem;
+    top: -1.5rem;
 }
 .PackItalSX {
     position: absolute;
-    top: 6rem;
+    bottom: 19.5rem;
     left: 18rem;
 }
 .PackItalDX {
@@ -1150,7 +1161,7 @@
 }
 .Scatolatrice {
     position: absolute;
-    top: 4rem;
+    bottom: 2rem;
     right: 30rem;
 }
 .Etichettatrice {

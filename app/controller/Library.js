@@ -13,6 +13,12 @@ sap.ui.define([
             i = Math.round(i);
             return i / Math.pow(10, decimalpositions);
         },
+        StandardToMillisecs: function (val) {
+            var hours = Number(val.substring(0, 2));
+            var mins = Number(val.substring(3, 5));
+            var secs = Number(val.substring(6, 8));
+            return ((secs * 1000) + (mins * 60 * 1000) + (hours * 60 * 60 * 1000));
+        },
         MillisecsToStandard: function (val) {
             var hours = Math.floor(val / 1000 / 60 / 60);
             val -= hours * 1000 * 60 * 60;
