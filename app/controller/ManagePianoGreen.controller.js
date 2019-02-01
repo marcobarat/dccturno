@@ -1756,12 +1756,23 @@ sap.ui.define([
                     cartoni = this.ModelLinea.getProperty(Path).cartoni;
                     if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
                         this.BusyDialog.open();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimento&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                        Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatch.bind(this));
+                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoForzato&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+                        Library.AjaxCallerData(link, this.SUCCESSTrasferimentoForzatoBatch.bind(this));
                     } else {
                         MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
                     }
                     break;
+//                    Path = this.oButton.getBindingContext("linea").sPath;
+//                    qli = this.ModelLinea.getProperty(Path).qli;
+//                    cartoni = this.ModelLinea.getProperty(Path).cartoni;
+//                    if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
+//                        this.BusyDialog.open();
+//                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimento&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
+//                        Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatch.bind(this));
+//                    } else {
+//                        MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
+//                    }
+//                    break;
                 case "Trasferimento Batch a Linea (solo attrezzaggio)":
                     Path = this.oButton.getBindingContext("linea").sPath;
                     qli = this.ModelLinea.getProperty(Path).qli;
@@ -1770,18 +1781,6 @@ sap.ui.define([
                         this.BusyDialog.open();
                         link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoPredisposizione&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
                         Library.AjaxCallerData(link, this.SUCCESSTrasferimentoBatchAttrezzaggio.bind(this));
-                    } else {
-                        MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
-                    }
-                    break;
-                case "Trasferimento Batch forzato":
-                    Path = this.oButton.getBindingContext("linea").sPath;
-                    qli = this.ModelLinea.getProperty(Path).qli;
-                    cartoni = this.ModelLinea.getProperty(Path).cartoni;
-                    if (((Number(qli) !== 0) && (Number(cartoni) !== 0))) {
-                        this.BusyDialog.open();
-                        link = "/XMII/Runner?Transaction=DeCecco/Transactions/ComboTrasferimentoForzato&Content-Type=text/json&BatchID=" + this.batch_id + "&LineaID=" + this.linea_id + "&PdcID=" + this.pdcID + "&RepartoID=" + this.repartoID + "&StabilimentoID=" + this.StabilimentoID + "&OutputParameter=JSON";
-                        Library.AjaxCallerData(link, this.SUCCESSTrasferimentoForzatoBatch.bind(this));
                     } else {
                         MessageToast.show("Non si possono trasferire batch con zero quintali", {duration: 2000});
                     }

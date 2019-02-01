@@ -97,13 +97,12 @@ sap.ui.define([
 //        ------------------------------------------------------
 
         ShowParameters: function (event) {
-            var path = event.getSource().getBindingContext("ModelSinottico").getPath();
             this.macchina = event.getSource().getProperty("text");
             var stato;
-            for (var i = 0; i < this.ModelSinottico.getProperty(path).Macchine.length; i++) {
-                if (this.ModelSinottico.getProperty(path).Macchine[i].nome === this.macchina) {
-                    this.macchinaID = this.ModelSinottico.getProperty(path).Macchine[i].risorsaid;
-                    stato = this.ModelSinottico.getProperty(path).Macchine[i].stato;
+            for (var i = 0; i < this.ModelSinottico.getData().Macchine.length; i++) {
+                if (this.ModelSinottico.getData().Macchine[i].nome === this.macchina) {
+                    this.macchinaID = this.ModelSinottico.getData().Macchine[i].risorsaid;
+                    stato = this.ModelSinottico.getData().Macchine[i].stato;
                 }
             }
             if (stato !== "") {
