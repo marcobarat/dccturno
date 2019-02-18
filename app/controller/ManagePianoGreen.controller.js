@@ -90,6 +90,10 @@ sap.ui.define([
         TIMER: null,
         SMTIMER: null,
         batchID: null,
+        modelAutorizzazioni: new JSONModel({}),
+        authMSG: null,
+        batchIDmsg: null,
+        batchInfo: null,
 
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
@@ -393,9 +397,15 @@ sap.ui.define([
 
 //         -> MESSAGGISTICA
         ShowMessaggi: function (event) {
+            this.modelAutorizzazioni = new JSONModel("model/JSON_Autorizzazioni.json");
+            this.getView().setModel(this.modelAutorizzazioni, "modelAutorizzazioni");
+            sap.ui.getCore().setModel(this.modelAutorizzazioni, "modelAutorizzazioni");
+
             clearInterval(this.SMTIMER);
-            this.BusyDialog.open();
-            this.linea_id = this.getView().getModel("linea").getProperty(event.getSource().getBindingContext("linea").sPath).lineaID;
+//            this.BusyDialog.open();
+            var data = this.getView().getModel("linea").getProperty(event.getSource().getBindingContext("linea").sPath);
+            this.linea_id = data.lineaID;
+            this.batchIDmsg = data.batchID;
             this.STOPMSG = 0;
             var oView = this.getView();
             this.oDialog = oView.byId("messaggi");
@@ -404,6 +414,17 @@ sap.ui.define([
                 oView.addDependent(this.oDialog);
             }
             this.oDialog.open();
+            this.batchInfo = "";
+            if (this.batchIDmsg !== "") {
+                this.getView().byId("authSelect").setEnabled(true);
+                for (var i = 0; i < data.batchlist.length; i++) {
+                    if (data.batchlist[i].batchID === this.batchIDmsg) {
+                        this.batchInfo = " per il batch con formato: " + data.batchlist[i].formatoProduttivo + ", confezione: " + data.batchlist[i].confezione + " e destinazione: " + data.batchlist[i].destinazione;
+                    }
+                }
+            } else {
+                this.getView().byId("authSelect").setEnabled(false);
+            }
             this.oDialog.setBusy(true);
             this.RefreshMsgCounter = 2;
             var that = this;
@@ -434,7 +455,7 @@ sap.ui.define([
             Library.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
         },
         SUCCESSMessaggi: function (Jdata) {
-            this.BusyDialog.open();
+//            this.BusyDialog.open();
             var temp, i;
             if (this.oDialog) {
                 if (this.oDialog.isOpen()) {
@@ -483,6 +504,36 @@ sap.ui.define([
             } else {
                 this.bckupMSG = obj.getValue();
             }
+        },
+        ChangeSelection: function () {
+            if (this.getView().byId("authSelect").getSelectedKey() === "") {
+                this.getView().byId("authButton").setEnabled(false);
+            } else {
+                this.getView().byId("authButton").setEnabled(true);
+            }
+        },
+        SendAuthorization: function () {
+            var req = this.getView().byId("authSelect").getSelectedKey();
+            switch (req) {
+                case "Invio autorizzazione richiesta ridotta":
+                    this.authMSG = "INIZIO CADENZA RIDOTTA" + this.batchInfo;
+                    break;
+                case "Ritiro autorizzazione richiesta ridotta":
+                    this.authMSG = "FINE CADENZA RIDOTTA" + this.batchInfo;
+                    break;
+                default:
+                    this.authMSG = "ERRORE NELLA SELEZIONE DELLA RICHIESTA";
+                    break;
+            }
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SendMessageChat&Content-Type=text/json&LineaID=" + this.linea_id + "&Messaggio=" + encodeURI(this.authMSG) + "&Imp=1&Origine=Capoturno&OutputParameter=JSON";
+            Library.AjaxCallerVoid(link, this.SUCCESSAuthorization.bind(this));
+        },
+        SUCCESSAuthorization: function () {
+            var link = "/XMII/Runner?Transaction=DeCecco/Transactions/SendMessageChat&Content-Type=text/json&LineaID=" + this.linea_id + "&Messaggio=" + encodeURI(this.authMSG) + "&Imp=1&Origine=Sistema&OutputParameter=JSON";
+            Library.AjaxCallerVoid(link, this.SUCCESSSystemLog.bind(this));
+        },
+        SUCCESSSystemLog: function () {
+            MessageToast.show("Richiesta inviata con successo!", {duration: 2000});
         },
 //       ************************ TABELLA 80% DI DESTRA ************************
 //        

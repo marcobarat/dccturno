@@ -172,6 +172,15 @@
 
 /*PIANO ATTUALE*/
 
+.richiestaButton {
+    top: 1rem;
+}
+.widthMSGButton  {
+    width: 14rem;
+}
+.shiftUpRequests {
+    margin-top: -2rem;
+}
 .messageButton .sapMBtnInner {
     background: white;
     color: #003A6B;
@@ -690,6 +699,7 @@
     color: #003A6B;
     border-radius: 10px;
     height: 100%;
+    text-shadow: 0 0 0;
 }
 .annullaButton .sapMBtnInner {
     font-family: Arial;
