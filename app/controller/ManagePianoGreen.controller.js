@@ -515,10 +515,10 @@ sap.ui.define([
         SendAuthorization: function () {
             var req = this.getView().byId("authSelect").getSelectedKey();
             switch (req) {
-                case "Invio autorizzazione richiesta ridotta":
+                case "Invio autorizzazione cadenza ridotta":
                     this.authMSG = "INIZIO CADENZA RIDOTTA" + this.batchInfo;
                     break;
-                case "Ritiro autorizzazione richiesta ridotta":
+                case "Ritiro autorizzazione cadenza ridotta":
                     this.authMSG = "FINE CADENZA RIDOTTA" + this.batchInfo;
                     break;
                 default:
@@ -589,6 +589,18 @@ sap.ui.define([
             }
         },
         SUCCESSOEEDataLoad: function (Jdata) {
+            var times = ["tempoAttrezzaggio", "tempoFermi", "tempoFermiAutomatici", "tempoFermoAttuale", "tempoTotaleFermiAutomatici"];
+            var spl, i, temp;
+            for (var key in Jdata.OEE) {
+                if (times.indexOf(key) > -1) {
+                    spl = Jdata.OEE[key].split(":");
+                    temp = "";
+                    for (i = 0; i < spl.length; i++) {
+                        temp += Library.StringTime(Number(spl[i])) + ":";
+                    }
+                    Jdata.OEE[key] = temp.slice(0, -1);
+                }
+            }
             this.ModelOEE.setProperty("/", Jdata.OEE);
             this.getView().setModel(this.ModelOEE, "ModelOEE");
             sap.ui.getCore().setModel(this.ModelOEE, "ModelOEE");
@@ -1672,6 +1684,9 @@ sap.ui.define([
             }
         },
         AnnullaModifiche: function () {
+            this.row.getCells()[4].setValue("");
+            this.row.getCells()[5].setValue("");
+            this.row.getCells()[6].setValue("");
             this.RerenderTimePickers();
             this.oDialog.destroy();
             var data = JSON.parse(JSON.stringify(this.TTBackup.getData()));

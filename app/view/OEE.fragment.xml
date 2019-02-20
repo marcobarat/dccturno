@@ -5,9 +5,9 @@
     xmlns:u="sap.ui.unified"
     xmlns:t="sap.ui.table"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <Dialog horizontalScrolling="true" contentHeight="480px" contentWidth="1200px" afterClose="DestroyDialogOEE" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="oee">
+    <Dialog horizontalScrolling="true" contentHeight="450px" contentWidth="1200px" afterClose="DestroyDialogOEE" verticalScrolling="true" showHeader="false" class="colorPage bordoBlu" id="oee">
         <VBox height="100%" width="100%">
-            <VBox height="3%" width="100%"/>
+            <VBox height="30px" width="100%"/>
             <VBox height="47%" width="100%">
                 <HBox>
                     <VBox height="100%" width="30%">

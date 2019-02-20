@@ -181,6 +181,18 @@ sap.ui.define([
             }
         },
         SUCCESSOEEDataLoad: function (Jdata) {
+            var times = ["tempoAttrezzaggio", "tempoFermi", "tempoFermiAutomatici", "tempoFermoAttuale", "tempoTotaleFermiAutomatici"];
+            var spl, i, temp;
+            for (var key in Jdata.OEE) {
+                if (times.indexOf(key) > -1) {
+                    spl = Jdata.OEE[key].split(":");
+                    temp = "";
+                    for (i = 0; i < spl.length; i++) {
+                        temp += Library.StringTime(Number(spl[i])) + ":";
+                    }
+                    Jdata.OEE[key] = temp.slice(0, -1);
+                }
+            }
             this.ModelOEE.setProperty("/", Jdata.OEE);
             this.getView().setModel(this.ModelOEE, "ModelOEE");
             sap.ui.getCore().setModel(this.ModelOEE, "ModelOEE");

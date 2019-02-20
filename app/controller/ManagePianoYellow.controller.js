@@ -1104,6 +1104,9 @@ sap.ui.define([
             }
         },
         AnnullaModifiche: function () {
+            this.row.getCells()[4].setValue("");
+            this.row.getCells()[5].setValue("");
+            this.row.getCells()[6].setValue("");
             this.RerenderTimePickers();
             this.oDialog.destroy();
             this.ModelLinea.refresh();
