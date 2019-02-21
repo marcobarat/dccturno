@@ -224,11 +224,13 @@ sap.ui.define([
         },
         SUCCESSShowFermi: function (Jdata) {
             var data = Jdata.fermi;
-            var i;
-            for (i = 0; i < data.length; i++) {
+            var i, msec_in, msec_fin;
+            for (i = 0;i < data.length; i++) {
                 data[i].inizio = data[i].inizio.split("T")[1];
                 data[i].fine = data[i].fine.split("T")[1];
-                data[i].durata = Library.MillisecsToStandard(Library.StandardToMillisecs(data[i].fine) - Library.StandardToMillisecs(data[i].inizio));
+                msec_in = Library.StandardToMillisecs(data[i].inizio);
+                msec_fin = Library.StandardToMillisecs(data[i].fine);
+                data[i].durata = (msec_fin < msec_in) ? Library.MillisecsToStandard(msec_fin - msec_in + 86400000) : Library.MillisecsToStandard(msec_fin - msec_in);
             }
             this.ModelFermi.setData(data);
             this.getView().setModel(this.ModelFermi, "ModelFermi");

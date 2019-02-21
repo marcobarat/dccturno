@@ -58,6 +58,9 @@ sap.ui.define([
         TIMER: null,
         NDTIMER: null,
         getDialog: null,
+        maxQuintali: null,
+        maxCartoni: null,
+
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.ModelCausali.setSizeLimit("1000");
@@ -303,7 +306,7 @@ sap.ui.define([
             this.RerenderTimePickers();
             this.ModelLinea.refresh();
         },
-        
+
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
             var that = this;
@@ -362,7 +365,7 @@ sap.ui.define([
                 console.log(error);
             });
         },
-        
+
 //       ************************ TABELLA 80% DI DESTRA ************************
 
 //         -> PULSANTE AGGIUNTA BATCH
@@ -391,9 +394,10 @@ sap.ui.define([
             obj.SKUCodiceInterno = last_batch.SKUCodiceInterno;
             linea.batchlist.push(obj);
             Model.setData(oData);
+            this.SetLimits(event);
             this.getView().setModel(Model, "linea");
         },
-        
+
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
         SEQChanged: function (event) {
@@ -422,7 +426,7 @@ sap.ui.define([
             var row_binded = this.getView().getModel("linea").getProperty(rowPath);
             row_binded.modifyBatch = 1;
         },
-        
+
 //              - DROPDOWN FORMATI
         CaricaFormati: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -470,7 +474,7 @@ sap.ui.define([
             oRow.getCells()[6].setEnabled(false);
             oRow.getCells()[7].setVisible(true);
         },
-        
+
 //              - DROPDOWN CONFEZIONI
         CaricaConfezionamenti: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -573,7 +577,7 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
-        
+
 //              - BUTTON DESTINAZIONE
         ModifyBatchDetails: function (event) {
             this.BusyDialog.open();
@@ -655,9 +659,22 @@ sap.ui.define([
                 this.oDialog.setBusy(true);
             }
         },
-        
+
 //              - INPUT QLI, CARTONI E ORE
+        SetLimits: function (event) {
+            var rowPath = event.getSource().getBindingContext("linea").sPath;
+            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
+            this.pezzi_cartone = row_binded.pezziCartone;
+            this.tempo_ciclo = row_binded.secondiPerPezzo;
+            this.numeroLinee = row_binded.numeroLinee;
+            var grammatura, numero_pezzi;
+            grammatura = row_binded.grammatura;
+            numero_pezzi = ((Library.standardToMinutes("23:59") * 60) / this.tempo_ciclo) * this.numeroLinee;
+            this.maxCartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
+            this.maxQuintali = (numero_pezzi * grammatura) / 100000;
+        },
         QLIChanged: function (event) {
+            this.SetLimits(event);
             this.ShowUpdateButton(event);
             var ind;
             var obj = sap.ui.getCore().byId(event.getSource().getId());
@@ -670,18 +687,25 @@ sap.ui.define([
                     obj.setValue(this.bckupQLI);
                     MessageToast.show("Inserire solo numeri positivi", {duration: 3000});
                 } else {
-                    ind = 1 + value.indexOf(".") + value.indexOf(",");
-                    if ((ind > -1) && ((value.length - ind) > 3)) {
+                    if (Number(value) > this.maxQuintali) {
                         obj.setValue(this.bckupQLI);
-                        MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                        MessageToast.show("Non si possono inserire batch più lunghi di 24 ore", {duration: 3000});
                     } else {
-                        this.bckupQLI = value;
-                        this.ChangeValues(event);
+                        ind = 1 + value.indexOf(".") + value.indexOf(",");
+                        if ((ind > -1) && ((value.length - ind) > 3)) {
+                            obj.setValue(this.bckupQLI);
+                            MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                        } else {
+                            this.bckupQLI = value;
+                            this.ChangeValues(event);
+                        }
                     }
                 }
             }
         },
         CRTChanged: function (event) {
+            this.SetLimits(event);
+            this.ShowUpdateButton(event);
             var obj = sap.ui.getCore().byId(event.getSource().getId());
             var value = obj.getValue();
             if (isNaN(Number(value))) {
@@ -692,31 +716,36 @@ sap.ui.define([
                     obj.setValue(this.bckupCRT);
                     MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
                 } else {
-                    var ind = 1 + value.indexOf(".") + value.indexOf(",");
-                    if (ind > -1) {
+                    if (Number(value) > this.maxCartoni) {
                         obj.setValue(this.bckupCRT);
-                        MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                        MessageToast.show("Non si possono inserire batch più lunghi di 24 ore", {duration: 3000});
                     } else {
-                        this.bckupCRT = value;
-                        this.ChangeValues(event);
+                        var ind = 1 + value.indexOf(".") + value.indexOf(",");
+                        if (ind > -1) {
+                            obj.setValue(this.bckupCRT);
+                            MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                        } else {
+                            this.bckupCRT = value;
+                            this.ChangeValues(event);
+                        }
                     }
                 }
             }
-            this.ShowUpdateButton(event);
         },
         HOURChanged: function (event) {
-            var obj = sap.ui.getCore().byId(event.getSource().getId());
-            var value = obj.getValue();
-            var hours = Number(value.substring(0, 2));
-            var mins = Number(value.substring(3, 5));
-            if (hours > 8 || (hours === 8 && mins !== 0)) {
-                obj.setValue(this.bckupHOUR);
-                MessageToast.show("Non si possono inserire batch da più di 8 ore", {duration: 3000});
-            } else {
-                this.bckupHOUR = value;
-                this.ChangeValues(event);
-            }
+            this.SetLimits(event);
             this.ShowUpdateButton(event);
+//            var obj = sap.ui.getCore().byId(event.getSource().getId());
+//            var value = obj.getValue();
+//            var hours = Number(value.substring(0, 2));
+//            var mins = Number(value.substring(3, 5));
+//            if (hours > 8 || (hours === 8 && mins !== 0)) {
+//                obj.setValue(this.bckupHOUR);
+//                MessageToast.show("Non si possono inserire batch da più di 8 ore", {duration: 3000});
+//            } else {
+//                this.bckupHOUR = value;
+            this.ChangeValues(event);
+//            }
         },
         ChangeValues: function (event) {
             this.ShowUpdateButton(event);
@@ -754,7 +783,7 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
-        
+
 //              - IMPOSTAZIONI BATCH
         BatchSettings: function (event) {
             this.oButton = event.getSource();
@@ -786,7 +815,7 @@ sap.ui.define([
             this._menu.setModel(this.prova);
             this._menu.open(this._bKeyboard, this.oButton, eDock.BeginTop, eDock.BeginBottom, this.oButton);
         },
-        
+
 //              - CONFERMA/INSERISCI BATCH
         InsertNewBatch: function (event) {
             var PathLinea = event.getSource().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getBindingContext("linea").sPath;
@@ -843,7 +872,7 @@ sap.ui.define([
                 MessageToast.show("Non si possono inserire batch con zero quintali", {duration: 2000});
             }
         },
-        
+
 //              - ANNULLA CONFERMA/INSERISCI BATCH
         UndoBatchCreation: function (event) {
             this.BusyDialog.open();

@@ -94,7 +94,8 @@ sap.ui.define([
         authMSG: null,
         batchIDmsg: null,
         batchInfo: null,
-
+        maxQuintali: null,
+        maxCartoni: null,
 //        FUNZIONI D'INIZIALIZZAZIONE
         onInit: function () {
             this.ModelGuasti.setSizeLimit("1000");
@@ -158,7 +159,6 @@ sap.ui.define([
                 }
             }, 1000);
         },
-
 //        ------------------------------------------------------
 //        ---------------- FUNZIONI DI REFRESH -----------------
 //        ------------------------------------------------------
@@ -335,7 +335,6 @@ sap.ui.define([
                 }
             }
         },
-
 //         -> DROPDOWN OPERATORI
         LoadOperatori: function (event) {
             var that = this;
@@ -394,13 +393,11 @@ sap.ui.define([
                 console.log(error);
             });
         },
-
 //         -> MESSAGGISTICA
         ShowMessaggi: function (event) {
             this.modelAutorizzazioni = new JSONModel("model/JSON_Autorizzazioni.json");
             this.getView().setModel(this.modelAutorizzazioni, "modelAutorizzazioni");
             sap.ui.getCore().setModel(this.modelAutorizzazioni, "modelAutorizzazioni");
-
             clearInterval(this.SMTIMER);
 //            this.BusyDialog.open();
             var data = this.getView().getModel("linea").getProperty(event.getSource().getBindingContext("linea").sPath);
@@ -615,7 +612,6 @@ sap.ui.define([
             clearInterval(this.OEETimer);
             this.OEEDialog.destroy();
         },
-
 //        --------------------------  POPUP FERMI  --------------------------
 
         ShowFermi: function () {
@@ -626,17 +622,18 @@ sap.ui.define([
             }
             this.oDialog.open();
             this.oDialog.setBusy(true);
-
             var link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetAllFermiFromBatchID&Content-Type=text/json&BatchID=" + this.batchID + "&OutputParameter=JSON";
             Library.AjaxCallerData(link, this.SUCCESSShowFermi.bind(this), this.FAILUREShowFermi.bind(this));
         },
         SUCCESSShowFermi: function (Jdata) {
             var data = Jdata.fermi;
-            var i;
+            var i, msec_in, msec_fin;
             for (i = 0; i < data.length; i++) {
                 data[i].inizio = data[i].inizio.split("T")[1];
                 data[i].fine = data[i].fine.split("T")[1];
-                data[i].durata = Library.MillisecsToStandard(Library.StandardToMillisecs(data[i].fine) - Library.StandardToMillisecs(data[i].inizio));
+                msec_in = Library.StandardToMillisecs(data[i].inizio);
+                msec_fin = Library.StandardToMillisecs(data[i].fine);
+                data[i].durata = (msec_fin < msec_in) ? Library.MillisecsToStandard(msec_fin - msec_in + 86400000) : Library.MillisecsToStandard(msec_fin - msec_in);
             }
             this.ModelFermi.setData(data);
             this.getView().setModel(this.ModelFermi, "ModelFermi");
@@ -729,7 +726,6 @@ sap.ui.define([
             var prefix = (this.indexSPC === 0) ? "SX" : "DX";
             return prefix + " - " + str.replace("[cg]", "[g]");
         },
-
 //         -> PULSANTE AGGIUNTA BATCH
         AddBatch: function (event) {
             this.linea_id = Library.GetLineaID(event.getSource().getBindingContext("linea").sPath, this.getView().getModel("linea"));
@@ -756,9 +752,9 @@ sap.ui.define([
             obj.SKUCodiceInterno = last_batch.SKUCodiceInterno;
             linea.batchlist.push(obj);
             Model.setData(oData);
+            this.SetLimits(event);
             this.getView().setModel(Model, "linea");
         },
-
 //         -> ELEMENTI TABELLA 
 //              - INPUT SEQUENZA
         SEQChanged: function (event) {
@@ -788,7 +784,6 @@ sap.ui.define([
             row_binded.modifyBatch = 1;
             this.ModelLinea.refresh();
         },
-
 //              - DROPDOWN FORMATI
         CaricaFormati: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -836,7 +831,6 @@ sap.ui.define([
             oRow.getCells()[6].setEnabled(false);
             oRow.getCells()[7].setVisible(true);
         },
-
 //              - DROPDOWN CONFEZIONI
         CaricaConfezionamenti: function (event) {
             if (event.getSource().getBindingContext("linea")) {
@@ -939,7 +933,6 @@ sap.ui.define([
                 MessageToast.show(Jdata.errorMessage, {duration: 2000});
             }
         },
-
 //              - BUTTON DESTINAZIONE
         ModifyBatchDetails: function (event) {
             this.BusyDialog.open();
@@ -1016,9 +1009,21 @@ sap.ui.define([
                 this.oDialog.setBusy(true);
             }
         },
-
 //              - INPUT QLI, CARTONI E ORE
+        SetLimits: function (event) {
+            var rowPath = event.getSource().getBindingContext("linea").sPath;
+            var row_binded = this.getView().getModel("linea").getProperty(rowPath);
+            this.pezzi_cartone = row_binded.pezziCartone;
+            this.tempo_ciclo = row_binded.secondiPerPezzo;
+            this.numeroLinee = row_binded.numeroLinee;
+            var grammatura, numero_pezzi;
+            grammatura = row_binded.grammatura;
+            numero_pezzi = ((Library.standardToMinutes("23:59") * 60) / this.tempo_ciclo) * this.numeroLinee;
+            this.maxCartoni = Math.floor(numero_pezzi / this.pezzi_cartone);
+            this.maxQuintali = (numero_pezzi * grammatura) / 100000;
+        },
         QLIChanged: function (event) {
+            this.SetLimits(event);
             this.ShowUpdateButton(event);
             var ind;
             var obj = sap.ui.getCore().byId(event.getSource().getId());
@@ -1031,18 +1036,24 @@ sap.ui.define([
                     obj.setValue(this.bckupQLI);
                     MessageToast.show("Inserire solo numeri positivi", {duration: 3000});
                 } else {
-                    ind = 1 + value.indexOf(".") + value.indexOf(",");
-                    if ((ind > -1) && ((value.length - ind) > 3)) {
+                    if (Number(value) > this.maxQuintali) {
                         obj.setValue(this.bckupQLI);
-                        MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                        MessageToast.show("Non si possono inserire batch più lunghi di 24 ore", {duration: 3000});
                     } else {
-                        this.bckupQLI = value;
-                        this.ChangeValues(event);
+                        ind = 1 + value.indexOf(".") + value.indexOf(",");
+                        if ((ind > -1) && ((value.length - ind) > 3)) {
+                            obj.setValue(this.bckupQLI);
+                            MessageToast.show("Inserire massimo due decimali", {duration: 3000});
+                        } else {
+                            this.bckupQLI = value;
+                            this.ChangeValues(event);
+                        }
                     }
                 }
             }
         },
         CRTChanged: function (event) {
+            this.SetLimits(event);
             this.ShowUpdateButton(event);
             var obj = sap.ui.getCore().byId(event.getSource().getId());
             var value = obj.getValue();
@@ -1054,30 +1065,36 @@ sap.ui.define([
                     obj.setValue(this.bckupCRT);
                     MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
                 } else {
-                    var ind = 1 + value.indexOf(".") + value.indexOf(",");
-                    if (ind > -1) {
+                    if (Number(value) > this.maxCartoni) {
                         obj.setValue(this.bckupCRT);
-                        MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                        MessageToast.show("Non si possono inserire batch più lunghi di 24 ore", {duration: 3000});
                     } else {
-                        this.bckupCRT = value;
-                        this.ChangeValues(event);
+                        var ind = 1 + value.indexOf(".") + value.indexOf(",");
+                        if (ind > -1) {
+                            obj.setValue(this.bckupCRT);
+                            MessageToast.show("Inserire solo numeri interi positivi", {duration: 3000});
+                        } else {
+                            this.bckupCRT = value;
+                            this.ChangeValues(event);
+                        }
                     }
                 }
             }
         },
         HOURChanged: function (event) {
+            this.SetLimits(event);
             this.ShowUpdateButton(event);
-            var obj = sap.ui.getCore().byId(event.getSource().getId());
-            var value = obj.getValue();
-            var hours = Number(value.substring(0, 2));
-            var mins = Number(value.substring(3, 5));
-            if (hours > 8 || (hours === 8 && mins !== 0)) {
-                obj.setValue(this.bckupHOUR);
-                MessageToast.show("Non si possono inserire batch da più di 8 ore", {duration: 3000});
-            } else {
-                this.bckupHOUR = value;
-                this.ChangeValues(event);
-            }
+//            var obj = sap.ui.getCore().byId(event.getSource().getId());
+//            var value = obj.getValue();
+//            var hours = Number(value.substring(0, 2));
+//            var mins = Number(value.substring(3, 5));
+//            if (hours > 8 || (hours === 8 && mins !== 0)) {
+//                obj.setValue(this.bckupHOUR);
+//                MessageToast.show("Non si possono inserire batch da più di 8 ore", {duration: 3000});
+//            } else {
+//                this.bckupHOUR = value;
+            this.ChangeValues(event);
+//            }
         },
         ChangeValues: function (event) {
             this.ShowUpdateButton(event);
@@ -1115,7 +1132,6 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
-
 //              - IMPOSTAZIONI BATCH
         BatchSettings: function (event) {
             this.oButton = event.getSource();
@@ -1233,7 +1249,6 @@ sap.ui.define([
             }
             this.ModelLinea.refresh();
         },
-
 //        ------------------------------------------------------
 //        ---------------- FUNZIONI DI SUPPORTO ----------------
 //        ------------------------------------------------------
@@ -1252,7 +1267,6 @@ sap.ui.define([
             this.oDialog.setBusy(false);
             setTimeout(this.ShowRelevant.bind(this), 50, null, "SKU_TT");
         },
-
 //       ************************ FUNZIONE DI REFRESH *************
 
 //        Viene aggiornato tutto, tenendo però traccia dei cambiamenti che il CT sta eseguendo in tempo reale
@@ -1324,7 +1338,6 @@ sap.ui.define([
         OnlyUnique: function (value, index, self) {
             return self.indexOf(value) === index;
         },
-
 //       ************************ TABELLA 20% DI SINISTRA ************************
 
         RecursiveTakeAllCause: function (bck) {
@@ -1338,7 +1351,6 @@ sap.ui.define([
             }
             return bck;
         },
-
 //       ************************ TABELLA 80% DI DESTRA ************************
         SplitId: function (id, string) {
             var splitter = id.indexOf(string);
@@ -1510,7 +1522,6 @@ sap.ui.define([
             }
             return {dataPlot: dataPlot, layout: layout};
         },
-
 //      GESTIONE STILE PROGRESS BAR        
         BarColorCT: function (data) {
             if (data.linee.length > 0) {
@@ -2181,7 +2192,6 @@ sap.ui.define([
                     this.CreaFinestraInserimento(oText);
             }
         },
-
 //      **************** POPUP GESTIONE INTERVALLI MODIFICA CAUSALE ****************        
         CreaFinestraModificaCausale: function (text) {
             var oView = this.getView();
@@ -2227,7 +2237,6 @@ sap.ui.define([
             bBox2.addItem(selectMenu);
             this.oDialog.open();
         },
-
 //      **************** POPUP GESTIONE INTERVALLI MODIFICA TEMPI ****************  
         CreaFinestraModificaTempi: function (text) {
             var oView = this.getView();
@@ -2321,7 +2330,6 @@ sap.ui.define([
             oVBox2.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-
 //      **************** POPUP GESTIONE INTERVALLI FRAZIONAMENTO **************** 
         CreaFinestraFrazionamento: function (text) {
             var oView = this.getView();
@@ -2425,7 +2433,6 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-
 //      **************** POPUP GESTIONE INTERVALLI ELIMINAZIONE **************** 
         CreaFinestraEliminazione: function (text) {
             var oView = this.getView();
@@ -2492,7 +2499,6 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-
 //      **************** POPUP GESTIONE INTERVALLI INSERIMENTO **************** 
         CreaFinestraInserimento: function (text) {
             var oView = this.getView();
@@ -2560,7 +2566,6 @@ sap.ui.define([
             centralBox.addItem(oHBoxBottom);
             this.oDialog.open();
         },
-
 //      **************** POPUP GESTIONE INTERVALLI AZIONI DI CONFERMA E DI ANNULLA **************** 
         DestroyDialog: function () {
             clearInterval(this.NDTIMER);
@@ -2699,7 +2704,6 @@ sap.ui.define([
                 return fine;
             }
         },
-
 //      **************** POPUP CAUSALIZZAZIONE ****************
 
         ChangeCheckedCausa: function (event) {
