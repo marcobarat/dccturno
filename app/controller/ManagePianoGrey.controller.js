@@ -487,7 +487,7 @@ sap.ui.define([
                         if (list_log === "") {
                             list_log += data.fermi[i].LogID;
                         } else {
-                            list_log = list_log + "#" + data.fermi[i].LogID;
+                            list_log = list_log + "-" + data.fermi[i].LogID;
                         }
                     }
                 }

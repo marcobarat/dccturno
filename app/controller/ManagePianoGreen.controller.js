@@ -487,11 +487,15 @@ sap.ui.define([
         SendMessage: function () {
             var link;
             var msg = this.getView().byId("inputMessage").getValue();
-            this.getView().byId("inputMessage").setValue("");
-            if (this.ISLOCAL !== 1) {
-                link = "/XMII/Runner?Transaction=DeCecco/Transactions/SendMessageChat&Content-Type=text/json&LineaID=" + this.linea_id + "&Messaggio=" + encodeURI(msg) + "&Imp=1&Origine=Capoturno&OutputParameter=JSON";
+            if (msg !== "") {
+                this.getView().byId("inputMessage").setValue("");
+                if (this.ISLOCAL !== 1) {
+                    link = "/XMII/Runner?Transaction=DeCecco/Transactions/SendMessageChat&Content-Type=text/json&LineaID=" + this.linea_id + "&Messaggio=" + encodeURI(msg) + "&Imp=1&Origine=Capoturno&OutputParameter=JSON";
+                }
+                Library.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
+            } else {
+                MessageToast.show("Non si possono inviare messaggi vuoti", {duration: 2000});
             }
-            Library.AjaxCallerData(link, this.SUCCESSMessaggi.bind(this));
         },
         MSGChanged: function () {
             var obj = this.getView().byId("inputMessage");
