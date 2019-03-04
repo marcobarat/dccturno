@@ -9,6 +9,9 @@ sap.ui.define([
                 renderer: {},
 
                 onAfterRendering: function () {
+                    if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
+                        sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
+                    }
                     this.expandToLevel(20);
                     var that = this;
                     setTimeout(function () {
@@ -25,9 +28,6 @@ sap.ui.define([
                             }
                         }
                     }, 100);
-                    if (sap.ui.table.TreeTable.prototype.onAfterRendering) {
-                        sap.ui.table.TreeTable.prototype.onAfterRendering.apply(this, arguments); //run the super class's method first
-                    }
                 }
             });
         });

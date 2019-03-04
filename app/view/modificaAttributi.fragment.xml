@@ -109,7 +109,7 @@
                                         <t:Column width="5rem" resizable="false">
                                             <Label text="MODIFICA VALORE"/>
                                             <t:template>
-                                                <Input value="{ModelParametri>valueModify}" editable="{= ${ModelParametri>modify} === 1}" type="Text" maxLength="30" visible="{= ${ModelParametri>modify} === 1}" class="diffStandard redInputParametri" />
+                                                <Input value="{ModelParametri>valueModify}" placeholder="Inserire Valore" editable="{= ${ModelParametri>modify} === 1}" type="Text" maxLength="30" visible="{= ${ModelParametri>modify} === 1}" class="diffStandard redInputParametri" />
                                             </t:template>
                                         </t:Column>
                                     </wt:columns>

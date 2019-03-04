@@ -73,8 +73,8 @@ sap.ui.define([
 //        
 //         -> CREA REPORT
         CreateReport: function () {
-            this.BusyDialog.open();
             if (!this.getView().byId("reportButton").getEnabled()) {
+                this.BusyDialog.open();
                 var link;
                 if (this.ISLOCAL === 1) {
                     link = "model/OEE.json";
