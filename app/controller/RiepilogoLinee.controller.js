@@ -61,9 +61,13 @@ sap.ui.define([
 //        ------------------------------------------------------
 
         RefreshFunction: function (msec) {
+            if (!msec) {
+                msec = 0;
+            }
             setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
+            this.RefreshCounter = 0;
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/linee_riepilogo.json";
@@ -119,8 +123,12 @@ sap.ui.define([
             this.SetNameMacchine(Jdata);
             for (j = 0; j < Jdata.Macchine.length; j++) {
                 Jdata.Macchine[j].class = Jdata.Macchine[j].nome.split(" ").join("");
+                if (Jdata.LineaID === "31") {
+                    Jdata.Macchine[j].class += "_L";
+                }
             }
             this.ModelSinottico.setData(Jdata);
+            this.ModelSinottico.refresh(true);
             sap.ui.getCore().setModel(this.ModelSinottico, "ModelSinottico");
             this.getView().setModel(this.ModelSinottico, "ModelSinottico");
             clearInterval(this.TIMER);
@@ -225,7 +233,7 @@ sap.ui.define([
         SUCCESSShowFermi: function (Jdata) {
             var data = Jdata.fermi;
             var i, msec_in, msec_fin;
-            for (i = 0;i < data.length; i++) {
+            for (i = 0; i < data.length; i++) {
                 data[i].inizio = data[i].inizio.split("T")[1];
                 data[i].fine = data[i].fine.split("T")[1];
                 msec_in = Library.StandardToMillisecs(data[i].inizio);
@@ -336,7 +344,7 @@ sap.ui.define([
 //        ******************** SINOTTICO *******************
 
         SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice", "confezionatrice"];
             for (var i = 0; i < data_linea.Macchine.length; i++) {
                 for (var j = 0; j < names.length; j++) {
                     if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
@@ -352,6 +360,9 @@ sap.ui.define([
                                 break;
                             case "scatolatrice":
                                 data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                            case "confezionatrice":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Confezionatrice SX" : "Confezionatrice DX";
                                 break;
                         }
                     }

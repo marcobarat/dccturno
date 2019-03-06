@@ -1148,7 +1148,17 @@
     border-radius: 10px;
     border: 1px solid #003A6B;
 }
-
+ /*BOTTONI SINOTTICO LINEE PASTA CORTA*/
+.ConfezionatriceSX {
+    position: absolute;
+    bottom: 12rem;
+    left: 9rem;
+}
+.ConfezionatriceDX {
+    position: absolute;
+    left: 28.5rem;
+    bottom: 12rem;
+}
 .MarcatoreSX {
     position: absolute;
     bottom: 22rem;
@@ -1178,6 +1188,47 @@
     position: absolute;
     bottom: 4rem;
     right: 7rem;
+}
+ /*BOTTONI SINOTTICO LINEE PASTA LUNGA*/
+ .ConfezionatriceSX_L {
+    position: absolute;
+    bottom: 25rem;
+    left: 0.5rem;
+}
+.ConfezionatriceDX_L {
+    position: absolute;
+    left: 19.5rem;
+    bottom: 25rem;
+}
+.MarcatoreSX_L {
+    position: absolute;
+    bottom: 12rem;
+    left: 9rem;
+}
+.MarcatoreDX_L {
+    position: absolute;
+    left: 28.5rem;
+    bottom: 12rem;
+}
+.PackItalSX_L {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 10rem;
+}
+.PackItalDX_L {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 32rem;
+}
+.Scatolatrice_L {
+    position: absolute;
+    bottom: -1rem;
+    right: 25rem;
+}
+.Etichettatrice_L {
+    position: absolute;
+    bottom: 19rem;
+    right: 6rem;
 }
 
 .buttonGood .sapMBtnInner {

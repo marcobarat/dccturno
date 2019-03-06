@@ -58,6 +58,7 @@ sap.ui.define([
             setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
+            this.RefreshCounter = 0;
             var link;
             if (this.ISLOCAL === 1) {
                 link = "model/pianidiconf_new.json";

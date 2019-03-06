@@ -178,6 +178,7 @@ sap.ui.define([
             setTimeout(this.RefreshCall.bind(this), msec, IsRidotta);
         },
         RefreshCall: function (IsRidotta) {
+            this.RefreshCounter = 0;
             if (typeof IsRidotta === "undefined") {
                 IsRidotta = "0";
             }
@@ -297,6 +298,7 @@ sap.ui.define([
             setTimeout(this.RefreshLogCall.bind(this), msec);
         },
         RefreshLogCall: function () {
+            this.RefreshLogCounter = 0;
             var link;
             if (this.ISLOCAL === 1) {
                 link = "";
@@ -445,6 +447,7 @@ sap.ui.define([
             setTimeout(this.RefreshMsgCall.bind(this), msec);
         },
         RefreshMsgCall: function () {
+            this.RefreshMsgCounter = 0;
             var link;
             if (this.ISLOCAL !== 1) {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/GetMessagesFromLineaIDOrigine&Content-Type=text/json&LineaID=" + this.linea_id + "&Origine=Capoturno&OutputParameter=JSON";
@@ -582,6 +585,7 @@ sap.ui.define([
             setTimeout(this.OEEDataCaller.bind(this), msec);
         },
         OEEDataCaller: function () {
+            this.OEECounter = 0;
             if (this.OEEDialog) {
                 if (this.OEEDialog.isOpen()) {
                     var link = "/XMII/Runner?Transaction=DeCecco/Transactions/OEE_SPCBatchInCorso&Content-Type=text/json&LineaID=" + this.idLinea + "&OutputParameter=JSON";
@@ -691,6 +695,7 @@ sap.ui.define([
             setTimeout(this.SPCDataCaller.bind(this), msec);
         },
         SPCDataCaller: function () {
+            this.SPCCounter = 0;
             if (this.SPCDialog) {
                 if (this.SPCDialog.isOpen()) {
                     var link;

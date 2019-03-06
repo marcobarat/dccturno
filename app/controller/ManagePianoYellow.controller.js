@@ -141,6 +141,7 @@ sap.ui.define([
             setTimeout(this.RefreshCall.bind(this), msec, IsRidotta);
         },
         RefreshCall: function (IsRidotta) {
+            this.RefreshCounter = 0;
             if (typeof IsRidotta === "undefined") {
                 IsRidotta = "0";
             }
@@ -259,6 +260,7 @@ sap.ui.define([
             setTimeout(this.RefreshLogCall.bind(this), msec);
         },
         RefreshLogCall: function () {
+            this.RefreshLogCounter = 0;
             var link;
             if (this.ISLOCAL === 1) {
                 link = "";

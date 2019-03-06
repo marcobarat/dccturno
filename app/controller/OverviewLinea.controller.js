@@ -55,7 +55,6 @@ sap.ui.define([
                     that.Counter++;
                     if (that.STOP === 0 && that.Counter >= 10) {
                         that.RefreshFunction();
-//                        that.BusyDialog.open();
                     }
                 } catch (e) {
                     console.log(e);
@@ -68,9 +67,13 @@ sap.ui.define([
 //        ------------------------------------------------------
 
         RefreshFunction: function (msec) {
-            this.TIMER = setTimeout(this.RefreshCall.bind(this), msec);
+            if (!msec) {
+                msec = 0;
+            }
+            setTimeout(this.RefreshCall.bind(this), msec);
         },
         RefreshCall: function () {
+            this.Counter = 0;
             var link;
             if (this.ISLOCAL !== 1) {
                 link = "/XMII/Runner?Transaction=DeCecco/Transactions/Sinottico/SinotticoByLineaID&Content-Type=text/json&LineaID=" + this.idLinea + "&OutputParameter=JSON";
@@ -134,13 +137,13 @@ sap.ui.define([
             }
         },
         AlarmRefresh: function (msec) {
-            this.AlarmCounter = 0;
             if (typeof msec === "undefined") {
                 msec = 0;
             }
             setTimeout(this.AlarmDataCaller.bind(this), msec);
         },
         AlarmDataCaller: function () {
+            this.AlarmCounter = 0;
             var link;
             if (this.AlarmDialog) {
                 if (this.AlarmDialog.isOpen()) {
@@ -208,7 +211,7 @@ sap.ui.define([
 //        ********************** SINOTTICO ***********************
 
         SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice"];
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice", "confezionatrice"];
             for (var i = 0; i < data_linea.Macchine.length; i++) {
                 for (var j = 0; j < names.length; j++) {
                     if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
@@ -224,6 +227,9 @@ sap.ui.define([
                                 break;
                             case "scatolatrice":
                                 data_linea.Macchine[i].nome = "Scatolatrice";
+                                break;
+                            case "confezionatrice":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Confezionatrice SX" : "Confezionatrice DX";
                                 break;
                         }
                     }
@@ -346,19 +352,6 @@ sap.ui.define([
                 }
             }
         },
-        getRandom: function () {
-            var val = Math.floor(4 * Math.random());
-            switch (val) {
-                case 0:
-                    return "9";
-                case 1:
-                    return "10";
-                case 2:
-                    return "13";
-                default:
-                    return "32";
-            }
-        },
 
 //        ------------------------------------------------------
 //        ------------------- INTESTAZIONE ---------------------
@@ -375,6 +368,8 @@ sap.ui.define([
             clearInterval(this.TIMER);
             this.BusyDialog.open();
             this.STOP = 1;
+            this.ModelSinottico.setData({});
+            this.getView().setModel(this.ModelSinottico, "ModelSinottico");
             this.getOwnerComponent().getRouter().navTo("RiepilogoLinee");
             this.BusyDialog.close();
         }
