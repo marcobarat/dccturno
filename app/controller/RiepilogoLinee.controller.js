@@ -123,8 +123,11 @@ sap.ui.define([
             this.SetNameMacchine(Jdata);
             for (j = 0; j < Jdata.Macchine.length; j++) {
                 Jdata.Macchine[j].class = Jdata.Macchine[j].nome.split(" ").join("");
-                if (Jdata.LineaID === "31") {
-                    Jdata.Macchine[j].class += "_L";
+                if (Number(Jdata.LineaID) === 31) {
+                    Jdata.Macchine[j].class += "_9";
+                }
+                if (Number(Jdata.LineaID) === 16) {
+                    Jdata.Macchine[j].class += "_6";
                 }
             }
             this.ModelSinottico.setData(Jdata);
@@ -344,7 +347,7 @@ sap.ui.define([
 //        ******************** SINOTTICO *******************
 
         SetNameMacchine: function (data_linea) {
-            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice", "confezionatrice"];
+            var names = ["marcatore", "etichettatrice", "controllo peso", "scatolatrice", "confezionatrice", "dosatore"];
             for (var i = 0; i < data_linea.Macchine.length; i++) {
                 for (var j = 0; j < names.length; j++) {
                     if (data_linea.Macchine[i].nome.toLowerCase().indexOf(names[j]) > -1) {
@@ -363,6 +366,9 @@ sap.ui.define([
                                 break;
                             case "confezionatrice":
                                 data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Confezionatrice SX" : "Confezionatrice DX";
+                                break;
+                            case "dosatore":
+                                data_linea.Macchine[i].nome = (data_linea.Macchine[i].nome.indexOf("SX") > -1) ? "Dosatore SX" : "Dosatore DX";
                                 break;
                         }
                     }

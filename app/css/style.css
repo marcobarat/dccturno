@@ -1189,46 +1189,97 @@
     bottom: 4rem;
     right: 7rem;
 }
- /*BOTTONI SINOTTICO LINEE PASTA LUNGA*/
- .ConfezionatriceSX_L {
+ /*BOTTONI SINOTTICO LINEA 9*/
+ .ConfezionatriceSX_9 {
     position: absolute;
     bottom: 25rem;
     left: 0.5rem;
 }
-.ConfezionatriceDX_L {
+.ConfezionatriceDX_9 {
     position: absolute;
     left: 19.5rem;
     bottom: 25rem;
 }
-.MarcatoreSX_L {
+.MarcatoreSX_9 {
     position: absolute;
     bottom: 12rem;
     left: 9rem;
 }
-.MarcatoreDX_L {
+.MarcatoreDX_9 {
     position: absolute;
     left: 28.5rem;
     bottom: 12rem;
 }
-.PackItalSX_L {
+.PackItalSX_9 {
     position: absolute;
     bottom: -1.5rem;
     left: 10rem;
 }
-.PackItalDX_L {
+.PackItalDX_9 {
     position: absolute;
     bottom: -1.5rem;
     left: 32rem;
 }
-.Scatolatrice_L {
+.Scatolatrice_9 {
     position: absolute;
     bottom: -1rem;
     right: 25rem;
 }
-.Etichettatrice_L {
+.Etichettatrice_9 {
     position: absolute;
     bottom: 19rem;
     right: 6rem;
+}
+ /*BOTTONI SINOTTICO LINEA 6*/
+.DosatoreSX_6 {
+    position: absolute;
+    bottom: 34rem;
+    left: 14rem;
+}
+.DosatoreDX_6 {
+    position: absolute;
+    left: 14rem;
+    bottom: 16rem;
+}
+.ConfezionatriceSX_6 {
+    position: absolute;
+    bottom: 28rem;
+    left: 9rem;
+}
+.ConfezionatriceDX_6 {
+    position: absolute;
+    left: 9rem;
+    bottom: 10rem;
+}
+.MarcatoreSX_6 {
+    position: absolute;
+    bottom: 40rem;
+    left: 29rem;
+}
+.MarcatoreDX_6 {
+    position: absolute;
+    left: 29rem;
+    bottom: 21rem;
+}
+.PackItalSX_6 {
+    position: absolute;
+    bottom: 34rem;
+    left: 61rem;
+}
+.PackItalDX_6 {
+    position: absolute;
+    bottom: 20rem;
+    left: 61rem;
+}
+.Scatolatrice_6 {
+    position: absolute;
+    bottom: 60rem;
+    right: 27rem;
+}
+.Etichettatrice_6 {
+    position: absolute;
+    bottom: 70rem;
+    left: 25rem;
 }
 
 .buttonGood .sapMBtnInner {
